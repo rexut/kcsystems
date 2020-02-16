@@ -1,0 +1,67 @@
+ifndef HAVE_MAKEFILE_FILTER
+HAVE_MAKEFILE_FILTER := included
+
+include $(TOPDIR)/tools/Makefile.lib
+
+FLT_SFX_SRC := .in
+
+FLTTGTS := $(call empty_set)
+
+### Add a new target that have to filter
+#
+# $1 - target name
+# $2 - list of source files
+# $3 - list of additional rule set pairs that have to filter (optional)
+#      ex.: MY_VAR_COMPACT=1234 MY_VAR_SPACED="Hello world!"
+#      TODO: Support space in value!
+#
+define add_flt_tgt
+FLTTGTS := $(call set_insert,$(strip $(1)),$(FLTTGTS))
+$(call push,$(call fn2srcs,$(1)),$(strip $(2)))				\
+$(if $(strip $(3)),$(foreach i,$(call sequence,1,$(call length,$(3))),	\
+$(call push,$(call fn2ftrsvn,$(1)),$(strip 				\
+$(call map,vname,$(word $(i),$(3)))))					\
+$(call push,$(call fn2ftrsvv,$(1)),$(strip 				\
+$(call map,vvalue,$(word $(i),$(3)))))))
+endef
+
+FLTTGTS := $(sort $(FLTTGTS))
+
+define make_flt_rule
+CLEAN += $(1)
+PHONY += $(1)
+$(1): $(call reverse,$(__gmsl_stack_$(call fn2srcs,$(1)))) | $(CONFIG)
+	$$(call flt_exec,$(CONFIG))
+endef
+
+### Functions to create filter command line
+
+# additional rule set names that have to filter
+ftrsvn = $(call reverse,$(__gmsl_stack_$(call fn2ftrsvn,$(1))))
+
+# additional rule set values that have to filter
+ftrsvv = $(call reverse,$(__gmsl_stack_$(call fn2ftrsvv,$(1))))
+
+# SED regexp to filter single token
+toksedexp = -e$(space)$(squote)s|%%$(1)%%|$(2)|g$(squote)
+
+# SED regexp list to filter multiple tokens
+flttoksed = $(call pairmap,toksedexp,$(1),$(call escsq,$(call unquote,$(2))))
+
+# SED regexp filter ruleset
+fltrls = $(call flttoksed,$(call cfgsvn,$(1)) $(call ftrsvn,$@),	\
+			  $(call cfgsvv,$(1)) $(call ftrsvv,$@))
+
+### Functions to execute filter command line
+
+# filter execution
+flt_exec = $(call cmd,sed,$(call fltrls,$(1)),$<,$@)
+
+endif	# HAVE_MAKEFILE_FILTER
+
+# Local variables:
+# coding: utf-8
+# mode: text
+# mode: make
+# End:
+# vim: fileencoding=utf-8 filetype=make :

@@ -1,0 +1,95 @@
+ifndef HAVE_MAKEFILE_BUILD
+HAVE_MAKEFILE_BUILD := included
+
+include $(TOPDIR)/tools/Makefile.lib
+include $(TOPDIR)/tools/Makefile.filter
+
+# Process computer and operating system specific directories
+
+CONF_DIR = mach/configs
+MACH_DIR = mach/$(CONFIG_MACH)
+OSYS_DIR = osys/$(CONFIG_OSYS)
+IMGS_DIR = images
+
+-include $(MACH_DIR)/Makefile
+-include $(OSYS_DIR)/Makefile
+-include $(IMGS_DIR)/Makefile
+
+$(foreach tgt,$(FLTTGTS),$(eval $(call make_flt_rule,$(tgt),)))
+
+# Default build target
+# ---------------------------------------------------------------------------
+
+ifeq ($(BIN),)
+BIN = help
+else
+CLEAN += $(BIN)
+endif
+
+PHONY += all
+all: $(BIN)
+	@# Null command. No effect; the command does nothing.
+	@# Exit Status: Always succeeds.
+	@:
+
+# Brief documentation of the typical targets used
+# ---------------------------------------------------------------------------
+
+machs := $(sort $(wildcard $(CONF_DIR)/*_defconfig))
+machs := $(notdir $(machs))
+
+help:
+	@echo  'Cleaning targets:'
+	@echo  '  clean           - Remove most generated files but keep the config and'
+	@echo  '                    enough build support to build external applications'
+	@echo  '  mrproper        - Remove all generated files + config + various backup files'
+	@echo  '  distclean       - mrproper + remove editor backup and patch files'
+	@echo  ''
+	@echo  'Other generic targets:'
+	@echo  '  all             - Build all targets marked with [*]'
+	@$(if $(call sne,$(BIN),help), \
+		$(foreach b, $(BIN), \
+		printf "* %-40s\\n" $(b);) \
+		echo '',echo '';echo '  Not configured! See machine specific targets.';echo '')
+	@echo  ''
+	@echo  'Configuration targets:'
+	@echo  '  config          - Update current config utilising a line-oriented program'
+	@echo  '  nconfig         - Update current config utilising a ncurses menu based program'
+	@echo  '  menuconfig      - Update current config utilising a menu based program'
+	@echo  '  qconfig         - Update current config utilising a QT based front-end'
+	@echo  '  gconfig         - Update current config utilising a GTK based front-end'
+	@echo  '  oldconfig       - Update current config utilising a provided .config as base'
+	@echo  ''
+	@echo  'Machine specific targets ($(MACH_DIR)):'
+	@$(if $(machhelp),$(machhelp),\
+		echo '  No machine specific help defined for $(MACH_DIR)')
+	@echo  ''
+	@$(if $(machs), \
+		$(foreach b, $(machs), \
+		printf "  %-40s - Build for %s\\n" $(b) $(subst _defconfig,,$(b));) \
+		echo '')
+	@echo  ''
+	@echo  '  make V=0|1 [targets] 0 => quiet build (default), 1 => verbose build'
+	@echo  '  make V=2   [targets] 2 => give reason for rebuild of target'
+	@echo  ''
+	@echo  'Execute "make" or "make all" to build all targets marked with [*] '
+	@echo  'For further info see the ./README file'
+
+# Add FORCE to the prequisites of a target to force it to be always rebuilt.
+# ---------------------------------------------------------------------------
+
+PHONY += FORCE
+FORCE:
+
+# Declare the contents of the .PHONY variable as phony.  We keep that
+# information in a variable so we can use it in functions.
+.PHONY: $(PHONY)
+
+endif	# HAVE_MAKEFILE_BUILD
+
+# Local variables:
+# coding: utf-8
+# mode: text
+# mode: make
+# End:
+# vim: fileencoding=utf-8 filetype=make :

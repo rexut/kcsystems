@@ -1,0 +1,23 @@
+#
+# For a description of the syntax of this configuration file, see:
+# https://gitlab.com/ymorin/kconfig-frontends/-/blob/master/docs/kconfig-language.txt
+#
+
+config OSYS
+	string
+
+choice
+	depends on MACH_SUPPORTS_OSYS
+	bool
+	prompt "Operating System"
+	---help---
+		Select the operating system.
+
+endchoice
+
+# Local variables:
+# coding: utf-8
+# mode: text
+# mode: kconfig
+# End:
+# vim: fileencoding=utf-8 filetype=kconfig :

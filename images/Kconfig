@@ -1,0 +1,22 @@
+#
+# For a description of the syntax of this configuration file, see:
+# https://gitlab.com/ymorin/kconfig-frontends/-/blob/master/docs/kconfig-language.txt
+#
+
+config IMAGE
+	string
+
+choice
+	bool
+	prompt "System Image Type"
+	---help---
+		Select the image type.
+
+endchoice
+
+# Local variables:
+# coding: utf-8
+# mode: text
+# mode: kconfig
+# End:
+# vim: fileencoding=utf-8 filetype=kconfig :

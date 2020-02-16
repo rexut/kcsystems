@@ -1,0 +1,26 @@
+#
+# For a description of the syntax of this configuration file, see:
+# https://gitlab.com/ymorin/kconfig-frontends/-/blob/master/docs/kconfig-language.txt
+#
+
+config MACH
+	string
+
+choice
+	bool
+	prompt "Computer System"
+	---help---
+		Select the computer system.
+
+endchoice
+
+config MACH_SUPPORTS_OSYS
+	bool
+	default n
+
+# Local variables:
+# coding: utf-8
+# mode: text
+# mode: kconfig
+# End:
+# vim: fileencoding=utf-8 filetype=kconfig :

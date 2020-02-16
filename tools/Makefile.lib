@@ -1,0 +1,185 @@
+ifndef HAVE_MAKEFILE_LIB
+HAVE_MAKEFILE_LIB := included
+
+GMSL_TRACE := y
+
+include $(TOPDIR)/tools/gmsl/gmsl
+
+# Convenient variables
+comma	:= ,
+squote	:= '
+dquote	:= "
+empty	:=
+space	:= $(empty) $(empty)
+tab	:= $(empty)	$(empty)
+newline	:= $(__gmsl_newline)
+
+###
+# Unquote strings, trim leading and tailing quote character
+# unquote = $(patsubst $(dquote)%$(dquote),%,$(strip $(1)))
+unquote = $(patsubst $(dquote)%,%,$(patsubst %$(dquote),%,$(strip $(1))))
+
+###
+# Escape single quote for use in echo statements
+escsq = $(subst $(squote),'\$(squote)',$(1))
+
+# echo command.
+# Short version is used, if $(quiet) equals `quiet_', otherwise full one.
+echo-cmd = $(if $($(quiet)cmd_$(1)),\
+        $(info $(space)$(space)$(call escsq,$($(quiet)cmd_$(1)))$(echo-why)))
+
+# printing and execute commands
+cmd = @$(echo-cmd) $(cmd_$(1))
+
+# Find any prerequisites that is newer than target or that does not exist.
+# PHONY targets skipped in both cases.
+any-prereq = $(filter-out $(PHONY),$?) $(filter-out $(PHONY) $(wildcard $^),$^)
+
+###
+# why - tell why a a target got build
+#       enabled by make V=2
+#       Output (listed in the order they are checked):
+#          (1) - due to target is PHONY
+#          (2) - due to target missing
+#          (3) - due to: file1.h file2.h
+# (1) PHONY targets are always build
+# (2) No target, so we better build it
+# (3) Prerequisite is newer than target
+ifeq ($(V),2)
+why = $(if $(filter $@, $(PHONY)),- due to target is PHONY,		\
+        $(if $(wildcard $@),			$(TOPDIR)/			\
+          $(if $(strip $(any-prereq)),- due to: $(any-prereq),		\
+           ),								\
+             - due to target missing					\
+         )								\
+       )
+
+echo-why = $(call escsq, $(strip $(why)))
+endif
+
+### Functions for basic operations
+
+# split on equal character
+spliteq = $(call split,=,$1)
+
+# variable name
+vname = $(call first,$(call spliteq,$1))
+
+# variable value
+vvalue = $(call first,$(call rest,$(call spliteq,$1)))
+
+# find file/dir name by wildcard
+fndfdwild = $(shell find $(1) -name $(squote)$(2)$(squote) -print)
+
+# test file/dir name
+tstfdname = $(if $(wildcard $(1)),$(1),					\
+	    $(error $(2) not found, check your build environment))
+
+# test CP/M binary name
+tstcpmbin = $(call tstfdname,$(addprefix $(CPMBIN_DIR)/,$(1)),$(2))
+
+# get deployment file name
+getdplfn = $(addprefix $(call tstfdname,$(DEPLOY_DIR)/,Deployment directory),$(1))
+
+# file name only
+fname = $(basename $(notdir $(1)))
+
+# file suffix only
+fsuff = $(suffix $(notdir $(1)))
+
+# change file suffix
+fchsuff = $(addsuffix $(strip $(2)),$(basename $(1)))
+
+# (simple) convert file name to short filename 8.3 format
+# TODO: full support, https://en.wikipedia.org/wiki/8.3_filename
+[punct] = . + #
+lfn2sfn = $(call uc,$(call merge,.,					\
+	  $(call substr,$(call merge,,					\
+	  $(call tr,$([punct]),,$(call fname,$(1)))),1,8)		\
+	  $(call substr,$(call merge,,					\
+	  $(call tr,$([punct]),,$(call fsuff,$(1)))),1,3)))
+
+# file to variable name speified by a suffix
+fn2vn = $(call uc,$(addsuffix $(2),$(call tr,. - ,_ ,$(notdir $(1)))))
+
+# file to variable name for a specific list of filter rule set names
+fn2ftrsvn = $(call fn2vn,$(1),_FTRSVN)
+
+# file to variable name for a specific list of filter rule set values
+fn2ftrsvv = $(call fn2vn,$(1),_FTRSVV)
+
+# file to variable name for a specific list of sources
+fn2srcs = $(call fn2vn,$(1),_SRCS)
+
+# file to variable name for a specific list of objects
+fn2objs = $(call fn2vn,$(1),_OBJS)
+
+# file to variable name for a specific list of binaries
+fn2bins = $(call fn2vn,$(1),_BINS)
+
+# file to variable name for a specific base address
+fn2base = $(call fn2vn,$(1),_BASE)
+
+# file to variable name for a specific boot sector content
+fn2boot = $(call fn2vn,$(1),_BOOT)
+
+# file to variable name for a specific list of files
+fn2files = $(call fn2vn,$(1),_FILES)
+
+# file to variable name for a specific list of types
+fn2type = $(call fn2vn,$(1),_TYPES)
+
+# file to variable name for a specific list of CP/M file names
+fn2cpmfn = $(call fn2vn,$(1),_CPMFN)
+
+# file read and strip comment and blank lines
+frdstrip = $(shell $(SED) -e '/^$$/d' -e '/^\#.*$$/d' $(call tstfdname,$(1),$(1)))
+
+### Commands for basic operations
+
+# file copy command
+          CP := $(call tstfdname,$(shell which cp),GNU core utility for copy files)
+quiet_cmd_copy = CP$(tab)$(tab)$(notdir $(2))$(space)$(notdir $(3))
+      cmd_copy = $(CP) -f $(4) $(2) $(3)
+
+# file move command
+          MV := $(call tstfdname,$(shell which mv),GNU core utility for move files)
+quiet_cmd_move = MV$(tab)$(tab)$(notdir $(2))$(space)$(notdir $(3))
+      cmd_move = $(MV) -f $(4) $(2) $(3)
+
+# file delete command
+          RM := $(call tstfdname,$(shell which rm),GNU core utility for delete files)
+quiet_cmd_del = RM$(tab)$(tab)$(notdir $(2))
+      cmd_del = $(RM) -f $(3) $(2)
+
+# file filter command
+         SED := $(call tstfdname,$(shell which sed),GNU stream editor for filtering)
+quiet_cmd_sed = SED$(tab)$(tab)$(notdir $(3))$(space)$(notdir $(4))
+      cmd_sed = $(SED) $(2) $(3) >$(4)
+
+### Functions to access build informations
+
+# build information array
+bi = $(call $(1),$(0)_$(2),$(3),$(call unquote,$(4)))
+
+### Commands to print build informations
+
+# print build information
+quiet_cmd_bi = $(if $(call sne,$(call $(1),keys,$(2)),),$(3)$(foreach k,\
+	       $(call $(1),keys,$(2)),$(call $(1),get,$(2),$(k))))
+      cmd_bi = $(if $(call sne,$(call $(1),keys,$(2)),),echo$(space)	\
+	       $(dquote)$(4)$(foreach k,$(call $(1),keys,$(2)),$(call	\
+	       $(1),get,$(2),$(k)))$(dquote))
+
+# print new section
+quiet_cmd_section = ---
+      cmd_section = echo$(space)$(dquote)[$(2)]$(dquote)
+
+endif	# HAVE_MAKEFILE_LIB
+
+# Local variables:
+# coding: utf-8
+# mode: text
+# mode: make
+# End:
+# vim: fileencoding=utf-8 filetype=make :

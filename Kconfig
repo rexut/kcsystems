@@ -1,0 +1,45 @@
+#
+# For a description of the syntax of this configuration file, see:
+# https://gitlab.com/ymorin/kconfig-frontends/-/blob/master/docs/kconfig-language.txt
+#
+
+mainmenu "KC Systems Configuration"
+
+config SYSV
+	string
+
+menu "Machine Type     "
+source "mach/Kconfig"
+endmenu
+
+if MACH_SUPPORTS_OSYS
+menu "Operating System "
+source "osys/Kconfig"
+endmenu
+endif	# MACH_SUPPORTS_OSYS
+
+menu "Image Composition"
+source "images/Kconfig"
+endmenu
+
+config EXPERTMODE
+	bool
+	default n
+	prompt "Enable expert mode"
+
+config GENERATE_LISTINGS
+	bool
+	default n
+	prompt "Generate listing files"
+
+config GENERATE_SYMFILES
+	bool
+	default n
+	prompt "Generate symbol files"
+
+# Local variables:
+# coding: utf-8
+# mode: text
+# mode: kconfig
+# End:
+# vim: fileencoding=utf-8 filetype=kconfig :
