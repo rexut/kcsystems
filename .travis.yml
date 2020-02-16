@@ -1,0 +1,86 @@
+language: shell
+matrix:
+  include:
+  # Ubuntu Linux 18.04 "Bionic" for x86-64bit (amd64)
+  - os: linux
+    dist: bionic
+    arch: amd64
+    env: DEFCONFIG=help
+  - os: linux
+    dist: bionic
+    arch: amd64
+    env: DEFCONFIG=listnewconfig
+  - os: linux
+    dist: bionic
+    arch: amd64
+    env: DEFCONFIG=alldefconfig
+  - os: linux
+    dist: bionic
+    arch: amd64
+    env: DEFCONFIG=olddefconfig
+  # Ubuntu Linux 18.04 "Bionic" for x86-32bit (i386)
+  - os: linux
+    dist: bionic
+    arch: i386
+    env: DEFCONFIG=help
+  - os: linux
+    dist: bionic
+    arch: i386
+    env: DEFCONFIG=listnewconfig
+  - os: linux
+    dist: bionic
+    arch: i386
+    env: DEFCONFIG=alldefconfig
+  - os: linux
+    dist: bionic
+    arch: i386
+    env: DEFCONFIG=olddefconfig
+  # Ubuntu Linux 16.04 "Xenial" for x86-64bit (amd64)
+  - os: linux
+    dist: xenial
+    arch: amd64
+    env: DEFCONFIG=help
+  - os: linux
+    dist: xenial
+    arch: amd64
+    env: DEFCONFIG=listnewconfig
+  - os: linux
+    dist: xenial
+    arch: amd64
+    env: DEFCONFIG=alldefconfig
+  - os: linux
+    dist: xenial
+    arch: amd64
+    env: DEFCONFIG=olddefconfig
+  # Ubuntu Linux 16.04 "Xenial" for x86-32bit (i386)
+  - os: linux
+    dist: xenial
+    arch: i386
+    env: DEFCONFIG=help
+  - os: linux
+    dist: xenial
+    arch: i386
+    env: DEFCONFIG=listnewconfig
+  - os: linux
+    dist: xenial
+    arch: i386
+    env: DEFCONFIG=alldefconfig
+  - os: linux
+    dist: xenial
+    arch: i386
+    env: DEFCONFIG=olddefconfig
+addons:
+  apt:
+    update: true
+    sources:
+      - sourceline: 'deb https://download.opensuse.org/repositories/home:/rexut:/CPM4L/x$(lsb_release -si)_$(lsb_release -sr)/ /'
+        key_url: 'https://download.opensuse.org/repositories/home:/rexut:/CPM4L/x$(lsb_release -si)_$(lsb_release -sr)/Release.key'
+    packages:
+      - coreutils
+      - sed
+      - make
+      - kconfig-frontends
+script:
+  - make distclean V=1
+  - make ${DEFCONFIG} V=1
+  - make V=1
