@@ -1,6 +1,60 @@
+cache:
+  apt: true
+addons:
+  apt:
+    update: true
+    sources:
+    - sourceline: 'deb https://download.opensuse.org/repositories/home:/rexut:/CPM4L/x$(lsb_release -si)_$(lsb_release -sr)/ /'
+      key_url: 'https://download.opensuse.org/repositories/home:/rexut:/CPM4L/x$(lsb_release -si)_$(lsb_release -sr)/Release.key'
+    packages: &native_deps
+    - coreutils
+    - sed
+    - make
+    - kconfig-frontends
 language: shell
+script:
+- make V=1 distclean
+- make V=1 ${DEFCONFIG}
+- make V=1
 matrix:
   include:
+  # Python 2.7 on Ubuntu Linux 18.04 "Bionic" (amd64) for Sphinx/DOC
+  - os: Linux
+    dist: bionic
+    arch: amd64
+    addons:
+      apt:
+        update: true
+        sources:
+        - sourceline: 'deb https://download.opensuse.org/repositories/home:/rexut:/CPM4L/x$(lsb_release -si)_$(lsb_release -sr)/ /'
+          key_url: 'https://download.opensuse.org/repositories/home:/rexut:/CPM4L/x$(lsb_release -si)_$(lsb_release -sr)/Release.key'
+        packages:
+        - *native_deps
+        - libfreetype6-dev
+        - librsvg2-bin
+        - icoutils
+        - poppler-utils
+        - imagemagick
+        - texlive-xetex
+        - texlive-pictures
+        - texlive-latex-extra
+        - texlive-fonts-recommended
+        - texlive-fonts-extra
+        - fonts-dejavu
+        - enchant
+        - aspell
+        - aspell-en
+    language: python
+    python: "2.7"
+    install:
+    - python2.7 tools/sphinx/virtualenv_bootstrap.py
+    - source .py27venv/bin/activate
+    - pip install -r tools/sphinx/virtualenv_requirements_freezed.txt
+    script:
+    - make -i V=1 testdocs
+    - make -i V=1 spelldocs
+    - make V=1 htmldocs
+    - make V=1 pdfdocs
   # Ubuntu Linux 18.04 "Bionic" for x86-64bit (amd64)
   - os: linux
     dist: bionic
@@ -69,18 +123,3 @@ matrix:
     dist: xenial
     arch: i386
     env: DEFCONFIG=olddefconfig
-addons:
-  apt:
-    update: true
-    sources:
-      - sourceline: 'deb https://download.opensuse.org/repositories/home:/rexut:/CPM4L/x$(lsb_release -si)_$(lsb_release -sr)/ /'
-        key_url: 'https://download.opensuse.org/repositories/home:/rexut:/CPM4L/x$(lsb_release -si)_$(lsb_release -sr)/Release.key'
-    packages:
-      - coreutils
-      - sed
-      - make
-      - kconfig-frontends
-script:
-  - make distclean V=1
-  - make ${DEFCONFIG} V=1
-  - make V=1
