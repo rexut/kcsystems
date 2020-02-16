@@ -1,0 +1,82 @@
+.. Robotron Replacements:
+
+.. Computer:
+
+.. |A51xx|           replace:: :term:`A51xx`
+.. |A5120|           replace:: :term:`A5120`
+.. |A5130|           replace:: :term:`A5130`
+.. |HC900|           replace:: :term:`KC85/2`
+.. |K8924|           replace:: :term:`K8924`
+.. |K8927|           replace:: :term:`K8927`
+.. |KC85|            replace:: :term:`KC85`
+.. |KC85/1|          replace:: :term:`KC85/1`
+.. |KC85/1.10|       replace:: :term:`KC85/1.10`
+.. |KC85/1.11|       replace:: :term:`KC85/1.11`
+.. |KC85/2|          replace:: :term:`KC85/2`
+.. |KC85/3|          replace:: :term:`KC85/3`
+.. |KC85/4|          replace:: :term:`KC85/4`
+.. |KC87|            replace:: :term:`KC87`
+.. |KC87.10|         replace:: :term:`KC87.10`
+.. |KC87.11|         replace:: :term:`KC87.11`
+.. |KC87.20|         replace:: :term:`KC87.20`
+.. |KC87.21|         replace:: :term:`KC87.21`
+.. |KC87.30|         replace:: :term:`KC87.30`
+.. |KC87.31|         replace:: :term:`KC87.31`
+.. |PC1715|          replace:: :term:`PC1715`
+.. |Z1013|           replace:: :term:`Z1013`
+.. |Z1013.01|        replace:: :term:`Z1013.01`
+.. |Z1013.12|        replace:: :term:`Z1013.12`
+.. |Z1013.16|        replace:: :term:`Z1013.16`
+.. |Z1013.64|        replace:: :term:`Z1013.64`
+.. |Z9001|           replace:: :term:`Z9001`
+
+
+.. Keyboards:
+
+.. |K7604/06|        replace:: :term:`K7604/06`
+.. |K7604|           replace:: :term:`K7604`
+.. |K7606|           replace:: :term:`K7606`
+.. |K7634/36|        replace:: :term:`K7634/36`
+.. |K7634|           replace:: :term:`K7634`
+.. |K7636|           replace:: :term:`K7636`
+.. |K7637|           replace:: :term:`K7637`
+.. |PC1715 Tastatur| replace:: :term:`PC1715` Tastatur (:term:`K7658`)
+.. |K7658|           replace:: :term:`K7658`
+.. |K7659|           replace:: :term:`K7659`
+
+
+.. Printers:
+
+.. |K631x|           replace:: :term:`K631x`
+.. |SD1152|          replace:: :term:`SD1152`
+.. |SD1154|          replace:: :term:`SD1154`
+.. |SD1156|          replace:: :term:`SD1156`
+.. |SD1157|          replace:: :term:`SD1157`
+
+
+.. Components:
+
+.. |EFS|             replace:: :term:`EFS`
+.. |EFS39|           replace:: :term:`EFS39`
+.. |EFS58|           replace:: :term:`EFS58`
+.. |K1520|           replace:: :term:`K1520`
+.. |K2526|           replace:: :term:`K2526`
+.. |K5600.10|        replace:: :term:`K5600.10`
+.. |K5600.20|        replace:: :term:`K5600.20`
+.. |K5601|           replace:: :term:`K5601`
+.. |MF3200|          replace:: :term:`MF3200`
+.. |MF6400|          replace:: :term:`MF6400`
+
+
+.. Selfmades:
+
+.. |AC1|             replace:: :term:`AC1`
+.. |PC/M|            replace:: :term:`PC/M`
+.. |EPR2TUK|         replace:: :term:`EPR2TUK`
+
+.. Local variables:
+   coding: utf-8
+   mode: text
+   mode: rst
+   End:
+   vim: fileencoding=utf-8 filetype=rst :
