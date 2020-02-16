@@ -6,7 +6,7 @@ include $(TOPDIR)/tools/Config.mk
 
 PHONY += clean mrproper distclean
 
-clean:
+clean: cleandocs
 	$(foreach file,$(CLEAN),$(call cmd,del,$(file)))
 
 mrproper: clean

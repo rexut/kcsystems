@@ -1,0 +1,41 @@
+ifndef HAVE_MAKEFILE_DOCS
+HAVE_MAKEFILE_DOCS := included
+
+include $(TOPDIR)/tools/Makefile.lib
+include $(TOPDIR)/tools/Makefile.sphinx
+
+DOCS_IDIR = $(TOPDIR)/Documentation
+DOCS_ODIR = $(DOCS_IDIR)/build
+
+# make pdf command
+quiet_cmd_mkpdf = LATEX$(tab)BLD$(tab)$(notdir $(3))
+      cmd_mkpdf = $(MAKE) -s -C $(2) PDFLATEX=$(4) $(3) $(qsout) 2>&1
+
+PHONY += testdocs spelldocs htmldocs pdfdocs cleandocs
+
+testdocs:
+	$(call cmd,sphinx,$(DOCS_IDIR),$(DOCS_ODIR),doctest)
+	$(call cmd,sphinx,$(DOCS_IDIR),$(DOCS_ODIR),coverage)
+	$(call cmd,sphinx,$(DOCS_IDIR),$(DOCS_ODIR),linkcheck)
+
+spelldocs:
+	$(call cmd,sphinx,$(DOCS_IDIR),$(DOCS_ODIR),spelling)
+
+htmldocs:
+	$(call cmd,sphinx,$(DOCS_IDIR),$(DOCS_ODIR),html)
+
+pdfdocs:
+	$(call cmd,sphinx,$(DOCS_IDIR),$(DOCS_ODIR),latex)
+	$(call cmd,mkpdf,$(DOCS_ODIR)/latex,all-pdf,xelatex)
+
+cleandocs:
+	-$(call cmd,del,$(DOCS_ODIR),-r)
+
+endif	# HAVE_MAKEFILE_DOCS
+
+# Local variables:
+# coding: utf-8
+# mode: text
+# mode: make
+# End:
+# vim: fileencoding=utf-8 filetype=make :

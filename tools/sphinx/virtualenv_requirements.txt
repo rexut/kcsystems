@@ -1,0 +1,16 @@
+pyenchant
+reportlab
+sphinx
+# cloud_sptheme
+# sphinx_rtd_theme
+sphinx_bootstrap_theme
+sphinx-argparse
+sphinxcontrib-bibtex
+sphinxcontrib-spelling
+sphinxcontrib-inlinesyntaxhighlight
+sphinxcontrib-programoutput
+sphinxcontrib-ansi
+sphinxcontrib-email
+sphinxcontrib-tikz
+sphinxcontrib-blockdiag
+sphinxcontrib-embedly

@@ -1,0 +1,16 @@
+ifndef HAVE_MAKEFILE_PYVENV
+HAVE_MAKEFILE_PYVENV := included
+
+include $(TOPDIR)/tools/Makefile.lib
+
+# check Python virtual runtime environment
+PYTHON_VIRTUAL_ENV = $(call tstfdname,$(VIRTUAL_ENV),Python virtual environment)
+
+endif	# HAVE_MAKEFILE_PYVENV
+
+# Local variables:
+# coding: utf-8
+# mode: text
+# mode: make
+# End:
+# vim: fileencoding=utf-8 filetype=make :

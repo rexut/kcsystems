@@ -1,0 +1,25 @@
+ifndef HAVE_MAKEFILE_SPHINX
+HAVE_MAKEFILE_SPHINX := included
+
+include $(TOPDIR)/tools/Makefile.lib
+include $(TOPDIR)/tools/Makefile.pyvenv
+
+SPHINX = $(call tstfdname,$(shell which sphinx-build),Python Documentation Generator)
+
+# generate sphinx argument to build from source directory $1 to
+# output directory in $2 as build type $3
+spxbt = $(strip -v -b $3 -d $2/doctree $1 $2/$3)
+
+# sphinx command
+quiet_cmd_sphinx = SPX$(tab)BLD$(tab)$(notdir $(4))
+      cmd_sphinx = VIRTUAL_ENV=$(PYTHON_VIRTUAL_ENV) \
+		   $(SPHINX) $(call spxbt,$(2),$(3),$(4)) $(qsout) 2>&1
+
+endif	# HAVE_MAKEFILE_SPHINX
+
+# Local variables:
+# coding: utf-8
+# mode: text
+# mode: make
+# End:
+# vim: fileencoding=utf-8 filetype=make :

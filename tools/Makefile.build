@@ -3,6 +3,7 @@ HAVE_MAKEFILE_BUILD := included
 
 include $(TOPDIR)/tools/Makefile.lib
 include $(TOPDIR)/tools/Makefile.filter
+include $(TOPDIR)/tools/Makefile.docs
 
 # Process computer and operating system specific directories
 
@@ -59,6 +60,11 @@ help:
 	@echo  '  qconfig         - Update current config utilising a QT based front-end'
 	@echo  '  gconfig         - Update current config utilising a GTK based front-end'
 	@echo  '  oldconfig       - Update current config utilising a provided .config as base'
+	@echo  ''
+	@echo  'Documentation targets:'
+	@echo  '  htmldocs        - HTML'
+	@echo  '  pdfdocs         - PDF'
+	@echo  '  cleandocs       - clean all generated files'
 	@echo  ''
 	@echo  'Machine specific targets ($(MACH_DIR)):'
 	@$(if $(machhelp),$(machhelp),\
