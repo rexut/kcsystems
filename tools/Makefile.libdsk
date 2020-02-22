@@ -1,0 +1,32 @@
+ifndef HAVE_MAKEFILE_LIBDSK
+HAVE_MAKEFILE_LIBDSK := included
+
+include $(TOPDIR)/tools/Makefile.lib
+
+# generate libdsk-tools argument for image input of type $1
+dskityp = $(if $(strip $1),$(strip -itype $1),)
+
+# generate libdsk-tools argument for image output of type $1
+dskotyp = $(if $(strip $1),$(strip -otype $1),)
+
+# generate libdsk-tools argument for image of type $1
+dsktyp = $(if $(strip $1),$(strip -type $1),)
+
+# generate libdsk-tools argument for image output with format $1
+dskfmt = $(if $(strip $1),$(strip -format $1),)
+
+# dskform command
+         DSKFORM := $(call tstfdname,$(shell which dskform),Floppy disk or image file formatter)
+quiet_cmd_dskform = DSK$(tab)FMT$(tab)$(notdir $@)			\
+		    ($(call merge,:,$(call map,args_cmd_dskform,$(2))))
+ args_cmd_dskform = $(notdir $(patsubst -%,,$1))
+      cmd_dskform = $(DSKFORM) $(2) $@ $(qsout)
+
+# dsktrans command
+         DSKTRANS := $(call tstfdname,$(shell which dsktrans),Floppy disk or image file copier/transformer)
+quiet_cmd_dsktrans = DSK$(tab)TRS$(tab)$(notdir $@)			\
+		     ($(call merge,:,$(call map,args_cmd_dskform,$(2))))
+ args_cmd_dsktrans = $(notdir $(patsubst -%,,$1))
+      cmd_dsktrans = $(DSKTRANS) $(2) $^ $@ $(qsout)
+
+endif	# HAVE_MAKEFILE_LIBDSK

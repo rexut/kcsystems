@@ -39,6 +39,14 @@ $: sudo apt-get install sed
 $: sudo apt-get install srecord
 ```
 
+#### Library with disc image file utility
+
+... for create/format/copy/convert/write numerous (floppy) disk image formats.
+
+```bash
+$: sudo apt-get install libdsk-utils
+```
+
 #### GNU Make utility
 
 ... for directing compilation/execution.
