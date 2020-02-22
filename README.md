@@ -17,7 +17,7 @@ $: make menuconfig
 
 #### GNU core utilities
 
-... for create/copy/move/delete files.
+... for create/copy/move/delete files and compute and check checksums.
 
 ```bash
 $: sudo apt-get install coreutils

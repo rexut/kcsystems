@@ -1,0 +1,30 @@
+ifndef HAVE_MAKEFILE_CKSUM
+HAVE_MAKEFILE_CKSUM := included
+
+include $(TOPDIR)/tools/Makefile.lib
+
+# MD5 command
+         MD5SUM := $(call tstfdname,$(shell which md5sum),MD5 message digest compute and check)
+quiet_cmd_md5sum = CKSUM$(tab)MD5$(tab)$(notdir $@)$(foreach f,$2,	\
+		   $(newline)$(tab)$(tab)$(space)-$(space)$(notdir $f))
+      cmd_md5sum = $(MD5SUM) $(3) $(2)
+
+# SHA1 command
+         SHA1SUM := $(call tstfdname,$(shell which sha1sum),SHA1 message digest compute and check)
+quiet_cmd_sha1sum = CKSUM$(tab)SHA1$(tab)$(notdir $@)$(foreach f,$2,	\
+		   $(newline)$(tab)$(tab)$(space)-$(space)$(notdir $f))
+      cmd_sha1sum = $(SHA1SUM) $(3) $(2)
+
+# SHA256 command
+         SHA256SUM := $(call tstfdname,$(shell which sha256sum),SHA256 message digest compute and check)
+quiet_cmd_sha256sum = CKSUM$(tab)SHA256$(tab)$(notdir $@)$(foreach f,$2,	\
+		   $(newline)$(tab)$(tab)$(space)-$(space)$(notdir $f))
+      cmd_sha256sum = $(SHA256SUM) $(3) $(2)
+
+# SHA512 command
+         SHA512SUM := $(call tstfdname,$(shell which sha512sum),SHA512 message digest compute and check)
+quiet_cmd_sha512sum = CKSUM$(tab)SHA512$(tab)$(notdir $@)$(foreach f,$2,	\
+		   $(newline)$(tab)$(tab)$(space)-$(space)$(notdir $f))
+      cmd_sha512sum = $(SHA512SUM) $(3) $(2)
+
+endif	# HAVE_MAKEFILE_CKSUM
