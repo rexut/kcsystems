@@ -1,0 +1,37 @@
+ifndef HAVE_MAKEFILE_CPMTOOLS
+HAVE_MAKEFILE_CPMTOOLS := included
+
+include $(TOPDIR)/tools/Makefile.lib
+
+CPM_MARK_BIN := bin
+CPM_MARK_TXT := txt
+
+# generate mkfs.cpm argument for image with format $1
+cpmfmt = $(if $(strip $1),$(strip -f $1),)
+
+# generate mkfs.cpm argument for image with bootblock $1
+cpmsys = $(if $(strip $1),$(strip -b $1),)
+
+# generate cpmcp argument for libdsk image type $1
+cpmldt = $(strip -T $1)
+
+# generate cpmcp argument for converting text file $3 as
+# as marked by the associative array $2 and the key name
+# mapping function to $(call) in $1
+cpmtxt = $(if $(call seq,$(call $1,$2,$3),$(CPM_MARK_TXT)),-t,)
+
+# format CP/M file system command
+         MKFS_CPM := $(call tstfdname,$(shell which mkfs.cpm),CP/M file system formatter)
+quiet_cmd_mkfs_cpm = CPM$(tab)MKFS$(tab)$(notdir $@)			\
+		     ($(call merge,:,$(call map,args_cmd_mkfs_cpm,$(2))))
+ args_cmd_mkfs_cpm = $(notdir $(patsubst -%,,$1))
+      cmd_mkfs_cpm = $(MKFS_CPM) $(2) $@ $(qsout)
+
+# file copy to/from CP/M file system command
+         CPMCP := $(call tstfdname,$(shell which cpmcp),CP/M file system file copier)
+quiet_cmd_cpmcp = CPM$(tab)CP$(tab)$(notdir $(3))$(space)$(notdir $(4))	\
+		     ($(call merge,:,$(call map,args_cmd_cpmcp,$@ $(2))))
+ args_cmd_cpmcp = $(notdir $(patsubst -%,,$1))
+      cmd_cpmcp = $(CPMCP) $(2) $@ $(3) $(4) $(qsout)
+
+endif	# HAVE_MAKEFILE_CPMTOOLS

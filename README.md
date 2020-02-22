@@ -47,6 +47,14 @@ $: sudo apt-get install srecord
 $: sudo apt-get install libdsk-utils
 ```
 
+#### Tools to access CP/M file systems
+
+... for create/copy/move/delete files to/from CP/M file systems.
+
+```bash
+$: sudo apt-get install cpmtools
+```
+
 #### GNU Make utility
 
 ... for directing compilation/execution.
