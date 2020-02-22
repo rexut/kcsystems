@@ -31,6 +31,14 @@ $: sudo apt-get install coreutils
 $: sudo apt-get install sed
 ```
 
+#### SRecord EPROM file format utility
+
+... for reads/manipulate/join/convert/write numerous EPROM file formats.
+
+```bash
+$: sudo apt-get install srecord
+```
+
 #### GNU Make utility
 
 ... for directing compilation/execution.

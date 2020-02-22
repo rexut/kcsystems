@@ -1,0 +1,23 @@
+ifndef HAVE_MAKEFILE_SRECORD
+HAVE_MAKEFILE_SRECORD := included
+
+include $(TOPDIR)/tools/Makefile.lib
+
+# generate srec_cat argument for binary input file $1 with offset in $2
+scinbwo = $(strip $1 -binary -offset $2)
+
+# collect srec_cat arguments for a list of binary input files in $1 over
+# the associative array $2 and the key name mapping function to $(call)
+# in $3 to get the offset corresponding to each single binary input file
+scinlobwo = $(foreach bin,$1,$(call scinbwo,				\
+	    $(bin),$(call get,$2,$(call map,$3,$(bin)))))
+
+# generate srec_cat argument for binary output file $1
+scoutb = $(strip -o $1 -binary)
+
+# srec_cat command
+         SREC_CAT := $(call tstfdname,$(shell which srec_cat),SRecord catenation utility)
+quiet_cmd_srec_cat = SREC$(tab)CAT$(tab)$(notdir $@)
+      cmd_srec_cat = $(SREC_CAT) $(2)
+
+endif	# HAVE_MAKEFILE_SRECORD
