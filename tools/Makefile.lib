@@ -29,7 +29,7 @@ echo-cmd = $(if $($(quiet)cmd_$(1)),\
         $(info $(space)$(space)$(call escsq,$($(quiet)cmd_$(1)))$(echo-why)))
 
 # printing and execute commands
-cmd = @$(echo-cmd) $(cmd_$(1))
+cmd = @$(echo-cmd)$(cmd_$(1))
 
 # Find any prerequisites that is newer than target or that does not exist.
 # PHONY targets skipped in both cases.
