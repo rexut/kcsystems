@@ -9,6 +9,7 @@ addons:
     packages: &native_deps
     - coreutils
     - sed
+    - yaze
     - srecord
     - libdsk-utils
     - cpmtools
