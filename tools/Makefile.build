@@ -6,6 +6,7 @@ include $(TOPDIR)/tools/Makefile.filter
 include $(TOPDIR)/tools/Makefile.docs
 include $(TOPDIR)/tools/Makefile.images
 include $(TOPDIR)/tools/Makefile.macro80
+include $(TOPDIR)/tools/Makefile.pascalmt
 
 # Process computer and operating system specific directories
 
@@ -20,6 +21,7 @@ IMGS_DIR = images
 
 $(foreach tgt,$(FLTTGTS),$(eval $(call make_flt_rule,$(tgt),)))
 $(foreach obj,$(M80OBJS),$(eval $(call make_m80_rule,$(obj),)))
+$(foreach bin,$(LINKMTBINS),$(eval $(call make_linkmt_rule,$(bin),)))
 $(foreach img,$(IMAGES),$(eval $(call make_img_rule,$(img),)))
 $(if $(strip $(IMAGES)),$(eval $(call make_img_summary)))
 

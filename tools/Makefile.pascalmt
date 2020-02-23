@@ -1,0 +1,107 @@
+ifndef HAVE_MAKEFILE_PASCALMT
+HAVE_MAKEFILE_PASCALMT := included
+
+include $(TOPDIR)/tools/Makefile.lib
+include $(TOPDIR)/tools/Makefile.yaze
+
+LINKMT_DIR := CPA1715-861106
+LINKMT_COM := LINKMT.COM
+LINKMT_DSC := Pascal/MT+ linker
+
+LINKMT_SFX_OBJ := .erl
+LINKMT_SFX_BIN := .com
+LINKMT_SFX_SYM := .sym
+
+LINKMTBINS := $(call empty_set)
+
+### Add a new LINKMT binary that have to link
+#
+# $1 - target binary name
+# $2 - list of object files
+# $3 - base address to link
+#
+define add_linkmt_bin
+$(foreach i,$(call sequence,1,$(call length,$(2))),$(eval		\
+$(call __add_linkmt_bin,$(1),$(word $(i),$(2)),$(3))))
+endef
+
+define __add_linkmt_bin
+LINKMTBINS := $(call set_insert,$(1),$(LINKMTBINS))
+$(call push,$(call fn2objs,$(1)),$(strip $(2)))				\
+$(call set,$(call fn2base,$(1)),ADDR,$(strip $(3)))			\
+$(if $(call seq,$(CONFIG_IMAGE_DSK_AUTOADD_DEVTOOLS),y),		\
+$(call add_bin_to_dsk,$(call lnmtccs)))
+endef
+
+SIDSYMS := $(if $(CONFIG_GENERATE_SYMFILES),\
+	$(call set_create,$(call lnmthsf,$(LINKMTBINS))),\
+	$(call empty_set))
+
+define make_linkmt_rule
+CLEAN += $(call lnmthsf,$(1))
+ifeq ($(CONFIG_GENERATE_SYMFILES),y)
+$(call lnmthsf,$(1)): $(1)
+	@# Null command. No effect; the command does nothing.
+	@# Exit Status: Always succeeds.
+	@:
+endif
+BIN += $(1)
+$(1): $(call reverse,$(__gmsl_stack_$(call fn2objs,$(1)))) | $(PREREQ)
+	$$(call lnmt_prep)
+	$$(call lnmt_exec)
+	$$(call lnmt_post)
+endef
+
+
+### Functions to create LINKMT command line
+
+# LINKMT command binary on host side
+lnmtccs = $(call tstcpmbin,$(LINKMT_DIR)/$(LINKMT_COM),$(LINKMT_DSC))
+
+# LINKMT command name on emulator side
+lnmtccn = $(call uc,$(call fname,$(LINKMT_COM)))
+
+# LINKMT binary file name on emulator and host side
+lnmtbfn = $(call uc,$(call fname,$@))
+lnmthbf = $(call fchsuff,$1,$(LINKMT_SFX_BIN))
+
+# LINKMT binary file move on demand on host side
+lnmtbmv = $(if $(filter $(LINKMT_SFX_BIN),$(call fsuff,$@)),,		\
+	  $(call cmd,move,$(call lnmthbf,$@),$@))
+
+# LINKMT binary base address to link to
+lnmtbba = $(patsubst 0x%,0%,$(call get,$(call fn2base,$1),ADDR))
+# lnmtbba = $(patsubst 0x%,0%,$($(call fn2base,$1)))
+
+# LINKMT symbol file name on emulator and host side
+lnmtsfn = $(call uc,$(call fname,$@))
+lnmthsf = $(call fchsuff,$1,$(LINKMT_SFX_SYM))
+
+# LINKMT object file name on emulator side
+lnmtofn = $(call merge,$(comma),$(call uc,$(call fname,$^)))
+
+# LINKMT switches
+lnmtswt = $(if $(CONFIG_GENERATE_SYMFILES),/L/M/E/W/P:$(call lnmtbba,$@)\
+	  ,/L/M/E/P:$(call lnmtbba,$@))
+
+# LINKMT command line
+lnmtcmd = $(call lnmtccn)$(space)$(call lnmtbfn)=$(call lnmtofn)$(call lnmtswt)
+
+### Functions to execute LINKMT command line
+
+# LINKMT preperation
+lnmt_prep = $(call cmd,yaze_b2d,$(call lnmtccs))$(newline)		\
+	    $(call cmd,yaze_b2d,$^)
+
+# LINKMT execution
+lnmt_exec = $(if $(CONFIG_GENERATE_SYMFILES),				\
+	      $(call cmd,yaze_exec,$(call lnmtcmd))$(newline)		\
+	      $(call cmd,yaze_d2t,$(call lnmthsf,$@))			\
+	    ,								\
+	      $(call cmd,yaze_exec,$(call lnmtcmd))			\
+	    )
+
+# LINKMT post processing
+lnmt_post = $(call cmd,yaze_d2b,$(call lnmthbf,$@))$(newline)$(call lnmtbmv)
+
+endif	# HAVE_MAKEFILE_PASCALMT
