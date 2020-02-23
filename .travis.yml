@@ -10,6 +10,7 @@ addons:
     - coreutils
     - sed
     - make
+    - srecord
     - kconfig-frontends
 language: shell
 script:
