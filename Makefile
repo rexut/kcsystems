@@ -7,7 +7,7 @@ include $(TOPDIR)/tools/Config.mk
 PHONY += clean mrproper distclean
 
 clean: cleandocs
-	$(foreach file,$(CLEAN),$(call cmd,del,$(file)))
+	$(foreach file,$(CLEAN),$(call cmd,del,$(file))$(newline))
 
 mrproper: clean
 	$(call cmd,del,$(CONFIG))
@@ -16,7 +16,7 @@ distclean: mrproper
 	$(foreach fd,$(call fndfdwild,$(TOPDIR)/,*~)		\
 		     $(call fndfdwild,$(TOPDIR)/,*.bak)		\
 		     $(call fndfdwild,$(TOPDIR)/,*.old),	\
-		$(call cmd,del,$(fd)))
+		$(call cmd,del,$(fd))$(newline))
 
 # Configuration targets
 #
