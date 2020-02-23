@@ -31,6 +31,14 @@ $: sudo apt-get install coreutils
 $: sudo apt-get install sed
 ```
 
+#### Yet Another Z80 Emulator
+
+... for emulate Z80 and CP/M on Unix systems.
+
+```bash
+$: sudo apt-get install yaze
+```
+
 #### SRecord EPROM file format utility
 
 ... for reads/manipulate/join/convert/write numerous EPROM file formats.
