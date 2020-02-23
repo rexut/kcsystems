@@ -9,8 +9,9 @@ addons:
     packages: &native_deps
     - coreutils
     - sed
-    - make
     - srecord
+    - libdsk-utils
+    - make
     - kconfig-frontends
 language: shell
 script:
