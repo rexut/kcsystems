@@ -1,0 +1,108 @@
+ifndef HAVE_MAKEFILE_MACRO80
+HAVE_MAKEFILE_MACRO80 := included
+
+include $(TOPDIR)/tools/Makefile.lib
+include $(TOPDIR)/tools/Makefile.images
+include $(TOPDIR)/tools/Makefile.yaze
+
+M80_DIR := CPA1715-861106
+M80_COM := M80.COM
+M80_DSC := MACRO-80 assembler
+
+M80_SFX_SRC := .mac
+M80_SFX_OBJ := .rel
+M80_SFX_LST := .crf
+
+M80OBJS := $(call empty_set)
+
+### Add a new M80 object that have to assembly
+#
+# $1 - target object name
+# $2 - list of source files
+#
+define add_m80_obj
+$(foreach i,$(call sequence,1,$(call length,$(2))),$(eval		\
+$(call __add_m80_obj,$(1),$(word $(i),$(2)))))
+endef
+
+define __add_m80_obj
+M80OBJS := $(call set_insert,$(strip $(1)),$(M80OBJS))
+$(call push,$(call fn2srcs,$(1)),$(strip $(2)))				\
+$(if $(call seq,$(CONFIG_IMAGE_DSK_AUTOADD_DEVTOOLS),y),		\
+$(call add_bin_to_dsk,$(call m80ccs)))					\
+$(if $(call seq,$(CONFIG_IMAGE_DSK_AUTOADD_SRCS),y),			\
+$(call add_bin_to_dsk,$(1)))						\
+$(if $(call seq,$(CONFIG_IMAGE_DSK_AUTOADD_SRCS),y),			\
+$(call add_txt_to_dsk,$(2)))
+endef
+
+M80CRFS := $(if $(CONFIG_GENERATE_LISTINGS),				\
+	$(call set_create,$(call m80hlf,$(M80OBJS))),			\
+	$(call empty_set))
+
+define make_m80_rule
+CLEAN += $(call m80hlf,$(1))
+ifeq ($(CONFIG_GENERATE_LISTINGS),y)
+$(call m80hlf,$(1)): $(1)
+	@# Null command. No effect; the command does nothing.
+	@# Exit Status: Always succeeds.
+	@:
+endif
+CLEAN += $(1)
+$(1): $(call reverse,$(__gmsl_stack_$(call fn2srcs,$(1)))) | $(PREREQ)
+	$$(call m80_prep)
+	$$(call m80_exec)
+	$$(call m80_post)
+endef
+
+### Functions to create M80 command line
+
+# M80 command binary on host side
+m80ccs = $(call tstcpmbin,$(M80_DIR)/$(M80_COM),$(M80_DSC))
+
+# M80 command name on emulator side
+m80ccn = $(call uc,$(call fname,$(M80_COM)))
+
+# M80 object file name on emulator and host side
+m80ofn = $(call uc,$(call fname,$@))
+m80hof = $(call fchsuff,$1,$(M80_SFX_OBJ))
+
+# M80 object file move on demand on host side
+m80omv = $(if $(filter $(M80_SFX_OBJ),$(call fsuff,$@)),,		\
+	 $(call cmd,move,$(call m80hof,$@),$@))
+
+# M80 listing file name on emulator and host side
+m80lfn = $(call uc,$(call fname,$@))
+m80hlf = $(call fchsuff,$1,$(M80_SFX_LST))
+
+# M80 source file name on emulator side
+m80sfn = $(call uc,$(call fname,$<))
+
+# M80 switches
+m80swt = $(if $(CONFIG_GENERATE_LISTINGS),/C/M/Z,/M/Z)
+
+# M80 command line
+m80cmd = $(call m80ccn)$(space)$(if $(CONFIG_GENERATE_LISTINGS),	\
+	   $(call m80ofn)$(comma)$(call m80lfn)=$(call m80sfn)$(call m80swt)\
+	 ,								\
+	   $(call m80ofn)=$(call m80sfn)$(call m80swt)			\
+	 )
+
+### Functions to execute M80 command line
+
+# M80 preperation
+m80_prep = $(call cmd,yaze_b2d,$(call m80ccs))$(newline)		\
+	   $(call cmd,yaze_t2d,$^)
+
+# M80 execution
+m80_exec = $(if $(CONFIG_GENERATE_LISTINGS),				\
+	     $(call cmd,yaze_exec,$(call m80cmd))$(newline)		\
+	     $(call cmd,yaze_d2t,$(call m80hlf,$@))			\
+	   ,								\
+	     $(call cmd,yaze_exec,$(call m80cmd))			\
+	   )
+
+# M80 post processing
+m80_post = $(call cmd,yaze_d2b,$(call m80hof,$@))$(newline)$(call m80omv)
+
+endif	# HAVE_MAKEFILE_MACRO80
