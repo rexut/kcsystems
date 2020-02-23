@@ -11,6 +11,7 @@ addons:
     - sed
     - srecord
     - libdsk-utils
+    - cpmtools
     - make
     - kconfig-frontends
 language: shell
