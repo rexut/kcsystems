@@ -1,0 +1,342 @@
+ifndef HAVE_MAKEFILE_IMAGES
+HAVE_MAKEFILE_IMAGES := included
+
+include $(TOPDIR)/tools/Makefile.lib
+include $(TOPDIR)/tools/Makefile.cksum
+include $(TOPDIR)/tools/Makefile.srecord
+include $(TOPDIR)/tools/Makefile.libdsk
+include $(TOPDIR)/tools/Makefile.cpmtools
+
+IMG_SFX_BIN := .bin
+IMG_SFX_RAM := .ram
+IMG_SFX_ROM := .rom
+IMG_SFX_SYS := .sys
+IMG_SFX_IMG := .img
+IMG_SFX_CPC := .dsk
+IMG_SFX_CQM := .cqm
+IMG_SFX_IMD := .imd
+
+IMAGE_BASE_NAME := $(CONFIG_MACH)$(call merge,,$(call split,.,$(CONFIG_SYSV)))
+IMAGE_ROM_NAME := $(call getdplfn,$(IMAGE_BASE_NAME)$(IMG_SFX_ROM))
+IMAGE_SYS_NAME := $(call getdplfn,$(IMAGE_BASE_NAME)$(IMG_SFX_SYS))
+IMAGE_IMG_NAME := $(call getdplfn,$(IMAGE_BASE_NAME)$(IMG_SFX_IMG))
+IMAGE_IMG_LLDF := $(call unquote,$(CONFIG_IMAGE_DSK_LLDFORMAT))
+IMAGE_IMG_HLDF := $(call unquote,$(CONFIG_IMAGE_DSK_HLDFORMAT))
+IMAGE_CPC_NAME := $(call getdplfn,$(IMAGE_BASE_NAME)$(IMG_SFX_CPC))
+IMAGE_CQM_NAME := $(call getdplfn,$(IMAGE_BASE_NAME)$(IMG_SFX_CQM))
+IMAGE_IMD_NAME := $(call getdplfn,$(IMAGE_BASE_NAME)$(IMG_SFX_IMD))
+IMAGE_SUMMARY := $(call getdplfn,$(CONFIG_MACH)sum.txt)
+
+### Deploy multiple binaries as separated SYS images
+#
+# $1 - list of binary files
+#
+define deploy_bin_as_sys
+$(foreach i,$(call sequence,1,$(call length,$(1))),$(eval		\
+$(call __add_bin_to_img,$(call getdplfn,$(call fchsuff,			\
+$(notdir $(1)),$(IMG_SFX_SYS))),$(word $(i),$(1)),0)))
+endef
+
+### Deploy multiple binaries as separated RAM images
+#
+# $1 - list of binary files
+#
+define deploy_bin_as_ram
+$(foreach i,$(call sequence,1,$(call length,$(1))),$(eval		\
+$(call __add_bin_to_img,$(call getdplfn,$(call fchsuff,			\
+$(notdir $(1)),$(IMG_SFX_RAM))),$(word $(i),$(1)),0)))
+endef
+
+### Add multiple binaries that have to assembly into ROM image
+### and deploy as separated ROM images
+#
+# $1 - list of binary files
+# $2 - list of binary file offsets in target image
+#
+define deploy_bin_to_rom
+$(call deploy_bin_as_rom,$(1))
+$(call add_bin_to_rom,$(1),$(2))
+endef
+
+### Deploy multiple binaries as separated ROM images
+#
+# $1 - list of binary files
+#
+define deploy_bin_as_rom
+$(foreach i,$(call sequence,1,$(call length,$(1))),$(eval		\
+$(call __add_bin_to_img,$(call getdplfn,$(call fchsuff,			\
+$(notdir $(1)),$(IMG_SFX_ROM))),$(word $(i),$(1)),0)))
+endef
+
+### Add multiple binaries that have to assembly into ROM image
+#
+# $1 - list of binary files
+# $2 - list of binary file offsets in target image
+#
+define add_bin_to_rom
+$(foreach i,$(call sequence,1,$(call length,$(1))),$(eval		\
+$(call __add_bin_to_img,$(IMAGE_ROM_NAME),$(word $(i),$(1)),		\
+$(word $(i),$(2)))))
+endef
+
+### Add multiple binaries that have to assembly into a image
+#
+# $1 - target image name
+# $2 - list of binary files
+# $3 - list of binary file offsets in target image
+#
+define add_bin_to_img
+$(foreach i,$(call sequence,1,$(call length,$(2))),$(eval		\
+$(call __add_bin_to_img,$(1),$(word $(i),$(2)),$(word $(i),$(3)))))
+endef
+
+define __add_bin_to_img
+IMAGES := $(call set_insert,$(1),$(IMAGES))
+$(call push,$(call fn2bins,$(1)),$(strip $(2)))				\
+$(call set,$(call fn2base,$(1)),$(call fn2vn,$(2)),$(strip $(3)))	\
+$(if $(call seq,$(CONFIG_IMAGE_DSK_AUTOADD_BINS),y),			\
+$(call add_bin_to_dsk,$(1)))
+endef
+
+### Add boot binary that have to copied into system track of DSK image
+#
+# $1 - system track files
+#
+define add_sys_to_dsk
+$(call __add_sys_to_dsk,$(IMAGE_IMG_NAME),$(1))				\
+$(call __add_file_to_dsk,$(IMAGE_IMG_NAME),$(1),$(CPM_MARK_BIN))
+endef
+
+define __add_sys_to_dsk
+IMAGES := $(call set_insert,$(1),$(IMAGES))
+$(call push,$(call fn2boot,$(1)),$(strip $(2)))
+endef
+
+### Add multiple binary files that have to copied into DSK image
+#
+# $1 - list of files
+#
+define add_bin_to_dsk
+$(foreach i,$(call sequence,1,$(call length,$(1))),$(eval		\
+$(call __add_file_to_dsk,$(IMAGE_IMG_NAME),$(word $(i),$(1)),		\
+$(CPM_MARK_BIN))))
+endef
+
+### Add multiple text files that have to copied into DSK image
+#
+# $1 - list of files
+#
+define add_txt_to_dsk
+$(foreach i,$(call sequence,1,$(call length,$(1))),$(eval		\
+$(call __add_file_to_dsk,$(IMAGE_IMG_NAME),$(word $(i),$(1)),		\
+$(CPM_MARK_TXT))))
+endef
+
+### Add multiple files that have to copied into DSK image
+#
+# $1 - list of files
+# $2 - list of file types: CPM_MARK_BIN | CPM_MARK_TXT
+#
+define add_file_to_dsk
+$(foreach i,$(call sequence,1,$(call length,$(1))),$(eval		\
+$(call __add_file_to_dsk,$(IMAGE_IMG_NAME),$(word $(i),$(1)),		\
+$(word $(i),$(2)))))
+endef
+
+define __add_file_to_dsk
+IMAGES := $(call set_insert,$(1),$(IMAGES))
+$(call push,$(call fn2files,$(1)),$(strip $(2)))			\
+$(call set,$(call fn2type,$(1)),$(call fn2vn,$(2)),$(strip $(3)))	\
+$(call set,$(call fn2cpmfn,$(1)),$(call fn2vn,$(2)),$(call lfn2sfn,$(2)))
+endef
+
+### Add CPC image type to the image transition list
+#
+define add_dsktrans_cpc
+$(call add_dsktrans,$(IMAGE_CPC_NAME))
+endef
+
+### Add CQM image type to the image transition list
+#
+define add_dsktrans_cqm
+$(call add_dsktrans,$(IMAGE_CQM_NAME))
+endef
+
+### Add IMD image type to the image transition list
+#
+define add_dsktrans_imd
+$(call add_dsktrans,$(IMAGE_IMD_NAME))
+endef
+
+### Add multiple image files that have to convert into other image type
+#
+# $1 - list of converted image files
+#
+define add_dsktrans
+$(foreach i,$(call sequence,1,$(call length,$(1))),$(eval		\
+$(call __add_dsktrans,$(word $(i),$(1)),$(IMAGE_IMG_NAME))))
+endef
+
+define __add_dsktrans
+IMAGES := $(call set_insert,$(1),$(IMAGES))
+$(call push,$(call fn2files,$(1)),$(strip $(2)))
+endef
+
+### Image rule generator
+
+define make_img_rule
+BIN += $(1)
+PHONY += $(1)
+$(1): $(call reverse,$(__gmsl_stack_$(call fn2boot,$(1))))		\
+      $(call reverse,$(__gmsl_stack_$(call fn2bins,$(1))))		\
+      $(call reverse,$(__gmsl_stack_$(call fn2files,$(1))))
+	$$(call img_exec)
+endef
+
+define make_img_summary
+BIN += $(IMAGE_SUMMARY)
+PHONY += $(IMAGE_SUMMARY)
+$(IMAGE_SUMMARY): $$(IMAGES)
+	$(Q) :>$$@
+	$$(call img_info)
+	$$(call img_cksum)
+endef
+
+### Functions to create binary image assembly command line
+
+# SREC_CAT arguments of all binary input files
+imgscinb = $(call scinlobwo,$?,$(call fn2base,$@),fn2vn)
+
+# SREC_CAT arguments of binary output file
+imgscoutb = $(call scoutb,$@)
+
+# SCREC_CAT arguments for binary files to binary file
+imgscbs2b = $(strip $(call imgscinb)					\
+		    $(call imgscoutb))
+
+### Functions to create disk image assembly command line
+
+# LIBDSK argument for raw disk image type
+imgdskraw = $(call dsktyp,raw)
+
+# LIBDSK argument for input raw disk image type
+imgdskiraw = $(call dskityp,raw)
+
+# LIBDSK argument for output raw disk image type
+imgdskoraw = $(call dskotyp,raw)
+
+# LIBDSK argument for dsk disk image type
+imgdskdsk = $(call dsktyp,dsk)
+
+# LIBDSK argument for input dsk disk image type
+imgdskidsk = $(call dskityp,dsk)
+
+# LIBDSK argument for output dsk disk image type
+imgdskodsk = $(call dskotyp,dsk)
+
+# LIBDSK argument for cqm disk image type
+imgdskcqm = $(call dsktyp,qm)
+
+# LIBDSK argument for input cqm disk image type
+imgdskicqm = $(call dskityp,qm)
+
+# LIBDSK argument for output cqm disk image type
+imgdskocqm = $(call dskotyp,qm)
+
+# LIBDSK argument for imd disk image type
+imgdskimd = $(call dsktyp,imd)
+
+# LIBDSK argument for input imd disk image type
+imgdskiimd = $(call dskityp,imd)
+
+# LIBDSK argument for output imd disk image type
+imgdskoimd = $(call dskotyp,imd)
+
+# LIBDSK argument for low level disk format
+imgdskfmt = $(call dskfmt,$(IMAGE_IMG_LLDF))
+
+# LIBDSK arguments for raw to dsk image transition
+img2dsk = $(strip $(call imgdskiraw)					\
+		  $(call imgdskodsk)					\
+		  $(call imgdskfmt))
+
+# LIBDSK arguments for raw to cqm image transition
+img2cqm = $(strip $(call imgdskiraw)					\
+		  $(call imgdskocqm)					\
+		  $(call imgdskfmt))
+
+# LIBDSK arguments for raw to imd image transition
+img2imd = $(strip $(call imgdskiraw)					\
+		  $(call imgdskoimd)					\
+		  $(call imgdskfmt))
+
+# LIBDSK arguments for raw image with low level format
+imgrawmfmt = $(strip $(call imgdskraw)					\
+		     $(call imgdskfmt))
+
+# CPMTOOLS argument for file system (high level disk) format
+imgcpmfmt = $(call cpmfmt,$(IMAGE_IMG_HLDF))
+
+# CPMTOOLS argument for contents of the system tracks
+imgcpmsys = $(call cpmsys,$(call first,$^))
+
+# CPMTOOLS arguments for file system format with system tracks
+imgcpmfs = $(strip $(call imgcpmfmt)					\
+		   $(call imgcpmsys))
+
+# CPMTOOLS argument for raw libdsk image type
+imgcpmraw = $(call cpmldt,raw)
+
+# CPMTOOLS argument for converting text files
+imggetft = $(call get,$(call fn2type,$(1)),$(call fn2vn,$(2)))
+imgcpmtxt = $(call cpmtxt,imggetft,$@,$(1))
+
+# CPMTOOLS argument for CP/M file name
+imggetfn = $(call get,$(call fn2cpmfn,$(1)),$(call fn2vn,$(2)))
+imgcpmfn = $(strip 0:$(call imggetfn,$@,$(1)))
+
+# CPMTOOLS argument for copy files to CP/M and convert text files
+imgcpmcp = $(strip $(call imgcpmfmt)					\
+		   $(call imgcpmraw)					\
+		   $(call imgcpmtxt,$(1)))
+
+# CPMTOOLS command for copy and convert on demand file $1 from host to CP/M
+file2cpm = $(call cmd,cpmcp,$(call imgcpmcp,$(1)),$(1),$(call imgcpmfn,$(1)))
+
+### Functions to execute image assembly command line
+
+# disk image execution
+img_img_exec = $(call cmd,dskform,$(call imgrawmfmt))$(newline)		\
+	       $(call cmd,mkfs_cpm,$(call imgcpmfs))$(newline)		\
+	       $(foreach f,$(call rest,$^),$(call file2cpm,$(f))$(newline))
+
+# disk image transitions
+img_dsk_exec = $(call cmd,dsktrans,$(call img2dsk))
+img_cqm_exec = $(call cmd,dsktrans,$(call img2cqm))
+img_imd_exec = $(call cmd,dsktrans,$(call img2imd))
+
+# binary image execution
+img_bin_exec = $(call cmd,srec_cat,$(call imgscbs2b))
+
+# image execution
+img_exec = $(if $(call seq,$@,$(IMAGE_IMG_NAME)),$(call img_img_exec),	\
+	   $(if $(call seq,$@,$(IMAGE_CPC_NAME)),$(call img_dsk_exec),	\
+	   $(if $(call seq,$@,$(IMAGE_CQM_NAME)),$(call img_cqm_exec),	\
+	   $(if $(call seq,$@,$(IMAGE_IMD_NAME)),$(call img_imd_exec),	\
+	   $(call img_bin_exec)))))
+
+# image checksums
+define img_cksum
+$(call cmd,section,MD5SUM) >> $@
+$(if $?,$(call cmd,md5sum,$?,-b) >> $@)
+endef
+
+# image informations
+define img_info
+$(call cmd,section,BUILD) >> $@
+$(call cmd,bi,mach,MACH:$(tab)$(tab),$(empty)) >> $@
+$(call cmd,bi,osys,OSYS:$(tab)$(tab),$(empty)) >> $@
+$(call cmd,bi,img,IMAGE:$(tab),$(empty)) >> $@
+endef
+
+endif	# HAVE_MAKEFILE_IMAGES
