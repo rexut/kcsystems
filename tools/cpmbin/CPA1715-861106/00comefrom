@@ -1,0 +1,23 @@
+[2009-03-24 16:00:14]
+------------------------------------------------------------------------------
+tools from robotron PC1715 for CP/A build by the AdW of the GDR, 06-Nov-1986
+
+		M80.COM		Microsoft MACRO-80 Assembler 3.44
+		LINKMT.COM	Digital Research Pascal/MT+ 5.5 Linker
+
+------------------------------------------------------------------------------
+wget https://hc-ddr.hucki.net/wiki/lib/exe/fetch.php/cpm/cpa.zip
+unzip cpa.zip "cpa biop 861106.zip"
+----------------------
+unzip "cpa biop 861106.zip" m80.com && mv m80.com M80.COM
+unzip "cpa biop 861106.zip" linkmt.com && mv linkmt.com LINKMT.COM
+----------------------
+rm -f cpa*.*
+------------------------------------------------------------------------------
+https://hc-ddr.hucki.net/wiki/doku.php/cpm/cpa
+--> https://hc-ddr.hucki.net/wiki/lib/exe/fetch.php/cpm/cpa.zip
+    --> "cpa biop 861106.zip" --> m80.com
+    --> "cpa biop 861106.zip" --> linkmt.com
+https://www.li-pro.net/cpm-sw-devel.phtml
+--> https://www.li-pro.net/dl/4c2e67ddd9411b249c2ba31ab88e163e/M80.COM
+--> https://www.li-pro.net/dl/78f2cd4b665ab69af7918665db2c66ee/LINKMT.COM
