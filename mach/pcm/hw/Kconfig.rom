@@ -1,0 +1,66 @@
+#
+# For a description of the syntax of this configuration file, see:
+# https://gitlab.com/ymorin/kconfig-frontends/-/blob/master/docs/kconfig-language.txt
+#
+
+config PCM_HAVE_ROM
+	bool
+	default y	if PCM_ROM >= 0 \
+			&& PCM_ROM < 1
+	default n
+
+config PCM_ROM
+	int
+	range 0 1	if MACH_PCM_SYS21X
+	default 0	if PCM_EPROM_4X2716
+	default 1
+
+choice
+	default PCM_EPROM_4X2716
+	depends on MACH_PCM_SYS21X
+	prompt "Boot ROM     "
+	---help---
+		Select the PC/M boot ROM size.
+
+config PCM_EPROM_4X2716
+	bool
+	depends on MACH_PCM_SYS21X
+	prompt "8kB EPROM"
+	---help---
+		Original assembly with 4x2kB EPROM:
+
+		  D14: 0000 - 07FF 2kB ('2716)
+		  D15: 0800 - 0FFF 2kB ('2716)
+		  D16: 1000 - 17FF 2kB ('2716)
+		  D17: 1800 - 1FFF 2kB ('2716)
+
+		See: http://www.li-pro.net/pcm-hw.phtml
+		     Section: 2.1.7 8 KByte EPROM Block
+
+		See: http://www.kcclub.de/dlarchiv/DOWNLOAD/DISK269/PC_M1.DOC
+		     Section: 2.1.7 8 KByte EPROM Block
+
+endchoice
+
+config PCM_ISD14_OFFS
+	int
+	default 0 if PCM_EPROM_4X2716
+
+config PCM_ISD15_OFFS
+	int
+	default 2048 if PCM_EPROM_4X2716
+
+config PCM_ISD16_OFFS
+	int
+	default 4096 if PCM_EPROM_4X2716
+
+config PCM_ISD17_OFFS
+	int
+	default 6144 if PCM_EPROM_4X2716
+
+# Local variables:
+# coding: utf-8
+# mode: text
+# mode: kconfig
+# End:
+# vim: fileencoding=utf-8 filetype=kconfig :

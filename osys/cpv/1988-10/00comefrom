@@ -1,0 +1,41 @@
+[2008-09-29 23:20:50]
+------------------------------------------------------------------------------
+8 kB EPROM and CCP/BDOS of the PC/M System 2.10, 1986-1989
+
+		cpvbdos.bin	CP/V Basic Disk Operating System, October 1988
+		cpvccp.bin	CP/V Console Command Processor, October 1988
+		pcmccp.bin	PC/M CCP, from PC/M System 2.10 EPROM
+
+------------------------------------------------------------------------------
+CP/V 1988-10 BDOS (FA)
+----------------------
+curl http://www.kcclub.de/dlarchiv/DOWNLOAD/DISK141/CCPBDOS.HEX | \
+dd of=cpvbdos.bin bs=1 count=3584 skip=2048
+----------------------
+CP/V 1988-10 CCP (FA)
+----------------------
+curl http://www.kcclub.de/dlarchiv/DOWNLOAD/DISK141/CCPBDOS.HEX | \
+dd of=cpvccp.bin bs=1 count=2048 skip=0
+----------------------
+PC/M V2.10 CCP (EPROM)
+----------------------
+curl http://www.kcclub.de/dlarchiv/DOWNLOAD/DISK141/PCM.SYS | \
+dd of=pcmccp.bin bs=1 count=2048 skip=6144
+------------------------------------------------------------------------------
+Rubrik 14: EPROM-Inhalte
+--> http://www.kcclub.de/dlarchiv/09/RUBRIK14.HTM
+    ----------------------
+    CCP and BDOS for PC/M
+    --> http://www.kcclub.de/dlarchiv/DOWNLOAD/DISK141/CCPBDOS.HEX
+    ----------------------
+    8 kB EPROM für PCM System V2.X
+    --> http://www.kcclub.de/dlarchiv/DOWNLOAD/DISK141/PCM.SYS
+    ----------------------
+--> http://www.iee.et.tu-dresden.de/~kc-club/09/RUBRIK14.HTM
+    ----------------------
+    CCP and BDOS for PC/M
+    --> http://www.iee.et.tu-dresden.de/~kc-club/DOWNLOAD/DISK141/CCPBDOS.HEX
+    ----------------------
+    8 kB EPROM für PCM System V2.X
+    --> http://www.iee.et.tu-dresden.de/~kc-club/DOWNLOAD/DISK141/PCM.SYS
+    ----------------------

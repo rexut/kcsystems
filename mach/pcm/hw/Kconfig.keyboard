@@ -1,0 +1,62 @@
+#
+# For a description of the syntax of this configuration file, see:
+# https://gitlab.com/ymorin/kconfig-frontends/-/blob/master/docs/kconfig-language.txt
+#
+
+config PCM_HAVE_KEYBOARD
+	bool
+	default y	if PCM_KEYBOARD >= 0 \
+			&& PCM_KEYBOARD < 2
+	default n
+
+config PCM_KEYBOARD
+	int
+	range 0 2	if MACH_PCM_SYS21X
+	default 0	if PCM_KEYBOARD_ORIG
+	default 1	if PCM_KEYBOARD_K7659
+	default 2
+
+choice
+	default PCM_KEYBOARD_ORIG
+	depends on MACH_PCM_SYS21X
+	prompt "Keyboard     "
+	---help---
+		Select the PC/M keyboard type.
+
+config PCM_KEYBOARD_ORIG
+	bool
+	depends on MACH_PCM_SYS21X
+	prompt "8x10 original"
+	---help---
+		Original 8x10 matrix keyboard on system PIO port A with recoding
+		upper to lower case and vice versa.
+
+		See: http://www.li-pro.net/pcm-hw.phtml
+		     Section: 3.2 Tastatur
+		     Section: 4.3 Tastatur
+
+		See: http://www.kcclub.de/dlarchiv/DOWNLOAD/DISK269/PC_M1.DOC
+		     Section: 3.2 Tastatur
+		     Section: 4 Inbetriebnahme --> Tastatur
+
+config PCM_KEYBOARD_K7659
+	bool
+	depends on MACH_PCM_SYS21X
+	prompt "K7659"
+	---help---
+		K7659 OEM mounting keyboard by VEB Robotron-Elektroschaltgeräte
+		Auerbach connected to system PIO port A over the 8x12 matrix
+		decoder that was published in the German journal "Funkamateur"
+		in 1990.
+
+		See: http://www.li-pro.net/pcm-k7659.phtml
+		See: http://www.kcclub.de/dlarchiv/DOWNLOAD/DISK269/PC_M7659.DOC
+
+endchoice
+
+# Local variables:
+# coding: utf-8
+# mode: text
+# mode: kconfig
+# End:
+# vim: fileencoding=utf-8 filetype=kconfig :

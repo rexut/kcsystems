@@ -5,6 +5,10 @@
 
 config MACH
 	string
+	default "pcm"	if MACH_PCM
+	default ""
+
+source "mach/Kconfig.defaults"
 
 choice
 	bool
@@ -12,11 +16,16 @@ choice
 	---help---
 		Select the computer system.
 
+config MACH_PCM
+	bool
+	prompt "Mugler-Matthes-PC"
+	---help---
+		The PC/M computer, based on a publication by Mugler and
+		Matthes in the German journal "Funkamateur" in 1988.
+
 endchoice
 
-config MACH_SUPPORTS_OSYS
-	bool
-	default n
+source "mach/pcm/Kconfig"
 
 # Local variables:
 # coding: utf-8

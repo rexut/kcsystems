@@ -69,3 +69,10 @@ gconfig:
 		Kconfig
 
 include $(TOPDIR)/tools/Makefile.build
+
+# Local variables:
+# coding: utf-8
+# mode: text
+# mode: make
+# End:
+# vim: fileencoding=utf-8 filetype=make :

@@ -1,0 +1,53 @@
+#
+# For a description of the syntax of this configuration file, see:
+# https://gitlab.com/ymorin/kconfig-frontends/-/blob/master/docs/kconfig-language.txt
+#
+
+config MACH_HAVE_CPM22_BIOS
+	bool
+
+config MACH_PROVIDES_BDOS_BASE
+	bool
+
+config MACH_PROVIDED_BDOS_BASE
+	hex
+
+config MACH_PROVIDES_BDOS_ROM_OFFS
+	bool
+
+config MACH_PROVIDED_BDOS_ROM_OFFS
+	int
+
+config MACH_PROVIDES_CCP_BASE
+	bool
+
+config MACH_PROVIDED_CCP_BASE
+	hex
+
+config MACH_PROVIDES_CCP_ROM_OFFS
+	bool
+
+config MACH_PROVIDED_CCP_ROM_OFFS
+	int
+
+config MACH_SUPPORTS_OSYS
+	bool
+	default y	if MACH_SUPPORTS_CPM22 \
+			|| MACH_SUPPORTS_CPV1988
+	default n
+
+config MACH_SUPPORTS_CPM22
+	bool
+
+config MACH_SUPPORTS_CPV1988
+	bool
+
+config MACH_SUPPORTS_IMAGE_ROM
+	bool
+
+# Local variables:
+# coding: utf-8
+# mode: text
+# mode: kconfig
+# End:
+# vim: fileencoding=utf-8 filetype=kconfig :

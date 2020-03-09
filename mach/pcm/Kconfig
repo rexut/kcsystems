@@ -1,0 +1,62 @@
+#
+# For a description of the syntax of this configuration file, see:
+# https://gitlab.com/ymorin/kconfig-frontends/-/blob/master/docs/kconfig-language.txt
+#
+
+if MACH_PCM
+
+config SYSV
+	string
+	default "2.10"	if MACH_PCM_SYS210
+	default ""
+
+choice
+	bool
+	prompt "PC/M System Version"
+	---help---
+		Select the PC/M system version.
+
+config MACH_PCM_SYS210
+	bool
+	prompt "v2.10"
+	---help---
+		System version 2.10
+
+		This is the original variant and consist the parts:
+
+		  ROM images:
+		    - BIOS:  Basic I/O System
+		    - SVDB:  System Visual Debugger
+		    - VTAPE: Voice Tape Monitor
+
+		Say yes here to generate the original RAM floppy system that
+		was published in the German journal "Funkamateur" in 1988.
+
+		This system version can only used together with the operating
+		system CP/V (Control Program for V-Tape Microcomputers).
+
+endchoice
+
+config MACH_PCM_SYS21X
+	bool
+	default y	if MACH_PCM_SYS210 \
+			|| MACH_PCM_SYS211
+	select MACH_SUPPORTS_IMAGE_ROM
+	select MACH_SUPPORTS_CPV1988
+
+menu "PC/M Hardware Configuration"
+source "mach/pcm/hw/Kconfig"
+endmenu
+
+menu "PC/M Software Configuration"
+source "mach/pcm/2.1x/Kconfig"
+endmenu
+
+endif	# MACH_PCM
+
+# Local variables:
+# coding: utf-8
+# mode: text
+# mode: kconfig
+# End:
+# vim: fileencoding=utf-8 filetype=kconfig :

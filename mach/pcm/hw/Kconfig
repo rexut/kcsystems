@@ -3,12 +3,15 @@
 # https://gitlab.com/ymorin/kconfig-frontends/-/blob/master/docs/kconfig-language.txt
 #
 
-config IMAGE_ROM
+config PCM_HAVE_SYS21XHW
 	bool
-	depends on MACH_SUPPORTS_IMAGE_ROM
-	prompt "ROM Binary Dump"
-	---help---
-		Say yes here to generate a ROM image.
+	default y	if PCM_HAVE_ROM \
+			&& PCM_HAVE_RAM \
+			&& PCM_HAVE_KEYBOARD
+
+source "mach/pcm/hw/Kconfig.rom"
+source "mach/pcm/hw/Kconfig.ram"
+source "mach/pcm/hw/Kconfig.keyboard"
 
 # Local variables:
 # coding: utf-8

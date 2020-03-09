@@ -5,6 +5,10 @@
 
 config OSYS
 	string
+	default "cpv"	if OSYS_CPV
+	default ""
+
+source "osys/Kconfig.defaults"
 
 choice
 	depends on MACH_SUPPORTS_OSYS
@@ -13,7 +17,147 @@ choice
 	---help---
 		Select the operating system.
 
+config OSYS_CPV
+	bool
+	depends on MACH_SUPPORTS_CPV1988
+	prompt "Control Program for V-Tape Microcomputers (CP/V)"
+	---help---
+		The CP/V operating system was provided for the PC/M computer
+		as an basic RAM floppy operating system with full compatibility
+		to CP/M version 2.2 without support for puncher and reader but
+		full accessibility to the voice tape recorder as mass storage
+		device.
+
+		In reallity CP/V is a copy of the original CP/M version 2.2
+		with a minor patch in the BDOS sub routine DISKWR2.
+
 endchoice
+
+source "osys/cpv/Kconfig"
+
+if OSYS_CPV
+
+comment "Basic Disk Operating Systme (BDOS) needs CP/M 2.2 compatible BIOS"
+	depends on !MACH_HAVE_CPM22_BIOS
+
+menuconfig OSYS_CPM22_BDOS
+	bool
+	default y
+	select OSYS_HAVE_CPM22_BDOS
+	depends on MACH_HAVE_CPM22_BIOS
+	prompt "Basic Disk Operating Systme"
+	---help---
+		Generate the BDOS part and link it to the given address (see
+		CONFIG_OSYS_CPM22_BDOS_BASE).
+
+		Say yes here to provide the BDOS as part of the ROM image
+		collection or as part of a BDOS+CCP bundle to load into RAM.
+		See CONFIG_OSYS_CPM22_BDOS_IMAGE to set the image file name.
+
+if OSYS_CPM22_BDOS
+
+config OSYS_CPM22_BDOS_IMAGE
+	string
+	default "cpvbdos.bin"		if OSYS_CPV
+	default "bdos.bin"
+	depends on OSYS_SUPPORTS_BDOS_IMAGE
+	prompt "BDOS binary image file name" if EXPERTMODE
+	---help---
+		Binary image name of the CP/M system part BDOS.
+
+config OSYS_CPM22_BDOS_BASE
+	hex
+	default MACH_PROVIDED_BDOS_BASE
+	depends on MACH_PROVIDES_BDOS_BASE
+	prompt "BDOS binary image link address" if EXPERTMODE
+	---help---
+		Binary image link address of the CP/M system part BDOS.
+
+		The link address is equal to this base address.
+
+		Do not change the default value as far as you know what
+		you do. The default value is 0xDC00.
+
+config OSYS_CPM22_BDOS_ROM
+	bool
+	default y	if MACH_PROVIDES_BDOS_ROM_OFFS
+	default n	if !MACH_PROVIDES_BDOS_ROM_OFFS
+
+config OSYS_CPM22_BDOS_ROM_OFFS
+	int
+	default MACH_PROVIDED_BDOS_ROM_OFFS
+	depends on OSYS_CPM22_BDOS_ROM
+	prompt "BDOS address offset in boot ROM" if EXPERTMODE
+	---help---
+		The CP/M system part BDOS will be installed into the boot ROM.
+		This is the address offset in boot ROM.
+
+		Do not change the default value as far as you know what
+		you do. The default value is MACH_PROVIDED_BDOS_ROM_OFFS.
+
+endif	# OSYS_CPM22_BDOS
+
+comment "Console Command Processor (CCP) needs CP/M 2.2 compatible BDOS"
+	depends on !OSYS_HAVE_CPM22_BDOS
+
+menuconfig OSYS_CPM22_CCP
+	bool
+	default y
+	select OSYS_HAVE_CPM22_CCP
+	depends on OSYS_HAVE_CPM22_BDOS
+	prompt "Console Command Processor"
+	---help---
+		Generate the CCP part and link it to the given address (see
+		CONFIG_OSYS_CPM22_CCP_BASE).
+
+		Say yes here to provide the CCP as part of the ROM image
+		collection or as part of a BDOS+CCP bundle to load into RAM.
+		See CONFIG_OSYS_CPM22_CCP_IMAGE to set the image file name.
+
+if OSYS_CPM22_CCP
+
+config OSYS_CPM22_CCP_IMAGE
+	string
+	default "cpvccp.bin"		if OSYS_CPV
+	default "ccp.bin"
+	depends on OSYS_SUPPORTS_CCP_IMAGE
+	prompt "CCP binary image file name" if EXPERTMODE
+	---help---
+		Binary image name of the CP/M system part CCP.
+
+config OSYS_CPM22_CCP_BASE
+	hex
+	default MACH_PROVIDED_CCP_BASE
+	depends on MACH_PROVIDES_CCP_BASE
+	prompt "CCP binary image link address" if EXPERTMODE
+	---help---
+		Binary image link address of the CP/M system part CCP.
+
+		The link address is equal to this base address.
+
+		Do not change the default value as far as you know what
+		you do. The default value is 0xD400.
+
+config OSYS_CPM22_CCP_ROM
+	bool
+	default y	if MACH_PROVIDES_CCP_ROM_OFFS
+	default n	if !MACH_PROVIDES_CCP_ROM_OFFS
+
+config OSYS_CPM22_CCP_ROM_OFFS
+	int
+	default MACH_PROVIDED_CCP_ROM_OFFS
+	depends on OSYS_CPM22_CCP_ROM
+	prompt "CCP address offset in boot ROM" if EXPERTMODE
+	---help---
+		The CP/M system part CCP will be installed into the boot ROM.
+		This is the address offset in boot ROM.
+
+		Do not change the default value as far as you know what
+		you do. The default value is MACH_PROVIDED_CCP_ROM_OFFS.
+
+endif	# OSYS_CPM22_CCP
+
+endif	# OSYS_CPV
 
 # Local variables:
 # coding: utf-8

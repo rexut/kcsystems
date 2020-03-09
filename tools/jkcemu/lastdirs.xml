@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	<comment>JKCEMU last used directories</comment>
+	<entry key="audio">images</entry>
+	<entry key="breakpoint">images</entry>
+	<entry key="debug">images</entry>
+	<entry key="disk">images</entry>
+	<entry key="fileconverter.in">images</entry>
+	<entry key="fileconverter.out">images</entry>
+	<entry key="image">images</entry>
+	<entry key="label">images</entry>
+	<entry key="print">images</entry>
+	<entry key="ram">images</entry>
+	<entry key="ramfloppy">images</entry>
+	<entry key="rom">images</entry>
+	<entry key="software">images</entry>
+	<entry key="text">images</entry>
+</properties>

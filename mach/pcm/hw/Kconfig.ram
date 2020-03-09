@@ -1,0 +1,75 @@
+#
+# For a description of the syntax of this configuration file, see:
+# https://gitlab.com/ymorin/kconfig-frontends/-/blob/master/docs/kconfig-language.txt
+#
+
+config PCM_HAVE_RAM
+	bool
+	default y	if PCM_RAM >= 0 \
+			&& PCM_RAM < 2
+	default n
+
+config PCM_RAM
+	int
+	range 0 2	if MACH_PCM_SYS21X
+	default 0	if PCM_RAM_8X2164
+	default 1	if PCM_RAM_24X2164
+	default 2
+
+choice
+	default PCM_RAM_24X2164
+	depends on MACH_PCM_SYS21X || MACH_PCM_SYS33X
+	prompt "System RAM   "
+	---help---
+		Select the PC/M assembled RAM size.
+
+config PCM_RAM_8X2164
+	bool
+	depends on MACH_PCM_SYS21X || MACH_PCM_SYS33X
+	prompt "64kB RAM" if EXPERTMODE
+	---help---
+		Minimal assembly with 1x8x64kBit RAM:
+
+		      0000 - FFFF Bank:  0
+		---------------------------
+		  D0: 1x64kBit ('2164): D20
+		  D1: 1x64kBit ('2164): D21
+		  D2: 1x64kBit ('2164): D22
+		  D3: 1x64kBit ('2164): D23
+		  D4: 1x64kBit ('2164): D24
+		  D5: 1x64kBit ('2164): D25
+		  D6: 1x64kBit ('2164): D26
+		  D7: 1x64kBit ('2164): D27
+
+config PCM_RAM_24X2164
+	bool
+	depends on MACH_PCM_SYS21X || MACH_PCM_SYS33X
+	prompt "192kB RAM"
+	---help---
+		Original assembly with 3x8x64kBit RAM:
+
+		      0000 - FFFF Bank:  0   1   2
+		-----------------------------------
+		  D0: 1x64kBit ('2164): D20 D28 D36
+		  D1: 1x64kBit ('2164): D21 D29 D37
+		  D2: 1x64kBit ('2164): D22 D30 D38
+		  D3: 1x64kBit ('2164): D23 D31 D39
+		  D4: 1x64kBit ('2164): D24 D32 D40
+		  D5: 1x64kBit ('2164): D25 D33 D41
+		  D6: 1x64kBit ('2164): D26 D34 D42
+		  D7: 1x64kBit ('2164): D27 D35 D43
+
+		See: http://www.li-pro.net/pcm-hw.phtml
+		     Section: 2.1.6 192 KByte DRAM Block
+
+		See: http://www.kcclub.de/dlarchiv/DOWNLOAD/DISK269/PC_M1.DOC
+		     Section: 2.1.6 192 KByte DRAM Block
+
+endchoice
+
+# Local variables:
+# coding: utf-8
+# mode: text
+# mode: kconfig
+# End:
+# vim: fileencoding=utf-8 filetype=kconfig :

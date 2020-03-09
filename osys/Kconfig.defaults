@@ -3,12 +3,23 @@
 # https://gitlab.com/ymorin/kconfig-frontends/-/blob/master/docs/kconfig-language.txt
 #
 
-config IMAGE_ROM
+config OSYS_IS_CPM22
 	bool
-	depends on MACH_SUPPORTS_IMAGE_ROM
-	prompt "ROM Binary Dump"
-	---help---
-		Say yes here to generate a ROM image.
+	default y	if MACH_HAVE_CPM22_BIOS \
+			&& OSYS_HAVE_CPM22_BDOS \
+			&& OSYS_HAVE_CPM22_CCP
+
+config OSYS_HAVE_CPM22_BDOS
+	bool
+
+config OSYS_HAVE_CPM22_CCP
+	bool
+
+config OSYS_SUPPORTS_BDOS_IMAGE
+	bool
+
+config OSYS_SUPPORTS_CCP_IMAGE
+	bool
 
 # Local variables:
 # coding: utf-8

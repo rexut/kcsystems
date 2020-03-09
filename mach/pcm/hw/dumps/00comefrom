@@ -1,0 +1,17 @@
+[2005-11-25 21:40:21]
+------------------------------------------------------------------------------
+EPROM of the PC/M video card character generator
+
+		orig6416.bin	Original, 64x16, 7x8 char, high+low
+
+------------------------------------------------------------------------------
+wget https://www.li-pro.net/dl/0f1a22ea7e742183b4cc60cdd68aca61/PCM_PCM6416_ZG.zip
+unzip PCM_PCM6416_ZG.zip PCM6416_ZG/pcm6416-zg-org-low.bin
+unzip PCM_PCM6416_ZG.zip PCM6416_ZG/pcm6416-zg-org-high.bin
+cat PCM6416_ZG/pcm6416-zg-org-low.bin  \
+    PCM6416_ZG/pcm6416-zg-org-high.bin > orig6416.bin
+----------------------
+rm -rf *PCM6416_ZG*
+------------------------------------------------------------------------------
+https://www.li-pro.net/pcm-hw.phtml
+--> https://www.li-pro.net/dl/0f1a22ea7e742183b4cc60cdd68aca61/PCM_PCM6416_ZG.zip

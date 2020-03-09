@@ -15,6 +15,15 @@ $: make menuconfig
 
 ### System packages on Ubuntu (>= 16.04):
 
+#### Add the CP/M for Linux (CPM4L) APT Repository
+
+```bash
+$: sudo sh -c "echo 'deb http://download.opensuse.org/repositories/home:/rexut:/CPM4L/x$(lsb_release -si)_$(lsb_release -sr)/ /' > /etc/apt/sources.list.d/home:rexut:CPM4L.list"
+$: wget -nv https://download.opensuse.org/repositories/home:rexut:CPM4L/x$(lsb_release -si)_$(lsb_release -sr)/Release.key -O Release.key
+$: sudo apt-key add - < Release.key && rm -f Release.key
+$: sudo apt-get update
+```
+
 #### GNU core utilities
 
 ... for create/copy/move/delete files and compute and check checksums.
@@ -61,6 +70,14 @@ $: sudo apt-get install libdsk-utils
 
 ```bash
 $: sudo apt-get install cpmtools
+```
+
+#### Java KC-Emulator
+
+... for emulate the generated system images of old "DDR Kleincomputer".
+
+```bash
+$: sudo apt-get install jkcemu
 ```
 
 #### GNU Make utility
