@@ -1,0 +1,1160 @@
+; z80dasm 1.1.5
+; command line: z80dasm -g 0xe800 -S dumps/pcmsvdb.syf -b dumps/pcmsvdb.blf -l -t -z dumps/pcmsvdb.bin
+
+;M80 SVDB.ERL,SVDB.LST=PCMSVDB/M/Z
+;LINKMT SVDB=SVDB/P:0E800
+
+
+bios	equ 0de00h	;BIOS module
+constf	equ 0de06h	;console status function
+coninf	equ 0de09h	;console input function
+conoutf	equ 0de0ch	;console output function
+listf	equ 0de0fh	;list output function
+stapze	equ 0f7f0h
+
+	org	000h
+SVDBLOC	EQU	$
+
+	jp debug		;e800	c3 15 e8 	. . . 
+
+
+bioscs:	jp constf		;e803	c3 06 de 	. . . 
+biosci:	jp coninf		;e806	c3 09 de 	. . . 
+biosco:	jp conoutf		;e809	c3 0c de 	. . . 
+biosls:	jp listf		;e80c	c3 0f de 	. . . 
+
+nmijum:	jp ste8			;e80f	c3 c6 ee 	. . . 
+brkjum:	jp brrout		;e812	c3 de ec 	. . . 
+
+
+jrst38	equ 038h
+jnmi	equ 066h
+hwsp	equ 043h
+outnmi	equ 098h
+
+
+debug:	ld (rsp),sp		;e815	ed 73 e4 ef 	. s . . 
+	ld sp,stapze		;e819	31 f0 f7 	1 . . 
+	call retreg		;e81c	cd 40 e9 	. @ . 
+	ld hl,zme		;e81f	21 cd ef 	! . . 
+	ld (hl),000h		;e822	36 00 		6 . 
+	call ueber		;e824	cd d6 e9 	. . . 
+	jp clsta2		;e827	c3 1b ea 	. . . 
+
+
+zahex:	push af			;e82a	f5 		. 
+	ld a,h			;e82b	7c 		| 
+	call ahex		;e82c	cd 68 e8 	. h . 
+	ld a,l			;e82f	7d 		} 
+	call ahex		;e830	cd 68 e8 	. h . 
+	pop af			;e833	f1 		. 
+	ret			;e834	c9 		. 
+
+
+cdsuch:	call agzk		;e835	cd 3c e8 	. < . 
+	db ' R','>'+80h		;e838	20 52 be	  R . 
+	ret			;e83b	c9 		. 
+
+agzk:	ex (sp),hl		;e83c	e3 		. 
+agzk1:	ld c,(hl)		;e83d	4e 		N 
+	inc hl			;e83e	23 		# 
+	call conout		;e83f	cd 11 ef 	. . . 
+	bit 7,c			;e842	cb 79 		. y 
+	jr z,agzk1		;e844	28 f7 		( . 
+	ex (sp),hl		;e846	e3 		. 
+	ret			;e847	c9 		. 
+
+
+lee8:	call lee4		;e848	cd 4b e8 	. K . 
+lee4:	call lee2		;e84b	cd 4e e8 	. N . 
+lee2:	call lee1		;e84e	cd 51 e8 	. Q . 
+lee1:	ld c,020h		;e851	0e 20 		.   
+lee0:	jp conout		;e853	c3 11 ef 	. . . 
+
+
+wrzv:	call agzk		;e856	cd 3c e8 	. < . 
+	db 0dh,8ah		;e859	0d 8a 		. . 
+	ret			;e85b	c9 		. 
+
+
+hzl:	ld hl,(aaaa)		;e85c	2a c1 ef 	* . . 
+	ld de,(bbbb)		;e85f	ed 5b c3 ef 	. [ . . 
+	ld bc,(cccc)		;e863	ed 4b c5 ef 	. K . . 
+	ret			;e867	c9 		. 
+
+
+ahex:	push af			;e868	f5 		. 
+	rrca			;e869	0f 		. 
+	rrca			;e86a	0f 		. 
+	rrca			;e86b	0f 		. 
+	rrca			;e86c	0f 		. 
+	call ah1		;e86d	cd 71 e8 	. q . 
+	pop af			;e870	f1 		. 
+ah1:	and 00fh		;e871	e6 0f 		. . 
+	sub 00ah		;e873	d6 0a 		. . 
+	jr c,ah2		;e875	38 02 		8 . 
+	add a,007h		;e877	c6 07 		. . 
+ah2:	add a,03ah		;e879	c6 3a 		. : 
+	ld c,a			;e87b	4f 		O 
+	jp conout		;e87c	c3 11 ef 	. . . 
+
+
+ipc:	ld hl,(rpc)		;e87f	2a ea ef 	* . . 
+	inc hl			;e882	23 		# 
+ipc1:	ld (rpc),hl		;e883	22 ea ef 	" . . 
+	call anze1		;e886	cd 26 ee 	. & . 
+	call cdsuch		;e889	cd 35 e8 	. 5 . 
+ipc2:	jr conin		;e88c	18 06 		. . 
+
+dpc:	ld hl,(rpc)		;e88e	2a ea ef 	* . . 
+	dec hl			;e891	2b 		+ 
+	jr ipc1			;e892	18 ef 		. . 
+
+
+conin:	call biosci		;e894	cd 06 e8 	. . . 
+	push af			;e897	f5 		. 
+	ld a,(zme)		;e898	3a cd ef 	: . . 
+	and 007h		;e89b	e6 07 		. . 
+	jr nz,mantst		;e89d	20 1a 		  . 
+conin1:	pop af			;e89f	f1 		. 
+	push af			;e8a0	f5 		. 
+	ld a,(zend)		;e8a1	3a ce ef 	: . . 
+	cp 04dh			;e8a4	fe 4d 		. M 
+	jr z,conin2		;e8a6	28 0f 		( . 
+	pop af			;e8a8	f1 		. 
+	cp 009h			;e8a9	fe 09 		. . 
+	call z,ste1		;e8ab	cc 9c ee 	. . . 
+	cp 01ah			;e8ae	fe 1a 		. . 
+	jr z,ipc		;e8b0	28 cd 		( . 
+	cp 00ah			;e8b2	fe 0a 		. . 
+	jr z,dpc		;e8b4	28 d8 		( . 
+	ret			;e8b6	c9 		. 
+conin2:	pop af			;e8b7	f1 		. 
+	ret			;e8b8	c9 		. 
+mantst:	ld a,(zend)		;e8b9	3a ce ef 	: . . 
+	cp 04dh			;e8bc	fe 4d 		. M 
+	jr nz,conin1		;e8be	20 df 		  . 
+	pop af			;e8c0	f1 		. 
+	ret			;e8c1	c9 		. 
+
+
+degl:	push af			;e8c2	f5 		. 
+	call cdsuch		;e8c3	cd 35 e8 	. 5 . 
+degl1:	call conin		;e8c6	cd 94 e8 	. . . 
+	ld c,a			;e8c9	4f 		O 
+	call conout		;e8ca	cd 11 ef 	. . . 
+	cp 00dh			;e8cd	fe 0d 		. . 
+	jr nz,degl1		;e8cf	20 f5 		  . 
+	call wrzv		;e8d1	cd 56 e8 	. V . 
+	push hl			;e8d4	e5 		. 
+	ld hl,0ffffh		;e8d5	21 ff ff 	! . . 
+	ld bc,003ffh		;e8d8	01 ff 03 	. . . 
+	ld a,03eh		;e8db	3e 3e 		> > 
+degl2:	cpd			;e8dd	ed a9 		. . 
+	jr nz,degl2		;e8df	20 fc 		  . 
+	inc hl			;e8e1	23 		# 
+	inc hl			;e8e2	23 		# 
+	ld (zanf),hl		;e8e3	22 cb ef 	" . . 
+	pop hl			;e8e6	e1 		. 
+	pop af			;e8e7	f1 		. 
+	ret			;e8e8	c9 		. 
+
+
+lzeio:	ld hl,0ffffh		;e8e9	21 ff ff 	! . . 
+	;change to: ld hl,bsanf+(bline*bwidth)-1
+lzei1:	dec hl			;e8ec	2b 		+ 
+	ld a,(hl)		;e8ed	7e 		~ 
+	res 7,a			;e8ee	cb bf 		. . 
+	cp 020h			;e8f0	fe 20 		.   
+	jr z,lzei1		;e8f2	28 f8 		( . 
+	inc hl			;e8f4	23 		# 
+
+gkp:	dec hl			;e8f5	2b 		+ 
+	ld a,(hl)		;e8f6	7e 		~ 
+grkl:	cp 07fh			;e8f7	fe 7f 		. . 
+	ret z			;e8f9	c8 		. 
+	cp 060h			;e8fa	fe 60 		. ` 
+	ret c			;e8fc	d8 		. 
+	res 5,a			;e8fd	cb af 		. . 
+	ret			;e8ff	c9 		. 
+
+
+asbin:	push bc			;e900	c5 		. 
+	push af			;e901	f5 		. 
+	call waba		;e902	cd 11 e9 	. . . 
+	inc hl			;e905	23 		# 
+	ld b,h			;e906	44 		D 
+	ld c,l			;e907	4d 		M 
+	ld l,(hl)		;e908	6e 		n 
+	inc bc			;e909	03 		. 
+	ld a,(bc)		;e90a	0a 		. 
+	ld h,a			;e90b	67 		g 
+	pop bc			;e90c	c1 		. 
+	or l			;e90d	b5 		. 
+	ld a,b			;e90e	78 		x 
+	pop bc			;e90f	c1 		. 
+	ret			;e910	c9 		. 
+
+
+waba:	ld a,(de)		;e911	1a 		. 
+	cp 020h			;e912	fe 20 		.   
+	inc de			;e914	13 		. 
+	jr z,waba		;e915	28 fa 		( . 
+	dec de			;e917	1b 		. 
+wab:	xor a			;e918	af 		. 
+	ld hl,zwsp		;e919	21 c7 ef 	! . . 
+	ld (hl),a		;e91c	77 		w 
+	inc hl			;e91d	23 		# 
+	ld (hl),a		;e91e	77 		w 
+	inc hl			;e91f	23 		# 
+	ld (hl),a		;e920	77 		w 
+wabb:	ld a,(de)		;e921	1a 		. 
+	call grkl		;e922	cd f7 e8 	. . . 
+	dec hl			;e925	2b 		+ 
+	dec hl			;e926	2b 		+ 
+	sub 030h		;e927	d6 30 		. 0 
+	ret m			;e929	f8 		. 
+	cp 00ah			;e92a	fe 0a 		. . 
+	jr c,wab2		;e92c	38 08 		8 . 
+	sub 007h		;e92e	d6 07 		. . 
+	cp 00ah			;e930	fe 0a 		. . 
+	ret m			;e932	f8 		. 
+	cp 010h			;e933	fe 10 		. . 
+	ret p			;e935	f0 		. 
+wab2:	inc de			;e936	13 		. 
+	inc (hl)		;e937	34 		4 
+	inc hl			;e938	23 		# 
+	rld			;e939	ed 6f 		. o 
+	inc hl			;e93b	23 		# 
+	rld			;e93c	ed 6f 		. o 
+	jr wabb			;e93e	18 e1 		. . 
+
+
+retreg:	ld (zws2),sp		;e940	ed 73 c9 ef 	. s . . 
+	ld sp,rsp		;e944	31 e4 ef 	1 . . 
+	push iy			;e947	fd e5 		. . 
+	push ix			;e949	dd e5 		. . 
+	push hl			;e94b	e5 		. 
+	push de			;e94c	d5 		. 
+	push bc			;e94d	c5 		. 
+	push af			;e94e	f5 		. 
+	exx			;e94f	d9 		. 
+	ex af,af'		;e950	08 		. 
+	push hl			;e951	e5 		. 
+	push de			;e952	d5 		. 
+	push bc			;e953	c5 		. 
+	push af			;e954	f5 		. 
+	jr retu			;e955	18 15 		. . 
+
+rucreg:	ld (zws2),sp		;e957	ed 73 c9 ef 	. s . . 
+	ld sp,rafs		;e95b	31 d0 ef 	1 . . 
+	pop af			;e95e	f1 		. 
+	pop bc			;e95f	c1 		. 
+	pop de			;e960	d1 		. 
+	pop hl			;e961	e1 		. 
+	exx			;e962	d9 		. 
+	ex af,af'		;e963	08 		. 
+	pop af			;e964	f1 		. 
+	pop bc			;e965	c1 		. 
+	pop de			;e966	d1 		. 
+	pop hl			;e967	e1 		. 
+	pop ix			;e968	dd e1 		. . 
+	pop iy			;e96a	fd e1 		. . 
+
+retu:	ld sp,(zws2)		;e96c	ed 7b c9 ef 	. { . . 
+	ret			;e970	c9 		. 
+
+
+nfund:	call agzk		;e971	cd 3c e8 	. < . 
+	db 'IN','P'+80h		;e974	49 4e d0 	I N . 
+	call derror		;e977	cd b5 ef 	. . . 
+
+
+csuch:	call degl		;e97a	cd c2 e8 	. . . 
+	ld bc,lanvdb		;e97d	01 ff 07 	. . . 
+	ld hl,neintr		;e980	21 c4 e9 	! . . 
+
+such:	xor a			;e983	af 		. 
+	inc bc			;e984	03 		. 
+	cpir			;e985	ed b1 		. . 
+	jr nz,nfund		;e987	20 e8 		  . 
+	ld a,009h		;e989	3e 09 		> . 
+	cp (hl)			;e98b	be 		. 
+	jr nz,such		;e98c	20 f5 		  . 
+	inc hl			;e98e	23 		# 
+	ld de,(zanf)		;e98f	ed 5b cb ef 	. [ . . 
+
+cs2:	ld a,(de)		;e993	1a 		. 
+cs3:	call grkl		;e994	cd f7 e8 	. . . 
+	cp (hl)			;e997	be 		. 
+	jr nz,such		;e998	20 e9 		  . 
+	inc hl			;e99a	23 		# 
+	inc de			;e99b	13 		. 
+m2:	ld a,(de)		;e99c	1a 		. 
+	cp 020h			;e99d	fe 20 		.   
+	jr nz,cs2		;e99f	20 f2 		  . 
+m1:	ld a,(hl)		;e9a1	7e 		~ 
+	cp 00dh			;e9a2	fe 0d 		. . 
+	jr nz,such		;e9a4	20 dd 		  . 
+	inc hl			;e9a6	23 		# 
+	push hl			;e9a7	e5 		. 
+	push hl			;e9a8	e5 		. 
+	call lzeio		;e9a9	cd e9 e8 	. . . 
+	cp ':'			;e9ac	fe 3a 		. : 
+	pop hl			;e9ae	e1 		. 
+	jr z,neintr		;e9af	28 13 		( . 
+	inc de			;e9b1	13 		. 
+	call asbin		;e9b2	cd 00 e9 	. . . 
+
+eintr:	ld (aaaa),hl		;e9b5	22 c1 ef 	" . . 
+	call asbin		;e9b8	cd 00 e9 	. . . 
+	ld (bbbb),hl		;e9bb	22 c3 ef 	" . . 
+	call asbin		;e9be	cd 00 e9 	. . . 
+	ld (cccc),hl		;e9c1	22 c5 ef 	" . . 
+
+neintr:	pop hl			;e9c4	e1 		. 
+	ld bc,csuch		;e9c5	01 7a e9 	. z . 
+	push bc			;e9c8	c5 		. 
+	jp (hl)			;e9c9	e9 		. 
+
+
+spacet: db 0,9,' ',0dh		;e9ca	00 09 20 0d 	. .   . 
+	ret			;e9ce	c9 		. 
+
+
+rsprun:	db 0,9,'Q',0dh		;e9cf	00 09 51 0d 	. . Q . 
+	jp bios			;e9d3	c3 00 de 	. . . 
+
+
+ueber:	call agzk		;e9d6	cd 3c e8 	. < . 
+	db 0ch,0ah,'DEBUGGER V2.2  '
+	db '+++ AM86 +++',0ah,0dh+80h
+	ret			;e9f8	c9 		. 
+
+
+initia:	db 0,9,'I',0dh		;e9f9	00 09 49 0d 	. . I . 
+
+clsta:	ld hl,aaaa		;e9fd	21 c1 ef 	! . . 
+	ld b,032h		;ea00	06 32 		. 2 
+
+clsta1:	ld (hl),000h		;ea02	36 00 		6 . 
+	inc hl			;ea04	23 		# 
+	djnz clsta1		;ea05	10 fb 		. . 
+	ld a,001h		;ea07	3e 01 		> . 
+	ld (astep),a		;ea09	32 e6 ef 	2 . . 
+	ld a,043h		;ea0c	3e 43 		> C 
+	ld (rsp+1),a		;ea0e	32 e5 ef 	2 . . 
+	call agzk		;ea11	cd 3c e8 	. < . 
+	db 'CLEAR',0dh,0ah+80h	;ea14	43 4c 45 41 	C L E A 
+				;ea18	52 0d 8a 	R . . 
+
+clsta2:	ld sp,stapze		;ea1b	31 f0 f7 	1 . . 
+	jp csuch		;ea1e	c3 7a e9 	. z . 
+
+
+du1:	ld hl,(aaaa)		;ea21	2a c1 ef 	* . . 
+du2:	ld de,(bbbb)		;ea24	ed 5b c3 ef 	. [ . . 
+	push hl			;ea28	e5 		. 
+	or a			;ea29	b7 		. 
+	sbc hl,de		;ea2a	ed 52 		. R 
+	pop hl			;ea2c	e1 		. 
+	ret nc			;ea2d	d0 		. 
+	call wrzv		;ea2e	cd 56 e8 	. V . 
+	push hl			;ea31	e5 		. 
+	ld a,l			;ea32	7d 		} 
+	and 0f0h		;ea33	e6 f0 		. . 
+	ld l,a			;ea35	6f 		o 
+	ld de,(rpc)		;ea36	ed 5b ea ef 	. [ . . 
+	ld a,e			;ea3a	7b 		{ 
+	and 0f0h		;ea3b	e6 f0 		. . 
+	ld e,a			;ea3d	5f 		_ 
+	sbc hl,de		;ea3e	ed 52 		. R 
+	pop hl			;ea40	e1 		. 
+	jr nz,du4		;ea41	20 0f 		  . 
+	push hl			;ea43	e5 		. 
+	ld hl,(rpc)		;ea44	2a ea ef 	* . . 
+	call zahex		;ea47	cd 2a e8 	. * . 
+	pop hl			;ea4a	e1 		. 
+	call agzk		;ea4b	cd 3c e8 	. < . 
+	db '-','>'+80h		;ea4e	2d be 		- . 
+	jr du5			;ea50	18 06 		. . 
+du4:	call zahex		;ea52	cd 2a e8 	. * . 
+	call lee2		;ea55	cd 4e e8 	. N . 
+du5:	ld b,010h		;ea58	06 10 		. . 
+du6:	push hl			;ea5a	e5 		. 
+	ex de,hl		;ea5b	eb 		. 
+	ld hl,(rpc)		;ea5c	2a ea ef 	* . . 
+	or a			;ea5f	b7 		. 
+	sbc hl,de		;ea60	ed 52 		. R 
+	jr nz,du8		;ea62	20 07 		  . 
+	call agzk		;ea64	cd 3c e8 	. < . 
+	db '>'+80h		;ea67	be 		. 
+	pop hl			;ea68	e1 		. 
+	jr du9			;ea69	18 04 		. . 
+du8:	pop hl			;ea6b	e1 		. 
+	call lee1		;ea6c	cd 51 e8 	. Q . 
+du9:	ld a,b			;ea6f	78 		x 
+	and 003h		;ea70	e6 03 		. . 
+	call z,lee1		;ea72	cc 51 e8 	. Q . 
+	ld a,(hl)		;ea75	7e 		~ 
+	call ahex		;ea76	cd 68 e8 	. h . 
+	inc hl			;ea79	23 		# 
+	djnz du6		;ea7a	10 de 		. . 
+	jr du2			;ea7c	18 a6 		. . 
+
+
+modify:	db 0,9,'M',0dh		;ea7e	00 09 4d 0d 	. . M . 
+mofi1:	call hzl		;ea82	cd 5c e8 	. \ . 
+mofi2:	call zahex		;ea85	cd 2a e8 	. * . 
+	call lee2		;ea88	cd 4e e8 	. N . 
+	ld a,(hl)		;ea8b	7e 		~ 
+	call ahex		;ea8c	cd 68 e8 	. h . 
+	call degl		;ea8f	cd c2 e8 	. . . 
+	ld de,(zanf)		;ea92	ed 5b cb ef 	. [ . . 
+	dec hl			;ea96	2b 		+ 
+mofi3:	inc hl			;ea97	23 		# 
+	push hl			;ea98	e5 		. 
+	call asbin		;ea99	cd 00 e9 	. . . 
+	jr z,max		;ea9c	28 0e 		( . 
+	ld a,l			;ea9e	7d 		} 
+mofi4:	pop hl			;ea9f	e1 		. 
+	ld (hl),a		;eaa0	77 		w 
+	cp (hl)			;eaa1	be 		. 
+	jr z,mofi3		;eaa2	28 f3 		( . 
+	call dramer		;eaa4	cd af ef 	. . . 
+	call lee1		;eaa7	cd 51 e8 	. Q . 
+	jr mofi2		;eaaa	18 d9 		. . 
+max:	ld a,(de)		;eaac	1a 		. 
+	cp 020h			;eaad	fe 20 		.   
+	jr z,ma1		;eaaf	28 14 		( . 
+	pop hl			;eab1	e1 		. 
+	inc hl			;eab2	23 		# 
+	ld (bbbb),hl		;eab3	22 c3 ef 	" . . 
+	cp '.'			;eab6	fe 2e 		. . 
+	ret z			;eab8	c8 		. 
+	ld de,(zanf)		;eab9	ed 5b cb ef 	. [ . . 
+	ld a,(de)		;eabd	1a 		. 
+	cp 020h			;eabe	fe 20 		.   
+	jr z,mofi2		;eac0	28 c3 		( . 
+	dec hl			;eac2	2b 		+ 
+	jr mofi2		;eac3	18 c0 		. . 
+ma1:	xor a			;eac5	af 		. 
+	jr mofi4		;eac6	18 d7 		. . 
+
+
+patter:	db 0,9,'P',0dh		;eac8	00 09 50 0d 	. . P . 
+patt1:	call hzl		;eacc	cd 5c e8 	. \ . 
+	xor a			;eacf	af 		. 
+	ex de,hl		;ead0	eb 		. 
+	sbc hl,de		;ead1	ed 52 		. R 
+	jp z,dfcer		;ead3	ca a8 ef 	. . . 
+	jp c,dfcer		;ead6	da a8 ef 	. . . 
+	ex de,hl		;ead9	eb 		. 
+	ld (hl),c		;eada	71 		q 
+	push de			;eadb	d5 		. 
+	pop bc			;eadc	c1 		. 
+	push hl			;eadd	e5 		. 
+	pop de			;eade	d1 		. 
+	inc de			;eadf	13 		. 
+pa1:	ldir			;eae0	ed b0 		. . 
+	ret			;eae2	c9 		. 
+
+
+transf:	db 0,9,'T',0dh		;eae3	00 09 54 0d 	. . T . 
+trans1:	call hzl		;eae7	cd 5c e8 	. \ . 
+	xor a			;eaea	af 		. 
+	push hl			;eaeb	e5 		. 
+	sbc hl,de		;eaec	ed 52 		. R 
+	pop hl			;eaee	e1 		. 
+	jp nc,pa1		;eaef	d2 e0 ea 	. . . 
+	add hl,bc		;eaf2	09 		. 
+	ex de,hl		;eaf3	eb 		. 
+	add hl,bc		;eaf4	09 		. 
+	ex de,hl		;eaf5	eb 		. 
+	dec hl			;eaf6	2b 		+ 
+	dec de			;eaf7	1b 		. 
+	lddr			;eaf8	ed b8 		. . 
+	ret			;eafa	c9 		. 
+
+
+sequ:	ld b,004h		;eafb	06 04 		. . 
+sequ1:	ld a,(hl)		;eafd	7e 		~ 
+	call ahex		;eafe	cd 68 e8 	. h . 
+	inc hl			;eb01	23 		# 
+	call lee1		;eb02	cd 51 e8 	. Q . 
+	djnz sequ1		;eb05	10 f6 		. . 
+	ret			;eb07	c9 		. 
+
+
+rega:	call agzk		;eb08	cd 3c e8 	. < . 
+	db 'AF',':'+80h		;eb0b	41 46 ba 	A F . 
+	call raga		;eb0e	cd 3b eb 	. ; . 
+
+ra3:	call agzk		;eb11	cd 3c e8 	. < . 
+	db 'BC',':'+80h		;eb14	42 43 ba 	B C . 
+	call raga		;eb17	cd 3b eb 	. ; . 
+	call agzk		;eb1a	cd 3c e8 	. < . 
+	db 'DE',':'+80h		;eb1d	44 45 ba 	D E . 
+	call raga		;eb20	cd 3b eb 	. ; . 
+	call agzk		;eb23	cd 3c e8 	. < . 
+	db 'HL',':'+80h		;eb26	48 4c ba 	H L . 
+	call raga		;eb29	cd 3b eb 	. ; . 
+
+inhl:	call agzk		;eb2c	cd 3c e8 	. < . 
+	db '(HL)',':'+80h	;eb2f	28 48 4c 29 ba 	( H L ) . 
+	ld a,(de)		;eb34	1a 		. 
+	call ahex		;eb35	cd 68 e8 	. h . 
+	jp wrzv			;eb38	c3 56 e8 	. V . 
+
+raga:	ld e,(hl)		;eb3b	5e 		^ 
+	inc hl			;eb3c	23 		# 
+	ld d,(hl)		;eb3d	56 		V 
+	inc hl			;eb3e	23 		# 
+	ld a,d			;eb3f	7a 		z 
+	call lee1		;eb40	cd 51 e8 	. Q . 
+	call ahex		;eb43	cd 68 e8 	. h . 
+	call lee1		;eb46	cd 51 e8 	. Q . 
+	ld a,e			;eb49	7b 		{ 
+	call ahex		;eb4a	cd 68 e8 	. h . 
+	jp lee2			;eb4d	c3 4e e8 	. N . 
+
+regis:	call agzk		;eb50	cd 3c e8 	. < . 
+	db 'MAIN ',' '+80h	;eb53	4d 41 49 4e 	M A I N 
+				;eb57	20 a0 		  . 
+	ld hl,raf		;eb59	21 d8 ef 	! . . 
+	call rega		;eb5c	cd 08 eb 	. . . 
+	call agzk		;eb5f	cd 3c e8 	. < . 
+	db 'EXXR ',' '+80h	;eb62	45 58 58 52 	E X X R 
+				;eb66	20 a0 		  . 
+	ld hl,rafs		;eb68	21 d0 ef 	! . . 
+	call rega		;eb6b	cd 08 eb 	. . . 
+	ret			;eb6e	c9 		. 
+
+
+anza:	call zahex		;eb6f	cd 2a e8 	. * . 
+	jp lee4			;eb72	c3 4b e8 	. K . 
+
+
+regdis:	db 0,9,'R',0dh		;eb75	00 09 52 0d 	. . R . 
+rdis0:	call lzeio		;eb79	cd e9 e8 	. . . 
+	cp ':'			;eb7c	fe 3a 		. : 
+	jp nz,reganz		;eb7e	c2 58 ec 	. X . 
+rdis2:	call regis		;eb81	cd 50 eb 	. P . 
+	call agzk		;eb84	cd 3c e8 	. < . 
+	db 'FLAG ',' '+80h	;eb87	46 4c 41 47 	F L A G 
+				;eb8b	20 a0 		  . 
+	ld a,(raf)		;eb8d	3a d8 ef 	: . . 
+	call sfl		;eb90	cd 26 ec 	. & . 
+	call agzk		;eb93	cd 3c e8 	. < . 
+	db '  ','('+80h		;eb96	20 20 a8 	    . 
+	ld a,(rafs)		;eb99	3a d0 ef 	: . . 
+	call sfl		;eb9c	cd 26 ec 	. & . 
+	call agzk		;eb9f	cd 3c e8 	. < . 
+	db ')',0dh,0ah+80h	;eba2	29 0d 8a 	) . . 
+	call agzk		;eba5	cd 3c e8 	. < . 
+	db 'IX',':'+80h		;eba8	49 58 ba 	I X . 
+	ld hl,(rix)		;ebab	2a e0 ef 	* . . 
+	call zahex		;ebae	cd 2a e8 	. * . 
+	call lee4		;ebb1	cd 4b e8 	. K . 
+	call agzk		;ebb4	cd 3c e8 	. < . 
+	db 'IY',':'+80h		;ebb7	49 59 ba 	I Y . 
+	ld hl,(riy)		;ebba	2a e2 ef 	* . . 
+	call zahex		;ebbd	cd 2a e8 	. * . 
+	call lee8		;ebc0	cd 48 e8 	. H . 
+	call lee2		;ebc3	cd 4e e8 	. N . 
+	call agzk		;ebc6	cd 3c e8 	. < . 
+	db 'I ',':'+80h		;ebc9	49 20 ba 	I   . 
+	ld a,(ri)		;ebcc	3a e8 ef 	: . . 
+	call ahex		;ebcf	cd 68 e8 	. h . 
+	call lee4		;ebd2	cd 4b e8 	. K . 
+	call lee2		;ebd5	cd 4e e8 	. N . 
+	call agzk		;ebd8	cd 3c e8 	. < . 
+	db 'SR',':'+80h		;ebdb	53 52 ba 	S R . 
+	ld hl,(astep)		;ebde	2a e6 ef 	* . . 
+	call zahex		;ebe1	cd 2a e8 	. * . 
+	call wrzv		;ebe4	cd 56 e8 	. V . 
+	call agzk		;ebe7	cd 3c e8 	. < . 
+	db 'SP',':'+80h		;ebea	53 50 ba 	S P . 
+	ld hl,(rsp)		;ebed	2a e4 ef 	* . . 
+	call zahex		;ebf0	cd 2a e8 	. * . 
+	call lee4		;ebf3	cd 4b e8 	. K . 
+	call sequ		;ebf6	cd fb ea 	. . . 
+	call lee4		;ebf9	cd 4b e8 	. K . 
+	call lee1		;ebfc	cd 51 e8 	. Q . 
+	call agzk		;ebff	cd 3c e8 	. < . 
+	db 'BP',':'+80h		;ec02	42 50 ba 	B P . 
+	ld hl,(rbp)		;ec05	2a ee ef 	* . . 
+	call zahex		;ec08	cd 2a e8 	. * . 
+	call lee4		;ec0b	cd 4b e8 	. K . 
+	call sequ		;ec0e	cd fb ea 	. . . 
+	call wrzv		;ec11	cd 56 e8 	. V . 
+	call anzpc		;ec14	cd 1a ec 	. . . 
+	jp wrzv			;ec17	c3 56 e8 	. V . 
+
+anzpc:	call agzk		;ec1a	cd 3c e8 	. < . 
+	db 'PC',':'+80h		;ec1d	50 43 ba 	P C . 
+	ld hl,(rpc)		;ec20	2a ea ef 	* . . 
+	jp zahex		;ec23	c3 2a e8 	. * . 
+
+sfl:	ld l,a			;ec26	6f 		o 
+	bit 7,l			;ec27	cb 7d 		. } 
+	jr z,zfl		;ec29	28 04 		( . 
+	call agzk		;ec2b	cd 3c e8 	. < . 
+	db 'S'+80h		;ec2e	d3 		. 
+
+zfl:	bit 6,l			;ec2f	cb 75 		. u 
+	jr z,hfl		;ec31	28 04 		( . 
+	call agzk		;ec33	cd 3c e8 	. < . 
+	db 'Z'+80h		;ec36	da 		. 
+
+hfl:	bit 4,l			;ec37	cb 65 		. e 
+	jr z,pfl		;ec39	28 04 		( . 
+	call agzk		;ec3b	cd 3c e8 	. < . 
+	db 'H'+80h		;ec3e	c8 		. 
+
+pfl:	bit 2,l			;ec3f	cb 55 		. U 
+	jr z,nfl		;ec41	28 04 		( . 
+	call agzk		;ec43	cd 3c e8 	. < . 
+	db 'P'+80h		;ec46	d0 		. 
+
+nfl:	bit 1,l			;ec47	cb 4d 		. M 
+	jr z,cfl		;ec49	28 04 		( . 
+	call agzk		;ec4b	cd 3c e8 	. < . 
+	db 'N'+80h		;ec4e	ce 		. 
+
+cfl:	bit 0,l			;ec4f	cb 45 		. E 
+	jr z,endfl		;ec51	28 04 		( . 
+	call agzk		;ec53	cd 3c e8 	. < . 
+	db 'C'+80h		;ec56	c3 		. 
+
+endfl:	ret			;ec57	c9 		. 
+
+
+reganz:	ld hl,(zanf)		;ec58	2a cb ef 	* . . 
+	inc hl			;ec5b	23 		# 
+regan1:	inc hl			;ec5c	23 		# 
+
+	ld a,(hl)		;ec5d	7e 		~ 
+	cp ' '			;ec5e	fe 20 		.   
+	jr nz,regan1		;ec60	20 fa 		  . 
+
+	push hl			;ec62	e5 		. 
+	call gkp		;ec63	cd f5 e8 	. . . 
+
+	ld de,raf		;ec66	11 d8 ef 	. . . 
+	cp 027h			;ec69	fe 27 		. ' 
+	jr nz,r1		;ec6b	20 0b 		  . 
+
+	ld de,rafs		;ec6d	11 d0 ef 	. . . 
+	call gkp		;ec70	cd f5 e8 	. . . 
+
+	cp 'M'			;ec73	fe 4d 		. M 
+	jp z,manzs		;ec75	ca d1 ec 	. . . 
+
+r1:	cp 'M'			;ec78	fe 4d 		. M 
+	jr z,manz		;ec7a	28 50 		( P 
+
+	cp 'F'			;ec7c	fe 46 		. F 
+	jr z,mr1		;ec7e	28 3e 		( > 
+
+	inc de			;ec80	13 		. 
+	inc de			;ec81	13 		. 
+	cp 'C'			;ec82	fe 43 		. C 
+	jr nz,r2		;ec84	20 0c 		  . 
+
+	call gkp		;ec86	cd f5 e8 	. . . 
+	cp 'P'			;ec89	fe 50 		. P 
+	jr nz,mr1		;ec8b	20 31 		  1 
+
+	ld de,rpc		;ec8d	11 ea ef 	. . . 
+	jr mr1			;ec90	18 2c 		. , 
+
+r2:	inc de			;ec92	13 		. 
+	inc de			;ec93	13 		. 
+	cp 'E'			;ec94	fe 45 		. E 
+	jr z,mr1		;ec96	28 26 		( & 
+
+	inc de			;ec98	13 		. 
+	inc de			;ec99	13 		. 
+	cp 'L'			;ec9a	fe 4c 		. L 
+	jr z,mr1		;ec9c	28 20 		(   
+
+	ld de,rix		;ec9e	11 e0 ef 	. . . 
+	cp 'X'			;eca1	fe 58 		. X 
+	jr z,mr1		;eca3	28 19 		( . 
+
+	inc de			;eca5	13 		. 
+	inc de			;eca6	13 		. 
+	cp 'Y'			;eca7	fe 59 		. Y 
+	jr z,mr1		;eca9	28 13 		( . 
+
+	inc de			;ecab	13 		. 
+	inc de			;ecac	13 		. 
+	cp 'P'			;ecad	fe 50 		. P 
+	jr z,mr1		;ecaf	28 0d 		( . 
+
+	inc de			;ecb1	13 		. 
+	inc de			;ecb2	13 		. 
+	cp 'R'			;ecb3	fe 52 		. R 
+	jr z,mr1		;ecb5	28 07 		( . 
+
+	inc de			;ecb7	13 		. 
+	inc de			;ecb8	13 		. 
+	cp 'I'			;ecb9	fe 49 		. I 
+	jp nz,fin6		;ecbb	c2 10 ee 	. . . 
+
+mr1:	pop hl			;ecbe	e1 		. 
+	push de			;ecbf	d5 		. 
+	ex de,hl		;ecc0	eb 		. 
+	call asbin		;ecc1	cd 00 e9 	. . . 
+	pop de			;ecc4	d1 		. 
+	ex de,hl		;ecc5	eb 		. 
+	ld (hl),e		;ecc6	73 		s 
+	inc hl			;ecc7	23 		# 
+	ld (hl),d		;ecc8	72 		r 
+	jp anze1		;ecc9	c3 26 ee 	. & . 
+
+manz:	ld hl,(rhl)		;eccc	2a de ef 	* . . 
+	jr mahl			;eccf	18 03 		. . 
+
+manzs:	ld hl,(rhls)		;ecd1	2a d6 ef 	* . . 
+mahl:	pop de			;ecd4	d1 		. 
+	push hl			;ecd5	e5 		. 
+	call asbin		;ecd6	cd 00 e9 	. . . 
+	pop de			;ecd9	d1 		. 
+	ld (hl),e		;ecda	73 		s 
+	jp anze1		;ecdb	c3 26 ee 	. & . 
+
+
+brrout:	call retreg		;ecde	cd 40 e9 	. @ . 
+	pop hl			;ece1	e1 		. 
+	dec hl			;ece2	2b 		+ 
+	ld (rsp),sp		;ece3	ed 73 e4 ef 	. s . . 
+	ld sp,stapze		;ece7	31 f0 f7 	1 . . 
+	call agzk		;ecea	cd 3c e8 	. < . 
+	db 'BREAK AT',':'+80h	;eced	42 52 45 41 4b 	B R E A K 
+				;ecf2	20 41 54 ba 	  A T . 
+	ld (rpc),hl		;ecf6	22 ea ef 	" . . 
+	call anza		;ecf9	cd 6f eb 	. o . 
+	ld hl,(rbp)		;ecfc	2a ee ef 	* . . 
+	ld de,rbps		;ecff	11 f0 ef 	. . . 
+	ld a,(de)		;ed02	1a 		. 
+	ld (hl),a		;ed03	77 		w 
+	ld sp,stapze		;ed04	31 f0 f7 	1 . . 
+	jp csuch		;ed07	c3 7a e9 	. z . 
+
+
+bpoint:	db 0,9,'B',0dh		;ed0a	00 09 42 0d 	. . B . 
+bpn1:	call hzl		;ed0e	cd 5c e8 	. \ . 
+	ld (rbp),hl		;ed11	22 ee ef 	" . . 
+	ld de,rbps		;ed14	11 f0 ef 	. . . 
+	ld a,(hl)		;ed17	7e 		~ 
+	ld (de),a		;ed18	12 		. 
+	ld a,0c3h		;ed19	3e c3 		> . 
+	ld (jrst38),a		;ed1b	32 38 00 	2 8 . 
+	ld hl,brkjum		;ed1e	21 12 e8 	! . . 
+	ld (jrst38+01h),hl	;ed21	22 39 00 	" 9 . 
+	jp anze1		;ed24	c3 26 ee 	. & . 
+
+
+exec:	db 0,9,'E',0dh		;ed27	00 09 45 0d 	. . E . 
+brka:	ld hl,(rbp)		;ed2b	2a ee ef 	* . . 
+	ld (hl),0ffh		;ed2e	36 ff 		6 . 
+
+
+jump:	db 0,9,'J',0dh		;ed30	00 09 4a 0d 	. . J . 
+jum1:	ld b,00ah		;ed34	06 0a 		. . 
+	ld hl,(rsp)		;ed36	2a e4 ef 	* . . 
+jum2:	dec hl			;ed39	2b 		+ 
+	ld a,(hl)		;ed3a	7e 		~ 
+	cpl			;ed3b	2f 		/ 
+	ld (hl),a		;ed3c	77 		w 
+	cp (hl)			;ed3d	be 		. 
+	jr nz,go2		;ed3e	20 2f 		  / 
+	cpl			;ed40	2f 		/ 
+	ld (hl),a		;ed41	77 		w 
+	djnz jum2		;ed42	10 f5 		. . 
+	ld hl,(aaaa)		;ed44	2a c1 ef 	* . . 
+	ld (rpc),hl		;ed47	22 ea ef 	" . . 
+	ld sp,(rsp)		;ed4a	ed 7b e4 ef 	. { . . 
+	push hl			;ed4e	e5 		. 
+	jp rucreg		;ed4f	c3 57 e9 	. W . 
+
+
+go:	db 0,9,'G',0dh		;ed52	00 09 47 0d 	. . G . 
+go23:	ld hl,(aaaa)		;ed56	2a c1 ef 	* . . 
+	jp (hl)			;ed59	e9 		. 
+
+
+gbrk:	db 0,9,'F',0dh		;ed5a	00 09 46 0d 	. . F . 
+go1:	ld hl,(rpc)		;ed5e	2a ea ef 	* . . 
+	ld (aaaa),hl		;ed61	22 c1 ef 	" . . 
+	ld de,(rbp)		;ed64	ed 5b ee ef 	. [ . . 
+	xor a			;ed68	af 		. 
+	sbc hl,de		;ed69	ed 52 		. R 
+	jr nz,brka		;ed6b	20 be 		  . 
+	jr jum1			;ed6d	18 c5 		. . 
+go2:	call agzk		;ed6f	cd 3c e8 	. < . 
+	db 'INIT SP','!'+80h	;ed72	49 4e 49 54 	I N I T 
+				;ed76	20 53 50 a1 	  S P . 
+	ret			;ed7a	c9 		. 
+
+
+comp:	db 0,9,'C',0dh		;ed7b	00 09 43 0d 	. . C . 
+com1:	call hzl		;ed7f	cd 5c e8 	. \ . 
+com2:	ld a,(de)		;ed82	1a 		. 
+	cp (hl)			;ed83	be 		. 
+	jr nz,com4		;ed84	20 08 		  . 
+com3:	dec bc			;ed86	0b 		. 
+	inc hl			;ed87	23 		# 
+	inc de			;ed88	13 		. 
+	ld a,b			;ed89	78 		x 
+	or c			;ed8a	b1 		. 
+	ret z			;ed8b	c8 		. 
+	jr com2			;ed8c	18 f4 		. . 
+com4:	call anza		;ed8e	cd 6f eb 	. o . 
+	ld a,(hl)		;ed91	7e 		~ 
+	call ahex		;ed92	cd 68 e8 	. h . 
+	call lee8		;ed95	cd 48 e8 	. H . 
+	ex de,hl		;ed98	eb 		. 
+	call anza		;ed99	cd 6f eb 	. o . 
+	ex de,hl		;ed9c	eb 		. 
+	ld a,(de)		;ed9d	1a 		. 
+	call ahex		;ed9e	cd 68 e8 	. h . 
+	call wrzv		;eda1	cd 56 e8 	. V . 
+	call conin		;eda4	cd 94 e8 	. . . 
+	cp 00dh			;eda7	fe 0d 		. . 
+	ret nz			;eda9	c0 		. 
+	jr com3			;edaa	18 da 		. . 
+
+
+finda:	db 0,9,'FA',0dh		;edac	00 09 46 41 0d 	. . F A . 
+fina1:	call hzl		;edb1	cd 5c e8 	. \ . 
+fina2:	ld de,(zanf)		;edb4	ed 5b cb ef 	. [ . . 
+	inc de			;edb8	13 		. 
+	inc de			;edb9	13 		. 
+	inc de			;edba	13 		. 
+fina5:	ld a,(de)		;edbb	1a 		. 
+	cp (hl)			;edbc	be 		. 
+	jr z,fina3		;edbd	28 07 		( . 
+	inc hl			;edbf	23 		# 
+fina4:	ld a,h			;edc0	7c 		| 
+	or l			;edc1	b5 		. 
+	jr z,fin6		;edc2	28 4c 		( L 
+	jr fina2		;edc4	18 ee 		. . 
+fina3:	ld (aaaa),hl		;edc6	22 c1 ef 	" . . 
+fina7:	inc hl			;edc9	23 		# 
+	inc de			;edca	13 		. 
+	ld a,(de)		;edcb	1a 		. 
+	cp 020h			;edcc	fe 20 		.   
+	jp z,mofi1		;edce	ca 82 ea 	. . . 
+	cp (hl)			;edd1	be 		. 
+	jr nz,fina2		;edd2	20 e0 		  . 
+	ld a,h			;edd4	7c 		| 
+	or l			;edd5	b5 		. 
+	jr z,fin6		;edd6	28 38 		( 8 
+	jr fina7		;edd8	18 ef 		. . 
+
+
+findh:	db 0,9,'FH',0dh		;edda	00 09 46 48 0d 	. . F H . 
+	call hzl		;eddf	cd 5c e8 	. \ . 
+	push hl			;ede2	e5 		. 
+	pop bc			;ede3	c1 		. 
+finh1:	ld de,(zanf)		;ede4	ed 5b cb ef 	. [ . . 
+	inc de			;ede8	13 		. 
+	inc de			;ede9	13 		. 
+	inc de			;edea	13 		. 
+	inc bc			;edeb	03 		. 
+finh2:	call asbin		;edec	cd 00 e9 	. . . 
+finh3:	ld a,(bc)		;edef	0a 		. 
+	cp l			;edf0	bd 		. 
+	jr z,finh4		;edf1	28 07 		( . 
+	inc bc			;edf3	03 		. 
+	ld a,b			;edf4	78 		x 
+	or c			;edf5	b1 		. 
+	jr z,fin6		;edf6	28 18 		( . 
+	jr finh3		;edf8	18 f5 		. . 
+finh4:	push bc			;edfa	c5 		. 
+finh5:	call asbin		;edfb	cd 00 e9 	. . . 
+	inc bc			;edfe	03 		. 
+	ld a,(bc)		;edff	0a 		. 
+	cp l			;ee00	bd 		. 
+	jr z,finh5		;ee01	28 f8 		( . 
+	ld a,(de)		;ee03	1a 		. 
+	cp 020h			;ee04	fe 20 		.   
+	pop bc			;ee06	c1 		. 
+	jr z,finh1		;ee07	28 db 		( . 
+	ld (aaaa),bc		;ee09	ed 43 c1 ef 	. C . . 
+	jp mofi1		;ee0d	c3 82 ea 	. . . 
+
+
+fin6:	call agzk		;ee10	cd 3c e8 	. < . 
+	db ' NOT FOUND'		;ee13	20 4e 4f 54 20 	  N O T   
+				;ee18	46 4f 55 4e 44 	F O U N D 
+	db 0dh,0ah+80h		;ee1d	0d 8a 		. . 
+	jp clsta2		;ee1f	c3 1b ea 	. . . 
+
+
+anze:	db 0,9,'K',0dh		;ee22	00 09 4b 0d 	. . K . 
+anze1:	call agzk		;ee26	cd 3c e8 	. < . 
+	db 0ch+80h		;ee29	8c 		. 
+	call rdis2		;ee2a	cd 81 eb 	. . . 
+	ld hl,(rpc)		;ee2d	2a ea ef 	* . . 
+	ld a,l			;ee30	7d 		} 
+	and 080h		;ee31	e6 80 		. . 
+	ld l,a			;ee33	6f 		o 
+	ld (aaaa),hl		;ee34	22 c1 ef 	" . . 
+	or 07fh			;ee37	f6 7f 		. . 
+	ld l,a			;ee39	6f 		o 
+	ld a,0ffh		;ee3a	3e ff 		> . 
+	cp h			;ee3c	bc 		. 
+	jr nz,anze4		;ee3d	20 07 		  . 
+	bit 7,l			;ee3f	cb 7d 		. } 
+	jr z,anze4		;ee41	28 03 		( . 
+	ld hl,0ffefh		;ee43	21 ef ff 	! . . 
+anze4:	ld (bbbb),hl		;ee46	22 c3 ef 	" . . 
+	call du1		;ee49	cd 21 ea 	. ! . 
+	jp wrzv			;ee4c	c3 56 e8 	. V . 
+
+
+cksum:	db 0,9,'&',0dh		;ee4f	00 09 26 0d 	. . & . 
+	call hzl		;ee53	cd 5c e8 	. \ . 
+	inc de			;ee56	13 		. 
+	ex de,hl		;ee57	eb 		. 
+	call sumclc		;ee58	cd 04 ef 	. . . 
+	ex af,af'		;ee5b	08 		. 
+	call agzk		;ee5c	cd 3c e8 	. < . 
+	db 'SUM:',' '+80h	;ee5f	53 55 4d 3a a0 	S U M : . 
+	ex af,af'		;ee64	08 		. 
+	call ahex		;ee65	cd 68 e8 	. h . 
+	jp wrzv			;ee68	c3 56 e8 	. V . 
+
+
+iblo:	db 0,9,'U',0dh		;ee6b	00 09 55 0d 	. . U . 
+	ld hl,(rpc)		;ee6f	2a ea ef 	* . . 
+	ld de,00080h		;ee72	11 80 00 	. . . 
+	add hl,de		;ee75	19 		. 
+	jr blos			;ee76	18 0d 		. . 
+
+
+dblo:	db 0,9,'O',0dh		;ee78	00 09 4f 0d 	. . O . 
+	ld hl,(rpc)		;ee7c	2a ea ef 	* . . 
+	or a			;ee7f	b7 		. 
+	ld de,00080h		;ee80	11 80 00 	. . . 
+	sbc hl,de		;ee83	ed 52 		. R 
+blos:	ld (rpc),hl		;ee85	22 ea ef 	" . . 
+bloe:	jr anze1		;ee88	18 9c 		. . 
+
+
+wpc:	db 0,9,'S',0dh		;ee8a	00 09 53 0d 	. . S . 
+	call hzl		;ee8e	cd 5c e8 	. \ . 
+	ld a,l			;ee91	7d 		} 
+	ld hl,(rpc)		;ee92	2a ea ef 	* . . 
+	ld (hl),a		;ee95	77 		w 
+	cp (hl)			;ee96	be 		. 
+	jp nz,dramer		;ee97	c2 af ef 	. . . 
+	jr bloe			;ee9a	18 ec 		. . 
+
+
+ste1:	call wrzv		;ee9c	cd 56 e8 	. V . 
+ste2:	ld hl,(astep)		;ee9f	2a e6 ef 	* . . 
+	ld (zwsp),hl		;eea2	22 c7 ef 	" . . 
+ste5:	ld hl,nmijum		;eea5	21 0f e8 	! . . 
+	ld (jnmi+01h),hl	;eea8	22 67 00 	" g . 
+	ld a,0c3h		;eeab	3e c3 		> . 
+	ld (jnmi),a		;eead	32 66 00 	2 f . 
+	call rucreg		;eeb0	cd 57 e9 	. W . 
+	ld sp,(rsp)		;eeb3	ed 7b e4 ef 	. { . . 
+	push hl			;eeb7	e5 		. 
+	ld hl,(rpc)		;eeb8	2a ea ef 	* . . 
+	ex (sp),hl		;eebb	e3 		. 
+	push af			;eebc	f5 		. 
+	ld a,(ri)		;eebd	3a e8 ef 	: . . 
+	ld i,a			;eec0	ed 47 		. G 
+stport:	out (outnmi),a		;eec2	d3 98 		. . 
+	pop af			;eec4	f1 		. 
+	ret			;eec5	c9 		. 
+
+ste8:	di			;eec6	f3 		. 
+	push hl			;eec7	e5 		. 
+	ld hl,ste6		;eec8	21 ce ee 	! . . 
+	ex (sp),hl		;eecb	e3 		. 
+	retn			;eecc	ed 45 		. E 
+
+ste6:	ex (sp),hl		;eece	e3 		. 
+	ld (rpc),hl		;eecf	22 ea ef 	" . . 
+	pop hl			;eed2	e1 		. 
+	ld (rsp),sp		;eed3	ed 73 e4 ef 	. s . . 
+	ld sp,stapze		;eed7	31 f0 f7 	1 . . 
+	call retreg		;eeda	cd 40 e9 	. @ . 
+	call bioscs		;eedd	cd 03 e8 	. . . 
+	or a			;eee0	b7 		. 
+	jr z,ste7		;eee1	28 07 		( . 
+	call biosci		;eee3	cd 06 e8 	. . . 
+	cp 003h			;eee6	fe 03 		. . 
+	jr z,rteur		;eee8	28 14 		( . 
+
+ste7:	ld hl,(astep)		;eeea	2a e6 ef 	* . . 
+	dec hl			;eeed	2b 		+ 
+	ld (astep),hl		;eeee	22 e6 ef 	" . . 
+	ld a,h			;eef1	7c 		| 
+	or l			;eef2	b5 		. 
+	jr nz,ste5		;eef3	20 b0 		  . 
+	ld hl,(zwsp)		;eef5	2a c7 ef 	* . . 
+	ld (astep),hl		;eef8	22 e6 ef 	" . . 
+	call anze1		;eefb	cd 26 ee 	. & . 
+
+rteur:	ld sp,stapze		;eefe	31 f0 f7 	1 . . 
+	jp csuch		;ef01	c3 7a e9 	. z . 
+
+
+sumclc:	xor a			;ef04	af 		. 
+	sbc hl,de		;ef05	ed 52 		. R 
+	push hl			;ef07	e5 		. 
+	ex de,hl		;ef08	eb 		. 
+	pop bc			;ef09	c1 		. 
+
+sumcll:	add a,(hl)		;ef0a	86 		. 
+	cpi			;ef0b	ed a1 		. . 
+	jp pe,sumcll		;ef0d	ea 0a ef 	. . . 
+	ret			;ef10	c9 		. 
+
+
+conout:	push af			;ef11	f5 		. 
+	push bc			;ef12	c5 		. 
+	res 7,c			;ef13	cb b9 		. . 
+	push hl			;ef15	e5 		. 
+	ld hl,zme		;ef16	21 cd ef 	! . . 
+	bit 0,(hl)		;ef19	cb 46 		. F 
+	pop hl			;ef1b	e1 		. 
+	push bc			;ef1c	c5 		. 
+	call nz,biosls		;ef1d	c4 0c e8 	. . . 
+	pop bc			;ef20	c1 		. 
+	call biosco		;ef21	cd 09 e8 	. . . 
+	pop bc			;ef24	c1 		. 
+	pop af			;ef25	f1 		. 
+	ret			;ef26	c9 		. 
+
+
+dev:	db 0,9,'D',0dh		;ef27	00 09 44 0d 	. . D . 
+	ld hl,zme		;ef2b	21 cd ef 	! . . 
+	push hl			;ef2e	e5 		. 
+	ld a,(hl)		;ef2f	7e 		~ 
+	and 0f8h		;ef30	e6 f8 		. . 
+	ld (hl),a		;ef32	77 		w 
+	call lzeio		;ef33	cd e9 e8 	. . . 
+	pop hl			;ef36	e1 		. 
+	cp 057h			;ef37	fe 57 		. W 
+	jr z,devprt		;ef39	28 06 		( . 
+	cp 044h			;ef3b	fe 44 		. D 
+	ret z			;ef3d	c8 		. 
+	jp fin6			;ef3e	c3 10 ee 	. . . 
+devprt:	set 0,(hl)		;ef41	cb c6 		. . 
+	ret			;ef43	c9 		. 
+
+
+tasct:	db 0fdh,02eh,0ffh	;illegal sequence
+	;ld iyl,0ffh		;ef44	fd 2e ff 	. . . 
+	jr tasc0		;ef47	18 06 		. . 
+
+tascs:	call wrzv		;ef49	cd 56 e8 	. V . 
+tascb:	db 0fdh,02eh,000h	;illegal sequence
+	;ld iyl,000h		;ef4c	fd 2e 00 	. . . 
+
+tasc0:	call hzl		;ef4f	cd 5c e8 	. \ . 
+
+tasc1:	push hl			;ef52	e5 		. 
+	or a			;ef53	b7 		. 
+	sbc hl,de		;ef54	ed 52 		. R 
+	pop hl			;ef56	e1 		. 
+	ret nc			;ef57	d0 		. 
+	ld a,(hl)		;ef58	7e 		~ 
+	and 07fh		;ef59	e6 7f 		. . 
+	inc hl			;ef5b	23 		# 
+	cp 07fh			;ef5c	fe 7f 		. . 
+	jr z,tasc3		;ef5e	28 04 		( . 
+	cp 020h			;ef60	fe 20 		.   
+	jr nc,tasc2		;ef62	30 08 		0 . 
+
+tasc3:	db 0fdh,04dh		;illegal sequence
+	;ld c,iyl		;ef64	fd 4d 		. M 
+	bit 0,c			;ef67	cb 41 		. A 
+	jr nz,tasc2		;ef68	20 02 		  . 
+	ld a,02eh		;ef6a	3e 2e 		> . 
+
+tasc2:	ld c,a			;ef6c	4f 		O 
+	call conout		;ef6d	cd 11 ef 	. . . 
+	jr tasc1		;ef70	18 e0 		. . 
+
+tascm:	call conin		;ef72	cd 94 e8 	. . . 
+	cp 003h			;ef75	fe 03 		. . 
+	jr nz,tasc4		;ef77	20 04 		  . 
+	ld (zend),a		;ef79	32 ce ef 	2 . . 
+	ret			;ef7c	c9 		. 
+
+tasc4:	ld c,a			;ef7d	4f 		O 
+	call conout		;ef7e	cd 11 ef 	. . . 
+	jr tascm		;ef81	18 ef 		. . 
+
+
+tx:	db 0,9,'X',0dh		;ef83	00 09 58 0d 	. . X . 
+send:	call lzeio		;ef87	cd e9 e8 	. . . 
+	ld (zend),a		;ef8a	32 ce ef 	2 . . 
+	ld hl,zme		;ef8d	21 cd ef 	! . . 
+	set 6,(hl)		;ef90	cb f6 		. . 
+
+	cp 'H'			;ef92	fe 48 		. H 
+	jp z,du1		;ef94	ca 21 ea 	. ! . 
+
+	cp 'T'			;ef97	fe 54 		. T 
+	jr z,tasct		;ef99	28 a9 		( . 
+
+	cp 'S'			;ef9b	fe 53 		. S 
+	jr z,tascs		;ef9d	28 aa 		( . 
+
+	cp 'M'			;ef9f	fe 4d 		. M 
+	jr z,tascm		;efa1	28 cf 		( . 
+
+	res 6,(hl)		;efa3	cb b6 		. . 
+	jp fin6			;efa5	c3 10 ee 	. . . 
+
+
+dfcer:	call agzk		;efa8	cd 3c e8 	. < . 
+	db 'F','C'+80h		;efab	46 c3 		F . 
+	jr derror		;efad	18 06 	. . 
+
+dramer:	call agzk		;efaf	cd 3c e8 	. < . 
+	db 'RA','M'+80h		;efb2	52 41 cd 	R A . 
+
+derror:	call agzk		;efb5	cd 3c e8 	. < . 
+	db '-ERRO','R'+80h	;efb8	2d 45 52 	- E R 
+				;efbb	52 4f d2 	R O . 
+	jp wrzv			;efbe	c3 56 e8 	. V . 
+
+
+lanvdb	equ 007ffh
+aaaa:	ds  2,020h
+bbbb:	ds  2,020h
+cccc:	ds  2,020h
+zwsp:	ds  2,020h
+zws2:	ds  2,020h
+zanf:	ds  2,020h
+zme:	ds  1,020h
+zend:	ds  1,020h
+	ds  1,000h
+rafs:	ds  6,020h
+rhls:	ds  2,020h
+raf:	ds  6,020h
+rhl:	ds  2,020h
+rix:	ds  2,020h
+riy:	ds  2,020h
+rsp:	ds  2,020h
+astep:	ds  2,020h
+ri:	ds  2,020h
+rpc:	ds  4,020h
+rbp:	ds  2,020h
+rbps:	ds 14,020h
+	ds  2,073h
+
+	org	0800h
+	end	SVDBLOC

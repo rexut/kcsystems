@@ -6,6 +6,7 @@
 if OSYS_CPV
 
 choice
+	default CPV_198810_2014
 	depends on OSYS_CPV
 	prompt "CP/V Version"
 	---help---
@@ -24,6 +25,21 @@ config CPV_198810
 		    - BDOS: Basic Disk Operating System
 
 		Say yes here to generate the original CP/V operating system
+		that was published in the German journal "Funkamateur" in 1988.
+
+config CPV_198810_2014
+	bool
+	prompt "1988/10-2014"
+	---help---
+		CP/V Operating System version of October 1988
+
+		This is the disassembled variant of 1988/10 and consist the parts:
+
+		  Assembler sources:
+		    - CCP:  Console Command Processor
+		    - BDOS: Basic Disk Operating System
+
+		Say yes here to generate the disassembled CP/V operating system
 		that was published in the German journal "Funkamateur" in 1988.
 
 endchoice

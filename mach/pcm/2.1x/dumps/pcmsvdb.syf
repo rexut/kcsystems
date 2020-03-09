@@ -1,0 +1,226 @@
+; z80dasm symbol file for pcmsvdb.bin
+;
+; i/o units and system addresses
+;
+bios:		equ	0xde00	;BIOS module
+constf:		equ	0xde06  ;console status function
+coninf:		equ	0xde09  ;console input function
+conoutf:	equ	0xde0c  ;console output function
+listf:		equ	0xde0f  ;list output function
+;
+stapze:		equ	0xf7f0
+;
+jrst38:		equ	0x38
+jrst38+1:	equ	0x39
+jnmi:		equ	0x66
+jnmi+1:		equ	0x67
+hwsp:		equ	0x43
+outnmi:		equ	0x98
+;
+bioscsts:	equ	0xe803
+biosci:		equ	0xe806
+biosco:		equ	0xe809
+bioslist:	equ	0xe80c
+nmijum:		equ	0xe80f
+brkjum:		equ	0xe812
+debug:		equ	0xe815
+zahex:		equ	0xe82a
+cdsuch:		equ	0xe835
+agzk:		equ	0xe83c
+agzk1:		equ	0xe83d
+lee8:		equ	0xe848
+lee4:		equ	0xe84b
+lee2:		equ	0xe84e
+lee1:		equ	0xe851
+lee0:		equ	0xe853
+wrzv:		equ	0xe856
+hzl:		equ	0xe85c
+ahex:		equ	0xe868
+ah1:		equ	0xe871
+ah2:		equ	0xe879
+ipc:		equ	0xe87f
+ipc1:		equ	0xe883
+ipc2:		equ	0xe88c
+dpc:		equ	0xe88e
+conin:		equ	0xe894
+conin1:		equ	0xe89f
+conin2:		equ	0xe8b7
+mantst:		equ	0xe8b9
+degl:		equ	0xe8c2
+degl1:		equ	0xe8c6
+degl2:		equ	0xe8dd
+lzeio:		equ	0xe8e9	;ld hl,bsanf+(bline*bwidth)-1
+lzei1:		equ	0xe8ec
+gkp:		equ	0xe8f5
+grkl:		equ	0xe8f7
+asbin:		equ	0xe900
+waba:		equ	0xe911
+wab:		equ	0xe918
+wabb:		equ	0xe921
+wab2:		equ	0xe936
+retreg:		equ	0xe940
+rucreg:		equ	0xe957
+retu:		equ	0xe96c
+nfund:		equ	0xe971
+csuch:		equ	0xe97a
+such:		equ	0xe983
+cs2:		equ	0xe993
+cs3:		equ	0xe994
+m2:		equ	0xe99c
+m1:		equ	0xe9a1
+eintr:		equ	0xe9b5
+neintr:		equ	0xe9c4
+spacet:		equ	0xe9ca
+rsprun:		equ	0xe9cf
+ueber:		equ	0xe9d6
+initia:		equ	0xe9f9
+clsta:		equ	0xe9fd
+clsta1:		equ	0xea02
+clsta2:		equ	0xea1b
+du1:		equ	0xea21
+du2:		equ	0xea24
+du4:		equ	0xea52
+du5:		equ	0xea58
+du6:		equ	0xea5a
+du8:		equ	0xea6b
+du9:		equ	0xea6f
+modify:		equ	0xea7e
+mofi1:		equ	0xea82
+mofi2:		equ	0xea85
+mofi3:		equ	0xea97
+mofi4:		equ	0xea9f
+max:		equ	0xeaac
+ma1:		equ	0xeac5
+patter:		equ	0xeac8
+patt1:		equ	0xeacc
+pa1:		equ	0xeae0
+transf:		equ	0xeae3
+trans1:		equ	0xeae7
+sequ:		equ	0xeafb
+sequ1:		equ	0xeafd
+rega:		equ	0xeb08
+ra3:		equ	0xeb11
+inhl:		equ	0xeb2c
+raga:		equ	0xeb3b
+regis:		equ	0xeb50
+anza:		equ	0xeb6f
+regdis:		equ	0xeb75
+rdis0:		equ	0xeb79
+rdis2:		equ	0xeb81
+anzpc:		equ	0xec1a
+sfl:		equ	0xec26
+zfl:		equ	0xec2f
+hfl:		equ	0xec37
+pfl:		equ	0xec3f
+nfl:		equ	0xec47
+cfl:		equ	0xec4f
+endfl:		equ	0xec57
+reganz:		equ	0xec58
+regan1:		equ	0xec5c
+r1:		equ	0xec78
+r2:		equ	0xec92
+mr1:		equ	0xecbe
+manz:		equ	0xeccc
+manzs:		equ	0xecd1
+mahl:		equ	0xecd4
+brrout:		equ	0xecde
+bpoint:		equ	0xed0a
+bpn1:		equ	0xed0e
+exec:		equ	0xed27
+brka:		equ	0xed2b
+jump:		equ	0xed30
+jum1:		equ	0xed34
+jum2:		equ	0xed39
+go:		equ	0xed52
+go23:		equ	0xed56
+gbrk:		equ	0xed5a
+go1:		equ	0xed5e
+go2:		equ	0xed6f
+comp:		equ	0xed7b
+com1:		equ	0xed7f
+com2:		equ	0xed82
+com3:		equ	0xed86
+com4:		equ	0xed8e
+finda:		equ	0xedac
+fina1:		equ	0xedb1
+fina2:		equ	0xedb4
+fina5:		equ	0xedbb
+fina4:		equ	0xedc0
+fina3:		equ	0xedc6
+fina7:		equ	0xedc9
+findh:		equ	0xedda
+finh1:		equ	0xede4
+finh2:		equ	0xedec
+finh3:		equ	0xedef
+finh4:		equ	0xedfa
+finh5:		equ	0xedfb
+fin6:		equ	0xee10
+anze:		equ	0xee22
+anze1:		equ	0xee26
+anze4:		equ	0xee46
+cksum:		equ	0xee4f
+iblo:		equ	0xee6b
+dblo:		equ	0xee78
+blos:		equ	0xee85
+bloe:		equ	0xee88
+wpc:		equ	0xee8a
+ste1:		equ	0xee9c
+ste2:		equ	0xee9f
+ste5:		equ	0xeea5
+stport:		equ	0xeec2	;out (outnmi),a
+ste8:		equ	0xeec6
+ste6:		equ	0xeece
+ste7:		equ	0xeeea
+rteur:		equ	0xeefe
+sumclc:		equ	0xef04
+sumclcl:	equ	0xef0a
+conout:		equ	0xef11
+dvce:		equ	0xef27
+dvceprt:	equ	0xef41
+tasct:		equ	0xef44	;illegal sequence:	defb 0fdh,02eh,0ffh
+				;		is:	ld iyl,0ffh
+				;
+tascs:		equ	0xef49
+tascb:		equ	0xef4c	;illegal sequence:	defb 0fdh,02eh,000h
+				;		is:	ld iyl,000h
+				;
+tasc0:		equ	0xef4f
+tasc1:		equ	0xef52
+tasc3:		equ	0xef64	;illegal sequence: defb 0fdh,04dh,0cbh
+				;		is:	ld c,iyl
+				;			bit 0,c
+				;
+tasc2:		equ	0xef6c
+tascm:		equ	0xef72
+tasc4:		equ	0xef7d
+tx:		equ	0xef83
+send:		equ	0xef87
+dfcerr:		equ	0xefa8
+dramerr:	equ	0xefaf
+derror:		equ	0xefb5
+;
+; DATA AREA
+;
+lanvdb:		equ	0x07ff	;lanvdb equ $-ip1	<----- CHECK !!!
+;
+aaaa:		equ	0xefc1
+bbbb:		equ	0xefc3
+cccc:		equ	0xefc5
+zwsp:		equ	0xefc7
+zws2:		equ	0xefc9
+zanf:		equ	0xefcb
+zme:		equ	0xefcd
+zend:		equ	0xefce
+rafs:		equ	0xefd0
+rhls:		equ	0xefd6
+raf:		equ	0xefd8
+rhl:		equ	0xefde
+rix:		equ	0xefe0
+riy:		equ	0xefe2
+rsp:		equ	0xefe4
+rsp+1:		equ	0xefe5
+astep:		equ	0xefe6
+ri:		equ	0xefe8
+rpc:		equ	0xefea
+rbp:		equ	0xefee
+rbps:		equ	0xeff0

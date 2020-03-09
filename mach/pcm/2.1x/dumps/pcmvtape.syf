@@ -1,0 +1,300 @@
+; z80dasm symbol file for pcmvtape.bin
+;
+; i/o units and system addresses
+;
+bios:		equ	0xde00	;BIOS module
+bootf:		equ	0xde00	;cold boot function
+wbootf:		equ	0xde03	;warm boot function	'C'
+constf:		equ	0xde06	;console status function
+coninf:		equ	0xde09	;console input function
+conoutf:	equ	0xde0c	;console output function
+listf:		equ	0xde0f	;list output function
+;punchf:	equ	0xde12	;punch output function
+;readerf:	equ	0xde15	;reader input function
+homef:		equ	0xde18	;disk home function
+seldskf:	equ	0xde1b	;select disk function
+settrkf:	equ	0xde1e	;set track function
+setsecf:	equ	0xde21	;set sector function
+setdmaf:	equ	0xde24	;set dma function
+readf:		equ	0xde27	;read disk function
+writef:		equ	0xde2a	;write disk function
+;liststf:	equ	0xde2d	;list status function
+;sectran:	equ	0xde30	;sector translate
+;
+rwbuff:		equ	0xe600	; 512 byte r/w buffer
+rwbuff+80h:	equ	0xe680
+rwbuff+0ffh:	equ	0xe6ff
+debug:		equ	0xe800	; 'D'
+;
+lkenn:		equ	0x14
+cures:		equ	0x83	;Break key for V-Tape a.o.
+ptasda:		equ	0x84	;PIO system port A data (keyboard)
+ptasca:		equ	0x86	;PIO system port A control
+ptasdb:		equ	0x85	;PIO system port B data
+;ptascb:	equ	0x87	;PIO system port B control
+srfaw:		equ	0xc1	;control word for SYS-RAM-Floppy
+aspaw:		equ	0xc0	;control word for working mamory
+bank:		equ	0x94	;port for bank switch
+;
+vtape:		equ	0xf000
+conin:		equ	0xf003
+conout:		equ	0xf006
+agzk:		equ	0xf009
+agzk1:		equ	0xf00a
+grklo:		equ	0xf015
+grkl:		equ	0xf016
+wab:		equ	0xf01f
+waba:		equ	0xf02a
+wabb:		equ	0xf034
+wab1:		equ	0xf035
+wab3:		equ	0xf038
+wab2:		equ	0xf049
+asbin:		equ	0xf053
+zahex:		equ	0xf05e
+ahex:		equ	0xf063
+ah1:		equ	0xf06c
+ah2:		equ	0xf076
+cdsuch:		equ	0xf079	; ' '
+eg1:		equ	0xf07e
+eg0:		equ	0xf08e
+	;eg0 + 3	0xf091	ld hl,bsanf+(bline*bwidth)-1
+	;eg0 + 6	0xf094	ld bc,(bline*bwidth)-1
+eg2:		equ	0xf099
+eingab:		equ	0xf0a0
+einga1:		equ	0xf0b3
+gom1:		equ	0xf108	; 'G'
+form1:		equ	0xf10c	; 'F'
+rom1:		equ	0xf126	; 'B'
+bank0:		equ	0xf129	; '0'
+	;bank0 + 0	0xf129	ld a,aspaw
+bb:		equ	0xf12b
+bank1:		equ	0xf12e	; '1'
+	;bank1 + 0	0xf12e	ld a,srfaw
+bank2:		equ	0xf132	; '2'
+	;bank2 + 0	0xf132	ld a,srfaw+1
+if1:		equ	0xf136
+i2:		equ	0xf140
+i4:		equ	0xf155
+i6:		equ	0xf172
+inist:		equ	0xf178
+inilp:		equ	0xf17c
+osu:		equ	0xf184
+osu1:		equ	0xf186
+kenn0:		equ	0xf18f
+ke1:		equ	0xf194
+kenn:		equ	0xf199
+ken1:		equ	0xf19c
+read1:		equ	0xf1a7	; 'R'
+readl:		equ	0xf1be
+	; in v3.30 this is the call wruck
+	;readl + 13	0xf1cb	ld c,00dh
+	;readl + 15	0xf1cd	call conoutf
+seld:		equ	0xf1f1
+write1:		equ	0xf22e	; 'W'
+	;write1 + 8	0xf236	ld a,'D'
+wrlpp:		equ	0xf242
+	; in v3.30 this is the call wruck
+	;wrlpp + 34	0xf264	ld c,00dh
+	;wrlpp + 36	0xf266	call conoutf
+zlop:		equ	0xf26f
+nextnr:		equ	0xf28a
+nextlp:		equ	0xf29c
+save1:		equ	0xf2a7	; 'S'
+	;save1 + 38	0xf2cd	cp 'D'
+	;save1 + 42	0xf2d1	cp 'F'
+bnr0:		equ	0xf2d5
+bnr:		equ	0xf2d9
+bnr1:		equ	0xf2df
+aus:		equ	0xf2f2
+	; in v3.30 this is the jump relative neblck
+	;aus + 17	0xf303	ld a,(ldname+1ah)
+	;aus + 20	0xf306	cp 'D'
+	;aus + 22	0xf308	call z,ke1
+	;aus + 25	0xf30b	call kenn0
+eblock:		equ	0xf310
+kblock:		equ	0xf31a
+	;kblock + 11	0xf325	cp 'D'
+rt2:		equ	0xf339
+block:		equ	0xf342
+	;block + 14	0xf350	ld b,lkenn
+bout:		equ	0xf365
+out:		equ	0xf373
+nextb1:		equ	0xf378
+	;nextb1 + 0	0xf378	in a,(ptasdb)
+bit0:		equ	0xf380
+	;bit0 + 0	0xf380	out (ptasdb),a
+zk4:		equ	0xf382
+lopp1:		equ	0xf384
+	;lopp1 + 4	0xf388	in a,(ptasdb)
+	;lopp1 + 8	0xf38c	out (ptasdb),a
+zk5:		equ	0xf392
+lopp2:		equ	0xf394
+zk6:		equ	0xf399
+lopp3:		equ	0xf39b
+lbabf:		equ	0xf3a0
+	;lbabf + 0	0xf3a0	in a,(ptasda)
+	;lbabf + 2	0xf3a2	cp cures
+prf1:		equ	0xf3a5
+syn:		equ	0xf3ab
+syn1:		equ	0xf3ad
+ver1:		equ	0xf3b8	; 'V'
+ver2:		equ	0xf3bc
+xeq1:		equ	0xf3c1	; 'X'
+name:		equ	0xf3c8
+nam4:		equ	0xf3ce
+nlop:		equ	0xf3dd
+	;nlop + 6	0xf3e3	ld (hl),'.'
+	;nlop + 9	0xf3e6	ld (hl),'C'
+	;nlop + 12	0xf3e9	ld (hl),'O'
+	;nlop + 15	0xf3ec	ld (hl),'M'
+nam1:		equ	0xf3ef
+	;nam1 + 1	0xf3f0	cp '.'
+inis1:		equ	0xf3f9
+nam2:		equ	0xf3fc
+name3:		equ	0xf402
+lsyn:		equ	0xf40d
+zk1:		equ	0xf413
+f:		equ	0xf415
+f1:		equ	0xf427
+lsyn1:		equ	0xf428
+lsyn2:		equ	0xf43a
+load1:		equ	0xf445	; 'L'
+lanf:		equ	0xf44a
+laden:		equ	0xf479
+vor:		equ	0xf481
+lnam:		equ	0xf48e
+prf2:		equ	0xf4a2
+test:		equ	0xf4a7
+naus:		equ	0xf4ad
+n2:		equ	0xf4b9
+cpcont:		equ	0xf4c5
+	;cpcont + 1	0xf4c6	cp '*'
+	;cpcont + 5	0xf4c6	cp '?'
+w0:		equ	0xf4d5
+wvergl:		equ	0xf4da
+	;wvergl + 0	0xf4da	ld c,'<'
+	;wvergl + 4	0xf4de	ld c,'>'
+wvaus:		equ	0xf4e0
+skchar:		equ	0xf4f0
+skname:		equ	0xf4f1
+skcont:		equ	0xf4fa
+ld1:		equ	0xf4ff
+cllop:		equ	0xf50d
+	;cllop + 0	0xf50d	ld c,' '
+laa2:		equ	0xf538
+laa1:		equ	0xf541
+lbloc:		equ	0xf556
+lbloc1:		equ	0xf560
+	;lbloc1 + 29	0xf57d	cp 'D'
+bell3:		equ	0xf588
+bell30:		equ	0xf58d
+bell31:		equ	0xf595
+wrzva:		equ	0xf59d
+verfe:		equ	0xf5a6
+verf2:		equ	0xf5b2
+verf4:		equ	0xf5c0
+verf6:		equ	0xf5ce
+chs:		equ	0xf5d5
+awr:		equ	0xf5f1
+	; in v3.30 this is the call wruck
+	;awr + 0	0xf5f1	ld c,00dh
+	;awr + 2	0xf5f3	call conoutf
+	;
+	;awr + 12	0xf5fd	differ to v3.30
+	;			because:
+	;
+	;v2.10 provides a kind of a bin patched
+	;BIOS jump table at 0xf600 like provided
+	;by the BIOS itself at 0xde00. That's why
+	;awr is splited into a upper half and a
+	;lower half (awr1) and awr jumps from address
+	;awr + 12 over the BIOS jump table to address
+	;awr1
+;
+; BIOS ACCESS CONSTANTS
+; suplimentation of the first 10 default eintries
+; in the BIOS jump table:
+;
+;	0xf600 - 0xde00 = 0x1800 --> delta is 6KB = 3 * 2KB
+;				 --> maybe size of IS D14/15/17 ?
+;
+;	org 0F600h
+;
+boot:		equ	0xf600	;cold boot:      jump to BIOS
+wboot:		equ	0xf603	;warm boot:      jump to V-Tape
+csts:		equ	0xf606	;console status: jump to BIOS
+ci:		equ	0xf609	;console input:  jump to BIOS
+co:		equ	0xf60c	;console output: jump to V-Tape
+list:		equ	0xf60f	;list output:    jump to BIOS
+pu:		equ	0xf612	;empty RET immediately
+re:		equ	0xf615	;empty RET immediately
+home:		equ	0xf618	;empty RET immediately
+seldsk:		equ	0xf61b	;empty RET immediately
+;
+awr1:		equ	0xf61e
+awr4:		equ	0xf627
+awr2:		equ	0xf630
+	;awr2 + 5	0xf635	ld bc,12
+;
+;
+lbyte:		equ	0xf641
+zk2:		equ	0xf644
+lyl:		equ	0xf646
+zk3:		equ	0xf64b
+lyl1:		equ	0xf64d
+lbyte2:		equ	0xf650
+lbit:		equ	0xf65c
+	;lbit1 + 1	0xf65d	in a,(ptasdb)
+lbit1:		equ	0xf662
+	;lbit1 + 0	0xf662	in a,(ptasdb)
+off:		equ	0xf672
+	;off + 0	0xf672	in a,(ptasdb)
+off1:		equ	0xf676
+	;off1 + 0	0xf676	out (ptasdb),a
+lon:		equ	0xf679
+	;lon + 0	0xf679	in a,(ptasdb)
+son:		equ	0xf67f
+	;son + 0	0xf67f	in a,(ptasdb)
+wzk:		equ	0xf685	; 'Z'
+wzk1:		equ	0xf69e
+dir1:		equ	0xf6c8	; 'I'
+error:		equ	0xf6d1
+vco1:		equ	0xf6dc
+vco2:		equ	0xf6f0
+vco3:		equ	0xf6f5
+;
+; DATA AREA
+;
+cotab:		equ	0xf6f8
+co24:		equ	0xf700
+co36:		equ	0xf708
+co48:		equ	0xf710
+zadmer:		equ	0xf718
+zaehl:		equ	0xf71a
+zwsp:		equ	0xf71c
+svname:		equ	0xf721
+svname+08h:	equ	0xf729
+svname+09h:	equ	0xf72a
+svname+0ch:	equ	0xf72d
+svname+0eh:	equ	0xf72f
+svname+0fh:	equ	0xf730
+svname+10h:	equ	0xf731
+svname+12h:	equ	0xf733
+svname+14h:	equ	0xf735
+svname+16h:	equ	0xf737
+ldname:		equ	0xf739
+ldname+0ch:	equ	0xf745
+ldname+0eh:	equ	0xf747
+ldname+0fh:	equ	0xf748
+ldname+10h:	equ	0xf749
+ldname+12h:	equ	0xf74b
+ldname+16h:	equ	0xf74f
+ldname+18h:	equ	0xf751
+ldname+1ah:	equ	0xf753
+ldname+1bh:	equ	0xf754
+ldname+1ch:	equ	0xf755
+ldname+1dh:	equ	0xf756
+ldname+1eh:	equ	0xf757
+ldname+1fh:	equ	0xf758
+zs:		equ	0xf759
+stapze:		equ	0xf780

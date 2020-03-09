@@ -1,0 +1,68 @@
+; z80dasm block file for pcmsvdb.bin
+;
+wrzv_str:	start 0xe859 end 0xe85b type bytedata	;db 0dh,8ah
+cdsuch_str:	start 0xe838 end 0xe83b type bytedata	;db 'R','>'+80h
+;
+nfund_str:	start 0xe974 end 0xe977 type bytedata	;db 'IN','P'+80h
+;
+spacet_cmd_str:	start 0xe9ca end 0xe9ce type bytedata	;db 0,9,' ',0dh
+rsprun_cmd_str:	start 0xe9cf end 0xe9d3 type bytedata	;db 0,9,'Q',0dh
+program_msg:	start 0xe9d9 end 0xe9f8 type bytedata	;db 0ch,0ah,'DEBUGGER V2.2  '
+							;db '+++ AM86 +++',0ah,0dh+80h
+initia_cmd_str:	start 0xe9f9 end 0xe9fd type bytedata	;db 0,9,'I',0dh
+initia_str:	start 0xea14 end 0xea1b type bytedata	;db 'CLEAR',0dh,0ah+80h
+du2_str:	start 0xea4e end 0xea50 type bytedata	;db '-','>'+80h
+du6_str:	start 0xea67 end 0xea68 type bytedata	;db '>'+80h
+modify_cmd_str:	start 0xea7e end 0xea82 type bytedata	;db 0,9,'M',0dh
+patter_cmd_str:	start 0xeac8 end 0xeacc type bytedata	;db 0,9,'P',0dh
+;z80dasm works wrong here:
+;transf_cmd_str:	start 0xeae3 end 0xeae7 type bytedata	;db 0,9,'T',0dh
+regaf_str:	start 0xeb0b end 0xeb0e type bytedata	;db 'AF',':'+80h
+regbc_str:	start 0xeb14 end 0xeb17 type bytedata	;db 'BC',':'+80h
+regde_str:	start 0xeb1d end 0xeb20 type bytedata	;db 'DE',':'+80h
+reghl_str:	start 0xeb26 end 0xeb29 type bytedata	;db 'HL',':'+80h
+reghli_str:	start 0xeb2f end 0xeb34 type bytedata	;db '(HL)',':'+80h
+regis_main_str:	start 0xeb53 end 0xeb59 type bytedata	;db 'MAIN ',' '+80h
+regis_exxr_str:	start 0xeb62 end 0xeb68 type bytedata	;db 'EXXR ',' '+80h
+regdis_cmd_str:	start 0xeb75 end 0xeb79 type bytedata	;db 0,9,'R',0dh
+regdi_flag_str:	start 0xeb87 end 0xeb8d type bytedata	;db 'FLAG ',' '+80h
+regdi_flas_str:	start 0xeb96 end 0xeb99 type bytedata	;db '  ','('+80h
+regdi_flae_str:	start 0xeba2 end 0xeba5 type bytedata	;db ')',0dh,0ah+80h
+regdi_ix_str:	start 0xeba8 end 0xebab type bytedata	;db 'IX',':'+80h
+regdi_iy_str:	start 0xebb7 end 0xebba type bytedata	;db 'IY',':'+80h
+regdi_i_str:	start 0xebc9 end 0xebcc type bytedata	;db 'I ',':'+80h
+regdi_sr_str:	start 0xebdb end 0xebde type bytedata	;db 'SR',':'+80h
+regdi_sp_str:	start 0xebea end 0xebed type bytedata	;db 'SP',':'+80h
+regdi_bp_str:	start 0xec02 end 0xec05 type bytedata	;db 'BP',':'+80h
+regdi_pc_str:	start 0xec1d end 0xec20 type bytedata	;db 'PC',':'+80h
+regdi_sfl_char:	start 0xec2e end 0xec2f type bytedata	;db 'S'+80h
+regdi_zfl_char:	start 0xec36 end 0xec37 type bytedata	;db 'Z'+80h
+regdi_hfl_char:	start 0xec3e end 0xec3f type bytedata	;db 'H'+80h
+regdi_pfl_char:	start 0xec46 end 0xec47 type bytedata	;db 'P'+80h
+regdi_nfl_char:	start 0xec4e end 0xec4f type bytedata	;db 'N'+80h
+regdi_cfl_char:	start 0xec56 end 0xec57 type bytedata	;db 'C'+80h
+brrout_str:	start 0xeced end 0xecf6 type bytedata	;db 'BREAK AT',':'+80h
+bpoint_cmd_str:	start 0xed0a end 0xed0e type bytedata	;db 0,9,'B',0dh
+exec_cmd_str:	start 0xed27 end 0xed2b type bytedata	;db 0,9,'E',0dh
+jump_cmd_str:	start 0xed30 end 0xed34 type bytedata	;db 0,9,'J',0dh
+go_cmd_str:	start 0xed52 end 0xed56 type bytedata	;db 0,9,'G',0dh
+gbrk_cmd_str:	start 0xed5a end 0xed5e type bytedata	;db 0,9,'F',0dh
+go2_str:	start 0xed72 end 0xed7a type bytedata	;db 'INIT SP','!'+80h
+comp_cmd_str:	start 0xed7b end 0xed7f type bytedata	;db 0,9,'C',0dh
+finda_cmd_str:	start 0xedac end 0xedb1 type bytedata	;db 0,9,'FA',0dh
+findh_cmd_str:	start 0xedda end 0xeddf type bytedata	;db 0,9,'FH',0dh
+find_str:	start 0xee13 end 0xee1f type bytedata	;db ' NOT FOUND',0dh,0ah+80h
+anze_cmd_str:	start 0xee22 end 0xee26 type bytedata	;db 0,9,'K',0dh
+anze_cls_str:	start 0xee29 end 0xee2a type bytedata	;db 0ch+80h
+cksum_cmd_str:	start 0xee4f end 0xee53 type bytedata	;db 0,9,'&',0dh
+cksum_str:	start 0xee5f end 0xee64 type bytedata	;db 0dh,0ah,'SUM:',' '+80h
+iblo_cmd_str:	start 0xee6b end 0xee6f type bytedata	;db 0,9,'U',0dh
+dblo_cmd_str:	start 0xee78 end 0xee7c type bytedata	;db 0,9,'O',0dh
+wpc_cmd_str:	start 0xee8a end 0xee8e type bytedata	;db 0,9,'S',0dh
+dvce_cmd_str:	start 0xef27 end 0xef2b type bytedata	;db 0,9,'D',0dh
+tx_cmd_str:	start 0xef83 end 0xef87 type bytedata	;db 0,9,'X',0dh
+dfcerr_str:	start 0xefab end 0xefad type bytedata	;db 'F','C'+80h
+dramerr_str:	start 0xefb2 end 0xefb5 type bytedata	;db 'RA','M'+80h
+derror_str:	start 0xefb8 end 0xefbe type bytedata	;db '-ERRO','R'+80h
+;
+data_area:	start 0xefc1 end 0xf000 type bytedata

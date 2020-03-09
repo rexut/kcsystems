@@ -1,0 +1,27 @@
+; z80dasm block file for pcmvtape.bin
+;
+cdsuch_str:	start 0xf07c end 0xf07e type bytedata	;db 'V','>'+80h
+bof_str:	start 0xf139 end 0xf140 type bytedata	;db '   BOF',':'+80h
+eof_str:	start 0xf14e end 0xf155 type bytedata	;db '   EOF',':'+80h
+sof_str:	start 0xf16b end 0xf172 type bytedata	;db '   SOF',':'+80h
+nsp_str:	start 0xf4b7 end 0xf4b9 type bytedata	;db ' ',' '+80h
+wrzv_str:	start 0xf5a3 end 0xf5a5 type bytedata	;db 0dh,0ah+80h
+addr_str:	start 0xf5aa end 0xf5b2 type bytedata	;db '   ADDR:',' '+80h
+tape_str:	start 0xf5b8 end 0xf5c0 type bytedata	;db '   TAPE:',' '+80h
+ram_str:	start 0xf5c7 end 0xf5ce type bytedata	;db '   RAM:',' '+80h
+errps_str:	start 0xf5d8 end 0xf5f1 type bytedata	;db 0dh,'ERROR > Pruefsumme     ',07h+80h
+err_str:	start 0xf6d4 end 0xf6d9 type bytedata	;db 'ERRO','R'+80h
+;
+;data_area:	start 0xf6f8 end 0xf800 type bytedata
+;
+cotab_data:	start 0xf6f8 end 0xf700 type bytedata	;db 80,80,90,63,60,52,00,00
+co24_data:	start 0xf700 end 0xf708 type bytedata	;db 40,30,40,30,28,20,00,00
+co36_data:	start 0xf708 end 0xf710 type bytedata	;db 26,13,23,19,17,09,00,00
+co48_data:	start 0xf710 end 0xf718 type bytedata	;db 20,04,14,14,11,04,00,00
+zadmer_data:	start 0xf718 end 0xf71a type bytedata	;ds 2
+zaehl_data:	start 0xf71a end 0xf71c type bytedata	;ds 2
+zwsp_data:	start 0xf71c end 0xf721 type bytedata	;ds 5
+svname_data:	start 0xf721 end 0xf739 type bytedata	;ds 24
+ldname_data:	start 0xf739 end 0xf759 type bytedata	;ds 32
+zs_data:	start 0xf759 end 0xf781 type bytedata	;ds 40
+stack_gap:	start 0xf781 end 0xf800 type bytedata	;ds 80

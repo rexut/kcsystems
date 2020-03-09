@@ -1,0 +1,896 @@
+;***********************************************************
+;
+;		BIOS-Routinen PC/M
+;
+;***********************************************************
+;
+;Linkadresse minus 50h --> 0ddb0h
+;
+xlt	equ	0
+ccp	equ	0c800h
+beftab	equ	0cb10h
+entccp	equ	0cb5ch
+bdos	equ	0d006h
+budma	equ	0e780h
+vtape	equ	0f000h
+spwboo	equ	0f790h
+spboot	equ	0f7a0h
+;
+dvrama	equ	0f800h
+vrama	equ	0fc00h
+;
+;
+ctcs2	equ	082h
+psa	equ	084h
+psb	equ	085h
+psioda	equ	088h
+psioca	equ	08ah
+bank	equ	094h
+;
+;
+start:	di	
+	ld	a,00fh		;Motor Magnetband ausschalten
+	out	(087h),a	;Steuerport
+	out	(085h),a	;Datenport Bit 4-7 auf 0
+	ld	hl,00050h	;Betriebssystem in den RAM 
+	ld	de,boot		;laden
+	ld	bc,007ffh
+	ldir
+	ld	hl,00800h
+	ld	de,0e800h
+	ld	bc,01000h
+	ldir
+	jp	boot
+
+les1:	exx			;ROM-Teil der Leseroutine
+	ld	b,080h		;ab 48K
+les2:	exx
+	res	6,b
+	out	(c),b
+	ld	a,(hl)
+	set	6,b
+	out	(c),b
+	ld	(de),a
+	inc	hl
+	inc	de
+	exx
+	djnz	les2
+	ret	
+
+schr1:	exx			;ROM-Teil der Schreibroutine
+	ld	b,080h		;ab 48K
+schr2:	exx
+	ld	a,(de)
+	res	6,b
+	out	(c),b
+	ld	(hl),a
+	cp	(hl)
+	set	6,b
+	out	(c),b
+	jr	nz,scher
+	inc	hl
+	inc	de
+	exx
+	djnz	schr2
+	xor	a
+	ret	
+
+scher:	exx
+	ld	a,001h
+	ret	
+
+boot:	jp	boot1		;Kaltstart
+
+wboot:	jp	wboot1		;Warmstart
+
+csts:	jp	csts1		;Tastaturstatus
+
+ci:	jp	ci1		;Tastaturabfrage
+
+co:	jp	co1		;Consolausgabe
+
+list:	jp	list1		;Druckerausgabe
+
+pu:	jp	pu1		;Stanzerausgabe
+
+re:	jp	re1		;Lesereingabe
+
+home:	jp	home1		;Spur 0 einstellen
+
+seldsk:	jp	selds1		;Laufwerk auswaehlen
+
+settrk:	jp	settr1		;Spur auswaehlen
+
+setsec:	jp	setse1		;Sektor auswaehlen
+
+setdma:	jp	setdm1		;DMA-Adresse einstellen 
+
+read:	jp	read1		;Sektor lesen
+
+write:	jp	write1		;Sektor schreiben
+
+listst:	jp	lists1		;Druckerstatus
+
+sectra:	jp	sectr1		;Sektorumrechnung
+
+sysken:	db	'AM 02'		;Systemkennung
+
+anzdsk:	db	001h		;Anzahl der Diskettenlaufwerke
+
+dph0:	dw	xlt
+	db	004h
+	db	000h
+	db	004h
+	db	000h
+	db	080h
+	db	000h
+	dw	dirbuf
+	dw	dbp0	
+	dw	csv0	
+	dw	alv0
+
+dph1:	dw	xlt
+	db	000h
+	db	000h
+	db	000h
+	db	000h
+	db	000h
+	db	000h
+	dw	dirbuf
+	dw	dpb1
+	dw	csv1	
+	dw	alv1	
+
+	ds	24
+
+dbp0:	db	010h
+	db	000h
+bsh0:	db	003h
+blm0:	db	007h
+exm0:	db	000h
+dsm0:	db	07bh	;{
+	db	000h
+drm0:	db	03fh	;?
+	db	000h
+al00:	db	0c0h	;@
+al01:	db	000h
+cks0:	db	010h
+	db	000h
+off0:	ds	32
+
+dpb1:	db	010h
+	db	000h
+bsh1:	db	003h
+blm1:	db	007h
+exm1:	db	000h
+dsm1:	db	03dh	;=
+	db	000h
+drm1:	db	02fh	;/
+	db	000h
+al10:	db	0c0h	;@
+al11:	db	000h
+cks1:	db	00ch
+	db	000h
+off1:	ds	32
+
+	ds	45
+	ds	45
+
+boot1:	ld	a,0c0h
+	out	(bank),a
+	ld	hl,dvrama
+	xor	a
+boot2:	ld	(hl),020h
+	inc	hl
+	cp	h
+	jr	nz,boot2
+	ld	(escbuf),a
+boot3:	ld	(hl),a
+	inc	l
+	jr	nz,boot3
+	ld	a,080h
+	ld	(curbuf),a
+	ld	sp,spboot
+	call	init
+	ei
+	ld	hl,ueber
+	call	azk
+	jp	vtape
+
+azk:	ld	a,(hl)
+	or	a
+	ret	z
+	ld	c,a
+	push	hl
+	call	co1
+	pop	hl
+	inc	hl
+	jr	azk
+
+ueber:	db	0ch,0dh,0ah
+	db	'PC/M - SYS V2.11',0dh,0ah
+	db	'  +++ AM89 +++',0dh,0ah,0ah,0
+
+comand:	db	'DIR ERA TYPESAVEREN USER'
+
+wboot1:	xor	a
+	out	(bank),a
+	ld	hl,00800h
+	ld	de,0e800h
+	ld	bc,01000h
+	ldir
+	ld	a,0c0h
+	out	(bank),a
+	ld	sp,spwboo
+	xor	a
+	out	(bank),a
+	ld	hl,(01801h)
+	ld	de,entccp
+	or	a
+	sbc	hl,de
+	jr	nz,wb0
+	ld	hl,01800h
+	ld	de,ccp
+	ld	bc,00800h
+	ldir
+wb0:	ld	a,0c0h
+	out	(bank),a
+	ld	hl,bdos-06h
+	ld	b,006h
+wb2:	ld	(hl),000h
+	inc	hl
+	djnz	wb2
+	ld	hl,(0d047h)
+	ld	de,0de03h
+	sbc	hl,de
+	jr	z,boot5
+	ld	hl,ls2
+	jr	wb3
+
+wb1:	ld	hl,ls1
+wb3:	ld	a,0c0h
+	out	(bank),a
+	call	azk
+	jp	vtape
+
+prfccp:	ld	hl,beftab
+	ld	de,comand
+	ld	b,018h
+prfcc1:	ld	a,(de)
+	cp	(hl)
+	ret	nz
+	inc	hl
+	inc	de
+	djnz	prfcc1
+	ld	hl,(ccp+01h)
+	ld	de,entccp
+	or	a
+	sbc	hl,de
+	ret	nz
+	ld	hl,bdos-06h
+	xor	a
+	ld	b,006h
+prl:	or	(hl)
+	inc	hl
+	ret	nz
+	djnz	prl
+	or	a
+	ld	hl,(0cb4eh)
+	ld	de,023c9h
+	sbc	hl,de
+	ret	
+
+boot5:	ld	a,0c3h
+	ld	(00000h),a
+	ld	hl,wboot
+	ld	(00001h),hl
+	ld	(00005h),a
+	ld	hl,bdos
+	ld	(00006h),hl
+	ld	bc,00080h
+	call	setdm1
+	ld	a,080h
+	ld	(curbuf),a
+	xor	a
+	ld	(escbuf),a
+	ld	(dsp),a
+	call	prfccp
+	jp	nz,vtape
+	ld	a,(00004h)
+	ld	c,a
+	jp	ccp
+
+tabf:	call	csts1		;Tastencode von Tastatur holen
+	or	a		;Taste gedrueckt ?
+	jr	z,tabf		;wenn nein, dann warten
+	ld	a,(stat)	;Zeichen holen
+	push	hl
+	ld	hl,stat
+	ld	(hl),0		;und Statuspuffer loeschen
+	pop	hl
+tabf1:	and	07fh		;Bit 7 ruecksetzen
+	cp	01fh		;Rueckkehrtaste fuer SYS ?
+	jp	z,vmon		;dann zurueck zum SYS
+	IF	tastat eq 0
+	cp	07bh		;wenn Original-Tastatur,
+	ret	nc		;dann Vertauschen Klein-
+	cp	061h		;Groszschreibung
+	jr	c,cuw1
+	res	5,a
+	ret	
+
+cuw1:	cp	041h
+	ret	c
+	cp	05bh
+	ret	nc
+	set	5,a
+	ret	
+	ELSE
+	ret
+	ENDIF
+
+vmon:	ld	sp,spwboo	;Rueckkehr ins SYS	
+	ld	hl,ueber+01h
+	call	azk
+	jp	vtape
+
+ci1:	ld	(spmerk),sp
+	ld	sp,stap1
+	push	bc
+	push	de
+	push	hl
+	call	ci2
+	jp	wrret
+
+ci2:	call	tabf		;Tastatur abfragen
+	call	ton		;Piepser
+	cp	1eh		;Ton E/A ?
+	jr	z,cit
+	cp	13h		;RUN/STOP-Taste ?
+	ret	nz
+	push	af		;RUN/STOP-LED invertieren
+	in	a,(psb)
+	xor	002h
+	out	(psb),a
+	ld	hl,dsp
+	ld	a,(hl)
+	xor	002h
+	ld	(hl),a
+	pop	af
+	ret	
+
+cit:	push	af		;TON Ein/Aus	
+	in	a,(psb)		;TON-LED invertieren
+	xor	004h
+	out	(psb),a
+	ld	hl,dsp
+	ld	a,(hl)
+	xor	004h
+	ld	(hl),a
+	pop	af
+	ret	
+
+csts1:	push	hl		;Tastaturstatus
+	push	bc
+	ld	hl,dsp
+	call	csts0
+	pop	bc
+	pop	hl
+	ret	
+
+csts0:	ld	a,(stat)	;Tastencode aus Puffer holen
+	bit	7,a		;Taste anhaengig ?
+	ld	a,0ffh
+	ret	nz		;wenn ja, mit 0ffh zurueck
+	in	a,(psa)		;Tastenport lesen
+	bit	7,a		;Taste gedrueckt ?
+	jr	nz,csts2
+	set	4,(hl)
+csts3:	ld	a,0		;nein, dann null zurueck
+	ld	(stat),a
+	ret	
+
+csts2:	bit	4,(hl)
+	jr	z,csts3
+	ld	b,0
+cslop:	djnz	cslop		;Zeitschleife
+	in	a,(psa)		;Tastatur abfragen
+	ld	(stat),a	;und Zeichen abspeichern
+	bit	7,a		;war Taste gedrueckt ?
+	jr	z,csts3		;wenn nein, dann zurueck
+	res	4,(hl)		;sonst Status positiv
+	ld	a,0ffh
+	ret	
+
+ton:	push	bc		;TON ausgeben
+	ld	bc,00340h	;Laenge und Hoehe waehlen
+	call	tona
+	pop	bc
+	ret	
+
+tona:	push	af		;Ton ueber CTCS2 ausgeben
+	push	hl
+	ld	hl,dsp
+	bit	2,(hl)
+	jr	nz,tonr		;wenn Ton erlaubt, sonst Retur
+	ld	a,003h
+	out	(ctcs2),a
+	ld	a,005h
+	out	(ctcs2),a
+	ld	a,c
+	out	(ctcs2),a
+ton2:	dec	bc
+	ld	a,c
+	or	b
+	jr	nz,ton2
+	ld	a,003h
+	out	(ctcs2),a
+tonr:	pop	hl
+	pop	af
+	ret	
+
+co1:	ld	(spmerk),sp
+	ld	sp,stap1
+	push	bc
+	push	de
+	push	hl
+	call	co2
+	jp	wrret
+
+co2:	ld	hl,coret
+	push	hl
+	ld	hl,(curs)
+	xor	a
+	or	h
+	jr	z,co3
+	res	7,(hl)
+co3:	ld	a,(escbuf)
+	or	a
+	jr	nz,esc1
+	ld	a,c
+	cp	020h
+	jr	c,consig
+	cp	07fh
+	jr	nc,consig
+	ex	de,hl
+	ld	(de),a
+skip:	ld	hl,1
+	add	hl,de
+	inc	de
+	ex	de,hl
+	ret	nc
+	ld	de,0ffc0h
+scroll:	push	de
+	ld	hl,vrama+40h
+	ld	de,vrama
+	ld	bc,003c0h
+	ldir
+	dec	hl
+	ld	(hl),020h
+	ld	de,0fffeh
+	ld	bc,0003fh
+	lddr
+	pop	hl
+	ret	
+
+coret:	ld	(curs),hl
+	ld	a,(curbuf)
+	or	(hl)
+	ld	(hl),a
+	ret	
+
+esc1:	res	7,c
+	dec	a
+	ld	(escbuf),a
+	jr	z,esc4
+	ld	a,00fh
+	cp	c
+	jr	c,esc2
+	ld	a,c
+esc2:	ld	hl,vrama
+	or	a
+	ret	z
+	ld	de,00040h
+	ld	b,a
+esc3:	add	hl,de
+	djnz	esc3
+	ret	
+
+esc4:	ld	a,03fh
+	cp	c
+	jr	nc,esc5
+	ld	c,a
+esc5:	ld	b,000h
+	add	hl,bc
+	ret	
+
+consig:	ex	de,hl
+	cp	00dh
+	jp	z,cretur
+	cp	00ah
+	jp	z,zv
+	cp	007h
+	jp	z,beep
+	cp	008h
+	jp	z,backsp
+	cp	00ch
+	jp	z,cls
+	cp	001h
+	jp	z,homecu
+	cp	07fh
+	jp	z,delete
+	cp	014h
+	jp	z,cteos
+	cp	015h
+	jp	z,skip
+	cp	016h
+	jp	z,cteol
+	cp	018h
+	jp	z,clline
+	cp	01ah
+	jp	z,linbac
+	cp	01bh
+	jp	z,escape
+	cp	082h
+	jp	z,curein
+	cp	083h
+	jp	z,curaus
+	ex	de,hl
+	ret	
+
+beep:	ex	de,hl
+	push	bc
+	ld	bc,04080h
+	call	tona
+	pop	bc
+	ret	
+
+cretur:	ld	bc,00040h
+	ld	hl,0ffffh
+cretu1:	sbc	hl,bc
+	push	hl
+	sbc	hl,de
+	pop	hl
+	jr	nc,cretu1
+	inc	hl
+	ret	
+
+zv:	ld	hl,0ffbfh
+	sbc	hl,de
+	jp	c,scroll
+	ld	hl,00040h
+	add	hl,de
+	ret	
+
+delete:	ld	a,020h
+	ld	(de),a
+backsp:	ld	hl,vrama
+	sbc	hl,de
+	ex	de,hl
+	ret	z
+	dec	hl
+	ret	
+
+cls:	ld	de,vrama
+cteos:	ld	hl,0ffffh
+	sbc	hl,de
+	ex	de,hl
+	ld	(hl),020h
+	ret	z
+	push	hl
+	ld	b,d
+	ld	c,e
+	ld	d,h
+	ld	e,l
+	inc	de
+	ldir
+	pop	hl
+	ret	
+
+homecu:	ld	hl,vrama
+	ret	
+
+linbac:	ld	hl,vrama+3fh
+	sbc	hl,de
+	ex	de,hl
+	ret	nc
+	ld	de,0ffc0h
+	add	hl,de
+	ret	
+
+clline:	call	cretur
+	ex	de,hl
+cteol:	push	de
+	call	cretur
+	add	hl,bc
+	xor	a
+	sbc	hl,de
+	ld	a,020h
+cteol1:	ld	(de),a
+	inc	de
+	dec	l
+	jr	nz,cteol1
+	pop	hl
+	ret	
+
+escape:	ld	a,002h
+	ld	(escbuf),a
+	ex	de,hl
+	ret	
+
+curein:	ld	a,080h
+	jr	curset
+
+curaus:	xor	a
+curset:	ld	(curbuf),a
+	ex	de,hl
+	ret	
+
+list1:	in	a,(psioda)
+	cp	013h
+	jr	nz,ssa
+ifss1:	in	a,(psioda)
+	cp	091h
+	jr	nz,ifss1
+ssa:	in	a,(psioca)
+	bit	2,a
+	jr	z,ssa
+	ld	a,c
+	out	(psioda),a
+	ret	
+
+lists1:	in	a,(psioca)
+	bit	2,a
+	ld	a,000h
+	ret	z
+	ld	a,0ffh
+	ret	
+
+pu1:	ld	a,c
+	nop
+	ret	
+
+re1:	nop
+	nop
+	ret	
+
+home1:	ld	bc,00000h
+	jr	settr1
+
+selds1:	ld	hl,anzdsk
+	ld	a,c
+	cp	(hl)
+	ld	hl,00000h
+	ret	nc
+	ld	(laufwe),a
+	ld	l,a
+	add	hl,hl
+	add	hl,hl
+	add	hl,hl
+	add	hl,hl
+	ld	de,dph0
+	add	hl,de
+	ret	
+
+settr1:	ld	(spur),bc
+	ret	
+
+setse1:	ld	a,c
+	ld	(sektor),a
+	ret	
+
+sectr1:	ex	de,hl
+	ld	a,h
+	or	l
+	jr	z,sectr2
+	ld	a,(hl)
+	inc	hl
+	or	(hl)
+	dec	hl
+	jr	z,sectr2
+	add	hl,bc
+	ld	l,(hl)
+	ld	h,000h
+	ret	
+
+sectr2:	ld	h,b
+	ld	l,c
+	ret	
+
+setdm1:	ld	(dmasp),bc
+	ret	
+
+read1:	ld	(spmerk),sp
+	ld	sp,stap1
+	push	bc
+	push	de
+	push	hl
+	call	locate
+	ld	b,a
+	ld	a,(spur)
+	cp	036h
+	jr	nc,read4
+	cp	01fh
+	jr	nc,read2
+	cp	018h
+	jr	c,read2
+read4:	ld	de,budma
+	ld	c,bank
+	res	7,b
+	out	(c),b
+	call	00020h
+	jr	read3
+
+read2:	ld	de,budma
+	ld	bc,00080h
+	ldir
+read3:	ld	a,0c0h
+	out	(bank),a
+	ld	de,(dmasp)
+	ld	hl,budma
+	ld	bc,00080h
+	ldir
+	xor	a
+	jr	wrret
+
+locate:	ld	a,(spur)
+	ld	b,a
+	ld	hl,00000h
+	or	a
+	jr	z,sss
+	cp	01fh
+	jr	c,sps0
+	inc	a
+	and	01fh
+	ld	b,a
+sps0:	ld	de,00800h
+sps:	add	hl,de
+	djnz	sps
+sss:	ld	a,(sektor)
+	or	a
+	jr	z,sret
+	ld	b,a
+	ld	de,00080h
+sss1:	add	hl,de
+	djnz	sss1
+sret:	ld	a,(spur)
+	cp	01fh
+	ld	a,0c1h
+	jr	c,sret1
+	ld	a,0c2h
+sret1:	out	(bank),a
+	ret	
+
+write1:	ld	(spmerk),sp
+	ld	sp,stap1
+	push	bc
+	push	de
+	push	hl
+	ld	de,budma
+	ld	bc,00080h
+	ld	hl,(dmasp)
+	ldir
+	call	locate
+	ld	b,a
+	ld	a,(spur)
+	cp	036h
+	jr	nc,write4
+	cp	01fh
+	jr	nc,write2
+	cp	018h
+	jr	c,write2
+write4:	ld	de,budma
+	ld	c,bank
+	res	7,b
+	out	(c),b
+	call	00034h
+	or	a
+	jr	nz,wrerr
+	jr	write3
+
+write2:	ld	de,budma
+	ld	b,080h
+wrlop:	ld	a,(de)
+	ld	(hl),a
+	cp	(hl)
+	jr	nz,wrerr
+	inc	hl
+	inc	de
+	djnz	wrlop
+write3:	ld	a,0c0h
+	out	(bank),a
+	xor	a
+wrret:	pop	hl
+	pop	de
+	pop	bc
+	ld	sp,(spmerk)
+	ret	
+
+wrerr:	ld	a,0c0h
+	out	(bank),a
+	ld	hl,wrtxt
+	call	azk
+	ld	a,001h
+	jr	wrret
+
+wrtxt:	db	0dh,0ah
+	db	'BIOS RAM ERROR',0
+
+ls1:	db	'CCP/'
+ls2:	db	'BDOS LADEN!',0dh,0ah,0
+
+init:	ld	hl,initab
+	ld	b,020h
+init1:	ld	c,(hl)
+	inc	hl
+	outi
+	jr	nz,init1
+	ret	
+
+initab:	db	086h
+	db	0cfh	;o
+	db	086h
+	db	0ffh
+	db	086h
+	db	007h
+pio1b:	db	087h
+	db	0cfh	;o
+	db	087h
+	db	080h
+	db	087h
+	db	007h
+	db	085h
+	db	001h
+ctc0:	db	080h
+	db	000h
+	db	080h
+	db	005h
+	db	080h
+	db	001h
+ctc1:	db	081h
+	db	005h
+	db	081h
+	db	0c3h	;c
+sioa:	db	08ah
+	db	018h
+	db	08ah
+	db	004h
+	db	08ah
+	db	045h	;e
+	db	08ah
+	db	005h
+	db	08ah
+	db	028h	;(
+	db	08ah
+	db	003h
+	db	08ah
+	db	041h	;a
+	ds	26
+
+spmerk:	ds	2
+
+stat:	db	080h
+dsp:	db	000h
+
+curs:	dw	0fc00h
+dmasp:	dw	80h
+escbuf:	db	0
+	db	0
+curbuf:	db	080h
+laufwe:	db	0
+spur:	dw	0	
+sektor:	dw	1
+
+dirbuf:	ds	128
+
+alv0:	ds	37
+csv0:	ds	32
+
+alv1:	ds	37
+csv1:	ds	32
+
+	ds	40	
+stap1:	ds	1
+
+	org	0800h
+	end

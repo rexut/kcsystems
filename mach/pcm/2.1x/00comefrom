@@ -1,0 +1,66 @@
+[2008-09-29 23:52:02]
+------------------------------------------------------------------------------
+Assembler sources of the PC/M System 2.11, 25-Mar-1989
+
+		pcm.mac.in	PC/M BIOS Definitions (from Kconfig)
+		pcmbios.mac	PC/M BIOS "PC/M - SYS V2.11 (AM89)"
+		pcmsvdb.mac	PC/M BIOS System Visual Debugger
+		pcmvtape.mac	PC/M BIOS Voice Tape Monitor
+
+------------------------------------------------------------------------------
+PC/M V2.11 BIOS Definitions
+----------------------
+curl http://www.kcclub.de/dlarchiv/DOWNLOAD/DISK284/PCM.MAC | \
+gvim -
+edit:	tastat	equ	%%CONFIG_PCM_KEYBOARD%%
+remove:	tailing control characters: SUB (0x1A, )
+edit(EOF):	end
+save:	:w pcm.mac.in
+----------------------
+PC/M V2.11 BIOS
+----------------------
+curl http://www.kcclub.de/dlarchiv/DOWNLOAD/DISK283/PCMBIOS.MAC | \
+gvim -
+edit:	ueber:	db	0ch,0dh,0ah
+		db	'PC/M - SYS V2.11',0dh,0ah
+		db	'  +++ AM89 +++',0dh,0ah,0ah,0
+remove:	tailing control characters: SUB (0x1A, )
+add(EOF):	org	0800h
+		end
+save:	:w pcmbios.mac
+----------------------
+PC/M V2.11 SVDB V2.2
+----------------------
+z80dasm -g 0xe800 -S dumps/pcmsvdb.syf \
+                  -b dumps/pcmsvdb.blf \
+                  -l -t -z dumps/pcmsvdb.bin | \
+gvim -
+edit: change, extend an reformat
+save:	:w pcmsvdb.mac
+----------------------
+PC/M V2.11 VTAPE
+----------------------
+z80dasm -g 0xf000 -S dumps/pcmvtape.syf \
+                  -b dumps/pcmvtape.blf \
+                  -l -t -z dumps/pcmvtape.bin | \
+gvim -
+edit: change, extend an reformat
+save:	:w pcmvtape.mac
+------------------------------------------------------------------------------
+Rubrik 28: Assembler-Quelltexte (ASM, M80,...)
+--> http://www.kcclub.de/dlarchiv/09/RUBRIK28.HTM
+    ----------------------
+    Hauptprogramm BIOS-ROM für PCM
+    --> http://www.kcclub.de/dlarchiv/DOWNLOAD/DISK284/PCM.MAC
+    ----------------------
+    BIOS-Routinen des PCM (FA)
+    --> http://www.kcclub.de/dlarchiv/DOWNLOAD/DISK283/PCMBIOS.MAC
+    ----------------------
+--> http://www.iee.et.tu-dresden.de/~kc-club/DOWNLOAD/DISK284/PCM.MAC
+    ----------------------
+    Hauptprogramm BIOS-ROM für PCM
+    --> http://www.iee.et.tu-dresden.de/~kc-club/DOWNLOAD/DISK284/PCM.MAC
+    ----------------------
+    BIOS-Routinen des PCM (FA)
+    --> http://www.iee.et.tu-dresden.de/~kc-club/DOWNLOAD/DISK283/PCMBIOS.MAC
+    ----------------------

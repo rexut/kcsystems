@@ -1,0 +1,16 @@
+;**********************************************************
+;
+;		Hauptprogramm PC/M-Computer
+;
+;*********************************************************
+;
+;Arbeitsstand: 25.03.1989
+;
+tastat	equ	%%CONFIG_PCM_KEYBOARD%%	;0 = Original-Tastatur (Umcodierung
+			;    Klein/Grosz bzw. umgekehrt
+			;1 = K7659
+;
+;
+	include	PCMBIOS
+;
+	end

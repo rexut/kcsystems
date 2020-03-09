@@ -8,10 +8,12 @@ if MACH_PCM
 config SYSV
 	string
 	default "2.10"	if MACH_PCM_SYS210
+	default "2.11"	if MACH_PCM_SYS211
 	default ""
 
 choice
 	bool
+	default MACH_PCM_SYS211
 	prompt "PC/M System Version"
 	---help---
 		Select the PC/M system version.
@@ -30,6 +32,25 @@ config MACH_PCM_SYS210
 		    - VTAPE: Voice Tape Monitor
 
 		Say yes here to generate the original RAM floppy system that
+		was published in the German journal "Funkamateur" in 1988.
+
+		This system version can only used together with the operating
+		system CP/V (Control Program for V-Tape Microcomputers).
+
+config MACH_PCM_SYS211
+	bool
+	prompt "v2.11"
+	---help---
+		System version 2.11
+
+		This is the disassembled variant of 2.10 and consist the parts:
+
+		  Assembler sources:
+		    - BIOS:  Basic I/O System
+		    - SVDB:  System Visual Debugger
+		    - VTAPE: Voice Tape Monitor
+
+		Say yes here to generate the disassembled RAM floppy system that
 		was published in the German journal "Funkamateur" in 1988.
 
 		This system version can only used together with the operating

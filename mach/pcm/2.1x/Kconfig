@@ -66,8 +66,11 @@ config PCM_SYS21X_BIOS_ROM_OFFS
 
 endif	# PCM_SYS21X_BIOS
 
-comment "System Visual Debugger Basic I/O System"
+comment "System Visual Debugger needs Basic I/O System"
 	depends on !PCM_SYS21X_BIOS
+
+comment "System Visual Debugger"
+	depends on PCM_SYS21X_BIOS && !EXPERTMODE
 
 menuconfig PCM_SYS21X_SVDB
 	bool
@@ -107,8 +110,11 @@ config PCM_SYS21X_SVDB_ROM_OFFS
 
 endif	# PCM_SYS21X_SVDB
 
-comment "Voice Tape Monitor Basic I/O System"
+comment "Voice Tape Monitor needs Basic I/O System"
 	depends on !PCM_SYS21X_BIOS
+
+comment "Voice Tape Monitor"
+	depends on PCM_SYS21X_BIOS && !EXPERTMODE
 
 menuconfig PCM_SYS21X_VTAPE
 	bool
