@@ -9,6 +9,7 @@ addons:
     packages: &native_deps
     - coreutils
     - sed
+    - expect
     - yaze
     - srecord
     - libdsk-utils
