@@ -15,3 +15,20 @@ rm -rf *PCM6416_ZG*
 ------------------------------------------------------------------------------
 https://www.li-pro.net/pcm-hw.phtml
 --> https://www.li-pro.net/dl/0f1a22ea7e742183b4cc60cdd68aca61/PCM_PCM6416_ZG.zip
+
+
+[2005-04-19 00:48:25]
+------------------------------------------------------------------------------
+EPROM of the PC/M 2 kB 24x80 video card character generator
+
+		v2k8024.bin	VID2K, 80x24, 5x7 char, original set
+
+------------------------------------------------------------------------------
+wget https://www.li-pro.net/dl/161076ff08ba3a2fe56bf7072cb227a5/PCM_VID2K_ZG.zip
+unzip PCM_VID2K_ZG.zip VID2K_ZG/vid2k-zg-org.bin
+mv VID2K_ZG/vid2k-zg-org.bin v2k8024.bin
+----------------------
+rm -rf *VID2K_ZG*
+------------------------------------------------------------------------------
+https://www.li-pro.net/pcm-bs-24x80.phtml
+--> https://www.li-pro.net/dl/161076ff08ba3a2fe56bf7072cb227a5/PCM_VID2K_ZG.zip

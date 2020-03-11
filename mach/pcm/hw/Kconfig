@@ -9,9 +9,24 @@ config PCM_HAVE_SYS21XHW
 			&& PCM_HAVE_RAM \
 			&& PCM_HAVE_KEYBOARD
 
+config PCM_HAVE_SYS33XHW
+	bool
+	default y	if PCM_HAVE_CPUFREQ \
+			&& PCM_HAVE_ROM \
+			&& PCM_HAVE_RAM \
+			&& PCM_HAVE_VIDEO \
+			&& PCM_HAVE_KEYBOARD \
+			&& PCM_HAVE_SOUND \
+			&& PCM_HAVE_PRINTER
+
+source "mach/pcm/hw/Kconfig.clock"
 source "mach/pcm/hw/Kconfig.rom"
 source "mach/pcm/hw/Kconfig.ram"
+source "mach/pcm/hw/Kconfig.video"
 source "mach/pcm/hw/Kconfig.keyboard"
+source "mach/pcm/hw/Kconfig.sound"
+source "mach/pcm/hw/Kconfig.printer"
+source "mach/pcm/hw/Kconfig.fdc"
 
 # Local variables:
 # coding: utf-8

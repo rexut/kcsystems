@@ -1,0 +1,40 @@
+#
+# For a description of the syntax of this configuration file, see:
+# https://gitlab.com/ymorin/kconfig-frontends/-/blob/master/docs/kconfig-language.txt
+#
+
+if OSYS_CPA
+
+choice
+	default CPA_198703
+	depends on OSYS_CPA
+	prompt "CP/A Version"
+	---help---
+		Select the CP/A version.
+
+config CPA_198703
+	bool
+	prompt "1987/03"
+	---help---
+		CP/A Operating System version of March 1987
+
+		This is the original variant and consist the parts:
+
+		  ROM/RAM images:
+		    - CCP:  Console Command Processor
+		    - BDOS: Basic Disk Operating System
+
+		Say yes here to generate the original CP/A operating system
+		that was published in March 1987 by Academy of Sciences
+		of the GDR, Institute of Computer Science and Technology.
+
+endchoice
+
+endif	# OSYS_CPA
+
+# Local variables:
+# coding: utf-8
+# mode: text
+# mode: kconfig
+# End:
+# vim: fileencoding=utf-8 filetype=kconfig :

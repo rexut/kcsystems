@@ -1,0 +1,107 @@
+
+printd	MACRO	t,n
+	printx	<t>,%(n)
+	ENDM
+printh	MACRO	t,n
+	.RADIX	16
+	printx	<t>,%(n)
+	.RADIX	10
+	ENDM
+printx	MACRO	t,n
+.printx * tn
+	ENDM
+	IF1
+.printx > Uebersetzung System PC/M * Version +++ AM90 +++
+.printx  
+	IF btype eq 0
+.printx > Bildschirm PC/M-Original 64*16 (mit Zwischenzeilen)
+	ENDIF
+	IF btype eq 1
+.printx > Bildschirm 80*24 
+	ENDIF
+	IF btype eq 2
+.printx > Bildschirm 64*16 mit M6845
+	ENDIF
+	IF btype eq 3
+.printx > Bildschirm 80*24 mit M6845
+	ENDIF
+	IF tastat eq 0
+.printx > Original PC/M-Tastatur
+	ENDIF
+	IF tastat eq 1
+.printx	> K7659-Tastatur
+	ENDIF
+	IF tastat eq 2
+.printx > Commodore-Tastatur ueber EPR2
+	ENDIF
+	IF tastat eq 3
+.printx > Tastatur K7634 oder K7604
+	ENDIF
+	IF tastat eq 4
+.printx > Tastatur K7636 oder K7606
+	ENDIF
+	IF tastat eq 5
+.printx > S3004 Schreibmaschine als Tastatur
+	ENDIF
+	IF tastat eq 6
+.printx > Tastatur K7632
+	ENDIF
+	IF tonaus eq 1
+.printx > mit Tonausgabe
+	ENDIF
+	IF pcmuhr eq 1
+.printx > mit Uhr
+	ENDIF 	
+	IF statusz eq 1
+.printx > mit Statuszeile
+	ENDIF
+	IF prdef eq 1
+.printx > SD1152 ueber PIO-Schnittstelle
+	ENDIF
+	IF prdef eq 2
+.printx > SD1152 ueber SIO-Schnittstelle
+	ENDIF
+	IF prdef eq 3
+.printx > S3004 Schreibmaschine als Drucker
+        ENDIF
+	IF prdef eq 4
+.printx > K6313/K6314, EPSON LX-86 o.ae. ueber V.24
+	ENDIF
+	IF durlad eq 1
+.printx > Disketten-Urlader
+	ENDIF
+	IF sdebug eq 1
+.printx > Systemdebugger
+	ENDIF
+	IF ramflo eq 1
+	IF diskA eq 'R'
+.printx > System-RAM-Floppy 118k Byte (Laufwerk A)
+	ENDIF
+	IF diskA eq 'Q'
+.printx > System-RAM-Floppy 118k Byte (Laufwerk A)
+	ENDIF
+	ENDIF
+	IF emlram eq 1
+.printx > EPROM-Emulator ** (Laufwerk L)
+	ENDIF
+	IF zramfl eq 1
+.printx > Zusatz-RAM-Floppy (Laufwerk M)
+	ENDIF
+	IF romflo eq 1
+.printx > ROM-Floppy ****** (Laufwerk O)
+	ENDIF
+	IF flopy eq 1
+.printx > Floppy-Laufwerke vorgesehen
+	ENDIF
+	IF svtape eq 1
+.printx > V-Tape Kassettensystem
+	ENDIF	
+	IF sysver eq 0
+.printx > ROM-Version (auf Adresse 0d5b0h linken)
+.printx > Eingabe: linkmt pcmrom=bios/p:0d5b0
+	ELSE
+.printx > Disketten-Version (auf Adresse 0bff0h linken)
+.printx > Eingabe: linkmt pcmsys=bas,ccp,bdos,bios/m/p:0bff0
+	ENDIF
+	ENDIF
+

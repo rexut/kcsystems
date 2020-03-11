@@ -1,0 +1,96 @@
+#
+# For a description of the syntax of this configuration file, see:
+# https://gitlab.com/ymorin/kconfig-frontends/-/blob/master/docs/kconfig-language.txt
+#
+
+config PCM_HAVE_CPUFREQ
+	bool
+	default y	if PCM_CPUFREQ >= 0 \
+			&& PCM_CPUFREQ < 5
+	default n
+
+config PCM_CPUFREQ
+	int
+	range 0 5	if MACH_PCM_SYS33X
+	default 0	if PCM_CPUFREQ_20000
+	default 1	if PCM_CPUFREQ_24576
+	default 2	if PCM_CPUFREQ_25000
+	default 3	if PCM_CPUFREQ_36840
+	default 4	if PCM_CPUFREQ_40000
+	default 5
+
+choice
+	default PCM_CPUFREQ_25000
+	depends on MACH_PCM_SYS33X
+	prompt "CPU Frequency"
+	---help---
+		Select the PC/M frequency connected to the CPU.
+
+		The CPU frequency is derived from a crystal over a 4:1
+		devider. The original assembly have an 10MHz crystal.
+		That results in a CPU frequency of 2.5MHz.
+
+		See: http://www.li-pro.net/pcm-hw.phtml
+		     Section: 2.1.1 Taktversorgung, Reset-Logik, NMI-Generator
+
+		See: http://www.kcclub.de/dlarchiv/DOWNLOAD/DISK269/PC_M1.DOC
+		     Section: 2.1.1 Taktversorgung, Reset-Logik, NMI-Generator
+
+config PCM_CPUFREQ_20000
+	bool
+	depends on MACH_PCM_SYS33X
+	prompt "2.0000 MHz"
+	---help---
+		Assembly with 2.0000 MHz crystal.
+
+		All interfaces connected to the system CTC will be driven
+		with the half of the CPU clock (1.0000 MHz).
+
+config PCM_CPUFREQ_24576
+	bool
+	depends on MACH_PCM_SYS33X
+	prompt "2.4576 MHz"
+	---help---
+		Original assembly with 2.4576 MHz crystal.
+
+		All interfaces connected to the system CTC will be driven
+		directly with the CPU clock (2.4576 MHz).
+
+config PCM_CPUFREQ_25000
+	bool
+	depends on MACH_PCM_SYS33X
+	prompt "2.5000 MHz"
+	---help---
+		Original assembly with 2.5000 MHz crystal.
+
+		All interfaces connected to the system CTC will be driven
+		directly with the CPU clock (2.5000 MHz).
+
+config PCM_CPUFREQ_36840
+	bool
+	depends on MACH_PCM_SYS33X
+	prompt "3.6840 MHz"
+	---help---
+		Assembly with 3.6840 MHz crystal.
+
+		All interfaces connected to the system CTC will be driven
+		with the half of the CPU clock (1.8420 MHz).
+
+config PCM_CPUFREQ_40000
+	bool
+	depends on MACH_PCM_SYS33X
+	prompt "4.0000 MHz"
+	---help---
+		Assembly with 4.0000 MHz crystal.
+
+		All interfaces connected to the system CTC will be driven
+		with the half of the CPU clock (2.0000 MHz).
+
+endchoice
+
+# Local variables:
+# coding: utf-8
+# mode: text
+# mode: kconfig
+# End:
+# vim: fileencoding=utf-8 filetype=kconfig :

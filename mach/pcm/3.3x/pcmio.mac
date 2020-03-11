@@ -1,0 +1,1428 @@
+
+devsp:	db	0	
+												
+limerk: db	0	
+		
+stat:	db	0	
+ciesc:	dw	0	
+escmark:db	0	
+sckmark:db	80H	
+scsond: db	0	
+	IF	escseq eq 1
+conin:	push	hl
+	push	bc
+	call	contas		
+	cp	1fh		
+	jp	z,rboot		
+	ld	c,a
+	ld	a,(ciesc)	
+	or	a		
+	jr	z,conin1	
+	cp	2		
+	jr	nz,escf1	
+	ld	a,c
+	cp	'*'		
+	ld	a,0		
+	ld	(ciesc),a
+	jr	nz,conin1
+	inc	a		
+	ld	(ciesc),a	
+	jr	conin1		
+escf1:	cp	1
+	jr	nz,conin1	
+	ld	a,c
+	call	grkl		
+	ld	hl,devsp	
+	cp	'U'		
+	jr	nz,escw1
+	ld	a,(hl)
+	xor	040h		
+	jr	escret
+escw1:	cp	'T'		
+	jr	nz,escw2
+	in	a,(ptasdb)	
+	xor	004h
+	out	(ptasdb),a
+	ld	a,(hl)
+	xor	004h		
+	jr	escret
+escw2:	cp	'S'		
+	jr	nz,escw3
+	ld	a,(hl)
+	xor	020h		
+escret:	ld	(hl),a		
+	xor	a		
+	ld	(ciesc),a
+	jr	conin2
+escw3:	cp	'C'		
+	jr	nz,escw4
+	ld	a,(hl)
+	xor	080h
+	jr	escret
+escw4:	cp	'Q'		
+	jp	z,rboot		
+conin1:	ld	a,c
+	cp	1bh		
+	jr	nz,conin2
+	ld	hl,ciesc	
+	ld	(hl),2		
+conin2:	ld	a,c
+	pop	bc		
+	pop	hl
+	ret
+	ELSE
+conin:	call	contas		
+	cp	1fh		
+	ret	nz
+	jp	rboot		
+	ENDIF
+	IF	tastat lt 3 
+tabf:	call	const		
+	or	a		
+	jr	z,tabf		
+	ld	a,(stat)	
+	ld	hl,stat
+	ld	(hl),0		
+	and	07fh		
+	IF	tastat eq 0
+	cp	07bh		
+	ret	nc		
+	cp	061h		
+	jr	c,cuw1
+	res	5,a
+	ret	
+cuw1:	cp	041h		
+	ret	c		
+	cp	05bh
+	ret	nc
+	set	5,a
+	ret	
+	ELSE
+	ret
+	ENDIF
+contas:	call	tabf		
+	IF	tonaus eq 1	
+	call	ton		
+	ENDIF
+	cp	13h		
+	ret	nz
+	push	af		
+	in	a,(ptasdb)
+	xor	008h
+	out	(ptasdb),a
+	ld	hl,devsp
+	ld	a,(hl)
+	xor	008h
+	ld	(hl),a
+	pop	af
+	ret	
+	ENDIF
+	IF	tonaus eq 1
+ton:	push	bc		
+	IF	fcpu eq 0
+	ld	bc,00233h	
+	ENDIF
+	IF	fcpu eq 1
+	ld	bc,0033Eh	
+	ENDIF
+	IF	fcpu eq 2
+	ld	bc,00340h	
+	ENDIF
+	IF	fcpu eq 3
+	ld	bc,0045Eh	
+	ENDIF
+	IF	fcpu eq 4
+	ld	bc,00566h	
+	ENDIF
+ton0:	call	tona
+	pop	bc
+	ret	
+tona:	push	af		
+	push	hl
+	ld	hl,devsp
+	bit	2,(hl)
+	jr	nz,tonr		
+	ld	a,003h
+	out	(ctcton),a
+	ld	a,005h
+	out	(ctcton),a
+	ld	a,c
+	out	(ctcton),a
+ton2:	dec	bc
+	ld	a,c
+	or	b
+	jr	nz,ton2
+	ld	a,003h
+	out	(ctcton),a
+tonr:	pop	hl
+	pop	af
+	ret	
+	ENDIF
+	IF	tonaus eq 1
+bell:	push	bc		
+	IF	fcpu eq 0
+	ld	bc,03366h	
+	ENDIF
+	IF	fcpu eq 1
+	ld	bc,03E7Dh	
+	ENDIF
+	IF	fcpu eq 2
+	ld	bc,04080h	
+	ENDIF
+	IF	fcpu eq 3
+	ld	bc,05EBCh	
+	ENDIF
+	IF	fcpu eq 4
+	ld	bc,066CCh	
+	ENDIF
+	jr	ton0
+	ELSE
+bell:	ret
+	ENDIF
+	IF	tastat lt 3	
+const:	push	hl		
+	push	bc
+	ld	hl,devsp
+	call	csts0
+	pop	bc
+	pop	hl
+	ret	
+csts0:	ld	a,(stat)	
+	bit	7,a		
+	ld	a,0ffh
+	ret	nz		
+	in	a,(ptasda)	
+	bit	7,a		
+	jr	nz,csts2
+	set	4,(hl)
+csts3:	ld	a,0		
+	ld	(stat),a
+	ret	
+csts2:	bit	4,(hl)
+	jr	z,csts3
+	ld	b,0
+cslop:	djnz	cslop		
+	in	a,(ptasda)	
+	ld	(stat),a	
+	bit	7,a		
+	jr	z,csts3		
+	res	4,(hl)		
+	ld	a,0ffh
+	ret	
+	ENDIF
+	IF	tastat eq 3
+const:	in	a,(ptasdb)
+	res	1,a		
+	out	(ptasdb),a
+ 	in	a,(ptasda)	
+	cpl
+	and	08h
+	push	af 
+	in	a,(ptasdb)
+	set	1,a		
+	out	(ptasdb),a	
+	pop	af
+	ld	a,0
+	ret 	z		
+	ld	a,0FFH
+	ret			
+contas: ld	d,255		
+conip1: call	const		
+	jr	z,conip1
+	in	a,(ptasdb)
+	res	0,a		
+	out	(ptasdb),a	
+	in	a,(ptasda)	
+	push	af
+	in	a,(ptasdb)
+	set	0,a		
+	out	(ptasdb),a
+	pop	af
+	cp	80h		
+	jr	c,cona1
+	cp	84h
+	jr	c,conip1
+cona1:	IF	tonaus eq 1	
+	call	ton		
+	ENDIF
+	cp	0FEH		
+	jr	nz,contas3
+	ld	a,0E0H		
+	xor	d		
+	ld	d,a
+	jr 	contas		
+contas3:and	d		
+	bit	7,d		
+	ret	z		
+	ld	hl,ttab		
+	ld	b,LOW tlen	
+contas4:cp	(hl)		
+	inc	hl
+	jr	z,contas5	
+	inc	hl
+	djnz	contas4		
+	cp	90h		
+	ret	c		
+	ld	a,b		
+	ret
+contas5:ld	a,(hl)		
+	ret
+ttab:	
+	db	0A8h,16h	
+	db	0C5h,0Ch	
+	db	0C6h,19h	
+	db	003h,1Ah	
+	db	013h,09h	
+	db	0A9h,02h	
+	db	0C2h,02h	
+	db	00Bh,01h	
+	db	001h,06h	
+	db	004h,05h	
+	db	005h,18h	
+	db	006h,08h	
+	db	007h,04h	
+	db	00Ah,03h	
+	db	00Ch,12h	
+	db	01Bh,07h	
+	db	0C1h,1Bh	
+	db	0C4h,11h	
+	db	0C7h,17h	
+	db	0C3h,0Ah	
+	db	0C0h,0Bh	
+	db	0AFh,7Fh	
+	db	010h,15h	
+	db	0A0h,13h	
+	db	0A2h,10h	
+	db	0A3h,0Fh	
+	db	0FFh,0Dh	
+tlen	equ	($-ttab)/2	
+	ENDIF
+	IF	tastat eq 4
+const:	in	a,(ptasdb)
+	res	1,a		
+	out	(ptasdb),a
+ 	in	a,(ptasda)	
+	cpl
+	and	08h
+	push	af 
+	in	a,(ptasdb)
+	set	1,a		
+	out	(ptasdb),a	
+	pop	af
+	ld	a,0
+	ret 	z		
+	ld	a,0FFH
+	ret			
+contas: ld	d,255		
+conip1: call	const		
+	jr	z,conip1
+	in	a,(ptasdb)
+	res	0,a		
+	out	(ptasdb),a	
+	in	a,(ptasda)	
+	push	af
+	in	a,(ptasdb)
+	set	0,a		
+	out	(ptasdb),a
+	pop	af
+	cp	80h		
+	jr	c,cona1
+	cp	84h
+	jr	c,conip1
+cona1:	IF	tonaus eq 1
+	call	ton
+	ENDIF
+	cp	0FEH		
+	jr	nz,contas3
+	ld	a,0E0H		
+	xor	d		
+	ld	d,a
+	jr 	contas		
+contas3:and	d		
+	bit	7,d		
+	ret	z		
+	ld	hl,ttab		
+	ld	b,LOW tlen	
+contas4:cp	(hl)		
+	inc	hl
+	jr	z,contas5	
+	inc	hl
+	djnz	contas4		
+	cp	90h		
+	ret	c		
+	ld	a,b		
+	ret
+contas5:ld	a,(hl)		
+	ret
+ttab:	
+	db	0A8h,16h	
+	db	0C5h,0Ch	
+	db	0C6h,19h	
+	db	003h,1Ah	
+	db	013h,09h	
+	db	0A9h,02h	
+	db	0C2h,02h	
+	db	00Bh,01h	
+	db	001h,06h	
+	db	004h,05h	
+	db	005h,18h	
+	db	006h,08h	
+	db	007h,04h	
+	db	00Ah,03h	
+	db	00Ch,12h	
+	db	01Bh,07h	
+	db	0C1h,1Bh	
+	db	0C4h,11h	
+	db	0C7h,17h	
+	db	0C3h,0Ah	
+	db	0C0h,0Bh	
+	db	0AFh,7Fh	
+	db	010h,15h	
+	db	0A0h,13h	
+	db	0A2h,10h	
+	db	0A3h,0Fh	
+	db	0FFh,0Dh	
+tlen	equ	($-ttab)/2	
+	ENDIF
+	IF	tastat eq 5
+const:	in	a,(tsioca)
+	bit	0,a
+	ld	a,0ffh
+	ret	nz
+	xor	a
+	ret
+contas:	call	const
+	or	a
+	jr	z,contas
+	in	a,(tsioda)
+	IF	prdef eq 3	
+	cp	75h		
+	jr	c,conta1	
+	cp	89h
+	jr	nc,conta1
+	cp	77h
+	jr	c,cpcon
+	cp	81h
+	jr	c,conta1
+cpcon:	ld	c,a
+	call	uplist
+	jr	const
+	ENDIF
+conta1:	ld	hl,tasta2-1
+	ld	bc,80h
+	cpdr			
+	jr	z,conta2	
+	ld	b,9
+	ld	hl,tasta2
+cont20:	cp	(hl)		
+	inc	hl
+	jr	z,conta3
+	inc	hl
+	djnz	cont20		 
+	xor	a		
+	ret
+conta3:	ld	c,(hl)
+conta2:	ld	a,c	
+	ret
+	db	000h,0c2h,0d3h,0cbh,0cah,0c9h,0ceh,0d2h
+	db	0d6h,0ddh,0dah,0deh,0e2h,0dbh,0d7h,0e1h
+	db	0e5h,0c1h,0cdh,0c6h,0d1h,0d9h,0cfh,0c5h
+	db	0c7h,0c3h,0d5h,0eah,0e6h,0e9h,000h,000h
+	db	071h,042h,043h,041h,048h,004h,002h,029h
+	db	01dh,01fh,01bh,025h,064h,062h,063h,040h
+	db	00dh,011h,010h,00fh,00eh,00ch,00bh,00ah
+	db	009h,008h,013h,03bh,039h,02eh,015h,035h
+	db	045h,030h,018h,020h,014h,034h,03eh,01ch
+	dâ	012h,021h,032h,024h,02ch,016h,02ah,01eh
+	dâ	02fh,01ah,036h,033h,037h,028h,022h,02dh
+	dâ	026h,031h,038h,03fh,03ch,03ah,019h,001h
+	dâ	007h,061h,04eh,057h,053h,05ah,049h,060h
+	dâ	055h,005h,04bh,050h,04dh,04ah,05ch,05eh
+	dâ	05bh,052h,059h,058h,056h,05dh,04fh,04ch
+	dâ	05fh,051h,054h,065h,066h,067h,047h,0aeh
+tasta2:	db	07dh,01fh	
+	db	07bh,01eh
+	db	03dh,024h
+	db	02bh,027h
+	db	072h,008h
+	db	079h,009h
+	db	0afh,01bh
+	db	077h,00dh
+	db	027h,07ch
+	ENDIF
+	IF	tastat eq 6
+const:	in	a,(tsioca)	
+	bit	0,a		
+	ld 	a,0	
+	ret	z		
+	ld	a,0ffh		
+	ret	
+zhol:	call	const		
+	or	a		
+	jr	z,zhol		
+	in	a,(tsioda)	
+	ret		
+contas:	call	zhol		
+	cp	01bh		
+	jr	z,escbeh	
+	ld	hl,ttab		
+	ld	b,LOW tlen	
+contas4:cp	(hl)		
+	inc	hl
+	jr	z,contas5	
+	inc	hl
+	djnz	contas4		
+	ret			
+contas5:ld	a,(hl)		
+	ret
+escbeh:	call	zhol		
+	cp	'['		
+	jr	z,esckl		
+	cp	04fh		
+	jr	z,escbo		
+	cp	'c'		
+	jr	nz,escbac
+	ld	a,01fh		
+	ret
+escbac: ld	a,01bh
+	ret
+esckl:	call	zhol		
+	cp	3ah
+	jr	c,esczah	
+	cp	'?'		
+	jr	nz,esckl1
+	call	zhol		
+	call	zhol
+	xor	a		
+	ret
+esckl1:	ld	b,LOW tklen
+	ld	hl,tabkl
+	jr	contas4
+escbo:	call	zhol		
+	ld	b,LOW tblen
+	ld	hl,tabbo
+	jr	contas4
+esczah:	call	zhol
+	cp	'J'		
+	jr	nz,escza1
+	ld	a,0ch		
+	ret
+escza1:	cp	'h'
+	jr	nz,escza3
+escza2:	ld	a,16h		
+	ret
+escza3:	cp	'l'
+	jr	z,escza2
+	xor	a		
+	ret
+tabkl:	
+	db	'H',003h	
+	db	'A',005h	
+	db	'B',018h	
+	db	'C',004h	
+	db	'D',008h	
+	db	'Z',00bh	
+	db	'L',000h	
+	db	'M',01bh	
+	db	'O',01ch	
+	db	'N',01dh	
+tklen	equ	($-tabkl)/2	
+tabbo:	
+	db	'N',01eh	
+	db	'O',01fh	
+	db	'M',00dh	
+	db	'P',010h	
+	db	'Q',007h	
+	db	'R',019h	
+	db	'S',014h	
+	db	'p',002h        
+	db	'q',00ch	
+	db	'r',015h	
+	db	's',017h	
+	db	't',01ah	
+	db	'u',001h	
+	db	'v',012h	
+	db	'w',004h	
+	db	'x',01bh	
+	db	'y',01bh	
+	db	'z',003h	
+tblen	equ	($-tabbo)/2	
+ttab:	
+	db	000h,000h	
+tlen	equ	($-ttab)/2	
+	ENDIF
+conout:
+	push	bc		
+	push	de		
+	push	hl
+	push	af
+	call	conout1		
+	IF	statusz eq 1
+sline:	push	iy
+	push	ix
+	ld	hl,devsp	
+	bit	5,(hl)		
+	jp	z,slret		
+	ld	hl,cdmerk
+	ld	a,(cdisk)	
+	cp	(hl)		
+	ld	(hl),a		
+	jr	nz,slina	
+	inc	hl		
+	ld	a,(sekdsk)	
+	cp	(hl)		
+	jp	z,slret		
+	ld	(hl),a		
+slina:	ld	hl,(merdph)	
+	ld	de,10		
+	add	hl,de	
+	ld	e,(hl)		
+	inc	hl		
+	ld	d,(hl)
+	push	de
+	pop	ix		
+	ld	de,3		
+	add	hl,de		
+	ld	e,(hl)		
+	inc	hl
+	ld	d,(hl)
+	push	de
+	pop	iy		
+	ld	h,(ix+6)
+	ld	l,(ix+5)	
+	inc	hl
+	push	hl		
+	ld	a,(ix+2)	
+	sub	3		
+	jr	z,blk1k
+	ld	b,a		
+mulop:	sla	l		
+	rl	h
+	djnz	mulop		
+blk1k:	ld	de,possli+10	
+	call	ascout		
+	ld	hl,gtext
+	ld	de,possli+14
+	call	txtout
+	pop	hl		
+	ld	de,0		
+grlop:	ld	b,8		
+	ld	c,(iy)		
+kllop:	sla	c		
+	jr	c,aleins	
+	inc	de		
+aleins:	dec	hl		
+	ld	a,h
+	or	l		
+	jr	z,alber		
+	djnz	kllop		
+	inc	iy		
+	jr	grlop		
+alber:	ld	a,(ix+2)	
+	sub	3		
+	jr	z,blk1kg
+	ld	b,a		
+zmulop:	sla	e		
+	rl	d		
+	djnz	zmulop		
+blk1kg:	ex	de,hl		
+	ld 	de,possli+6
+	call	ascout		
+	ld	hl,possli+9
+	ld	(hl),'-'	
+	ld	a,(sekdsk)	
+	and	0fh
+	add	a,'A'		
+	ld	(possli),a	
+	ld	a,(cdisk)
+	and	0f0h
+	rrca
+	rrca
+	rrca
+	rrca
+	ld	l,a
+	ld	h,0
+	ld	de,possli+1	
+	call 	zwaus		
+	ld	a,(ix+21)	
+	ld	de,possli+20	
+	IF	flopy eq 1
+	ld	hl,flwt
+	cp	'F'		
+	jr	z,lwtaus
+	ld	hl,elwt
+	cp	'E'		
+	jr	z,lwtaus
+	ld	hl,dlwt
+	cp	'D'		
+	jr	z,lwtaus
+	ld	hl,clwt
+	cp	'C'		
+	jr	z,lwtaus
+	ENDIF
+	IF	ramflo eq 1
+	ld	hl,rlwt
+	cp	'R'		
+	jr	z,lwtaus
+	ENDIF
+	IF	romflo eq 1
+	ld	hl,olwt
+	cp	'O'		
+	jr	z,lwtaus
+	ENDIF
+	IF	zramfl eq 1
+	ld	hl,mlwt
+	cp	'M'		
+	jr	z,lwtaus
+	ENDIF
+	IF	emlram eq 1
+	ld	hl,llwt
+	cp	'L'		
+	jr	z,lwtaus
+	ENDIF
+	ld	hl,erlwt
+lwtaus:	call	txtout
+	ld	de,possli+32
+	ld	hl,pcmtxt
+	call	txtout
+	IF	btype eq 0
+	ld	hl,possli
+	ld	b,bwidth
+invlop:	set	7,(hl)		
+	inc	hl
+	djnz	invlop		
+	ENDIF
+	jp	slret		
+cdmerk:	dw	0ffffh		
+merdph: dw	0		
+ascout:	xor	a
+	ld	bc,100
+hulop:	sbc	hl,bc		
+	jr	c,hend
+	inc	a		
+	jr	hulop
+hend:	add	hl,bc		
+	or	030h		
+	ld	(de),a
+	inc	de		
+zwaus:	xor	a
+	ld	bc,10
+zelop:	sbc	hl,bc		
+	jr	c,zend
+	inc	a		
+	jr	zelop
+zend:	add	hl,bc		
+	or	30h
+	ld	(de),a		
+	inc	de		
+	ld	a,l
+	or	030h		
+	ld	(de),a		
+	ret
+txtout:	ld	a,(hl)		
+	or	a		
+	ret	z		
+	ld	(de),a		
+	inc 	hl
+	inc	de
+	jr	txtout
+gtext:	db	'kByte',0
+	IF	flopy eq 1
+flwt:	db	'DD/DS-80T ',0
+elwt:	db	'DD/SS-80T ',0
+dlwt:	db	'DD/DS-40T ',0
+clwt:	db	'DD/SS-40T ',0
+	ENDIF
+	IF	ramflo eq 1
+rlwt:	db	'System-RAM',0
+	ENDIF
+	IF	zramfl eq 1
+mlwt:	db	'Zusatz-RAM',0
+	ENDIF
+	IF	romflo eq 1
+olwt:	db	'ROM-Floppy',0
+	ENDIF
+	IF	emlram eq 1
+llwt:	db	'Emulator  ',0
+	ENDIF
+erlwt:	db	' kein LW  ',0
+pcmtxt:	db	'PC/M ++AM90++ V'
+	VERS
+	db	0
+slret:	pop	ix		
+	pop	iy
+	ENDIF
+wreta:	pop	af
+	pop	hl
+	pop	de
+	pop	bc
+	ret
+scend	equ	bline*bwidth+vdu
+contab:	db	0DH,0AH,08H,0CH	
+	db	01H,1AH,7FH,14H	
+	db	15H,16H,18H,1BH 
+	db	07H,82H,83H,84H	
+	db	85H,17H,19H,80H	
+contablen equ $-contab
+conadr:	dw	sccr,	   sclf
+	dw	scbs,	   scclear
+	dw	schome,	   scup
+	dw	scdel,	   sceos
+	dw	scright,   sceol
+	dw	sclinedel, scesc
+	dw	bell,      sckon
+	dw	sckoff,	   scnorm
+	dw	scinv,	   scilin
+	dw	scdlin,    scerle		
+conadre equ	$
+conout1:ld	hl,scexit
+	push	hl		
+				ld	hl,(cpos)	
+	res	7,(hl)		
+	ld	a,(escmark)	
+	or	a
+	jp	nz,scxy		
+	ld	a,c
+	sub	80h		
+	cp	8
+	jr	c,bit7		
+	res	7,c		
+bit7:	ld	a,c
+	cp	20H		
+	jp	c,sccon		
+	cp	7FH
+	jp	nc,sccon	
+scprint:
+	IF	btype eq 0
+	push	hl		
+	ld	hl,devsp
+	bit	6,(hl)		
+	jr	z,notuml	
+	ld	hl,umltab	
+	ld	b,7		
+umsuc:	cp	(hl)		
+	inc	hl		
+	jr	z,umfund	
+	djnz	umsuc		
+	jr	notuml		
+umfund:	ld	a,17h		
+	add	a,b		
+notuml:	pop	hl
+	ENDIF
+	IF	btype eq 1
+	push	hl		
+	ld	hl,devsp
+	bit	6,(hl)		
+	jr	z,notuml	
+	ld	hl,umltab	
+	ld	b,7		
+umsuc:	cp	(hl)		
+	inc	hl		
+	jr	z,umfund	
+	djnz	umsuc		
+	jr	notuml		
+umfund:	ld	a,0		
+	add	a,b		
+notuml:	pop	hl
+	ENDIF
+	ex	de,hl		
+	ld	(de),a		
+scright:ld 	hl,-scend+1	
+	add	hl,de		
+	inc	de
+	ex	de,hl
+	ret	nc		
+	ld	de,scend-bwidth	
+scroll:	push	de		
+	ld	hl,vdu+bwidth	
+	ld	de,vdu		
+	ld	bc,scend-vdu-bwidth	
+	ldir			
+	dec	hl
+	ld	(hl),20h	
+	ld	de,scend-2
+	ld	bc,bwidth-1
+	lddr
+	pop	hl		
+	ret
+	IF	btype eq 0
+umltab:	db	'~}]|\{['
+	ENDIF
+	IF	btype eq 1
+umltab:	db	'~}|{]\['
+	ENDIF
+scexit:	ld	(cpos),hl
+	ld	a,(sckmark)	
+	or	(hl)		
+	ld	(hl),a
+	ret			
+scxy:	res	7,c		
+	dec	a
+	ld	(escmark),a
+	jr	z,scx		
+	ld	a,bline-1	
+	cp	c		
+	jr	c,scy		
+	ld	a,c		
+scy:	ld	hl,vdu
+	or	a
+	ret	z
+	ld	de,bwidth
+	ld	b,a
+scy1:	add	hl,de		
+	djnz	scy1
+	ret
+scx:	ld	a,bwidth-1	
+	cp	c		
+	jr	nc,scx1		
+	ld	c,a		
+scx1:	ld	b,0
+	add	hl,bc
+	ret
+			sccon:	ex	de,hl		
+	ld	hl,contab
+	ld	bc,contablen
+	cpir			
+	ex	de,hl
+	ret	nz		
+	ex 	de,hl
+	ld	hl,conadre-1
+	xor	a
+	sbc	hl,bc
+	sbc	hl,bc		
+	ld	b,(hl)		
+	dec	hl
+	ld	c,(hl)
+	push	bc
+nocon:	ld	l,e		
+	ld	h,d
+	ret			
+sccr:	ld	bc,bwidth	
+	ld	hl,scend-1
+sccr1:	sbc	hl,bc		
+	push	hl
+	sbc	hl,de		
+	pop	hl
+	jr	nc,sccr1	
+	inc	hl		
+	ret
+sclf:	ld	hl,scend-bwidth-1
+	sbc	hl,de		
+	jp	c,scroll	
+	ld	hl,bwidth
+	add	hl,de		
+	ret
+scdel:	ld	a,20h		
+	ld	(de),a
+scbs:	ld	hl,vdu		
+	sbc	hl,de		
+	ex	de,hl
+	ret	z		
+	dec	hl		
+	ret
+scclear:ld	de,vdu		
+sceos:	ld	hl,scend-1	
+	sbc	hl,de		
+	ex	de,hl
+	ld	(hl),20h
+	ret	z		
+	push	hl		
+	ld	b,d
+	ld	c,e
+	ld	d,h
+	ld	e,l
+	inc	de
+	ldir			
+	IF	btype eq 0	
+	call	zwzloe
+	ENDIF
+	IF	statusz eq 1
+	ld	hl,cdmerk	
+	ld	(hl),0ffh	
+	ENDIF
+	pop	hl		
+	ret
+	IF	btype eq 0
+zwzloe:	ld	hl,zvideo	
+	ld	de,zvideo+1
+	ld	bc,03ffh
+	ld	(hl),020h
+	ldir
+	IF	statusz eq 1
+	ld	hl,cdmerk
+	ld	(hl),0ffh
+	ENDIF
+	ret
+	ENDIF
+schome:	ld	hl,vdu		
+	ret
+scup:	ld	hl,vdu+bwidth-1	
+	sbc	hl,de		
+	ex	de,hl
+	ret	nc		
+	ld	de,-bwidth
+	add	hl,de		
+	ret
+sclinedel:			
+	call	sccr		
+	ex	de,hl
+sceol:	push	de		
+	call	sccr
+	add	hl,bc		
+	xor	a
+	sbc	hl,de		
+sceol1:	ld	a,20h
+	ld	(de),a
+	inc	de
+	dec	l		
+	jr	nz,sceol1
+	pop	hl		
+	ret
+scesc:	ld	a,2		
+	ld	(escmark),a
+	ret
+sckon:	ld	a,80H		
+	jr	sckoff1
+sckoff:	xor	a		
+sckoff1:ld	(sckmark),a
+	ret
+scnorm: res	7,a		
+	jr	sczus
+scinv:	set	7,a		
+	jr	sczus
+sczus:	ld	(scsond),a
+	ret
+scilin: call	sccr		
+	push	hl
+	ld	de,scend-bwidth
+	ex	de,hl
+	or	a
+	sbc	hl,de
+	jr	z,sciil1
+	ld	b,h
+	ld	c,l
+	ld	de,scend-1
+	ld	hl,scend-bwidth-1
+	lddr
+sciil1:	pop	de
+	ld	h,d
+	ld	l,e
+	jp	sceol
+scdlin:	call	sccr		
+	push	hl
+	ld	de,scend-bwidth
+	ex	de,hl
+	or	a
+	sbc	hl,de
+	jr	z,scdli1
+	ex	(sp),hl
+	ld	d,h
+	ld	e,l
+	add	hl,bc
+	pop	bc
+	ldir
+scdli1:	ld	hl,scend-bwidth
+	ld	d,h
+	ld	e,l
+	call	sceol
+	pop	hl
+	ret
+scerle:	call	bell		
+	push	hl
+	call	conin		
+	pop	hl
+	cp	03h		
+	ret	nz
+	jp	wboot		
+punch:	ld	a,c		
+	nop
+	ret	
+reader:	nop			
+	nop
+	ret	
+	IF	prdef eq 0
+list:	ld	a,c		
+	ret
+listst:	ld	a,1		
+	ret
+	ENDIF
+	IF	prdef eq 1
+listst:	in	a,(ppidb)	
+	and	2		
+	ld	a,0
+	ret     nz		
+	ld	a,0ffh		
+	ret
+list:	ld	hl,limerk
+	bit	0,(hl)		
+	set	0,(hl)		
+	jr	nz,piopb
+	call	pipini		
+piopb:	ld	a,c
+	out	(ppida),a	
+	IF	fcpu eq 0
+	ld	e,3
+	ENDIF
+	IF	fcpu eq 1
+	ld	e,4
+	ENDIF
+	IF	fcpu eq 2
+	ld	e,4
+	ENDIF
+	IF	fcpu eq 3
+	ld	e,5
+	ENDIF
+	IF	fcpu eq 4
+	ld	e,6
+	ENDIF
+piobl:	call	zeiprf		
+	jr	c,liserr	
+	call	listst		
+	or	a
+	jr	z,piobl		
+	in	a,(ppida)	
+	ret
+pipini:	ld	a,0CFH		
+	out	(ppicb),a	
+	ld	a,08AH		
+	out	(ppicb),a
+	ld	a,7		
+	out	(ppicb),a
+	ld	a,08FH		
+	out	(ppica),a
+	ld	a,04H		
+	out	(ppidb),a
+	ret
+liserr:	ld	de,errlin	
+	ld	hl,tdrerr	
+	ld	bc,32
+	ldir			
+	call	conin		
+	ld	b,32		
+	ld	hl,errlin	
+erlclr:	ld	(hl),020h
+	inc	hl
+	djnz	erlclr
+	cp	1bh		
+	jp	z,wboot		
+	jr	list		
+zeiprf:	xor	a		
+	dec	l
+	ret	nz
+	dec	h
+	ret	nz
+	dec	e
+	ret	nz
+	scf			
+	ret
+tdrerr: db	' Druckerfehler! (ESC=Abbruch)   '
+	ENDIF
+	IF	prdef eq 2
+listst:	ld	hl,limerk	
+	bit	0,(hl)		
+	jr	z,priber
+	in	a,(psioda)
+	and	7FH
+	cp	011h
+	jr	z,lists6
+	cp	13h
+	jr	nz,lists3
+lists2:	xor 	a
+	ret
+lists3:	cp	014h
+	jr	nz,lists2
+	push	bc
+	ld 	hl,priabf	
+	ld	b,4
+	ld 	c,psioda
+lists4:	in	a,(psioca)
+	bit	2,a
+	jr	z,lists4
+	outi
+	jr	nz,lists4
+lists5:	in	a,(psioca)
+	bit 	0,a
+	jr	z,lists5
+	in	a,(psioda)
+	and	07fh
+	cp	06eh
+	jr	nz,liserr	
+lists6:	in	a,(psioca)
+	and	04H
+	ret	z
+priber:	ld	a,1
+	or	a
+	ret
+list:	ld	hl,limerk
+	bit	0,(hl)		
+	set	0,(hl)		
+	call	z,priin		
+list2:	IF	fcpu eq 0
+	ld	e,3
+	ENDIF
+	IF	fcpu eq 1
+	ld	e,4
+	ENDIF
+	IF	fcpu eq 2
+	ld	e,4
+	ENDIF
+	IF	fcpu eq 3
+	ld	e,5
+	ENDIF
+	IF	fcpu eq 4
+	ld	e,6
+	ENDIF
+pritlo:	call	zeiprf		
+	jr	c,liserr	
+	push	hl
+	call	listst		
+	pop	hl
+	jr	z,pritlo	
+	res	7,c		
+	ld	a,c		
+	out	(psioda),a	
+	ret
+priin:	push 	bc		
+	ld	b,1		
+	ld	c,pctcs0
+	otir
+	ld	b,2		
+	ld 	c,pctcsa		
+	otir
+	ld	b,7
+	ld	c,psioca
+	otir			
+	xor	a		
+	out	(psioda),a
+	in	a,(psioda)
+	ld 	a,07FH
+	out	(psioda),a
+	pop	bc
+	ret
+liserr:	ld	de,errlin	
+	ld	hl,tdrerr	
+	ld	bc,32
+	ldir			
+	call	conin		
+	ld	b,32		
+	ld	hl,errlin	
+erlclr:	ld	(hl),020h
+	inc	hl
+	djnz	erlclr
+	cp	1bh		
+	jp	z,wboot		
+	jr	list		
+zeiprf:	xor	a		
+	dec	l
+	ret	nz
+	dec	h
+	ret	nz
+	dec	e
+	ret	nz
+	scf			
+	ret
+tdrerr: db	' Druckerfehler! (ESC=Abbruch)   '
+lisini: db	00H		
+	IF	fcpu eq 0
+	db	05fh		
+	db	7		
+				ENDIF
+	IF	fcpu eq 1
+	db	017h		
+	db	01h		
+	ENDIF
+	IF	fcpu eq 2
+	db	17H		
+	db	01H		
+	ENDIF
+	IF	fcpu eq 3
+	db	05fh		
+	db 	12		
+	ENDIF
+	IF	fcpu eq 4
+	db	05fh		
+	db	13		
+	ENDIF
+	db	18H		
+	db	04H		
+	db	45H		
+	db	05H		
+	db	28H		
+	db	03H		
+	db	41H		
+priabf:	db	1bH,5BH,35H,6EH	
+			
+	ENDIF
+	IF	prdef eq 3
+list:	push	hl
+	push	de
+	push	bc
+	ld	hl,presc
+	ld	a,c
+	bit	7,(hl)
+	res	7,(hl)
+	jr	nz,list2
+	cp	1bh		
+	jr	nz,list1
+	set	7,(hl)
+	jr	pret		
+list1:	ld	b,0
+	ld	hl,prcont
+	add	hl,bc
+	ld	c,(hl)		
+list2:	call	uplist
+pret:	pop	bc
+	pop	de
+	pop	hl
+	ret			
+uplist:	IF	fcpu eq 0	
+	ld	e,3
+	ENDIF
+	IF	fcpu eq 1
+	ld	e,4
+	ENDIF
+	IF	fcpu eq 2
+	ld	e,4
+	ENDIF
+	IF	fcpu eq 3
+	ld	e,5
+	ENDIF
+	IF	fcpu eq 4
+	ld	e,6
+	ENDIF
+uplis0:	call	zeiprf		
+	jr	c,liserr
+	push	hl
+	call	listst		
+	pop	hl
+	or	a
+	jr	z,uplis0
+	ld	a,3
+	out	(psioca),a	
+	ld	a,11000000b
+	out	(psioca),a	
+	ld	a,c
+	out	(psioda),a
+	ld	a,3
+	out	(psioca),a	
+	ld	a,11000001b
+	out	(psioca),a	
+list10:	ld	a,00010000b
+	out	(psioca),a
+	in	a,(psioca)
+	bit	5,a
+	jr	nz,list10	
+	ret
+presc:	db	0		
+listst:	ld	a,00010000b
+	out	(psioca),a
+	in	a,(psioca)
+	bit	5,a
+	ld	a,1
+	ret	nz		
+	xor	a
+	ret			
+liserr:	ld	de,errlin	
+	ld	hl,tdrerr	
+	ld	bc,32
+	ldir			
+	call	conin		
+	ld	b,32		
+	ld	hl,errlin	
+erlclr:	ld	(hl),020h
+	inc	hl
+	djnz	erlclr
+	cp	1bh		
+	jp	z,wboot		
+	jr	uplist		
+zeiprf:	xor	a		
+	dec	l
+	ret	nz
+	dec	h
+	ret	nz
+	dec	e
+	ret	nz
+	scf			
+	ret
+tdrerr: db	' Druckerfehler! (ESC=Abbruch)   '
+prcont:	db	000h,095h,092h,091h,090h,08fh,08dh,08eh
+	db	072h,073h,09fh,076h,083h,078h,077h,0a5h
+	db	0a6h,0a9h,087h,088h,089h,000h,000h,000h
+	db	000h,000h,076h,081h,082h,084h,085h,086h
+	db	071h,042h,043h,041h,048h,004h,002h,017h
+	db	01dh,01fh,01bh,025h,064h,062h,063h,040h
+	db	00dh,011h,010h,00fh,00eh,00ch,00bh,00ah
+	db	009h,008h,013h,03bh,01dh,02eh,01fh,035h
+	db	045h,030h,018h,020h,014h,034h,03eh,01ch
+	db	012h,021h,032h,024h,02ch,016h,02ah,01eh
+	db	02fh,01ah,036h,033h,037h,028h,022h,02dh
+	db	026h,031h,038h,027h,03ch,027h,019h,001h
+	db	07ch,061h,04eh,057h,053h,05ah,049h,060h
+ 	db	055h,005h,04bh,050h,04dh,04ah,05ch,05eh
+	db	05bh,052h,059h,058h,056h,05dh,04fh,04ch
+	db	05fh,051h,054h,006h,066h,006h,047h,007h
+	ENDIF
+	IF	prdef eq 4
+listst:	ld	a,10h		
+	out	(psioca),a	
+	in	a,(psioca)	
+	bit	5,a		
+	jr	nz,lists1	
+	xor	a		
+	ret	
+lists1:	and	04H		
+	ret	z		
+lists2:	ld	a,1		
+	or	a		
+	ret
+list: 	IF	fcpu eq 0	
+	ld	e,3
+	ENDIF
+	IF	fcpu eq 1
+	ld	e,4
+	ENDIF
+	IF	fcpu eq 2
+	ld	e,4
+	ENDIF
+	IF	fcpu eq 3
+	ld	e,5
+	ENDIF
+	IF	fcpu eq 4
+	ld	e,6
+	ENDIF
+list0:	call	zeiprf		
+	jr	c,liserr	
+	push	hl		
+	call	listst
+	pop	hl
+	or	a
+	jr	z,list0		
+			
+list1:	ld	a,c		
+	out	(psioda),a	
+	ret
+liserr:	ld	de,errlin	
+	ld	hl,tdrerr	
+	ld	bc,32
+	ldir			
+	call	conin		
+	ld	b,32		
+	ld	hl,errlin	
+erlclr:	ld	(hl),020h
+	inc	hl
+	djnz	erlclr
+	cp	1bh		
+	jp	z,wboot		
+	jr	list		
+zeiprf:	xor	a		
+	dec	l
+	ret	nz
+	dec	h
+	ret	nz
+	dec	e
+	ret	nz
+	scf			
+	ret
+tdrerr: db	' Druckerfehler! (ESC=Abbruch)   '
+	ENDIF
+

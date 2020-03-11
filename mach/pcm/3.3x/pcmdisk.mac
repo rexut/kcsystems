@@ -1,0 +1,300 @@
+
+subttl DISKIO fuer PCM
+diskio::
+	di
+	ld   	(zdma),de
+	ld	ix,cdbwr	
+	ld	de,cdbwr
+	ld	bc,13
+	ldir			
+	call	init		
+	ld	hl,count03	
+	res	7,(hl)		
+	res	6,(hl)
+	bit	0,(ix)		
+	jr	z,di20		
+	set	6,(hl)		
+di20:	ld	a,(errc) 
+	ld	(count02),a	
+	ld	(count01),a	
+di07:	ld	bc,800h		
+	call	drrdy		
+	ld	(src3),a	
+	jp	z,di19		
+	ld	a,(port)	
+	and	15		
+	ld	b,a		
+	ld	a,(count03)	
+	and	b		
+	jr	nz,di16	
+	ld	a,(count03)	
+	or	b
+	ld	(count03),a
+	call	recall		
+di16:	call	seek		
+	call	rdwr  		
+	or	a		
+	jr	nz,di03		
+	bit	0,(ix)		
+	jr	nz,di05		
+	jp	di14		
+di03:	bit	4,a		
+	jr	nz,di07		
+	bit	7,a		
+	jr	nz,di10		
+	bit	1,a		
+	jr	nz,di09		
+	bit	4,(ix+15)	
+	call 	nz,ntrack	
+derr:	ld	hl,count01
+	dec	(hl)		
+	jr	nz,di07		
+	bit	6,(ix-1)	
+	jr	z,di19		
+	bit	0,(ix)		
+	jr	nz,di19		
+	ld	hl,count02	 
+	dec	(hl)		
+	jr	z,di19		
+	ld	a,(errc)	
+	ld	(count01),a	
+di05:	ld	a,(cdbwr)	
+	xor	3		
+	ld	(cdbwr),a	
+	jp	di07
+di10:	bit	0,(ix)		
+	jr	nz,di05		
+	ld	hl,(zdma1)
+	ld	(zdma),hl	
+	ld	a,(secanz)
+	ld	(cdbwr+10),a	
+	bit	6,(ix+1)	
+	jr	nz,nod		
+	bit	0,(ix+3)	
+	set	2,(ix+1)	
+	ld	(ix+3),1
+	jr	z,dim		
+	res	2,(ix+1)	
+	ld	(ix+3),0
+nod:	inc	(ix+2)		
+dim:	ld	(ix+4),1	
+	bit	6,(ix-1)	
+	jp	z,di07		
+	jr	di05		
+			
+di19:	ld	hl,count03
+	bit	7,(hl)		
+	jr	nz,di09		
+	set	7,(hl)		
+	call	ntrack		
+	jp	di20
+di09:	ld	b,2		
+	jr	di12		
+di14:	ld	b,0		
+di12:	ld	a,(src3)
+	ld	c,a
+	ld	a,b		
+	ld	de,(zdma1)	
+	ei
+	ret			
+ntrack:	ld	a,(port)	
+	and	15		
+	cpl			
+	and	(ix-1)		
+	ld	(count03),a	
+	ret
+init:	
+	in	a,(srcon)  	
+	cp	80h		
+	jr	z,specif	
+	in	a,(datcon)	
+	jr	init		
+specif:	ld	hl,cdbwr+10	
+	ld	bc,0303h	
+	jp	cmdfd1		
+recall:	
+	call	reca1
+	call 	reca1
+reca1: 	ld	bc,0207h	
+ 	jr	seek1		
+seek:	
+	bit	7,(ix+1)	
+	jr	z,seek0		
+	ld 	a,(cdbwr+2)
+	add	a,a		
+	ld	(cdbwr+2),a
+	call	seek0		
+	push	af	
+	ld 	a,(cdbwr+2)
+	srl	a		
+	ld	(cdbwr+2),a
+	pop 	af
+	ret
+seek0:	ld	bc,030Fh	
+seek1:	call	cmdfd		
+sense:	
+	ld	bc,0108h	
+	call	cmdfd		
+	call	next		
+	ld	b,a		
+	cp	80h		
+	call	nz,next		
+	bit	5,b		
+	jr	z,sense		
+	ret
+sdrs:	
+	ld 	bc,0204h	
+	call	cmdfd		
+next:	
+	in	a,(srcon)	
+	and	0C0h		
+	cp	0C0h		
+	jr	nz,next		
+	in	a,(datcon)	
+	ret
+result:	
+	ld	hl,resltb	
+	ld 	b,7
+reslt1:	call	next		
+	ld	(hl),a		
+	inc 	hl		
+	djnz	reslt1		
+	ld 	a,(resltb)	
+	and	0C0h		
+	ret
+drrdy:	
+
+	push	bc
+	ld	a,(ix+1)	
+	and	3		
+	inc	a
+	ld	b,a 
+	ld	a,80h		
+drr1:	rlca
+	djnz	drr1	
+	ld	b,a		
+	ld	a,(ix+9)	
+	bit	7,a		
+	res	7,a
+  	set	6,b		
+	jr	z,drr11		
+	res	6,b		
+drr11:	cp	(ix+2)		
+	jr	nc,drr2	
+	set 	5,b		
+drr2:	ld	a,b
+	out	(contrl),a	
+	ld	(port),a	
+drr3:	call	sdrs		
+	bit	5,a		
+	pop	bc
+	ret	nz		
+	ld	d,a
+	dec	bc		
+	ld	a,b
+	or	c		
+	ld 	a,d		
+	ret	z		
+	push	bc
+	jr	drr3		
+cmdfd:	
+
+	ld	hl,cdbwr
+cmdfd1:	in	a,(srcon)	
+	and	0C0h
+	cp	80h		
+	jr	nz,cmdfd1 	
+	ld	a,c
+	out	(datcon),a	
+	inc	hl
+	ld	c,(hl)		
+	djnz	cmdfd1		
+	ret
+rdwr:
+
+	ld	hl,20A3h	
+	bit	0,(ix)		
+	jr	nz,rdwr1	
+	ld	hl,1078h	
+	bit	6,(ix-1)	
+	jr	nz,rdwr1	
+	ld	hl,20A2h	
+rdwr1:
+	IRP X,<1,2,3,4>
+	ld	(befin&X+1),hl	
+	ENDM
+	di
+	ld	de,termi	
+	push	de
+	ld	a,(ix+5)	
+	ld	iy,loop1	
+	ld	b,80h		
+	or	a		
+	jr	z,rdwr2		
+	ld	b,0		
+	cp	2
+	jr	c,rdwr2		
+	ld	iy,loop2 
+	jr	z,rdwr2		
+	ld	iy,loop4	
+rdwr2:	push 	bc		
+	ld	c,(ix)		
+	ld	b,2		
+	ld	a,c
+	res	6,a		
+	cp	0Ah		
+	jr	z,idcmd		
+	ld	b,9		
+idcmd:	call	cmdfd
+	pop	bc
+	ld	hl,(zdma)	
+	ld	c,datcon	
+	ld	d,(ix+10)	
+	ld	e,b		
+	jp	(iy)
+exec 	MACRO Y
+	LOCAL exec1
+exec1: 	in 	a,(srcon)	
+	rlca			
+	jp	nc,exec1 	
+	and	40h		
+	ret	z		
+befin&Y:ini			
+	jr	nz,exec1	
+	ENDM
+	IRP X,<4,3,2,1>		
+loop&X:	EXEC X
+	ENDM
+	dec 	d		
+	jr	z,rdwr3		
+	ld	b,e		
+	jp	(iy)		
+rdwr3:	pop 	af		
+termi:	ld	a,(port)
+	set	7,a		
+	out	(contrl),a
+	res	7,a
+	out 	(contrl),a
+	ld	a,d		
+	ld	(secanz),a	
+	bit	0,(ix)		
+	jr	nz,rdctrx	
+	bit	6,(ix-1)	
+	jr	nz,rdwr4	
+rdctrx:	ld	(zdma1),hl	
+rdwr4:	call	result		
+	ret	z		
+	ld	a,(resltb+1)
+	set	3,a		
+	ret			
+src3:	ds	1		
+count01:ds	1		
+count02:ds	1		
+count03:ds	1		
+cdbwr:	ds	13		
+resltb:	ds	7		
+zdma:	ds	2		
+zdma1:	ds	2		
+secanz: ds	1		
+port:	ds	1		
+

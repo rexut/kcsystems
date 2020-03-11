@@ -1,0 +1,79 @@
+[2002-08-06 22:52:24]
+------------------------------------------------------------------------------
+Archive of the original PC/M system sources 3.30
+
+		pcmbas.mac	PC/M BIOS Anfangs-Segment (German)
+				<-- includes PCMDEF
+		pcmdef.mac.in	PC/M BIOS Definitions (from Kconfig)
+		pcmbios.mac	PC/M BIOS "PC/M - SYS V3.30 (AM90)"
+				<-- includes PCMDEF
+				<-- includes PCMBOOT	IF urlad eq 1
+				<-- includes PCMVAR
+				<-- includes PCMIO
+				<-- includes PCMDISK	IF flopy  eq 1
+				<-- includes PCMVTAPE
+				<-- includes PCMSVDB	IF sdebug eq 1
+				<-- includes PCMURLAD	IF flopy  eq 1
+							IF durlad eq 1
+				<-- includes PCMCOM
+		pcmboot.mac	PC/M BIOS Boot Sequence for Disk-Ur-Loader
+		pcmvar.mac	PC/M BIOS Variables and Macros
+		pcmio.mac	PC/M BIOS Hardware I/O System
+		pcmdisk.mac	PC/M BIOS Floppy Disk I/O System
+		pcmvtape.mac	PC/M BIOS Voice Tape Monitor and ROM-Ur-Loader
+		pcmsvdb.mac	PC/M BIOS System Visual Debugger
+		pcmurlad.mac	PC/M BIOS Disk-Ur-Loader
+		pcmcom.mac	PC/M BIOS Configuration Output Modules
+
+------------------------------------------------------------------------------
+curl https://www.li-pro.net/dl/7e423040cf7925d557f5736c6f33693f/PCMSYS33.ZIP | \
+bsdtar -xOvf - PCMSYS.330/PCMDEF.MAC | gvim -
+edit:	db	' %%CONFIG_SYSV%% '	;Versionsnummer
+edit:	... and so on for all other Kconfig values ...
+save:	:w pcmdef.mac.in
+----------------------
+curl https://www.li-pro.net/dl/7e423040cf7925d557f5736c6f33693f/PCMSYS33.ZIP | \
+bsdtar -xOvf - PCMSYS.330/PCMBAS.MAC > pcmbas.mac
+----------------------
+curl https://www.li-pro.net/dl/7e423040cf7925d557f5736c6f33693f/PCMSYS33.ZIP | \
+bsdtar -xOvf - PCMSYS.330/PCMBIOS.MAC > pcmbios.mac
+----------------------
+curl https://www.li-pro.net/dl/7e423040cf7925d557f5736c6f33693f/PCMSYS33.ZIP | \
+bsdtar -xOvf - PCMSYS.330/PCMBOOT.MAC > pcmboot.mac
+----------------------
+curl https://www.li-pro.net/dl/7e423040cf7925d557f5736c6f33693f/PCMSYS33.ZIP | \
+bsdtar -xOvf - PCMSYS.330/PCMVAR.MAC > pcmvar.mac
+----------------------
+curl https://www.li-pro.net/dl/7e423040cf7925d557f5736c6f33693f/PCMSYS33.ZIP | \
+bsdtar -xOvf - PCMSYS.330/PCMIO.MAC > pcmio.mac
+----------------------
+curl https://www.li-pro.net/dl/7e423040cf7925d557f5736c6f33693f/PCMSYS33.ZIP | \
+bsdtar -xOvf - PCMSYS.330/PCMDISK.MAC > pcmdisk.mac
+----------------------
+curl https://www.li-pro.net/dl/7e423040cf7925d557f5736c6f33693f/PCMSYS33.ZIP | \
+bsdtar -xOvf - PCMSYS.330/PCMVTAPE.MAC > pcmvtape.mac
+edit:	fix an issue with undefined symbol 'wzk1'
+--- pcmvtape.mac.orig   2014-10-04 13:04:00.000000000 +0200
++++ pcmvtape.mac        2014-10-04 13:14:00.000000000 +0200
+@@ -12,7 +12,9 @@ uhrclr:       ld      (hl),0
+ 	ENDIF
+ 	call    sysini
+ 	ld      c,2
++	IF	svtape eq 1
+ 	call    wzk1
++	ENDIF
+ rboot:	ld      hl,bios
+ 	ld      de,jumtab
+ 	ld      bc,0034h
+----------------------
+curl https://www.li-pro.net/dl/7e423040cf7925d557f5736c6f33693f/PCMSYS33.ZIP | \
+bsdtar -xOvf - PCMSYS.330/PCMSVDB.MAC > pcmsvdb.mac
+----------------------
+curl https://www.li-pro.net/dl/7e423040cf7925d557f5736c6f33693f/PCMSYS33.ZIP | \
+bsdtar -xOvf - PCMSYS.330/PCMURLAD.MAC > pcmurlad.mac
+----------------------
+curl https://www.li-pro.net/dl/7e423040cf7925d557f5736c6f33693f/PCMSYS33.ZIP | \
+bsdtar -xOvf - PCMSYS.330/PCMCOM.MAC > pcmcom.mac
+------------------------------------------------------------------------------
+https://www.li-pro.net/cpm-sw-pcmsys.phtml
+--> https://www.li-pro.net/dl/7e423040cf7925d557f5736c6f33693f/PCMSYS33.ZIP

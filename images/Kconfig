@@ -10,6 +10,147 @@ config IMAGE_ROM
 	---help---
 		Say yes here to generate a ROM image.
 
+config IMAGE_SYS
+	bool
+	depends on MACH_SUPPORTS_IMAGE_SYS
+	prompt "System Track Dump"
+	---help---
+		Say yes here to generate a system track ready to use as
+		system track on a boot floppy disk.
+
+menuconfig IMAGE_DSK
+	bool
+	depends on MACH_SUPPORTS_IMAGE_DSK
+	select IMAGE_SYS
+	select IMAGE_DSK_IMG # we need the RAW image for all disk image types
+	prompt "System Disk Image"
+	---help---
+		Say yes here to generate a ready to use boot floppy disk.
+
+if IMAGE_DSK
+
+config IMAGE_DSK_HAVE_FORMAT
+	bool
+
+config IMAGE_DSK_LLDFORMAT
+	string
+	default "scp640"	if IMAGE_DSK_FORMAT_SCP624K
+	default "scp800"	if IMAGE_DSK_FORMAT_SCP780K
+	default ""		if !IMAGE_DSK_HAVE_FORMAT
+
+config IMAGE_DSK_HLDFORMAT
+	string
+	default "scp624"	if IMAGE_DSK_FORMAT_SCP624K
+	default "scp780"	if IMAGE_DSK_FORMAT_SCP780K
+	default ""		if !IMAGE_DSK_HAVE_FORMAT
+
+config IMAGE_DSK_HAVE_FORMAT
+	default y	if IMAGE_DSK_FORMAT_SCP624K \
+			|| IMAGE_DSK_FORMAT_SCP780K
+
+comment "Machine does not provide any disk image format."
+	depends on !MACH_PROVIDES_IMAGE_DSK_FORMAT
+
+choice
+	prompt "Disk Image Format"
+	depends on MACH_PROVIDES_IMAGE_DSK_FORMAT
+	---help---
+		Select the logical format of disk image.
+
+config IMAGE_DSK_FORMAT_SCP624K
+	bool
+	depends on MACH_SUPPORTS_IMAGE_DSK_FORMAT_SCP624K
+	prompt "DD/DS-80T 16*256 4ST (624k, SCP)"
+	---help---
+		640/624/620kB SCP format:
+
+		  - 2 sides per disk (DS)
+		  - 80 tracks per side (DD)
+		  - 16 sectors per track
+		  - 256 byte per sector
+		  - 2048 byte BDOS block size
+		  - 4 system tracks (16kB)
+		  - 128 directory entries (4kB)
+
+config IMAGE_DSK_FORMAT_SCP780K
+	bool
+	depends on MACH_SUPPORTS_IMAGE_DSK_FORMAT_SCP780K
+	prompt "DD/DS-80T 5*1024 4ST (780k, SCP)"
+	---help---
+		800/780/776kB SCP format:
+
+		  - 2 sides per disk (DS)
+		  - 80 tracks per side (DD)
+		  - 5 sectors per track
+		  - 1024 byte per sector
+		  - 2048 byte BDOS block size
+		  - 4 system tracks (20kB)
+		  - 128 directory entries (4kB)
+
+endchoice
+
+config IMAGE_DSK_IMG
+	bool
+	prompt "RAW Disk-File"
+	---help---
+		Say yes here to generate a RAW disk file that is ready to copy
+		one by one to a real floppy disk.
+
+config IMAGE_DSK_CPC
+	bool
+	select IMAGE_DSK_IMG
+	prompt "CPCEMU Disk-File"
+	---help---
+		Say yes here to generate a CPCEMU disk file as defined on the
+		CPC Wiki:
+
+		http://www.cpcwiki.eu/index.php/Format:DSK_disk_image_file_format
+
+config IMAGE_DSK_CQM
+	bool
+	select IMAGE_DSK_IMG
+	prompt "CopyQM Disk-File"
+	---help---
+		Say yes here to generate a CopyQM disk file as defined by Sydex
+		and reenigneered by Ralf-Peter Nerlich on his homepage:
+
+		http://rio.early8bitz.de/cqm/
+		http://rio.early8bitz.de/cqm/cqm-format.pdf
+
+config IMAGE_DSK_IMD
+	bool
+	select IMAGE_DSK_IMG
+	prompt "ImageDisk File"
+	---help---
+		Say yes here to generate a ImageDisk file as defined on Dave
+		Dunfields homepage:
+
+		http://www.classiccmp.org/dunfield/img/index.htm
+
+config	IMAGE_DSK_AUTOADD_SRCS
+	bool
+	prompt "Add sources automatically"
+	---help---
+		Add all used source artefacts to the disk image file
+		automatically.
+
+config	IMAGE_DSK_AUTOADD_BINS
+	bool
+	prompt "Add binaries automatically"
+	---help---
+		Add all generated binary artefacts to the disk image file
+		automatically.
+
+config	IMAGE_DSK_AUTOADD_DEVTOOLS
+	bool
+	prompt "Add devtools automatically"
+	---help---
+		Add all tools such as compiler, assembler and linker to the
+		disk image file automatically. Only such tools that can be
+		executed on the target will be copied.
+
+endif	# IMAGE_DSK
+
 # Local variables:
 # coding: utf-8
 # mode: text

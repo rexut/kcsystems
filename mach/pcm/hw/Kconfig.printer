@@ -1,0 +1,82 @@
+#
+# For a description of the syntax of this configuration file, see:
+# https://gitlab.com/ymorin/kconfig-frontends/-/blob/master/docs/kconfig-language.txt
+#
+
+config PCM_HAVE_PRINTER
+	bool
+	default y	if PCM_PRINTER >= 0 \
+			&& PCM_PRINTER < 5
+	default n
+
+config PCM_PRINTER
+	int
+	range 0 5	if MACH_PCM_SYS33X
+	default 0	if PCM_PRINTER_NONE
+	default 1	if PCM_PRINTER_SD1152P
+	default 2	if PCM_PRINTER_SD1152S
+	default 3	if PCM_PRINTER_S3004
+	default 4	if PCM_PRINTER_K6313
+	default 5
+
+choice
+	default PCM_PRINTER_NONE
+	depends on MACH_PCM_SYS33X
+	prompt "Printer      "
+	---help---
+		Select the PC/M printer output type.
+
+config PCM_PRINTER_NONE
+	bool
+	depends on MACH_PCM_SYS33X
+	prompt "none"
+	---help---
+		No printer connected.
+
+config PCM_PRINTER_SD1152P
+	bool
+	depends on MACH_PCM_SYS33X
+	prompt "SD1152/PIO"
+	---help---
+		SD1152 daisy wheel printer by VEB Büromaschinenwerk
+		Sömmerda connected to printer PIO port A or B over a
+		special parallel interface.
+
+config PCM_PRINTER_SD1152S
+	bool
+	depends on MACH_PCM_SYS33X
+	prompt "SD1152/SIO"
+	---help---
+		SD1152/251 daisy wheel printer by VEB Büromaschinenwerk
+		Sömmerda connected to system SIO port A or B over a serial
+		IFSS or RS-232 interface.
+
+config PCM_PRINTER_S3004
+	bool
+	depends on MACH_PCM_SYS33X
+	prompt "S3004"
+	---help---
+		S3004 electronic typewriter by VEB Robotron-Optima Erfurt as
+		printer connected to system SIO port A or B over a serial
+		RS-232 interface.
+
+		Note: You have to use the same system SIO port for S3004
+		      as keyboard and printer, see PCM_KEYBOARD_K7672.
+
+config PCM_PRINTER_K6313
+	bool
+	depends on MACH_PCM_SYS33X
+	prompt "K6313/K6314"
+	---help---
+		K6313/K6314 by VEB Büromaschinenwerk Sömmerda or any other
+		Epson LX-86 compatbibel 9-dot matrix printer connected to
+		system SIO port A or B over a serial RS-232 interface.
+
+endchoice
+
+# Local variables:
+# coding: utf-8
+# mode: text
+# mode: kconfig
+# End:
+# vim: fileencoding=utf-8 filetype=kconfig :

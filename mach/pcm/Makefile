@@ -10,6 +10,12 @@ MACH_PCM_SYS_MKF := $(S)2.1x/Makefile
 MACH_PCM_HW_MKF := $(S)hw/Makefile
 endif
 
+ifeq ($(CONFIG_MACH_PCM_SYS33X),y)
+$(call bi,set,mach,name,"PC/M Floppy-Disk-System")
+MACH_PCM_SYS_MKF := $(S)3.3x/Makefile
+MACH_PCM_HW_MKF := $(S)hw/Makefile
+endif
+
 ifneq ($(MACH_PCM_SYS_MKF)$(MACH_PCM_HW_MKF),)
 include $(MACH_PCM_SYS_MKF)
 include $(MACH_PCM_HW_MKF)

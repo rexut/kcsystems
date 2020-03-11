@@ -9,11 +9,12 @@ config SYSV
 	string
 	default "2.10"	if MACH_PCM_SYS210
 	default "2.11"	if MACH_PCM_SYS211
+	default "3.30"	if MACH_PCM_SYS330
 	default ""
 
 choice
 	bool
-	default MACH_PCM_SYS211
+	default MACH_PCM_SYS330
 	prompt "PC/M System Version"
 	---help---
 		Select the PC/M system version.
@@ -56,6 +57,26 @@ config MACH_PCM_SYS211
 		This system version can only used together with the operating
 		system CP/V (Control Program for V-Tape Microcomputers).
 
+config MACH_PCM_SYS330
+	bool
+	prompt "v3.30"
+	---help---
+		System version 3.30
+
+		This is the original variant and consist the parts:
+
+		  Assembler sources:
+		    - BIOS:   Basic I/O System
+		    - SVDB:   System Visual Debugger
+		    - VTAPE:  Voice Tape Monitor
+		    - DISKIO: Disk I/O Driver
+
+		Say yes here to generate the original floppy disk system that
+		was published in the German journal "Funkamateur" in 1990.
+
+		This system version can only used together with the operating
+		system CP/A (Control Program by AoS of GDR).
+
 endchoice
 
 config MACH_PCM_SYS21X
@@ -65,12 +86,26 @@ config MACH_PCM_SYS21X
 	select MACH_SUPPORTS_IMAGE_ROM
 	select MACH_SUPPORTS_CPV1988
 
+config MACH_PCM_SYS33X
+	bool
+	default y	if MACH_PCM_SYS330 \
+			|| MACH_PCM_SYS331
+	select MACH_SUPPORTS_IMAGE_ROM	if !IMAGE_SYS
+	select MACH_SUPPORTS_IMAGE_SYS
+	select MACH_SUPPORTS_IMAGE_DSK
+	select MACH_SUPPORTS_IMAGE_DSK_FORMAT_SCP624K \
+			if PCM_SYS33X_DISKIO_DRVB_SCP624K
+	select MACH_SUPPORTS_IMAGE_DSK_FORMAT_SCP780K \
+			if PCM_SYS33X_DISKIO_DRVB_SCP780K
+	select MACH_SUPPORTS_CPA1987	if !IMAGE_ROM
+
 menu "PC/M Hardware Configuration"
 source "mach/pcm/hw/Kconfig"
 endmenu
 
 menu "PC/M Software Configuration"
 source "mach/pcm/2.1x/Kconfig"
+source "mach/pcm/3.3x/Kconfig"
 endmenu
 
 endif	# MACH_PCM

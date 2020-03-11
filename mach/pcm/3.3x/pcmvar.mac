@@ -1,0 +1,482 @@
+
+dpbase:	
+
+dsad	ASET	enddat
+din	ASET	disknb		
+	IRP	di,<A,B,C,D,L,M,O>
+	IF	din
+	IF	disk&di
+din	ASET	din - 1		
+	ENDIF
+	ELSE
+	EXITM			
+	ENDIF
+	IF	disk&di		
+	IF2			
+alv&di	equ	dsad		
+dsaä	ASEÔ	dsaä « 400/¸	
+csv&di	equ	dsad		
+dsad	ASET	dsad + 48	
+	ENDIF
+DPH&di:	dw	trand,0,0,0,dirbf
+	dw	DPB&di,CSV&di,ALV&di
+	ENDIF
+	ENDM
+	IF2
+ramend	equ	dsad
+	ENDIF
+DPB1    MACRO   X
+dpb&X:	
+	dw	64		
+	db	4		
+	db	15		
+	db	0		
+	dw	311		
+	dw	127		
+	db	11000000b	
+	db	00000000b	
+	dw	32		
+	dw	2		
+	db	1		
+	db 	0		
+	db	1		
+	dw	bufad		
+	db	1		
+	db	'F'		
+	db	'&X'-'A'	
+	db	1		
+	db	32		
+	db	14		
+	db	0EFH		
+	db	07FH		
+	db	4		
+	db	0E8h		
+	db	09h		
+	db	32		
+cdbw1&X:db	46h,'&X'-'A',00,00,01,01,16,14,0EFH,7FH,22,0E8H,09H
+	ENDM
+DPB2    MACRO   X
+dpb&X:	
+	dw	80		
+	db	4		
+	db	15		
+	db	0		
+	dw	389		
+	dw	127		
+	db	11000000b	
+	db	00000000b	
+	dw	32		
+	dw	2		
+	db	3		
+	db 	0		
+	db	1		
+	dw	bufad		
+	db	1		
+	db	'F'		
+	db	'&X'-'A'	
+	db	3		
+	db	10		
+	db	1eh		
+	db	0EFH		
+	db	07FH		
+	db	1		
+	db	0E8h		
+	db	09h		
+	db	10		
+cdbw1&X:db	46h,'&X'-'A',00,00,01,03,10,14,0EFH,7FH,5,0E8H,09H
+	ENDM
+DPB3    MACRO   X
+dpb&Xº	
+	dw	80		
+	db	4		
+	db	15		
+	db	0		
+	dw	399		
+	dw	191		
+	db	11100000b	
+	db	00000000b	
+	dw	48		
+	dw	0		
+	db	3		
+	db 	0		
+	db	1		
+	dw	bufad		
+	db	1		
+	db	'F'		
+	db	'&X'-'A'	
+	db	3		
+	db	10		
+	db	1eh		
+	db	0EFH		
+	db	07FH		
+	db	1		
+	db	0E8h		
+	db	09h		
+	db	10		
+cdbw1&X:db	46h,'&X'-'A',00,00,01,03,10,14,0EFH,7FH,0,0E8H,09H
+	ENDM
+DPB4	MACRO	X
+dpb&X:	
+	dw	32		
+	db	4		
+	db	15		
+	db	1		
+	dw	308/2-1		
+	dw	64-1		
+	db	10000000b	
+	db	00000000b	
+	dw	16		
+	dw	3		
+	db	1		
+	db	0		
+	db	1		
+	dw	bufad		
+	db	0		
+	db	'E'		
+	db	'&X' - 'A'+040h	
+	db	1		
+	db	16		
+	db	14		
+	db	0efh		
+	db	7fH		
+				db	4		
+	db	9Fh		
+	db	1Bh		
+	db	16		
+cdbw1&X:db	46h,'&X'-'A'+040h,00,00,01,01,16,14,0efh,7fh,22,9Fh,1Bh
+	ENDM
+DPB5	MACRO	X
+dpb&X:	
+	dw	40		
+	db	4		
+	db	15		
+	db	0		
+	dw	400/2-1		
+	dw	128-1		
+	db	11000000b	
+	db	00000000b	
+	dw	32		
+	dw	0		
+	db	3		
+	db	0		
+	db	1		
+	dw	bufad		
+	db	0		
+	db	'E'		
+	db	'&X' - 'A'+040h	
+	db	3		
+	db	5		
+	db	1eh		
+	db	0efh		
+	db	7fh		
+				db	1		
+	db	9Fh		
+	db	1Bh		
+	db	5		
+cdbw1&X:db	46h,'&X'-'A'+040h,00,00,01,03,05,1eh,0efh,7fh,0,9Fh,1Bh
+	ENDM
+DPB6	MACRO	X
+dpb&X:	
+	dw	64		
+	db	4		
+	db	15		
+	db	0		
+	dw	304/2-1		
+	dw	128-1		
+	db	11000000b	
+	db	00000000b	
+	dw	32		
+	dw	2		
+	db	1		
+	db	0		
+	db	1		
+	dw	bufad		
+	db	1		
+	db	'D'		
+	db	'&X' - 'A'	
+	db	1		
+	db	32		
+	db	14		
+	db	0efh		
+	db	7fH		
+				db	4		
+	db	9Fh		
+	db	1Bh		
+	db	32		
+cdbw1&X:db	46h,'&X'-'A',00,00,01,01,16,14,0efh,7fh,22,9Fh,1Bh
+	ENDM
+DPB7	MACRO	X
+dpb&X:	
+	dw	80		
+	db	4		
+	db	15		
+	db	0		
+	dw	380/2-1		
+	dw	128-1		
+	db	11000000b	
+	db	00000000b	
+	dw	32		
+	dw	2		
+	db	3		
+	db	0		
+	db	1		
+	dw	bufad		
+	db	1		
+	db	'D'		
+	db	'&X' - 'A'	
+	db	3		
+	db	10		
+	db	1eh		
+	db	0efh		
+	db	7fH		
+				db	1		
+	db	9Fh		
+	db	1Bh		
+	db	10		
+cdbw1&X:db	46h,'&X'-'A',00,00,01,03,10,1eh,0efh,7fh,5,9Fh,1Bh
+	ENDM
+DPB8	MACRO	X
+dpb&X:	
+	dw	80		
+	db	4		
+	db	15		
+	db	0		
+	dw	400/2-1		
+	dw	128-1		
+	db	11000000b	
+	db	00000000b	
+	dw	32		
+	dw	0		
+	db	3		
+	db	0		
+	db	1		
+	dw	bufad		
+	db	1		
+	db	'D'		
+	db	'&X' - 'A'	
+	db	3		
+	db	10		
+	db	1eh		
+	db	0efh		
+	db	7fH		
+				db	1		
+	db	9Fh		
+	db	1Bh		
+	db	10		
+cdbw1&X:db	46h,'&X'-'A',00,00,01,03,10,14,0efh,7fh,0,9Fh,1Bh
+	ENDM
+DPB9	MACRO	X
+dpb&X:	
+	dw	32		
+	db	4		
+	db	15		
+	db	1		
+	dw	73		
+	dw	63		
+	db	10000000b	
+	db	00000000b	
+	dw	16		
+	dw	3		
+	db	1		
+	db	0		
+	db	1		
+	dw	bufad		
+	db	0		
+	db	'C'		
+	db	'&X' - 'A'+040h	
+	db	1		
+	db	16		
+	db	14		
+	db	255		
+	db	25+80h		
+				db	4		
+	db	9Fh		
+	db	1Bh		
+	db	16		
+cdbw1&X:db	46h,'&X'-'A'+040h,00,00,01,01,16,14,255,25,22,9Fh,1Bh
+	ENDM
+DPB10	MACRO	X
+dpb&X:	
+	dw	40		
+	db	4		
+	db	15		
+	db	1		
+	dw	200/2-1		
+	dw	64-1		
+	db	10000000b	
+	db	00000000b	
+	dw	16		
+	dw	0		
+	db	3		
+	db	0		
+	db	1		
+	dw	bufad		
+	db	0		
+	db	'E'		
+	db	'&X' - 'A'+040h	
+	db	3		
+	db	5		
+	db	14		
+	db	0efh		
+	db	7fH		
+				db	1		
+	db	9Fh		
+	db	1Bh		
+	db	5		
+cdbw1&X:db	46h,'&X'-'A'+040h,00,00,01,01,16,14,0efh,7fh,0,9Fh,1Bh
+	ENDM
+DPBQ	MACRO	X
+dpb&X:	
+	dw	16		
+	db	3		
+	db	7		
+	db	0		
+	dw	123		
+	dw	63		
+	db	11000000b	
+	db	00000000b	
+	dw	16		
+	dw	0		
+	db	0		
+	db	0,0,0,0,0
+	db	'R'		
+cdbw1&X:db 0
+	ENDM
+DPBR	MACRO	X
+dpb&X:	
+	dw	16		
+	db	3		
+	db	7		
+	db	0		
+	dw	117		
+	dw	63		
+	db	11000000b	
+	db	00000000b	
+	dw	16		
+	dw	3		
+	db	0		
+	db	0,0,0,0,0
+	db	'R'		
+cdbw1&X:db 0
+	ENDM
+DPBL	MACRO	X
+dpb&X:	
+	dw	16		
+	db	3		
+	db	7		
+	db	0		
+	dw	15		
+	dw	31		
+	db	10000000b	
+	db	00000000b	
+	dw	8		
+	dw	0		
+	db	2		
+	db	0,0,0,0,0
+	db	'L'		
+cdbw1&X:db 0
+	ENDM
+DPBM	MACRO	X
+dpb&X:	
+	dw	16		
+	db	4		
+	db	15		
+	db	0		
+	dw	247		
+	dw	127		
+	db	11000000b	
+	db	00000000b	
+	dw	32		
+	dw	0		
+	db	3		
+	db	0,0,0,0,0
+	db	'M'		
+cdbw1&X:db 0
+	ENDM
+DPBO	MACRO	X
+dpb&X:	
+	dw	16		
+	db	3		
+	db	7		
+	db	0		
+	dw	303		
+	dw	63		
+	db	11000000b	
+	db	00000000b	
+	dw	16		
+	dw	3		
+	db	4		
+	db	0,0,0,0,0
+	db	'O'		
+cdbw1&X:db 0
+	ENDM
+din	ASET	disknb
+	IRP	di,<A,B,C,D,L,M,O>
+	IFE	din
+	EXITM
+	ENDIF
+	IF	disk&di eq 0
+	ELSE
+	IF	disk&di eq 1	
+	DPB1 di
+	ELSE
+	IF	disk&di eq 2	
+	DPB2 di
+	ELSE
+	IF	disk&di eq 3	
+	DPB3 di
+	ELSE 
+	IF	disk&di eq 4
+	DPB4 di
+	ELSE
+	IF	disk&di eq 5	
+	DPB5 di
+	ELSE
+	IF	disk&di eq 6	
+	DPB6 di
+	ELSE
+	IF	disk&di eq 7	
+	DPB7 di
+	ELSE
+	IF	disk&di eq 8	
+	DPB8 di
+	ELSE
+	IF	disk&di eq 9	
+	DPB9 di
+	ELSE
+	IF	disk&di eq 10	
+	DPB10 di
+	ELSE
+	IF	disk&di eq 'L'
+	DPBL di			
+	ELSE
+	IF	disk&di eq 'M'
+	DPBM di			
+	ELSE
+	IF	disk&di eq 'O'
+	DPBO di			
+	ELSE
+	IF	disk&di eq 'Q'
+	DPBQ di			
+	ELSE
+	DPBR di			
+	ENDIF
+	ENDIF
+	ENDIF
+	ENDIF
+	ENDIF
+	ENDIF
+	ENDIF
+	ENDIF
+	ENDIF
+	ENDIF
+	ENDIF
+	ENDIF
+	ENDIF
+	ENDIF
+	ENDIF
+	IF	disk&di
+din	ASET	din - 1		
+	ENDIF
+	ENDM
+

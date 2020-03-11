@@ -6,25 +6,27 @@
 config PCM_HAVE_ROM
 	bool
 	default y	if PCM_ROM >= 0 \
-			&& PCM_ROM < 1
+			&& PCM_ROM < 2
 	default n
 
 config PCM_ROM
 	int
 	range 0 1	if MACH_PCM_SYS21X
+	range 0 2	if MACH_PCM_SYS33X
 	default 0	if PCM_EPROM_4X2716
-	default 1
+	default 1	if PCM_EPROM_4X2732
+	default 2
 
 choice
 	default PCM_EPROM_4X2716
-	depends on MACH_PCM_SYS21X
+	depends on MACH_PCM_SYS21X || MACH_PCM_SYS33X
 	prompt "Boot ROM     "
 	---help---
 		Select the PC/M boot ROM size.
 
 config PCM_EPROM_4X2716
 	bool
-	depends on MACH_PCM_SYS21X
+	depends on MACH_PCM_SYS21X || MACH_PCM_SYS33X
 	prompt "8kB EPROM"
 	---help---
 		Original assembly with 4x2kB EPROM:
@@ -39,6 +41,20 @@ config PCM_EPROM_4X2716
 
 		See: http://www.kcclub.de/dlarchiv/DOWNLOAD/DISK269/PC_M1.DOC
 		     Section: 2.1.7 8 KByte EPROM Block
+
+config PCM_EPROM_4X2732
+	bool
+	depends on MACH_PCM_SYS33X
+	prompt "16kB EPROM" if EXPERTMODE
+	---help---
+		Extended assembly with 4x4kB EPROM:
+
+		  D14: 0000 - 07FF 2kB | 2000 - 27FF 2kB ('2732)
+		  D15: 0800 - 0FFF 2kB | 2800 - 2FFF 2kB ('2732)
+		  D16: 1000 - 17FF 2kB | 3000 - 37FF 2kB ('2732)
+		  D17: 1800 - 1FFF 2kB | 3800 - 3FFF 2kB ('2732)
+
+		See: UMBA2732.PCM
 
 endchoice
 

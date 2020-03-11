@@ -6,26 +6,32 @@
 config PCM_HAVE_KEYBOARD
 	bool
 	default y	if PCM_KEYBOARD >= 0 \
-			&& PCM_KEYBOARD < 2
+			&& PCM_KEYBOARD < 7
 	default n
 
 config PCM_KEYBOARD
 	int
 	range 0 2	if MACH_PCM_SYS21X
+	range 0 7	if MACH_PCM_SYS33X
 	default 0	if PCM_KEYBOARD_ORIG
 	default 1	if PCM_KEYBOARD_K7659
-	default 2
+	default 2	if PCM_KEYBOARD_COMMODORE
+	default 3	if PCM_KEYBOARD_K7634
+	default 4	if PCM_KEYBOARD_K7636
+	default 5	if PCM_KEYBOARD_S3004
+	default 6	if PCM_KEYBOARD_K7672
+	default 7
 
 choice
 	default PCM_KEYBOARD_ORIG
-	depends on MACH_PCM_SYS21X
+	depends on MACH_PCM_SYS21X || MACH_PCM_SYS33X
 	prompt "Keyboard     "
 	---help---
 		Select the PC/M keyboard type.
 
 config PCM_KEYBOARD_ORIG
 	bool
-	depends on MACH_PCM_SYS21X
+	depends on MACH_PCM_SYS21X || MACH_PCM_SYS33X
 	prompt "8x10 original"
 	---help---
 		Original 8x10 matrix keyboard on system PIO port A with recoding
@@ -41,7 +47,7 @@ config PCM_KEYBOARD_ORIG
 
 config PCM_KEYBOARD_K7659
 	bool
-	depends on MACH_PCM_SYS21X
+	depends on MACH_PCM_SYS21X || MACH_PCM_SYS33X
 	prompt "K7659"
 	---help---
 		K7659 OEM mounting keyboard by VEB Robotron-Elektroschaltgeräte
@@ -51,6 +57,58 @@ config PCM_KEYBOARD_K7659
 
 		See: http://www.li-pro.net/pcm-k7659.phtml
 		See: http://www.kcclub.de/dlarchiv/DOWNLOAD/DISK269/PC_M7659.DOC
+
+config PCM_KEYBOARD_COMMODORE
+	bool
+	depends on MACH_PCM_SYS33X
+	prompt "Commodore"
+	---help---
+		Commodore keyboard connected to system PIO port A over the EPR2
+		controller that was published in a separated document in 1988.
+
+		See: http://www.kcclub.de/dlarchiv/DOWNLOAD/DISK269/PC_MEPT.DOC
+
+config PCM_KEYBOARD_K7634
+	bool
+	depends on MACH_PCM_SYS33X
+	prompt "K7634/K7604"
+	---help---
+		K7634/K7604 20-grid HALL keyboard by VEB Robotron-
+		Elektroschaltgeräte Auerbach with a parallel interface
+		connected to system PIO port A.
+
+config PCM_KEYBOARD_K7636
+	bool
+	depends on MACH_PCM_SYS33X
+	prompt "K7636/K7606"
+	---help---
+		K7636/K7606 24-grid HALL keyboard by VEB Robotron-
+		Elektroschaltgeräte Auerbach with a parallel interface
+		connected to system PIO port A.
+
+config PCM_KEYBOARD_S3004
+	bool
+	depends on MACH_PCM_SYS33X
+	prompt "S3004"
+	---help---
+		S3004 electronic typewriter by VEB Robotron-Optima Erfurt as
+		keyboard connected to system SIO port A or B over a serial
+		RS-232 interface.
+
+		Note: You have to use the same system SIO port for S3004
+		      as keyboard and printer, see PCM_PRINTER_S3004.
+
+config PCM_KEYBOARD_K7672
+	bool
+	depends on MACH_PCM_SYS33X
+	prompt "K7672"
+	---help---
+		K7672 elastomer keyboard by VEB Robotron-Elektroschaltgeräte
+		Auerbach connected to system SIO port A or B over a serial
+		IFSS interface.
+
+		Alternatively you can use compatible serial keyboards with
+		a serial IFFS interface: K7631/K7637 HALL keyboard
 
 endchoice
 

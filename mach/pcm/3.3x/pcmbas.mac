@@ -1,0 +1,13 @@
+
+extrn	ccp
+extrn	bios
+	include PCMDEF
+	ld	hl,zwlad+10h
+	ld	de,ccp
+	ld	bc,03780h
+	ldir
+	jp	bios
+	nop		
+	nop
+	END
+

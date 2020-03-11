@@ -1,0 +1,218 @@
+#
+# For a description of the syntax of this configuration file, see:
+# https://gitlab.com/ymorin/kconfig-frontends/-/blob/master/docs/kconfig-language.txt
+#
+
+if MACH_PCM_SYS33X
+
+config PCM_SCLOCK
+	int
+	range 0 1
+	default 1	if PCM_SYS33X_BIOS_CLOCK
+	default 0	if !PCM_SYS33X_BIOS_CLOCK
+
+config PCM_SSTLINE
+	int
+	range 0 1
+	default 1	if PCM_SYS33X_BIOS_STLINE
+	default 0	if !PCM_SYS33X_BIOS_STLINE
+
+config PCM_SESCSEQ
+	int
+	range 0 1
+	default 1	if PCM_SYS33X_BIOS_ESCSEQ
+	default 0	if !PCM_SYS33X_BIOS_ESCSEQ
+
+config PCM_SFLOPY
+	int
+	range 0 1
+	default 1	if PCM_SYS33X_DISKIO
+	default 0	if !PCM_SYS33X_DISKIO
+
+config PCM_SDISKUL
+	int
+	range 0 1
+	default 1	if PCM_SYS33X_DISKIO_URLOAD
+	default 0	if !PCM_SYS33X_DISKIO_URLOAD
+
+config PCM_DISKA
+	string
+	default "0"	if !PCM_SYS33X_DISKIO
+
+config PCM_DISKB
+	string
+	default "0"	if !PCM_SYS33X_DISKIO
+
+config PCM_DISKC
+	string
+	default "0"	if !PCM_SYS33X_DISKIO
+
+config PCM_DISKD
+	string
+	default "0"	if !PCM_SYS33X_DISKIO
+
+config PCM_DISKL
+	string
+	default "0"	# if !PCM_SYS33X_DISKIO
+
+config PCM_DISKM
+	string
+	default "0"	# if !PCM_SYS33X_DISKIO
+
+config PCM_DISKO
+	string
+	default "0"	# if !PCM_SYS33X_DISKIO
+
+config PCM_SDEBUG
+	int
+	range 0 1
+	default 1	if PCM_SYS33X_SVDB
+	default 0	if !PCM_SYS33X_SVDB
+
+config PCM_SVTAPE
+	int
+	range 0 1
+	default 1	if PCM_SYS33X_VTAPE
+	default 0	if !PCM_SYS33X_VTAPE
+
+config PCM_SYSVER
+	int
+	range 0 1
+	default 1	if IMAGE_SYS || IMAGE_DSK
+	default 0	if IMAGE_ROM
+	default 0
+
+config PCM_SYS33X_BAS
+	bool
+	default y	if IMAGE_SYS || IMAGE_DSK
+	default n	if IMAGE_ROM
+	default n
+
+comment "Basic I/O System needs a proper hardware configuration"
+	depends on !PCM_HAVE_SYS33XHW
+
+menuconfig PCM_SYS33X_BIOS
+	bool
+	default y
+	select MACH_HAVE_CPM22_BIOS
+	depends on PCM_HAVE_SYS33XHW
+	prompt "Basic I/O System"
+	---help---
+		Generate the BIOS part and link it to the given address (see
+		CONFIG_PCM_SYS33X_BIOS_BASE).
+
+		Say yes here to provide the BIOS as part of the ROM or system
+		image collection.
+
+if PCM_SYS33X_BIOS
+
+config PCM_SYS33X_BIOS_CLOCK
+	bool
+	default n
+	prompt "System clock"
+	---help---
+		Provide a runtime system clock over the zero segment at
+		address 0x0050.
+
+config PCM_SYS33X_BIOS_STLINE
+	bool
+	default y
+	prompt "Status line"
+	---help---
+		Provide a status line in the bottom line of screen with
+		helpful informations like current disk format and user level.
+
+config PCM_SYS33X_BIOS_ESCSEQ
+	bool
+	default y
+	prompt "ESC sequences"
+	---help---
+		Interpret ESC sequences inside the console input driver. This
+		is needed to support the functionality related to the Ctrl-key
+		combinations like Ctrl-_ (0x1F) for warm reboot.
+
+config PCM_SYS33X_BIOS_BASE
+	hex
+	default 0xD5B0	if !(IMAGE_SYS || IMAGE_DSK)
+	default 0xBFF0	if IMAGE_SYS || IMAGE_DSK
+	prompt "BIOS ROM image base address" if EXPERTMODE
+	---help---
+		ROM image base address of the PC/M system 3.3x BIOS.
+
+		The link address is equal to this base address less the
+		size of the bootstrap code of 0x50 (ROM) or 0x10 (systrack).
+
+		Do not change the default value as far as you know what
+		you do. The default value is 0xD600 (ROM) or 0xC000 (systrack).
+		The resulted default link address is 0xD600 - 0x50 = 0xD5B0
+		or 0xC000 - 0x10 = 0xBFF0.
+
+endif	# PCM_SYS33X_BIOS
+
+comment "Floppy Disk I/O System needs Basic I/O System"
+	depends on !PCM_SYS33X_BIOS
+
+menuconfig PCM_SYS33X_DISKIO
+	bool
+	default y
+	depends on PCM_SYS33X_BIOS
+	depends on PCM_HAVE_SYS33XHW && PCM_HAVE_FDC
+	prompt "Floppy Disk I/O System"
+	---help---
+		Generate the DISKIO part and link it into the BIOS.
+
+		Say yes here to provide the floppy disk access as part of
+		the ROM or system image collection.
+
+if PCM_SYS33X_DISKIO
+
+config PCM_SYS33X_DISKIO_URLOAD
+	bool
+	default y
+	prompt "Urloader"
+	---help---
+		Enable support to reload system track from boot disk.
+
+source "mach/pcm/3.3x/Kconfig.ldda"
+source "mach/pcm/3.3x/Kconfig.lddb"
+source "mach/pcm/3.3x/Kconfig.lddc"
+source "mach/pcm/3.3x/Kconfig.lddd"
+
+endif	# PCM_SYS33X_DISKIO
+
+comment "System Visual Debugger Basic I/O System"
+	depends on !PCM_SYS33X_BIOS
+
+config PCM_SYS33X_SVDB
+	bool
+	default n
+	depends on PCM_SYS33X_BIOS
+	prompt "System Visual Debugger"
+	---help---
+		Generate the SVDB part and link it into the BIOS.
+
+		Say yes here to provide the SVDB as part of the ROM or system
+		image collection.
+
+comment "Voice Tape Monitor Basic I/O System"
+	depends on !PCM_SYS33X_BIOS
+
+config PCM_SYS33X_VTAPE
+	bool
+	default y
+	depends on PCM_SYS33X_BIOS
+	prompt "Voice Tape Monitor"
+	---help---
+		Generate the VTAPE part and link it into the BIOS.
+
+		Say yes here to provide the SVDB as part of the ROM or system
+		image collection.
+
+endif	# MACH_PCM_SYS33X
+
+# Local variables:
+# coding: utf-8
+# mode: text
+# mode: kconfig
+# End:
+# vim: fileencoding=utf-8 filetype=kconfig :

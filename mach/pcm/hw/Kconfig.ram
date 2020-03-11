@@ -11,7 +11,7 @@ config PCM_HAVE_RAM
 
 config PCM_RAM
 	int
-	range 0 2	if MACH_PCM_SYS21X
+	range 0 2	if MACH_PCM_SYS21X || MACH_PCM_SYS33X
 	default 0	if PCM_RAM_8X2164
 	default 1	if PCM_RAM_24X2164
 	default 2

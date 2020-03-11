@@ -1,0 +1,53 @@
+#
+# For a description of the syntax of this configuration file, see:
+# https://gitlab.com/ymorin/kconfig-frontends/-/blob/master/docs/kconfig-language.txt
+#
+
+config PCM_HAVE_SOUND
+	bool
+	default y	if PCM_SOUND >= 0 \
+			&& PCM_SOUND < 2
+	default n
+
+config PCM_SOUND
+	int
+	range 0 2	if MACH_PCM_SYS33X
+	default 0	if PCM_SOUND_NONE
+	default 1	if PCM_SOUND_ORIG
+	default 2
+
+choice
+	default PCM_SOUND_ORIG
+	depends on MACH_PCM_SYS33X
+	prompt "Sound & Audio"
+	---help---
+		Select the PC/M sound and audio type.
+
+config PCM_SOUND_NONE
+	bool
+	depends on MACH_PCM_SYS33X
+	prompt "none"
+	---help---
+		No sound connected.
+
+config PCM_SOUND_ORIG
+	bool
+	depends on MACH_PCM_SYS33X
+	prompt "CTC original"
+	---help---
+		Original sound output on system CTC channel 2.
+
+		See: http://www.li-pro.net/pcm-hw.phtml
+		     Section: 2.2.2 System-PIO, System-CTC
+
+		See: http://www.kcclub.de/dlarchiv/DOWNLOAD/DISK269/PC_M1.DOC
+		     Section: 2.2.2 System-PIO, System-CTC
+
+endchoice
+
+# Local variables:
+# coding: utf-8
+# mode: text
+# mode: kconfig
+# End:
+# vim: fileencoding=utf-8 filetype=kconfig :

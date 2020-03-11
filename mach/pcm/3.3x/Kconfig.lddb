@@ -1,0 +1,230 @@
+#
+# For a description of the syntax of this configuration file, see:
+# https://gitlab.com/ymorin/kconfig-frontends/-/blob/master/docs/kconfig-language.txt
+#
+
+config PCM_HAVE_SYS33X_DISKIO_DRVB
+	bool
+	default y	if PCM_DISKB = "1" \
+			|| PCM_DISKB = "2" \
+			|| PCM_DISKB = "3" \
+			|| PCM_DISKB = "4" \
+			|| PCM_DISKB = "5" \
+			|| PCM_DISKB = "6" \
+			|| PCM_DISKB = "7" \
+			|| PCM_DISKB = "8" \
+			|| PCM_DISKB = "9" \
+			|| PCM_DISKB = "10"
+
+config PCM_DISKB
+	string
+	default "0"	if PCM_SYS33X_DISKIO_DRVB_NONE
+	default "1"	if PCM_SYS33X_DISKIO_DRVB_SCP624K
+	default "2"	if PCM_SYS33X_DISKIO_DRVB_SCP780K
+	default "3"	if PCM_SYS33X_DISKIO_DRVB_CPA800K
+	default "4"	if PCM_SYS33X_DISKIO_DRVB_SCP308K
+	default "5"	if PCM_SYS33X_DISKIO_DRVB_CPA400K
+	default "6"	if PCM_SYS33X_DISKIO_DRVB_IBM304K
+	default "7"	if PCM_SYS33X_DISKIO_DRVB_IBM380K
+	default "8"	if PCM_SYS33X_DISKIO_DRVB_IBM400K
+	default "9"	if PCM_SYS33X_DISKIO_DRVB_SCP148K
+	default "10"	if PCM_SYS33X_DISKIO_DRVB_CPA200K
+	depends on MACH_PCM_SYS33X
+
+choice
+	default PCM_SYS33X_DISKIO_DRVB_SCP624K
+	default PCM_SYS33X_DISKIO_DRVB_SCP308K
+	default PCM_SYS33X_DISKIO_DRVB_SCP148K
+	default PCM_SYS33X_DISKIO_DRVB_NONE
+	prompt "Drive B Type "
+	---help---
+		Select the logical format of disk drive B.
+
+config PCM_SYS33X_DISKIO_DRVB_NONE
+	bool
+	prompt "none"
+	---help---
+		No disk drive configured.
+
+config PCM_SYS33X_DISKIO_DRVB_SCP624K
+	bool
+	depends on	PCM_FDC_DRV1_IBMAT \
+		||	PCM_FDC_DRV1_MFS16
+	prompt "DD/DS-80T 16*256 4ST (624k, SCP)"
+	---help---
+		640/624/620kB SCP format:
+
+		  - 2 sides per disk (DS)
+		  - 80 tracks per side (DD)
+		  - 16 sectors per track
+		  - 256 byte per sector
+		  - 2048 byte BDOS block size
+		  - 4 system tracks (16kB)
+		  - 128 directory entries (4kB)
+
+config PCM_SYS33X_DISKIO_DRVB_SCP780K
+	bool
+	depends on	PCM_FDC_DRV1_IBMAT \
+		||	PCM_FDC_DRV1_MFS16
+	prompt "DD/DS-80T 5*1024 4ST (780k, SCP)"
+	---help---
+		800/780/776kB SCP format:
+
+		  - 2 sides per disk (DS)
+		  - 80 tracks per side (DD)
+		  - 5 sectors per track
+		  - 1024 byte per sector
+		  - 2048 byte BDOS block size
+		  - 4 system tracks (20kB)
+		  - 128 directory entries (4kB)
+
+config PCM_SYS33X_DISKIO_DRVB_CPA800K
+	bool
+	depends on	PCM_FDC_DRV1_IBMAT \
+		||	PCM_FDC_DRV1_MFS16
+	prompt "DD/DS-80T 5*1024 0ST (800k, CPA)"
+	---help---
+		800/800/794kB CPA format:
+
+		  - 2 sides per disk (DS)
+		  - 80 tracks per side (DD)
+		  - 5 sectors per track
+		  - 1024 byte per sector
+		  - 2048 byte BDOS block size
+		  - no system tracks
+		  - 192 directory entries (6kB)
+
+config PCM_SYS33X_DISKIO_DRVB_SCP308K
+	bool
+	depends on	PCM_FDC_DRV1_IBMAT \
+		||	PCM_FDC_DRV1_MFS16 \
+		||	PCM_FDC_DRV1_MFS14
+	prompt "DD/SS-80T 16*256 3ST (308k, SCP)"
+	---help---
+		320/308/304kB SCP format:
+
+		  - 1 sides per disk (SS)
+		  - 80 tracks per side (DD)
+		  - 16 sectors per track
+		  - 256 byte per sector
+		  - 2048 byte BDOS block size
+		  - 3 system tracks (12kB)
+		  - 128 directory entries (4kB)
+
+config PCM_SYS33X_DISKIO_DRVB_CPA400K
+	bool
+	depends on	PCM_FDC_DRV1_IBMAT \
+		||	PCM_FDC_DRV1_MFS16 \
+		||	PCM_FDC_DRV1_MFS14
+	prompt "DD/SS-80T 5*1024 0ST (400k, CPA)"
+	---help---
+		400/400/396kB CPA format:
+
+		  - 1 sides per disk (DS)
+		  - 80 tracks per side (DD)
+		  - 5 sectors per track
+		  - 1024 byte per sector
+		  - 2048 byte BDOS block size
+		  - no system tracks
+		  - 128 directory entries (4kB)
+
+config PCM_SYS33X_DISKIO_DRVB_IBM304K
+	bool
+	depends on	PCM_FDC_DRV1_IBMAT \
+		||	PCM_FDC_DRV1_MFS16 \
+		||	PCM_FDC_DRV1_MFS14 \
+		||	PCM_FDC_DRV1_IBMXT
+	prompt "DD/DS-40T 16*256 4ST (304k, IBM)"
+	---help---
+		320/304/300kB IBM format:
+
+		  - 2 sides per disk (DS)
+		  - 40 tracks per side (DD)
+		  - 16 sectors per track
+		  - 256 byte per sector
+		  - 2048 byte BDOS block size
+		  - 4 system tracks (16kB)
+		  - 128 directory entries (4kB)
+
+config PCM_SYS33X_DISKIO_DRVB_IBM380K
+	bool
+	depends on	PCM_FDC_DRV1_IBMAT \
+		||	PCM_FDC_DRV1_MFS16 \
+		||	PCM_FDC_DRV1_MFS14 \
+		||	PCM_FDC_DRV1_IBMXT
+	prompt "DD/DS-40T 5*1024 4ST (380k, IBM)"
+	---help---
+		400/380/376kB IBM format:
+
+		  - 2 sides per disk (DS)
+		  - 40 tracks per side (DD)
+		  - 5 sectors per track
+		  - 1024 byte per sector
+		  - 2048 byte BDOS block size
+		  - 4 system tracks (20kB)
+		  - 128 directory entries (4kB)
+
+config PCM_SYS33X_DISKIO_DRVB_IBM400K
+	bool
+	depends on	PCM_FDC_DRV1_IBMAT \
+		||	PCM_FDC_DRV1_MFS16 \
+		||	PCM_FDC_DRV1_MFS14 \
+		||	PCM_FDC_DRV1_IBMXT
+	prompt "DD/DS-40T 5*1024 0ST (400k, IBM)"
+	---help---
+		400/400/396kB IBM format:
+
+		  - 2 sides per disk (DS)
+		  - 40 tracks per side (DD)
+		  - 5 sectors per track
+		  - 1024 byte per sector
+		  - 2048 byte BDOS block size
+		  - no system tracks
+		  - 128 directory entries (4kB)
+
+config PCM_SYS33X_DISKIO_DRVB_SCP148K
+	bool
+	depends on	PCM_FDC_DRV1_IBMAT \
+		||	PCM_FDC_DRV1_MFS16 \
+		||	PCM_FDC_DRV1_MFS14 \
+		||	PCM_FDC_DRV1_IBMXT \
+		||	PCM_FDC_DRV1_MFS12
+	prompt "DD/SS-40T 16*256 3ST (148k, SCP)"
+	---help---
+		160/148/146kB SCP format:
+
+		  - 1 sides per disk (SS)
+		  - 40 tracks per side (DD)
+		  - 16 sectors per track
+		  - 256 byte per sector
+		  - 2048 byte BDOS block size
+		  - 3 system tracks (12kB)
+		  - 64 directory entries (2kB)
+
+config PCM_SYS33X_DISKIO_DRVB_CPA200K
+	bool
+	depends on	PCM_FDC_DRV1_IBMAT \
+		||	PCM_FDC_DRV1_MFS16 \
+		||	PCM_FDC_DRV1_MFS14 \
+		||	PCM_FDC_DRV1_IBMXT \
+		||	PCM_FDC_DRV1_MFS12
+	prompt "DD/SS-40T 5*1024 0ST (200k, CPA)"
+	---help---
+		200/200/198kB CPA format:
+
+		  - 1 sides per disk (DS)
+		  - 40 tracks per side (DD)
+		  - 5 sectors per track
+		  - 1024 byte per sector
+		  - 2048 byte BDOS block size
+		  - no system tracks
+		  - 64 directory entries (2kB)
+
+endchoice
+
+# Local variables:
+# coding: utf-8
+# mode: text
+# mode: kconfig
+# End:
+# vim: fileencoding=utf-8 filetype=kconfig :

@@ -1,0 +1,155 @@
+#
+# For a description of the syntax of this configuration file, see:
+# https://gitlab.com/ymorin/kconfig-frontends/-/blob/master/docs/kconfig-language.txt
+#
+
+config PCM_HAVE_FDC_DRV0
+	bool
+	default y	if PCM_FDC_DRV0 > 0 \
+			&& PCM_FDC_DRV0 < 6
+	default n
+
+config PCM_FDC_DRV0
+	int
+	range 0 6	if PCM_FDC_DRVMAX >= 4
+	default 0	if PCM_FDC_DRV0_NONE
+	default 1	if PCM_FDC_DRV0_MFS12
+	default 2	if PCM_FDC_DRV0_IBMXT
+	default 3	if PCM_FDC_DRV0_MFS14
+	default 4	if PCM_FDC_DRV0_MFS16
+	default 5	if PCM_FDC_DRV0_IBMAT
+	default 6
+
+choice
+	default PCM_FDC_DRV0_NONE
+	prompt "Drive 0 Type "
+	---help---
+		Select the FDC connected physical type of disk drive 0.
+
+config PCM_FDC_DRV0_NONE
+	bool
+	prompt "none"
+	---help---
+		No floppy disk drive connected.
+
+config PCM_FDC_DRV0_MFS12
+	bool
+	depends on PCM_FDC_ORIG_8272_MFM250
+	prompt "MFS 1.2"
+	---help---
+		MFS 1.2 aka K5600.10 floppy disk drive by
+		VEB Buchungsmaschinenwerk Karl-Marx-Stadt:
+
+		  - 5.25 inch disk drive
+		  - 300 rotation per minute (RPM)
+		  - 125 or 250 kBit/s transfere rate
+		  - FM or MFM operation (SD/DD)
+		  - 48 tracks per inch (TPI)
+		  - 40 tracks per side
+		  - single side
+		  - max. 200 kB
+
+		This drive is compatible to the original TEAC floppy disk
+		drive FD-55A:
+
+		  - max. 6.25 kB per track
+		  - max. 250 kB per disk
+
+config PCM_FDC_DRV0_IBMXT
+	bool
+	depends on PCM_FDC_ORIG_8272_MFM250
+	prompt "IBM XT"
+	---help---
+		IBM XT floppy disk drive:
+
+		  - 5.25 inch disk drive
+		  - 300 rotation per minute (RPM)
+		  - 125 or 250 kBit/s transfere rate
+		  - FM or MFM operation (SD/DD)
+		  - 48 tracks per inch (TPI)
+		  - 40 tracks per side
+		  - double side
+		  - max. 400 kB
+
+		This drive is compatible to the original TEAC floppy disk
+		drive FD-55B:
+
+		  - max. 6.25 kB per track
+		  - max. 500 kB per disk
+
+config PCM_FDC_DRV0_MFS14
+	bool
+	depends on PCM_FDC_ORIG_8272_MFM250
+	prompt "MFS 1.4"
+	---help---
+		MFS 1.4 aka K5600.20 floppy disk drive by
+		VEB Buchungsmaschinenwerk Karl-Marx-Stadt:
+
+		  - 5.25 inch disk drive
+		  - 300 rotation per minute (RPM)
+		  - 125 or 250 kBit/s transfere rate
+		  - FM or MFM operation (SD/DD)
+		  - 96 tracks per inch (TPI)
+		  - 80 tracks per side
+		  - single side
+		  - max. 400 kB
+
+		This drive is compatible to the original TEAC floppy disk
+		drive FD-55E:
+
+		  - max. 6.25 kB per track
+		  - max. 500 kB per disk
+
+config PCM_FDC_DRV0_MFS16
+	bool
+	depends on PCM_FDC_ORIG_8272_MFM250
+	prompt "MFS 1.6"
+	---help---
+		MFS 1.6 aka K5601 floppy disk drive by
+		VEB Buchungsmaschinenwerk Karl-Marx-Stadt:
+
+		  - 5.25 inch disk drive
+		  - 300 rotation per minute (RPM)
+		  - 125 or 250 kBit/s transfere rate
+		  - FM or MFM operation (SD/DD)
+		  - 96 tracks per inch (TPI)
+		  - 80 tracks per side
+		  - double side
+		  - max. 800 kB
+
+		This drive is compatible to the original TEAC floppy disk
+		drive FD-55F:
+
+		  - max. 6.25 kB per track
+		  - max. 1000 kB per disk
+
+config PCM_FDC_DRV0_IBMAT
+	bool
+	depends on PCM_FDC_ORIG_8272_MFM500
+	prompt "IBM AT"
+	---help---
+		IBM AT floppy disk drive:
+
+		  - 5.25 inch disk drive
+		  - 360 rotation per minute (RPM)
+		  - 250 or 500 kBit/s transfere rate
+		  - FM or MFM operation (SD/DD)
+		  - 96 tracks per inch (TPI)
+		  - 80 (77) tracks per side
+		  - double side
+		  - max. 1600 kB (1540 kB)
+
+		This drive is compatible to the original TEAC floppy disk
+		drive FD-55G:
+
+		  - max. 10.416 kB per track
+		  - max. 1604 kB per disk
+
+endchoice
+
+# Local variables:
+# coding: utf-8
+# mode: text
+# mode: kconfig
+# End:
+# vim: fileencoding=utf-8 filetype=kconfig :

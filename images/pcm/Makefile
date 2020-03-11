@@ -2,6 +2,10 @@ ifeq ($(CONFIG_MACH_PCM_SYS21X),y)
 include $(S)2.1x/Makefile
 endif
 
+ifeq ($(CONFIG_MACH_PCM_SYS33X),y)
+include $(S)3.3x/Makefile
+endif
+
 #####
 #
 # Video Card Font Image (MACH_VIDEO_FONT_BIN)

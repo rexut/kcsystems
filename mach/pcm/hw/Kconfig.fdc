@@ -1,0 +1,89 @@
+#
+# For a description of the syntax of this configuration file, see:
+# https://gitlab.com/ymorin/kconfig-frontends/-/blob/master/docs/kconfig-language.txt
+#
+
+config PCM_HAVE_FDC
+	bool
+	default y	if PCM_FDC >= 0 \
+			&& PCM_FDC < 2
+	default n
+
+config PCM_FDC
+	int
+	range 0 2	if MACH_PCM_SYS33X
+	default 0	if PCM_FDC_NONE
+	default 1	if PCM_FDC_ORIG_8272_MFM250 \
+			|| PCM_FDC_ORIG_8272_MFM500
+	default 2
+
+config PCM_FDC_DRVMAX
+	int
+	range 0 4	if PCM_FDC_ORIG_8272_MFM250 \
+			|| PCM_FDC_ORIG_8272_MFM500
+	default 0	if PCM_FDC_NONE
+	default 4	if PCM_FDC_ORIG_8272_MFM250 \
+			|| PCM_FDC_ORIG_8272_MFM500
+
+choice
+	default PCM_FDC_ORIG_8272_MFM250
+	depends on MACH_PCM_SYS33X
+	prompt "System FDC   "
+	---help---
+		Select the PC/M connected FDC unit.
+
+config PCM_FDC_NONE
+	bool
+	depends on MACH_PCM_SYS33X
+	prompt "none"
+	---help---
+		No floppy disk controller connected.
+
+config PCM_FDC_ORIG_8272_MFM250
+	bool
+	depends on MACH_PCM_SYS33X
+	prompt "8272 original (MFM 250 kBit/s)"
+	---help---
+		Original floppy disk controller with:
+
+		  - FDC '8272 at 4MHz
+		  - MFM 250 kBit/s by a 2MHz PLL (0.1%)
+		  - Support for 5,25" DD disk drives
+
+		The original floppy disk controller was published in the
+		German journal "Funkamateur" in 1990.
+
+		See: http://www.li-pro.net/pcm-fdc.phtml
+
+config PCM_FDC_ORIG_8272_MFM500
+	bool
+	depends on MACH_PCM_SYS33X
+	prompt "8272 original (MFM 500 kBit/s)"
+	---help---
+		Original floppy disk controller with:
+
+		  - FDC '8272 at 8MHz
+		  - MFM 500 kBit/s by a 2MHz PLL (0.1%)
+		  - Support for 5,25" HD disk drives
+		  - Support for 8" DD disk drives
+
+		The original floppy disk controller was published in the
+		German journal "Funkamateur" in 1990.
+
+		See: http://www.li-pro.net/pcm-fdc.phtml
+
+endchoice
+
+if PCM_FDC_ORIG_8272_MFM250 || PCM_FDC_ORIG_8272_MFM500
+source "mach/pcm/hw/Kconfig.fdd0"
+source "mach/pcm/hw/Kconfig.fdd1"
+source "mach/pcm/hw/Kconfig.fdd2"
+source "mach/pcm/hw/Kconfig.fdd3"
+endif
+
+# Local variables:
+# coding: utf-8
+# mode: text
+# mode: kconfig
+# End:
+# vim: fileencoding=utf-8 filetype=kconfig :

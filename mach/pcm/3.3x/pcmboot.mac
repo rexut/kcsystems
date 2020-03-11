@@ -1,0 +1,49 @@
+
+ccp	equ	0c000h
+start:	di	
+	ld	a,00fh		
+	out	(ptascb),a
+	out	(ptasdb),a
+	xor	a
+	out	(contrl),a	
+	ld	hl,00050h	
+	ld	de,bios		
+	ld	bc,01fb0h	
+	ldir			
+	db	0,0,0,0,0,0,0,0
+	jp	begvt
+les1:	exx			
+	ld	b,080h		
+les2:	exx
+	res	6,b
+	out	(c),b
+	ld	a,(hl)
+	set	6,b
+	out	(c),b
+	ld	(de),a
+	inc	hl
+	inc	de
+	exx
+	djnz	les2
+	ret	
+schr1:	exx			
+	ld	b,080h		
+schr2:	exx
+	ld	a,(de)
+	res	6,b
+	out	(c),b
+	ld	(hl),a
+	cp	(hl)
+	set	6,b
+	out	(c),b
+	jr	nz,scher
+	inc	hl
+	inc	de
+	exx
+	djnz	schr2
+	xor	a
+	ret	
+scher:	exx			
+	ld	a,001h
+	ret	
+

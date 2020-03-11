@@ -1,0 +1,95 @@
+#
+# For a description of the syntax of this configuration file, see:
+# https://gitlab.com/ymorin/kconfig-frontends/-/blob/master/docs/kconfig-language.txt
+#
+
+config PCM_HAVE_VIDEO
+	bool
+	default y	if PCM_VIDEO >= 0 \
+			&& PCM_VIDEO < 4
+	default n
+
+config PCM_VIDEO
+	int
+	range 0 4	if MACH_PCM_SYS33X
+	default 0	if PCM_VIDEO_ORIG_6416
+	default 1	if PCM_VIDEO_VID2K_8024
+	default 2	if PCM_VIDEO_MC6845_6416
+	default 3	if PCM_VIDEO_MC6845_8024
+	default 4
+
+choice
+	default PCM_VIDEO_ORIG_6416
+	depends on MACH_PCM_SYS33X
+	prompt "Video Card   "
+	---help---
+		Select the PC/M video output type.
+
+config PCM_VIDEO_ORIG_6416
+	bool
+	depends on MACH_PCM_SYS33X
+	prompt "64/16 original"
+	---help---
+		Original video card with:
+
+		  - 64 characters per line
+		  - 16 lines per screen with gap lines
+		  - 7x8 pixel per character
+		  - 1k character generator in EPROM
+
+		The 64/16 original viedo card was published in the German
+		journal "Funkamateur" in 1988.
+
+		See: http://www.li-pro.net/pcm-hw.phtml
+		     Section: 3.1 Bildschirmansteuerung (BAS)
+		     Section: 4.2 Bildschirmansteuerung
+
+		See: http://www.kcclub.de/dlarchiv/DOWNLOAD/DISK269/PC_M1.DOC
+		     Section: 3.1 Bildschirmansteuerung
+		     Section: 4 Inbetriebnahme --> Bildschirmansteuerung
+
+config PCM_VIDEO_VID2K_8024
+	bool
+	depends on MACH_PCM_SYS33X
+	prompt "80/24 (VID2K)"
+	---help---
+		VID2K video card with:
+
+		  - 80 characters per line
+		  - 24 lines per screen
+		  - 8x10 pixel per character with cursor line
+		  - 2k character generator in EPROM
+
+		The 80/24 (VID2K) viedo card was published in a separated
+		document in 1988.
+
+		See: http://www.li-pro.net/pcm-bs-24x80.phtml
+
+config PCM_VIDEO_MC6845_6416
+	bool
+	depends on MACH_PCM_SYS33X
+	prompt "64/16 (MC6845)"
+	---help---
+		MC6845 based video card with:
+
+		  - 64 characters per line
+		  - 16 lines per screen with gap lines
+
+config PCM_VIDEO_MC6845_8024
+	bool
+	depends on MACH_PCM_SYS33X
+	prompt "80/24 (MC6845)"
+	---help---
+		MC6845 based video card with:
+
+		  - 80 characters per line
+		  - 24 lines per screen
+
+endchoice
+
+# Local variables:
+# coding: utf-8
+# mode: text
+# mode: kconfig
+# End:
+# vim: fileencoding=utf-8 filetype=kconfig :

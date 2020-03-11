@@ -1,0 +1,262 @@
+
+;**************************************************************
+;
+; 		Festlegen der Konfiguration 
+;
+;**************************************************************
+;
+;!!!! ACHTUNG !!!!
+;!!!! Stellen Sie Maengel oder Fehler im Quelltext fest oder 
+;!!!! Sie haben neue Moduln bzw. Treiber hinzugefuegt, dann
+;!!!! kennzeichnen Sie bitte Aenderungen im Quelltext 
+;!!!! mit "!!!!!". Senden Sie bitte eine Kopie der von Ihnen
+;!!!! bearbeiteten Programmversion an folgende Adresse, damit
+;!!!! Verbesserungen allen PC/M-Nutzern zugaenglich gemacht
+;!!!! werden koennen:
+;!!!! Albrecht Mugler
+;!!!! PSF 24
+;!!!! Oberlungwitz
+;!!!! 9273
+;!!!! 
+;
+vers	MACRO
+	db	' %%CONFIG_SYSV%% '	;Versionsnummer
+	ENDM
+;
+date	MACRO
+	db	'%%BUILD_DATE%%'	;Datumsausschrift
+	ENDM
+;
+;********************* CPU-Taktfrequenz ***********************
+;
+fcpu	equ	%%CONFIG_PCM_CPUFREQ%%		;0 = 2.0    MHz SCTC an fcpu/2
+				;1 = 2.4576 MHz (Original)
+				;2 = 2.5    MHz (Original)
+				;3 = 3.6840 MHz SCTC an fcpu/2
+				;4 = 4.0    MHz	SCTC an fcpu/2
+;
+;********************* ROM/Disk - Version *********************
+;
+sysver	equ	%%CONFIG_PCM_SYSVER%%		;0 = ROM - Version
+				;1 = Disketten -Version	
+;
+;
+;******************* Bildschirmfestlegungen *******************
+;
+btype	equ	%%CONFIG_PCM_VIDEO%%		;Bildschirm 0 - 64/16 Original 
+				;	        mit Zwischenzeilen
+				;	    1 - 80/24
+				;	    2 - 64/16 6845
+				;	    3 - 80/24 6845
+;
+;
+;******************** Tastaturfestlegungen ********************
+;
+tastat	equ	%%CONFIG_PCM_KEYBOARD%%		;0 = Tastatur Original PC/M
+				;    GR/KL-KL/GR-Wandlung
+				;1 = K7659
+				;2 = Commodore Tastatur
+				;3 = K7634/K7604
+				;4 = K7636/K7606
+				;5 = S3004 als Tastatur
+				;6 = K7672 als Tastatur ueber
+				;    IFSS Kanal A
+				;
+cures	equ	083h		;Break-Taste fuer V-Tape u.a.
+;
+ptasda	equ	084h		;Systemport A Daten (Tastatur)
+ptasca	equ	086h		;Systemport B Control
+ptasdb	equ	085h		;Systemport B Daten
+ptascb	equ	087h		;Systemport B Control
+;
+;ACHTUNG bei Verwendung einer seriellen Tastatur kontrollieren,
+;dasz das Druckerport nicht identisch mit dem Tastaturport ist
+;Aussnahme: S3004
+;
+taport	equ	0		;0 = SIO-Port A fuer Tastatur
+				;1 = SIO-Port B fuer Tastatur
+;
+	IF	taport eq 0
+tsioda	equ	088h		;Tastatur SIO Daten
+tsioca	equ	08ah		;Tastatur SIO Control
+tctcs0	equ	080h		;System-CTC Kanal 0
+tctcsa	equ	080h		;System-CTC fuer IFSS Kan. A
+	ENDIF
+	IF	taport eq 1
+tsioda	equ	089h		;Tastatur SIO Daten
+tsioca	equ	08Bh		;Tastatur SIO Control
+tctcs0	equ	080h		;System-CTC Kanal 0
+tctcsa	equ	081h		;System-CTC fuer IFSS Kan. B
+	ENDIF
+;
+;********************* Druckerfestlegungen ********************
+;
+prdef	equ	%%CONFIG_PCM_PRINTER%%		;0 = kein Drucker
+				;1 = PIO-Schnittstelle
+				;2 = SIO-Schnittstelle SD 1152
+				;3 = S3004 als Drucker
+				;4 = K6313/6314- oder Epson-Drucker
+;
+;ACHTUNG bei Verwendung einer seriellen Tastatur kontrollieren,
+;dasz das Druckerport nicht identisch mit dem Tastaturport ist
+;Aussnahme: S3004
+;
+prport	equ	1		;0 = SIO-Port A fuer Drucker
+				;1 = SIO-Port B fuer Drucker
+;
+ppida	equ	090h		;PIO Drucker Daten A
+ppidb	equ	091h		;PIO Drucker Daten B
+ppica	equ	092h		;PIO Drucker Control A
+ppicb	equ	093h		;PIO Drucker Control B
+;
+	IF	prport eq 0
+psioda	equ	088h		;Drucker SIO Daten
+psioca	equ	08ah		;Drucker SIO Control
+pctcs0	equ	080h		;System-CTC Kanal 0
+pctcsa	equ	080h		;System-CTC fuer IFSS Kan. A
+	ENDIF
+	IF	prport eq 1
+psioda	equ	089h		;Drucker SIO Daten
+psioca	equ	08Bh		;Drucker SIO Control
+pctcs0	equ	080h		;System-CTC Kanal 0
+pctcsa	equ	081h		;System-CTC fuer IFSS Kan. B
+	ENDIF
+;
+;************************* Tonausgabe *************************
+;
+tonaus	equ 	%%CONFIG_PCM_SOUND%%		;Tonausgabe Aus = 0
+				;           Ein = 1	
+ctcton	equ	082h		;Port fuer Tonausgabe ueber CTC
+;
+;************************** PC/M-Uhr **************************
+;
+pcmuhr	equ 	%%CONFIG_PCM_SCLOCK%%		;Uhr        Aus = 0
+				;           Ein = 1	
+;
+;*********************** Statuszeile **************************
+;
+statusz	equ 	%%CONFIG_PCM_SSTLINE%%		;Statuszeile Aus = 0
+				;            Ein = 1	
+;
+;*********************** ESC-Sequenzen ************************
+;
+escseq	equ 	%%CONFIG_PCM_SESCSEQ%%		;ESC-Sequenzen Aus = 0
+				;              Ein = 1	
+;
+;******************** Urlader - Festlegung ********************
+;
+durlad	equ	%%CONFIG_PCM_SDISKUL%%		;0 = ohne Diskettenurlader
+				;1 = mit Diskettenurlader
+zwlad	equ	0100h		;Zwischenpuffer fuer System
+				;beim nachladen von Diskette
+;
+;********************** Systemdebugger ************************
+;
+sdebug	equ	%%CONFIG_PCM_SDEBUG%%		;0 = ohne Systemdebugger
+				;1 = mit Systemdebugger
+;
+outnmi	equ	098h		;Port fuer Schrittsteuerung
+;
+;******************* ROM-Floppy-Definitionen ******************
+;
+romflo	equ	0		;0 = ohne ROM-Floppy
+				;1 = mit ROM-Floppy
+romaw	equ	0e3h		;Steuerwort fuer ROM-Floppy
+				;auf SEL2
+;
+;*************** Zusatz-RAM-Floppy-Definitionen ***************
+;
+zramfl	equ	0		;0 = ohne Zusatz-RAM-Floppy
+				;1 = mit Zusatz-RAM-Floppy
+zraaw1	equ	0cbh		;Steuerwort fuer ZRAMF
+				;auf SEL0 
+zraaw2	equ	0d3h		;auf SEL1 
+;						
+;************************ Emulator-RAM ************************
+;
+emlram	equ	0		;0 = ohne Emulator-RAM
+				;1 = mit Emulator-RAM
+emlaw	equ	0e3h		;Steuerwort fuer EMLRF
+				;auf SEL2
+;	
+;***************** SYS-RAM-Floppy-Definitionen ****************
+;
+ramflo	equ	1		;0 = ohne SYS-RAM-Floppy
+				;1 = mit  SYS-RAM-Floppy 
+srfaw	equ	0c1h		;Steuerwort dazu
+;
+;******************* sonstige Festlegungen ********************
+;
+aspaw	equ	0c0h		;Steuerwort fuer Arbeitsspeicher
+bank	equ	094h		;Port fuer Bankumschaltung
+;
+;************************ Floppy-Disk *************************
+;
+flopy	equ	%%CONFIG_PCM_SFLOPY%%		;0 = ohne Floppy-Disk
+				;1 = mit Floppy-Disk	
+;
+;************************* V-Tape *****************************
+;
+svtape	equ	%%CONFIG_PCM_SVTAPE%%		;0 = ohne V-Tape
+				;1 = mit V-Tape	
+;
+;****************** Floppy-Disk-Definitionen ******************
+;
+diskA	equ	%%CONFIG_PCM_DISKA%%	;1 = 2x80 624k MFS 1.6
+diskB	equ	%%CONFIG_PCM_DISKB%%	;2 = 2x80 780k MFS 1.6 	
+diskC	equ	%%CONFIG_PCM_DISKC%%	;3 = 2x80 800k MFS 1.6
+diskD	equ	%%CONFIG_PCM_DISKD%%	;4 = 1x80 308k MFS 1.4
+			;5 = 1x80 400k MFS 1.4 
+			;6 = 2x40 304k IBM
+			;7 = 2x40 380k IBM
+			;8 = 2x40 400k IBM
+			;9 = 1x40 148k MFS 1.2
+			;10= 1x40 200k MFS 1.2   
+			;Q = System-RAM-Floppy 124k nur bei 
+			;    ROM-Floppy, System mit 2732 o.ae.
+diskL	equ	%%CONFIG_PCM_DISKL%%	;R = System-RAM-Floppy 118k
+diskM	equ	%%CONFIG_PCM_DISKM%%	;M = Zusatz-RAM-Floppy
+diskO	equ	%%CONFIG_PCM_DISKO%%	;O = Zusatz-ROM-Floppy
+			;L = Emulator-RAM-Floppy
+;
+srcon	equ	0c0h		;FDC-Statusregister
+datcon	equ	0c1h		;FDC-Datenregister
+contrl	equ	0c2h		;Steuerport fuer LCK- und SEL-Signale
+;
+;
+	IF	btype eq 0
+bsanf	equ	0FC00h		;Bildspeicheranfangsadresse
+bline	equ	16		;16 Zeilen
+bwidth	equ	64		;64 Zeichen pro Zeile
+errlin	equ	0FFE0H		;Zeile Fehlermeldung
+zvideo	equ	0F800h		;Zwischenzeilen 1K Schirm
+possli	equ	0FBC0h		;Position Statuszeile
+uhrpos	equ	possli+38h	;Position der Uhr
+	ENDIF
+	IF	btype eq 1
+bsanf	equ	0F800h		;Bildspeicheranfangsadresse
+bline	equ	24		;24 Zeilen
+bwidth	equ	80		;80 Zeichen pro Zeile
+errlin	equ	0FF60H		;Zeile Fehlermeldung
+possli	equ	0FF80h		;Position Statuszeile
+uhrpos	equ	0F848H		;Position der Uhr
+				;!!!ACHTUNG!!! nicht geprueft
+	ENDIF
+	IF	btype eq 2
+bsanf	equ	0FC00h		;Bildspeicheranfangsadresse
+bline	equ	16		;16 Zeilen
+bwidth	equ	64		;64 Zeichen pro Zeile
+errlin	equ	0FFE0H		;Zeile Fehlermeldung
+possli	equ	0FBC0H		;Position Statuszeile
+				;nicht moeglich!!!
+uhrpos	equ	0FC38H		;Position der Uhr
+	ENDIF
+	IF	btype eq 3
+bsanf	equ	0F800h		;Bildspeicheranfangsadresse
+bline	equ	24		;24 Zeilen
+bwidth	equ	80		;80 Zeichen pro Zeile
+errlin	equ	0FF60H		;Zeile Fehlermeldung
+uhrpos	equ	0F848H		;Position der Uhr
+possli	equ	0FF80H		;Position der Statuszeile
+	ENDIF
+

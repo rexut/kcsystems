@@ -1,0 +1,1396 @@
+
+	.Z80
+title PCMBIOS   
+	include PCMDEF		
+disknb	ASET	0		
+	IRP	di,<A,B,C,D,L,M,O>	
+	IF	disk&di
+disknb	ASET	disknb + 1
+	ENDIF
+	ENDM
+	IF	sysver eq 1	
+urlad	equ 0		
+	ELSE
+urlad 	equ 1		
+	ENDIF	
+	IF	urlad eq 0
+extrn	ccp			
+extrn	bdos			
+	ELSE
+ccp	equ	0c000h		
+bdos	equ	ccp+0800h
+	ENDIF
+lanbas	equ	010h		
+cdisk	equ	0004h		
+iobyte	equ	0003h		
+adruhr	equ	0050h		
+hstsiz	equ	1024		
+bufmsk	equ	(hstsiz/128)-1	
+vdu	equ	bsanf		
+jumtab	equ	0F600H		
+kslw	equ	0F7DFH		
+stapu	equ	0F7F0H		
+stapz	equ	0F7A0H		
+stapze	equ	0F7DEH		
+intab	equ	0F7F0h		
+	IF urlad eq 1
+	include PCMBOOT		
+	ENDIF			
+BIOS::	jp	boot		
+wboote:	jp	wboot		
+	jp	const		
+	jp	conin		
+	jp	conout		
+	jp	list		
+	jp	punch		
+	jp     	reader		
+	jp	home		
+	jp	seldsk		
+	jp	settrk		
+	jp	setsec		
+	jp	setdma		
+	jp	read		
+	jp	write		
+	jp	listst		
+	jp	sectran		
+sign:	db	'AM'		
+vers:	db	' 03'		
+cpos:	dw	vdu		
+bufad:	dw	hstbuf		
+dmaad:	ds	2		
+	IF	pcmuhr eq 1
+mertim:	ds	6		
+	ENDIF
+	IF	flopy eq 1
+errc:	db 	5		
+cdbbc:	ds	14		
+	ENDIF
+	include PCMVAR
+trand:	
+	dw	0		
+sysini:	ld	a,0c3h		
+	ld	(066h),a	
+	ld 	hl,begvt	
+	ld	(67h),hl	
+	ld	hl,initab
+	ld	b,lanini
+init1:	ld	c,(hl)
+	inc	hl
+	outi
+	jr	nz,init1
+	IF	prdef eq 3	
+	ld	c,7		
+	call	list
+	ld	c,3
+	call	list
+	ENDIF
+	IF	prdef ne 3
+	IF	tastat eq 5
+	ld	c,7		
+	call	list
+	ld	c,3
+	call	list
+	ENDIF
+	ENDIF
+	IF 	pcmuhr eq 1
+	ld	a,HIGH intab	
+	ld	i,a		
+	im	2		
+	ld	hl,isruhr	
+	ld	(intab+6),hl
+	ei			
+	ENDIF
+	IF btype eq 2		
+	ld 	hl,crtctb	
+	ld	b,0
+crtlp:	ld	a,b
+	out	(crtc0),a
+	ld	a,(hl)
+	cp	0ffh		
+	jr	z,lopend
+	out	(crtc1),a
+	inc	hl
+	inc	b
+	jr	crtlp
+crtctb:	db	078h,040h,055h	
+	db	0,017h,0,010h
+	db	014h,0,0bh,020h
+	db	0,4,0,0,0
+	db	0ffh		
+lopend:	out	(crtc2),a	
+	out	(crtc3),a	
+	ENDIF
+	IF btype eq 3		
+	ld 	hl,crtctb	
+	ld	b,0
+crtlp:	ld	a,b
+	out	(crtc0),a
+	ld	a,(hl)
+	cp	0ffh		
+	jr	z,lopend
+	out	(crtc1),a
+	inc	hl
+	inc	b
+	jr	crtlp
+crtctb: db	078h,050h,05ch	
+	db	0,01ch,0,018h
+	db	01ah,0,9,020h
+	db	0,0,0,0,0
+	db	0ffh		
+lopend:	out	(crtc2),a	
+	out	(crtc3),a	
+	ENDIF
+	ret
+initab:	
+	IF	tastat lt 5
+	db	ptasca		
+	db	0cfh		
+	db	ptasca		
+	db	0ffh
+	db	ptasca
+	db	007h
+pio1b:	db	ptascb		
+	db	0cfh		
+	db	ptascb		
+	db	080h		
+	db	ptascb
+	db	007h
+	db	ptasdb
+	db	001h
+	IF	tastat eq 3
+	db	ptasdb
+	db	0fh
+	ENDIF
+	IF	tastat eq 4
+	db	ptasdb
+	db	0fh
+	ENDIF
+	ENDIF
+	IF	tastat eq 5
+	db	tctcs0
+	db	0		
+	db	tctcsa		
+	db	00000101b	
+	db	tctcsa
+	IF	fcpu eq 0
+	db	7		
+	ENDIF
+	IF	fcpu eq 1
+	db	8		
+	ENDIF
+	IF	fcpu eq 2
+	db	8		
+	ENDIF
+	IF	fcpu eq 3
+	db	12		
+	ENDIF
+	IF	fcpu eq 4
+	db	13		
+	ENDIF
+	db	tsioca
+	db	4		
+	db	tsioca
+	db	01001000b	
+	db	tsioca
+	db	1		
+	db	tsioca
+	db	0		
+	db	tsioca
+	db	3		
+	db	tsioca
+	db	11000001b	
+	db	tsioca
+	dâ	µ		
+	db	tsioca
+	db	01101000b	
+	ELSE
+	IF	prdef eq 3
+	db	pctcs0
+	db	0		
+	db	pctcsa		
+	db	00000101b	
+	db	pctcsa
+	IF	fcpu eq 0
+	db	7		
+	ENDIF
+	IF	fcpu eq 1
+	db	8		
+	ENDIF
+	IF	fcpu eq 2
+	db	8		
+	ENDIF
+	IF	fcpu eq 3
+	db	12		
+	ENDIF
+	IF	fcpu eq 4
+	db	13		
+	ENDIF
+	db	psioca
+	db	4		
+	db	psioca
+	db	01001000b	
+	db	psioca
+	db	1		
+	db	psioca
+	db	0		
+	db	psioca
+	db	3		
+	db	psioca
+	db	11000001b	
+	db	psioca
+	dâ	µ		
+	db	psioca
+	db	01101000b	
+	ENDIF
+	ENDIF
+	IF	tastat eq 6
+	db	tctcs0
+	db	0		
+	IF	fcpu eq 0
+	db	tctcsa		
+	db	05fh
+	db	tctcsa
+	db	7		
+	ENDIF
+	IF	fcpu eq 1
+	db	tctcsa
+	db	05h		
+	db	tctcsa
+	db	01h		
+	ENDIF
+	IF	fcpu eq 2
+	db	tctcsa
+	db	05h		
+	db	tctcsa
+	db	01h		
+	ENDIF
+	IF	fcpu eq 3
+	db	tctcsa		
+	db	05fh
+	db	tctcsa
+	db	12		
+	ENDIF
+	IF	fcpu eq 4
+	db	tctcsa		
+	db	05fh
+	db	tctcsa
+	db	13		
+	ENDIF
+	db	tsioca		
+	db	18h		
+	db	tsioca
+	db	4		
+	db	tsioca
+	db	04ch
+	db	tsioca
+	db	5		
+	db	tsioca
+	db	068h	
+	db	tsioca
+	db	3		
+	db	tsioca
+	db	0c1h
+	ENDIF
+	IF	prdef eq 4	
+ctc0:	db	pctcs0		
+	db	0		
+	IF	fcpu eq 0
+	db	pctcsa		
+	db	05fh
+	db	pctcsa
+	db	7		
+	ENDIF
+	IF	fcpu eq 1
+	db	pctcsa
+	db	05h		
+	db	pctcsa
+	db	01h		
+	ENDIF
+	IF	fcpu eq 2
+	db	pctcsa
+	db	05h		
+	db	pctcsa
+	db	01h		
+	ENDIF
+	IF	fcpu eq 3
+	db	pctcsa		
+	db	05fh
+	db	pctcsa
+	db	12		
+	ENDIF
+	IF	fcpu eq 4
+	db	pctcsa		
+	db	05fh
+	db	pctcsa
+	db	13		
+	ENDIF
+sioa:	db	psioca		
+	db	018h
+	db	psioca
+	db	4
+	db	psioca
+	db	045h	
+	db	psioca
+	db	5
+	db	psioca
+	db	028h	
+	db	psioca
+	db	3
+	db	psioca
+	db	041h	
+	ENDIF
+	IF	pcmuhr eq 1
+	IF	fcpu eq 0
+tabuhr:	db	08ch		
+	db	LOW intab	
+	db	08dh
+	db	007h		
+	db	08dh
+	db	250		
+	db	08eh
+	db	05fh		
+	db	08eh
+	db	100		
+	db	08fh
+	db	0dfh		
+	db	08fh
+	db	5		
+	ENDIF
+	IF	fcpu eq 1
+tabuhr:	db	08ch		
+	db	LOW intab	
+	db	08dh
+	db	007h		
+	db	08dh
+	db	0		
+	db	08eh
+	db	05fh		
+	db	08eh
+	db	100		
+	db	08fh
+	db	0dfh		
+	db	08fh
+	db	6		
+	ENDIF
+	IF	fcpu eq 2
+tabuhr:	db	08ch		
+	db	LOW intab	
+	db	08dh
+	db	007h		
+	db	08dh
+	db	250		
+	db	08eh
+	db	05fh		
+	db	08eh
+	db	125		
+	db	08fh
+	db	0dfh		
+	db	08fh
+	db	5		
+	ENDIF
+	IF	fcpu eq 3
+tabuhr:	db	08ch		
+	db	LOW intab	
+	db	08dh
+	db	007h		
+	db	08dh
+	db	0		
+	db	08eh
+	db	05fh		
+	db	08eh
+	db	100		
+	db	08fh
+	db	0dfh		
+	db	08fh
+	db	9		
+	ENDIF
+	IF	fcpu eq 4
+tabuhr:	db	08ch		
+	db	LOW intab	
+	db	08dh
+	db	007h		
+	db	08dh
+	db	250		
+	db	08eh
+	db	05fh		
+	db	08eh
+	db	100		
+	db	08fh
+	db	0dfh		
+	db	08fh
+	db	10		
+	ENDIF
+	ENDIF
+eoini	equ	$
+lanini	equ	(eoini-initab)/2
+	IF	pcmuhr eq 1
+isruhr: push  	af
+	push	de
+	push	hl
+	ld	de,adruhr+2	
+	call	incur		
+	cp	060h		
+	jr	nz,isrur1	
+	xor	a		
+	ld	(de),a		
+	dec	de		
+	call	incur		
+	cp	060h		
+	jr	nz,isrur1	
+	xor	a		
+	ld	(de),a
+	dec	de		
+	call	incur		
+	cp	024h		
+	jr	nz,isrur1	
+	xor	a		
+	ld	(de),a
+isrur1:	ld	hl,devsp
+	bit	7,(hl)		
+	jr	nz,uhrret
+	ld	de,adruhr	
+	ld	hl,uhrpos	
+	call	ahexhl		
+	IF	btype eq 0
+	ld	(hl),0bah	
+	ELSE
+	ld	(hl),03ah
+	ENDIF
+	inc	hl
+	call	ahexhl		
+	inc	hl
+	call	ahexhl		
+uhrret:	pop	hl
+	pop	de
+	pop	af
+	ei			
+	reti			
+ahexhl: ld	a,(de)		
+	inc	de
+	push	af
+	and	0f0h
+	rrca
+	rrca
+	rrca
+	rrca			
+	IF	btype eq 0
+	or	0b0h
+	ELSE
+	or	030h
+	ENDIF
+	ld	(hl),a
+	inc	hl
+	pop	af
+	and	00fh		
+	IF	btype eq 0
+	or	0b0h
+	ELSE
+	or	030h
+	ENDIF
+	ld	(hl),a
+	inc	hl
+	ret
+incur:	ld	a,(de)		
+	adc	a,1
+	daa
+	ld	(de),a
+	ret
+	ENDIF
+boot:	ld	a,0c0h		
+	out	(bank),a
+	ld	hl,bsanf
+	ld	(cpos),hl	
+	xor	a
+	IF	pcmuhr eq 1
+	ld	hl,adruhr
+	ld	bc,6
+	ld	de,mertim
+	ldir			
+	ENDIF
+	ld	hl,0
+boot2:	ld	(hl),a
+	inc	l		
+	jr	nz,boot2
+	IF	pcmuhr eq 1
+	ld	hl,mertim	
+	ld	de,adruhr
+	ld	bc,6
+	ldir
+	ENDIF
+	ld	a,(kslw)	
+	ld	(cdisk),a	
+	ld	sp,100h		
+	ld	(limerk),a	
+	IF	statusz eq 1
+	ld	hl,devsp
+	set	5,(hl)		
+	ENDIF
+	call	sysini		
+bweit:	call	ccpbdl		
+	call	savccp		
+ccpok:	ld	hl,ccp		
+	push	hl		
+	ld	hl,msg		
+prints:	ld	a,(hl)		
+	or	a
+	jp	z,gocpm		
+	ld	c,a
+	call	conout
+	inc	hl
+	jr	prints
+	IF	tastat eq 0
+TASTV	MACRO
+	db	'PC/M Original'
+	ENDM
+	ENDIF
+	IF	tastat eq 1
+TASTV	MACRO
+	db	'K7659'
+	ENDM
+	ENDIF
+	IF	tastat eq 2
+TASTV	MACRO
+	db	'C mit EPR2'
+	ENDM
+	ENDIF
+	IF	tastat eq 3
+TASTV	MACRO
+	db	'K7604/34'
+	ENDM
+	ENDIF
+	IF	tastat eq 4
+TASTV	MACRO
+	db	'K7606/36'
+	ENDM
+	ENDIF
+	IF	tastat eq 5
+TASTV	MACRO
+	db	'S3004 als Tastatur'
+	ENDM
+	ENDIF
+	IF	tastat eq 6
+TASTV	MACRO
+	db	'K7672'
+	ENDM
+	ENDIF
+msg:	db	0CH,'PC/M-System V.'
+	VERS
+	db	' '
+	DATE
+	db	0Dh,0Ah
+	db	'+++++++++++++ AM90 ++++++++++++',0Dh,0Ah
+	db	'Bildschirm: '
+	IF bline eq 16
+	db                     '64/16',0Dh,0Ah			   	
+	ELSE
+	db		       '80/24',0Dh,0Ah
+	ENDIF
+	db	'Tastatur:   '
+	TASTV
+	db	0dh,0ah
+	db	'Drucker:    '
+	IF	prdef eq 1
+	db		       'SD1152-PIO',0Dh,0Ah
+	ELSE
+	IF      prdef eq 2
+	db		       'SD1152-SIO',0DH,0Ah
+	ELSE
+        IF      prdef eq 3                                     
+        db                     'S3004',0DH,0AH
+        ELSE
+	IF	prdef eq 4
+	db		       'K6313 o.ae.',0DH,0AH
+	ELSE
+        db                     'ohne Drucker',0Dh,0Ah
+        ENDIF
+	ENDIF
+	ENDIF
+	ENDIF
+din	ASET	disknb
+	IRP	di,<A,B,C,D,L,M,O>
+	IF	din
+	IF	disk&di
+din	ASET	din - 1
+	ENDIF
+	ELSE
+	EXITM
+	ENDIF
+	IF	disk&di eq 0
+	ELSE
+	IF	disk&di eq 'R'
+	db '&di: RAM-Disk  118 kByte',0dh,0ah
+	ELSE
+	IF	disk&di eq 'Q'
+	db '&di: RAM-Disk  124 kByte',0dh,0ah
+	ELSE	
+	IF	disk&di eq 1
+	db '&di: DD/DS-80T 624 kByte',0dh,0ah	
+	ELSE
+	IF	disk&di eq 2
+	db '&di: DD/DS-80T 780 kByte',0dh,0ah
+	ELSE
+	IF	disk&di eq 3
+	db '&di: DD/DS-80T 800 kByte',0dh,0ah
+	ELSE
+	IF 	disk&di eq 4
+	db '&di: DD/SS-80T 308 kByte',0Dh,0Ah
+	ELSE
+	IF 	disk&di eq 5
+	db '&di: DD/SS-80T 400 kByte',0Dh,0Ah
+	ELSE
+	IF 	disk&di eq 6
+	db '&di: DD/DS-40T 304 kByte',0DH,0AH
+	ELSE
+	IF	disk&di eq 7
+	db '&di: DD/DS-40T 380 kByte',0dh,0ah	
+	ELSE
+	IF	disk&di eq 8
+	db '&di: DD/DS-40T 400 kByte',0dh,0ah
+	ELSE
+	IF	disk&di eq 9
+	db '&di: DD/SS-40T 148 kByte',0dh,0ah
+	ELSE
+	IF 	disk&di eq 10
+	db '&di: DD/SS-40T 200 kByte',0Dh,0Ah
+	ELSE
+	IF	disk&di eq 'L'
+	db '&di: Emulator-RAM',0dh,0ah
+	ELSE
+	IF	disk&di eq 'M'
+	db '&di: Zusatz-RAM',0dh,0ah
+	ELSE
+	IF	disk&di eq 'O'
+	db '&di: ROM-Floppy',0dh,0ah
+	ENDIF
+	ENDIF
+	ENDIF
+	ENDIF
+	ENDIF
+	ENDIF
+	ENDIF
+	ENDIF
+	ENDIF
+	ENDIF
+	ENDIF
+	ENDIF
+	ENDIF
+	ENDIF
+	ENDIF
+	ENDIF
+	ENDM
+	db 	0
+string:	db 028h,015h,023h,0feh,02ah,020h,004h,036h
+	db 03fh,018h,002h,077h,013h,010h,0eeh,0cdh
+wboot:	
+	ld	sp,80h
+	call	sysini		
+	ld	hl,ccp+3
+	push	hl	
+	call	ccpbdl		
+	call	savccp		
+	jp	gocpm
+	IF	ramflo eq 1	
+savccp:	xor	a		
+	call	dpbix		
+	ld	a,(ix+13)	
+	or	a
+	ret	z		
+	cp	3		
+	ret	c		
+secccp:	ld 	a,srfaw		
+	out	(bank),a
+	ld	hl,ccp
+	ld	de,0
+	ld	bc,1600h
+	ldir			
+	ld	a,0c0h		
+	out	(bank),a	
+	ret
+	ENDIF
+	IF ramflo eq 1 		
+cblad:	out	(bank),a	
+	ld	hl,0		
+	ld	de,ccp		
+	ld	bc,1600h	
+	ldir			
+	ld	a,0c0h
+	out	(bank),a
+	jp	syschk		
+	ELSE
+	IF romflo eq 1
+cblad:	out	(bank),a
+	ld	hl,0		
+	ld	de,ccp		
+	ld	bc,1600h	
+	ldir			
+	ld	a,0c0h
+	out	(bank),a
+	jp	syschk		
+	ENDIF
+	ENDIF
+ccpbdl:	ld	a,0		
+	out	(bank),a
+	ld	hl,2000h	
+	ld	de,ccp
+	ld	bc,1600h
+	ldir
+	ld	a,0c0h		
+	out	(bank),a
+	call	syschk		
+	ret	z
+	IF	romflo eq 1
+	ld	a,romaw		
+	call	cblad
+	ret	z
+	ENDIF
+	IF	ramflo eq 1
+	ld	a,srfaw		
+	call	cblad
+	ret	z
+	ENDIF
+	IF	flopy eq 1
+dboot	MACRO	X
+	LOCAL 	ndisk
+	ld	de,ccp
+	ld	hl,0-lanbas
+	add	hl,de
+	ex	de,hl
+	ld	hl,cdbw1&X	
+	call	diskio
+	or	a		
+	call	z,syschk	
+	ret	z		
+ndisk:
+	ENDM
+Y	ASET	disknb
+	IRP	X,<A,B,C,D>	
+	IF	Y		
+Y	ASET 	Y-1		
+	ELSE
+	EXITM
+	ENDIF
+	IF	disk&X
+	IF	disk&X ne 'R'	
+	dboot	X		
+	ENDIF
+	ENDIF
+	ENDM			
+	ENDIF
+	call	agzk		
+	db	0dh,0ah,'CCP und BDOS nachladen!',0dh,8ah
+	call	conin		
+	jp	ccpbdl		
+syschk:	
+	ld	hl,ccp+25fh
+	ld	de,string
+ 	ld	b,16
+cocyc:	ld	a,(de)
+	cp	(hl)
+	ret	nz		
+	inc	hl
+	inc	de
+	djnz	cocyc
+	ld	hl,(ccp+1)	
+	ld	de,ccp+35Ah
+	or	a		
+	sbc	hl,de		
+	ret	nz
+	ld	hl,(bdos+7h)	
+	ld	de,bdos + 63h
+	sbc	hl,de	
+	ret			
+agzk:	ex	(sp),hl		
+agzk1:	ld	c,(hl)
+	inc	hl
+	call	conout
+	bit	7,c
+	jr	z,agzk1
+	ex	(sp),hl
+	ret	
+gocpm:	ld	a,0c3h		
+	ld	(0),a		
+	ld	hl,wboote	
+	ld	(1),hl
+	ld	(03EH),hl	
+	ld	(5),a		
+	ld	hl,bdos+6	
+	ld	(6),hl
+	ld	bc,80h		
+	call	setdma		
+	ld	c,082h		
+	call	conout
+	IF	btype eq 0	
+	call	zwzloe
+	ENDIF
+	xor	a
+	ld	(hstact),a	
+	ld	(unacnt),a	
+	ld	a,(cdisk)
+	ld	c,a
+	ret
+	include	PCMIO		
+			
+	
+home:	ld	bc,0		
+	call	settrk		
+	ld	a,(hstwrt)	
+	or	a		
+	ret	nz		
+	ld	(hstact),a	
+	ret
+seldsk:	ld	a,c
+din	ASET	disknb
+	IRP	di,<A,B,C,D,L,M,O>
+	IF	din
+	IF	disk&di
+din	ASET	din - 1
+	ENDIF
+	ELSE
+	EXITM
+	ENDIF
+	IF	disk&di		
+	ld	hl,dph&di
+	cp	'&di'-41h
+	jr	z,deintr
+	ENDIF
+	ENDM
+	ld	hl,0
+	ret
+deintr:	ld	(sekdsk),a
+	IF	statusz eq 1	
+	ld	(merdph),hl	
+	ENDIF
+	ret
+settrk:	ld	(sektrk),bc	
+	ret
+setsec:	ld	a,c		
+	ld	(seksec),a	
+	ret
+sectran:ex	de,hl		
+	ld	a,(hl)
+	inc	hl
+	or	(hl)		
+	dec	hl
+	jr	z,sectdd	
+	add	hl,bc		
+	ld	l,(hl)
+	ld	h,0		
+	ret
+sectdd:	ld	h,b
+	ld	l,c		
+	ret			
+setdma:	ld	(dmaad),bc	
+	ret
+tesraf:	ld	a,(sekdsk)	
+tesra1:	call	dpbix		
+	ld	a,(ix+21)
+	ret	
+	IF	ramflo eq 1
+sramtb:	db	000h,srfaw		
+	db	018h,srfaw-80h		
+	db	01fh,srfaw+1		
+	db	037h,srfaw-80h+1	
+	db	0ffh,000h		
+	ENDIF
+	IF	zramfl eq 1
+zramtb:	db	000h,zraaw1		
+	db	018h,zraaw1-80h		
+	db	01fh,zraaw1+1		
+	db	037h,zraaw1+1-80h	
+	db	03eh,zraaw1+2		
+	db	056h,zraaw1+2-80h	
+	db	05dh,zraaw1+3		
+	db	075h,zraaw1+3-80h	
+	db	07ch,zraaw2		
+	db	094h,zraaw2-80h		
+	db	09bh,zraaw2+1		
+	db	0b3h,zraaw2+1-80h	
+	db	0bah,zraaw2+2		
+	db	0d2h,zraaw2+2-80h	
+	db	0d9h,zraaw2+3		
+	db	0f1h,zraaw2+3-80h	
+	db	0ffh,000h		
+	ENDIF
+	IF	emlram eq 1
+emlrtb:	db	000h,emlaw		
+	db	0ffh,000h		
+	ENDIF
+	IF	romflo eq 1
+romtb:	db	000h,romaw		
+	db	018h,romaw-80h		
+	db	01fh,romaw+1		
+	db	037h,romaw+1-80h	
+	db	03eh,romaw+2		
+	db	056h,romaw+2-80h	
+	db	05dh,romaw+3		
+	db	075h,romaw+3-80h	
+	db	07ch,romaw+4		
+	db	094h,romaw+4-80h	
+	db	0ffh,000h		
+	ENDIF	
+recadr:	ld	(unadsk),a	
+	ld	(hstdsk),a
+	push	af
+	xor	a
+	ld	(hstact),a
+	ld	(unacnt),a
+	pop	af
+	IF	ramflo eq 1
+	ld	hl,sramtb
+	cp	'R'
+	jr	z,poslop
+	ENDIF
+	IF	zramfl eq 1
+	ld	hl,zramtb
+	cp	'M'
+	jr	z,poslop
+	ENDIF
+	IF	emlram eq 1
+	ld	hl,emlrtb
+	cp	'L'
+	jr	z,poslop
+	ENDIF
+	IF	romflo eq 1
+	ld	hl,romtb
+	cp	'O'
+	jr	z,poslop
+	ENDIF
+poslop:	ld	a,(sektrk)	
+	sub	(hl)		
+	inc	hl
+	inc	hl
+	jr	nc,poslop
+	ld	a,(sektrk)	
+	dec	hl
+	dec	hl
+	dec	hl
+	ld	c,(hl)		
+	bit	7,c		
+	dec	hl		
+	jr	nz,anfbnk	
+	dec	hl
+	dec	hl		
+anfbnk:	sub 	(hl)		
+	ld	hl,0		
+	or	a		
+	jr	z,sss
+	ld	b,a		
+sps0:	ld	de,00800h	
+sps:	add	hl,de
+	djnz	sps
+sss:	ld	a,(seksec)	
+	or	a		
+	jr	z,sret		
+	ld	b,a		
+	ld	de,00080h	
+sss1:	add	hl,de
+	djnz	sss1
+sret:	ld	de,hstbuf
+	ld	b,c		
+	ld	c,bank		
+	out	(c),b		
+	ret
+readr:	di
+	ld	(spmerk),sp
+	ld	sp,stapz	
+	call	recadr		
+	biô	7,b		
+	jr	nz,readr2
+	call	00020h		
+	jr	readr3		
+readr2:	ld	bc,00080h	
+	ldir
+readr3:	ld	a,0c0h		
+	out	(bank),a
+	ld	de,(dmaad)
+	ld	hl,hstbuf
+	ld	bc,00080h
+	ldir			
+	jp	wrret0
+writr:  di
+	ld	(spmerk),sp	
+	ld	sp,stapz	
+	ld	de,hstbuf	
+	ld	bc,00080h
+	ld	hl,(dmaad)
+	ldir
+	call	recadr		
+	bit	7,b		
+	jr	nz,writr2
+	call	00034h		
+	or	a		
+	jr	nz,wrerr
+	jr	writr3
+writr2:	ld	b,080h		
+wrlop:	ld	a,(de)		
+	ld	(hl),a
+	cp	(hl)
+	jr	nz,wrerr
+	inc	hl
+	inc	de
+	djnz	wrlop
+writr3:	ld	a,0c0h		
+	out	(bank),a
+wrret0:	xor	a
+wrret:	ld	sp,(spmerk)
+	ei
+	ret	
+wrerr:	ld	a,0c0h		
+	out	(bank),a
+	call	agzk
+	db	0dh,0ah,'BIOS RAM ERROR',0a0h
+	ld	a,1		
+	jr	wrret
+
+read:	call	tesraf		
+	cp	'G'		
+	jp	nc,readr	
+	cp	'A'
+	jp	c,readr
+	IF	flopy eq 1
+	call	logvec		
+	bit	0,(ix+17)	
+	jr	nz,readd	
+	ld	(hstvec),a	
+	ld	(hstvec+1),hl	
+	ld	a,(sekdsk)
+	ld	(hstdsk),a	
+	jp	readhst
+readd:	ld	(sekvec),a	
+	ld	(sekvec+1),hl	
+	xor	a
+	ld	(unacnt),a	
+	ld	a,1		
+	ld	(readop),a	
+	ld	(rsflag),a	
+	ld	a,wrual		
+	ld	(wrtype),a	
+	jp	rwoper		
+	ELSE
+	ld	a,1		
+	ret
+	ENDIF
+
+wrall	equ	0		
+wrdir	equ	1		
+wrual	equ	2		
+write:	call 	tesraf		
+	IF	romflo eq 1
+	cp	'O'		
+	jr	nz,wwkr
+	ld	a,1		
+	ret	
+	ENDIF
+wwkr:	cp	'G'		
+	jp	nc,writr
+	cp	'A'		
+	jp	c,writr
+	IF	flopy eq 0
+	ld	a,1		
+	ret			
+	ENDIF
+	IF	flopy eq 1
+	ld	hl,wrtype
+	ld	(hl),c		
+	call	logvec
+	bit	0,(ix+17)	
+	jr	nz,writed	
+	ld	(hstvec),a	
+	ld	(hstvec+1),hl
+	ld	a,(sekdsk)
+	ld	(hstdsk),a	
+	jp	writehst
+writed:	ld	(sekvec),a	
+	ld	(sekvec+1),hl
+	xor	a
+	ld	(readop),a	
+	ld	a,(wrtype)	
+	cp	wrual		
+	jp	nz,chkuna	
+	ld	a,(ix+3)	
+	inc	a		
+	ld	(unacnt),a	
+	ld	a,(sekdsk)	
+	ld	(unadsk),a	
+	ld	a,(sekvec)
+	ld	hl,(sekvec+1)
+	ld	(unavec),a	
+	ld	(unavec+1),hl	
+chkuna:	ld	a,(unacnt)	
+	or	a		
+	jp	z,alloc		
+	dec	a		
+	ld	(unacnt),a	
+	ld	a,(sekdsk)	
+	ld	hl,unadsk	
+	cp	(hl)		
+	jp	nz,alloc	
+	ld	a,(unavec)
+	ld	hl,sekvec
+	cp	(hl)
+	jr	nz,alloc	
+	ld	hl,(sekvec+1)	
+	ld	de,(unavec+1)
+	or	a
+	sbc	hl,de
+	jr	nz,alloc	
+	ld	hl,1
+	add	hl,de		
+	adc	a,0
+	ld	(unavec),a
+	ld	(unavec+1),hl
+noovf:	xor	a		
+	ld	(rsflag),a	
+	jr	rwoper		
+alloc:	xor	a
+	ld	(unacnt),a	
+	inc	a		
+	ld	(rsflag),a	
+rwoper:	xor	a
+	ld	(erflag),a	
+	ld	hl,(sekvec+1)
+	ld	a,bufmsk	
+	cpl			
+	and	l		
+	ld	l,a
+	ld	b,(ix+15)	
+	ld	a,(sekvec)
+sphshft:srl	a		
+	rr	h
+	rr	l
+	djnz	sphshft
+	ld	(sekhst),a
+	ld	(sekhst+1),hl	
+	ld	hl,hstact	
+	ld	a,(hl)		
+	ld	(hl),1		
+	or	a		
+	jr	z,filhst	
+	ld	a,(sekdsk)	
+	ld 	hl,hstdsk	
+	cp	(hl)		
+	jr	nz,nomatch	
+	ld	a,(sekhst)
+	ld	hl,hstvec
+	cp	(hl)
+	jr	nz,nomatch	
+	ld	de,(sekhst+1)
+	ld	hl,(hstvec+1)
+	or	a
+	sbc	hl,de
+	jr	z,match		
+nomatch:ld	a,(hstwrt)	
+	or	a		
+	call	nz,writehst	
+filhst:	ld	a,(sekdsk)	
+	ld	(hstdsk),a	
+	ld	a,(sekhst)
+	ld	hl,(sekhst+1)
+	ld	(hstvec),a
+	ld	(hstvec+1),hl	
+	ld	a,(rsflag)	
+	or	a		
+	call	nz,readhst	
+	xor	a
+	ld	(hstwrt),a	
+match:	ld	a,(sekvec+1)	
+	and	bufmsk		
+	rra			
+	ld	h,a
+	ld	l,0
+	rr	l
+	ld	de,hstbuf	
+	add	hl,de		
+	ld	de,(dmaad)	
+	ld	bc,128		
+	ld	a,(readop)	
+	or	a		
+	jr	nz,rwmove	
+	ld	a,1		
+	ld	(hstwrt),a	
+	ex	de,hl		
+rwmove:	ldir
+	ld	a,(wrtype)	
+	cp	wrdir		
+	ld	a,(erflag)	
+	ret	nz		
+	or	a		
+	ret	nz		
+	xor	a
+	ld	(hstwrt),a	
+	call	writehst	
+	ld	a,(erflag)	
+	ret
+	ENDIF			
+dpbix:	push	bc
+	ld	c,a
+	call	seldsk		
+	pop	bc
+	ld	de,10		
+	add	hl,de		
+	ld	e,(hl)
+	inc	hl
+	ld	d,(hl)		
+	push	de
+	pop	ix		
+	ret
+	IF	flopy eq 1
+logvec:	ld	a,(sekdsk)
+	call	dpbix		
+	ld	a,(ix+16)	
+	or	a
+	ld	hl,(sektrk)	
+	jr	z,nocorr	
+	ld	e,(ix+13)	
+	ld	d,(ix+14)
+	sbc	hl,de		
+nocorr:	ex	de,hl		
+	ld	b,(ix+0)	
+	xor	a
+	ld	h,a
+	ld	l,a
+	ld	c,a		
+bshft:	srl	b		
+	jr	nc,deshft	
+	add	hl,de
+	adc	a,c		
+deshft:	sla	e
+	rl	d		
+	rl	c
+	inc	b		
+	dec	b
+	jr	nz,bshft	
+	ld	de,(seksec)	
+	ld	d,0		
+	bit	0,(ix+17)	
+	jr	nz,nocorr1	
+	dec	de		
+nocorr1:add	hl,de		
+	adc	a,0		
+	ret
+readhst:ld	c,0		
+	jr	waitio
+writehst:ld	c,1		
+waitio:	ld	a,(hstdsk)
+	call	dpbix		
+	ld	a,46h		
+	or	a
+	sub	c		
+	ld	(cdbbc),a	
+	xor	a		
+	ld	e,a
+	ld	c,0ffh
+	ld	d,(ix+31)	
+	ld	hl,(hstvec+1)	
+	ld	b,8
+comzyc:	rlc	c
+	srl	d
+	rr	e
+	sbc	hl,de
+	jr	nc,endtest
+	res	0,c
+	add	hl,de
+endtest:djnz	comzyc
+	ld	d,l
+	ld	hl,cdbbc+2
+	ld	(hl),c		
+	ld	a,(ix+16)	
+	or	a
+	jr	z,nocor		
+	ld	a,(ix+13)	
+	add	a,c		
+	ld	(hl),a
+nocor:	inc	d		
+	ld	a,e		
+	bit	0,(ix+20)	
+	jr	z,oneside	
+	or	a
+	rra			
+	cp	d		
+	jr	nc,oneside	
+	inc	b		
+	sub	d		
+	neg
+	ld	d,a
+oneside:inc	hl
+	ld	(hl),b		
+	ld	c,b
+	inc	hl
+	ld	(hl),d		
+	ld 	a,b
+	ld	b,8		
+	push 	ix		
+lodzyc:	inc	hl		
+	inc	ix		
+	ld	a,(ix+22)	
+	ld	(hl),a		
+	djnz	lodzyc		
+	pop	ix		
+	ld	a,(ix+22)	
+	bit	0,c		
+	jr	z,haed0		
+	or	4		
+haed0:	ld	(cdbbc+1),a	
+	ld	l,(ix+18)	
+	ld	h,(ix+19)
+	ld	e,(hl)
+	inc	hl
+	ld	d,(hl)
+nready:	ld	hl,cdbbc
+	push 	de		
+	call	diskio		
+	pop	de		
+	bit	5,c		
+	jr	z,nrdy		
+	rrca
+	and	1		
+	call	nz,bell
+erradr:	ld	(erflag),a
+	ret
+nrdy:	call 	bell		
+	call 	const		
+	or	a
+	jr	z,nready	
+	push 	de
+	call	conin		
+	pop	de
+	cp	03h		
+	jr	nz,nready	
+	ld	a,1		
+	jr 	erradr
+	include	PCMDISK		
+	ENDIF			
+	include PCMVTAPE	
+	IF	sdebug eq 1
+	include PCMSVDB		
+	ENDIF
+	IF	flopy  eq 1
+	IF	durlad eq 1
+	include PCMURLAD	
+	ENDIF
+	ENDIF
+sekdsk:	ds	1		
+sektrk:	ds	2		
+seksec: ds	1		
+sekvec:	ds	3		
+hstact: ds	1		
+hstwrt: ds	1		
+unacnt: ds	1		
+unadsk: ds	1		
+unavec:	ds	3		
+hstdsk:	ds	1		
+sekhst:	ds	3		
+hstvec:	ds	3		
+erflag: ds	1		
+rsflag: ds	1		
+readop: ds	1		
+wrtype: ds	1		
+spmerk:	ds	2		
+hstbuf: ds	hstsiz		
+rwbuff:	ds	0100h		
+begdat	equ	$		
+dirbf:  ds	128		
+enddat	equ	$		
+	include PCMCOM
+	END
+

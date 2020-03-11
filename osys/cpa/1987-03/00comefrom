@@ -1,0 +1,16 @@
+[2002-08-07 01:13:32]
+------------------------------------------------------------------------------
+Archive of the original PC/M system sources 3.30 with CP/A REL/ERL Objects
+
+		bdos.erl	CP/A Basic Disk Operating System, March 1987
+		ccp.erl		CP/A Console Command Processor, March 1987
+
+------------------------------------------------------------------------------
+curl https://www.li-pro.net/dl/7e423040cf7925d557f5736c6f33693f/PCMSYS33.ZIP | \
+bsdtar -xOvf - PCMSYS.330/BDOS.ERL > bdos.erl
+----------------------
+curl https://www.li-pro.net/dl/7e423040cf7925d557f5736c6f33693f/PCMSYS33.ZIP | \
+bsdtar -xOvf - PCMSYS.330/CCP.ERL > ccp.erl
+------------------------------------------------------------------------------
+https://www.li-pro.net/cpm-sw-pcmsys.phtml
+--> https://www.li-pro.net/dl/7e423040cf7925d557f5736c6f33693f/PCMSYS33.ZIP
