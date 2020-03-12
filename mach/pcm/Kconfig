@@ -10,11 +10,12 @@ config SYSV
 	default "2.10"	if MACH_PCM_SYS210
 	default "2.11"	if MACH_PCM_SYS211
 	default "3.30"	if MACH_PCM_SYS330
+	default "3.31"	if MACH_PCM_SYS331
 	default ""
 
 choice
 	bool
-	default MACH_PCM_SYS330
+	default MACH_PCM_SYS331
 	prompt "PC/M System Version"
 	---help---
 		Select the PC/M system version.
@@ -64,6 +65,26 @@ config MACH_PCM_SYS330
 		System version 3.30
 
 		This is the original variant and consist the parts:
+
+		  Assembler sources:
+		    - BIOS:   Basic I/O System
+		    - SVDB:   System Visual Debugger
+		    - VTAPE:  Voice Tape Monitor
+		    - DISKIO: Disk I/O Driver
+
+		Say yes here to generate the original floppy disk system that
+		was published in the German journal "Funkamateur" in 1990.
+
+		This system version can only used together with the operating
+		system CP/A (Control Program by AoS of GDR).
+
+config MACH_PCM_SYS331
+	bool
+	prompt "v3.31"
+	---help---
+		System version 3.31
+
+		This is the bug fixed version of 3.31 and consist the parts:
 
 		  Assembler sources:
 		    - BIOS:   Basic I/O System

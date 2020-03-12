@@ -8,6 +8,10 @@ ifeq ($(CONFIG_CPA_198703),y)
 include $(S)1987-03/Makefile
 endif
 
+ifeq ($(CONFIG_CPA_198703_2014),y)
+include $(S)1987-03-2014/Makefile
+endif
+
 # Local variables:
 # coding: utf-8
 # mode: text

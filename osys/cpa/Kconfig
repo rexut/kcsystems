@@ -6,7 +6,7 @@
 if OSYS_CPA
 
 choice
-	default CPA_198703
+	default CPA_198703_2014
 	depends on OSYS_CPA
 	prompt "CP/A Version"
 	---help---
@@ -25,6 +25,22 @@ config CPA_198703
 		    - BDOS: Basic Disk Operating System
 
 		Say yes here to generate the original CP/A operating system
+		that was published in March 1987 by Academy of Sciences
+		of the GDR, Institute of Computer Science and Technology.
+
+config CPA_198703_2014
+	bool
+	prompt "1987/03-2014"
+	---help---
+		CP/A Operating System version of March 1987
+
+		This is the disassembled variant of 1987/03 and consist the parts:
+
+		  Assembler sources:
+		    - CCP:  Console Command Processor
+		    - BDOS: Basic Disk Operating System
+
+		Say yes here to generate the disassembled CP/A operating system
 		that was published in March 1987 by Academy of Sciences
 		of the GDR, Institute of Computer Science and Technology.
 
