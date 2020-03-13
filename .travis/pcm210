@@ -1,0 +1,10 @@
+#!/bin/sh
+
+set -e
+set -x
+
+SD=$(dirname "$0")
+
+${SD}/pcm210-cpv1988-orig6416
+
+exit 0

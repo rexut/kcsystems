@@ -7,6 +7,7 @@ addons:
     - sourceline: 'deb https://download.opensuse.org/repositories/home:/rexut:/CPM4L/x$(lsb_release -si)_$(lsb_release -sr)/ /'
       key_url: 'https://download.opensuse.org/repositories/home:/rexut:/CPM4L/x$(lsb_release -si)_$(lsb_release -sr)/Release.key'
     packages: &native_deps
+    - faketime
     - coreutils
     - sed
     - expect
@@ -18,9 +19,7 @@ addons:
     - kconfig-frontends
 language: shell
 script:
-- make V=1 distclean
-- make V=1 ${DEFCONFIG}
-- make V=1
+- ./.travis/${MXRUNNER}
 matrix:
   include:
   # Python 2.7 on Ubuntu Linux 18.04 "Bionic" (amd64) for Sphinx/DOC
@@ -60,311 +59,54 @@ matrix:
     - make -i V=1 spelldocs
     - make V=1 htmldocs
     - make V=1 pdfdocs
+  # Ubuntu Linux 20.04 "Focal" for x86-64bit (amd64)
+  - os: linux
+    dist: focal
+    arch: amd64
+    env: MXRUNNER=pcm331
+  - os: linux
+    dist: focal
+    arch: amd64
+    env: MXRUNNER=pcm330
+  - os: linux
+    dist: focal
+    arch: amd64
+    env: MXRUNNER=pcm211
+  - os: linux
+    dist: focal
+    arch: amd64
+    env: MXRUNNER=pcm210
   # Ubuntu Linux 18.04 "Bionic" for x86-64bit (amd64)
   - os: linux
     dist: bionic
     arch: amd64
-    env: DEFCONFIG=pcm331-cpa1987-v2k8024-rom_defconfig
+    env: MXRUNNER=pcm331
   - os: linux
     dist: bionic
     arch: amd64
-    env: DEFCONFIG=pcm331-cpa1987-v2k8024-sys_defconfig
+    env: MXRUNNER=pcm330
   - os: linux
     dist: bionic
     arch: amd64
-    env: DEFCONFIG=pcm331-cpa1987-v2k8024-dsk_defconfig
+    env: MXRUNNER=pcm211
   - os: linux
     dist: bionic
     arch: amd64
-    env: DEFCONFIG=pcm331-cpa1987-orig6416-rom_defconfig
-  - os: linux
-    dist: bionic
-    arch: amd64
-    env: DEFCONFIG=pcm331-cpa1987-orig6416-sys_defconfig
-  - os: linux
-    dist: bionic
-    arch: amd64
-    env: DEFCONFIG=pcm331-cpa1987-orig6416-dsk_defconfig
-  - os: linux
-    dist: bionic
-    arch: amd64
-    env: DEFCONFIG=pcm330-cpa1987-v2k8024-rom_defconfig
-  - os: linux
-    dist: bionic
-    arch: amd64
-    env: DEFCONFIG=pcm330-cpa1987-v2k8024-sys_defconfig
-  - os: linux
-    dist: bionic
-    arch: amd64
-    env: DEFCONFIG=pcm330-cpa1987-v2k8024-dsk_defconfig
-  - os: linux
-    dist: bionic
-    arch: amd64
-    env: DEFCONFIG=pcm330-cpa1987-orig6416-rom_defconfig
-  - os: linux
-    dist: bionic
-    arch: amd64
-    env: DEFCONFIG=pcm330-cpa1987-orig6416-sys_defconfig
-  - os: linux
-    dist: bionic
-    arch: amd64
-    env: DEFCONFIG=pcm330-cpa1987-orig6416-dsk_defconfig
-  - os: linux
-    dist: bionic
-    arch: amd64
-    env: DEFCONFIG=pcm211-cpm22-orig6416-rom_defconfig
-  - os: linux
-    dist: bionic
-    arch: amd64
-    env: DEFCONFIG=pcm211-cpv1988-orig6416-rom_defconfig
-  - os: linux
-    dist: bionic
-    arch: amd64
-    env: DEFCONFIG=pcm210-cpv1988-orig6416-rom_defconfig
-  - os: linux
-    dist: bionic
-    arch: amd64
-    env: DEFCONFIG=help
-  - os: linux
-    dist: bionic
-    arch: amd64
-    env: DEFCONFIG=listnewconfig
-  - os: linux
-    dist: bionic
-    arch: amd64
-    env: DEFCONFIG=alldefconfig
-  - os: linux
-    dist: bionic
-    arch: amd64
-    env: DEFCONFIG=olddefconfig
+    env: MXRUNNER=pcm210
   # Ubuntu Linux 18.04 "Bionic" for x86-32bit (i386)
   - os: linux
     dist: bionic
     arch: i386
-    env: DEFCONFIG=pcm331-cpa1987-v2k8024-rom_defconfig
+    env: MXRUNNER=pcm331
   - os: linux
     dist: bionic
     arch: i386
-    env: DEFCONFIG=pcm331-cpa1987-v2k8024-sys_defconfig
+    env: MXRUNNER=pcm330
   - os: linux
     dist: bionic
     arch: i386
-    env: DEFCONFIG=pcm331-cpa1987-v2k8024-dsk_defconfig
+    env: MXRUNNER=pcm211
   - os: linux
     dist: bionic
     arch: i386
-    env: DEFCONFIG=pcm331-cpa1987-orig6416-rom_defconfig
-  - os: linux
-    dist: bionic
-    arch: i386
-    env: DEFCONFIG=pcm331-cpa1987-orig6416-sys_defconfig
-  - os: linux
-    dist: bionic
-    arch: i386
-    env: DEFCONFIG=pcm331-cpa1987-orig6416-dsk_defconfig
-  - os: linux
-    dist: bionic
-    arch: i386
-    env: DEFCONFIG=pcm330-cpa1987-v2k8024-rom_defconfig
-  - os: linux
-    dist: bionic
-    arch: i386
-    env: DEFCONFIG=pcm330-cpa1987-v2k8024-sys_defconfig
-  - os: linux
-    dist: bionic
-    arch: i386
-    env: DEFCONFIG=pcm330-cpa1987-v2k8024-dsk_defconfig
-  - os: linux
-    dist: bionic
-    arch: i386
-    env: DEFCONFIG=pcm330-cpa1987-orig6416-rom_defconfig
-  - os: linux
-    dist: bionic
-    arch: i386
-    env: DEFCONFIG=pcm330-cpa1987-orig6416-sys_defconfig
-  - os: linux
-    dist: bionic
-    arch: i386
-    env: DEFCONFIG=pcm330-cpa1987-orig6416-dsk_defconfig
-  - os: linux
-    dist: bionic
-    arch: i386
-    env: DEFCONFIG=pcm211-cpm22-orig6416-rom_defconfig
-  - os: linux
-    dist: bionic
-    arch: i386
-    env: DEFCONFIG=pcm211-cpv1988-orig6416-rom_defconfig
-  - os: linux
-    dist: bionic
-    arch: i386
-    env: DEFCONFIG=pcm210-cpv1988-orig6416-rom_defconfig
-  - os: linux
-    dist: bionic
-    arch: i386
-    env: DEFCONFIG=help
-  - os: linux
-    dist: bionic
-    arch: i386
-    env: DEFCONFIG=listnewconfig
-  - os: linux
-    dist: bionic
-    arch: i386
-    env: DEFCONFIG=alldefconfig
-  - os: linux
-    dist: bionic
-    arch: i386
-    env: DEFCONFIG=olddefconfig
-  # Ubuntu Linux 16.04 "Xenial" for x86-64bit (amd64)
-  - os: linux
-    dist: xenial
-    arch: amd64
-    env: DEFCONFIG=pcm331-cpa1987-v2k8024-rom_defconfig
-  - os: linux
-    dist: xenial
-    arch: amd64
-    env: DEFCONFIG=pcm331-cpa1987-v2k8024-sys_defconfig
-# - os: linux
-#   dist: xenial
-#   arch: amd64
-#   env: DEFCONFIG=pcm331-cpa1987-v2k8024-dsk_defconfig
-  - os: linux
-    dist: xenial
-    arch: amd64
-    env: DEFCONFIG=pcm331-cpa1987-orig6416-rom_defconfig
-  - os: linux
-    dist: xenial
-    arch: amd64
-    env: DEFCONFIG=pcm331-cpa1987-orig6416-sys_defconfig
-# - os: linux
-#   dist: xenial
-#   arch: amd64
-#   env: DEFCONFIG=pcm331-cpa1987-orig6416-dsk_defconfig
-  - os: linux
-    dist: xenial
-    arch: amd64
-    env: DEFCONFIG=pcm330-cpa1987-v2k8024-rom_defconfig
-  - os: linux
-    dist: xenial
-    arch: amd64
-    env: DEFCONFIG=pcm330-cpa1987-v2k8024-sys_defconfig
-# - os: linux
-#   dist: xenial
-#   arch: amd64
-#   env: DEFCONFIG=pcm330-cpa1987-v2k8024-dsk_defconfig
-  - os: linux
-    dist: xenial
-    arch: amd64
-    env: DEFCONFIG=pcm330-cpa1987-orig6416-rom_defconfig
-  - os: linux
-    dist: xenial
-    arch: amd64
-    env: DEFCONFIG=pcm330-cpa1987-orig6416-sys_defconfig
-# - os: linux
-#   dist: xenial
-#   arch: amd64
-#   env: DEFCONFIG=pcm330-cpa1987-orig6416-dsk_defconfig
-  - os: linux
-    dist: xenial
-    arch: amd64
-    env: DEFCONFIG=pcm211-cpm22-orig6416-rom_defconfig
-  - os: linux
-    dist: xenial
-    arch: amd64
-    env: DEFCONFIG=pcm211-cpv1988-orig6416-rom_defconfig
-  - os: linux
-    dist: xenial
-    arch: amd64
-    env: DEFCONFIG=pcm210-cpv1988-orig6416-rom_defconfig
-  - os: linux
-    dist: xenial
-    arch: amd64
-    env: DEFCONFIG=help
-  - os: linux
-    dist: xenial
-    arch: amd64
-    env: DEFCONFIG=listnewconfig
-  - os: linux
-    dist: xenial
-    arch: amd64
-    env: DEFCONFIG=alldefconfig
-  - os: linux
-    dist: xenial
-    arch: amd64
-    env: DEFCONFIG=olddefconfig
-  # Ubuntu Linux 16.04 "Xenial" for x86-32bit (i386)
-  - os: linux
-    dist: xenial
-    arch: i386
-    env: DEFCONFIG=pcm331-cpa1987-v2k8024-rom_defconfig
-  - os: linux
-    dist: xenial
-    arch: i386
-    env: DEFCONFIG=pcm331-cpa1987-v2k8024-sys_defconfig
-# - os: linux
-#   dist: xenial
-#   arch: i386
-#   env: DEFCONFIG=pcm331-cpa1987-v2k8024-dsk_defconfig
-  - os: linux
-    dist: xenial
-    arch: i386
-    env: DEFCONFIG=pcm331-cpa1987-orig6416-rom_defconfig
-  - os: linux
-    dist: xenial
-    arch: i386
-    env: DEFCONFIG=pcm331-cpa1987-orig6416-sys_defconfig
-# - os: linux
-#   dist: xenial
-#   arch: i386
-#   env: DEFCONFIG=pcm331-cpa1987-orig6416-dsk_defconfig
-  - os: linux
-    dist: xenial
-    arch: i386
-    env: DEFCONFIG=pcm330-cpa1987-v2k8024-rom_defconfig
-  - os: linux
-    dist: xenial
-    arch: i386
-    env: DEFCONFIG=pcm330-cpa1987-v2k8024-sys_defconfig
-# - os: linux
-#   dist: xenial
-#   arch: i386
-#   env: DEFCONFIG=pcm330-cpa1987-v2k8024-dsk_defconfig
-  - os: linux
-    dist: xenial
-    arch: i386
-    env: DEFCONFIG=pcm330-cpa1987-orig6416-rom_defconfig
-  - os: linux
-    dist: xenial
-    arch: i386
-    env: DEFCONFIG=pcm330-cpa1987-orig6416-sys_defconfig
-# - os: linux
-#   dist: xenial
-#   arch: i386
-#   env: DEFCONFIG=pcm330-cpa1987-orig6416-dsk_defconfig
-  - os: linux
-    dist: xenial
-    arch: i386
-    env: DEFCONFIG=pcm211-cpm22-orig6416-rom_defconfig
-  - os: linux
-    dist: xenial
-    arch: i386
-    env: DEFCONFIG=pcm211-cpv1988-orig6416-rom_defconfig
-  - os: linux
-    dist: xenial
-    arch: i386
-    env: DEFCONFIG=pcm210-cpv1988-orig6416-rom_defconfig
-  - os: linux
-    dist: xenial
-    arch: i386
-    env: DEFCONFIG=help
-  - os: linux
-    dist: xenial
-    arch: i386
-    env: DEFCONFIG=listnewconfig
-  - os: linux
-    dist: xenial
-    arch: i386
-    env: DEFCONFIG=alldefconfig
-  - os: linux
-    dist: xenial
-    arch: i386
-    env: DEFCONFIG=olddefconfig
+    env: MXRUNNER=pcm210

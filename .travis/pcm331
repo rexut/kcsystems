@@ -1,0 +1,11 @@
+#!/bin/sh
+
+set -e
+set -x
+
+SD=$(dirname "$0")
+
+${SD}/pcm331-cpa1987-orig6416
+${SD}/pcm331-cpa1987-v2k8024
+
+exit 0

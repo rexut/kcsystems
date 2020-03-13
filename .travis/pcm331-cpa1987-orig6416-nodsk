@@ -1,0 +1,18 @@
+#!/bin/sh
+
+set -e
+set -x
+
+make distclean
+make pcm331-cpa1987-orig6416-rom_defconfig
+faketime '1990-04-15 12:00:00' make
+cat images/pcmsum.txt
+echo '089e9e52193c12f54395c166373e19d6  images/pcmsum.txt' | md5sum -c -
+
+make distclean
+make pcm331-cpa1987-orig6416-sys_defconfig
+faketime '1990-04-15 12:00:00' make
+cat images/pcmsum.txt
+echo 'cc89e988091f836c86f9536f2d45a359  images/pcmsum.txt' | md5sum -c -
+
+exit 0

@@ -1,0 +1,12 @@
+#!/bin/sh
+
+set -e
+set -x
+
+make distclean
+make pcm211-cpm22-orig6416-rom_defconfig
+make
+cat images/pcmsum.txt
+echo '653913a01effd79553f1aa2d8cb933b5  images/pcmsum.txt' | md5sum -c -
+
+exit 0

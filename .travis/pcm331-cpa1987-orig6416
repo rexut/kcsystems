@@ -1,0 +1,16 @@
+#!/bin/sh
+
+set -e
+set -x
+
+SD=$(dirname "$0")
+
+${SD}/pcm331-cpa1987-orig6416-nodsk
+
+make distclean
+make pcm331-cpa1987-orig6416-dsk_defconfig
+faketime '1990-04-15 12:00:00' make
+cat images/pcmsum.txt
+echo 'e0f67c8ecbc07f3661c31e296f2bfb88  images/pcmsum.txt' | md5sum -c -
+
+exit 0

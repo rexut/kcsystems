@@ -1,0 +1,11 @@
+#!/bin/sh
+
+set -e
+set -x
+
+SD=$(dirname "$0")
+
+${SD}/pcm330-cpa1987-orig6416-nodsk
+${SD}/pcm330-cpa1987-v2k8024-nodsk
+
+exit 0

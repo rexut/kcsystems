@@ -1,0 +1,18 @@
+#!/bin/sh
+
+set -e
+set -x
+
+make distclean
+make pcm330-cpa1987-v2k8024-rom_defconfig
+make
+cat images/pcmsum.txt
+echo 'bae6a6c55f52d34f66b487d90c5805dd  images/pcmsum.txt' | md5sum -c -
+
+make distclean
+make pcm330-cpa1987-v2k8024-sys_defconfig
+make
+cat images/pcmsum.txt
+echo '63a4691847373d6da800ec2ed191d3ac  images/pcmsum.txt' | md5sum -c -
+
+exit 0
