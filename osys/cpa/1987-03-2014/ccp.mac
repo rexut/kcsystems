@@ -2,7 +2,7 @@
 .CREF
 .XALL
 
-NAME	('CCPMOD')
+NAME	('OS2CCP')
 TITLE	CP/A Console Command Processor, CCP, Version 2.2 Mar, 1987
 SUBTTL	Copyright (c) 1976-1980 Digital Research, 1987 AoS GDR
 
@@ -96,8 +96,13 @@ TESTING	EQU	FALSE		;true if debugging
 ;	ccp entry and external symbols
 ;
 ENTRY	CCP
-BDOS	EQU	CCP+0800H	;bdos entry, EXTRN BDOS do not work, why?
-BIOS	EQU	BDOS+0E00H	;bios entry, EXTRN BIOS do not work, why?
+;EXTERNAL       BDOS    ; CP/M 2.2 has bdos at CCP+0800H
+;EXTERNAL       BIOS    ; CP/M 2.2 has bios at BDOS+0E00H
+;
+;       TODO: EXTERNAL do not work, M80.COM never come back (timeout)
+;
+BDOS    EQU     CCP+0800H       ;bdos entry, external
+BIOS    EQU     BDOS+0E00H      ;bios entry, external
 
 ;
 ;	CP/M 2.2 has bdos value defined at top of module as BDOSL
@@ -109,7 +114,7 @@ BIOS	EQU	BDOS+0E00H	;bios entry, EXTRN BIOS do not work, why?
 ;	TRANE = TRAN | addr(intrinsic function)
 ;	TRANC = TRANM - TRAND
 ;
-TRAN	EQU	100H		;address of default transient execution memory
+TRAN	EQU	100H		;address of transient execution memory
 TRANM	EQU	$		;maximum of transient execution memory
 
 PAGE
@@ -133,34 +138,41 @@ PAGE
 ;	* line is initialized, a jump to "jmp ccpclear" dis-   *
 ;	* ables the automatic command execution.               *
 ;	********************************************************
-CCP:	JP	CCPSTART	;start ccp with possible initial command
+CCP::	JP	CCPSTART	;start ccp with possible initial command
 	JP	CCPCLEAR	;clear the command buffer
 
 MAXLEN:	DB	127		;max buffer length
 COMLEN:	DB	0		;command length (filled in by dos)
+
 ;
 ;	(command executed initially if comlen non zero)
 ;
-COMBUF:	DB 	"CP/A, ",CR,LF
+COMBUF:	; CP/M 2.2 has: DB "        " ; 8
+	; CP/M 2.2 has: DB "        " ; 8
+	; CP/M 2.2 has: DB "COPYRIGHT (C) 1979, DIGITAL RESEARCH  " ; 38
+	DB 	"CP/A, ",CR,LF
 	DB	"Akademie der Wissenschaften, ",CR,LF
 	DB	"Institut fuer Informatik und Rechentechnik",CR,LF
 	DB	"*****CCP*****, Version 06.03.87",CR,LF
 	DB	EOFILE
 	DS	128-($-COMBUF)
+
 ;
 ;	total buffer length is 128 characters
 ;
 DISKA	EQU	0004H		;disk address for current disk
 BDOSJ	EQU	0005H		;primary bdos entry point
-BDOSA	EQU	0006H		;address field of jmp BDOS
+BDOSA	EQU	0006H		;address field of JP BDOS
 BUFF	EQU	0080H		;default buffer
 CLKADDR	EQU	0050H		;default CP/A date and time in BCD format
+
 ;
 ;	command file control block
 ;	CP/A uses the default block in CP/M zero page
 ;
 FCB	EQU	005CH		;default file control block
 CNTREC	EQU	FCB+32		;current record number
+
 ;
 ;	bdos access constants
 ;
@@ -186,6 +198,7 @@ LOGF	EQU	24		;return login vector
 CSELF	EQU	25		;return currently selected drive number
 DMAF	EQU	26		;set dma address
 USERF	EQU	32		;set user number
+
 ;
 ;	bios access constants
 ;
@@ -206,13 +219,15 @@ READO	EQU	3*13		;read disk function
 WRITEO	EQU	3*14		;write disk function
 LISTSTO	EQU	3*15		;list status function
 SECTRANO EQU	3*16		;sector translate
+
 ;
-;	special fcb flags       	
+;	special fcb flags
 ;
 ROFILE	EQU	9		;read only file
 SYSFILE	EQU	10		;system file flag
+
 ;
-;	special characters      	
+;	special characters
 ;
 CR	EQU	13		;carriage return
 LF	EQU	10		;line feed
@@ -227,57 +242,57 @@ PAGE
 CRLF:	LD	A,CR
 	CALL	PRINTBC
 	LD	A,LF
-	;(drop through to printbc)
-;
-PRINTBC:
-	;print character, but save b,c registers
+PRINTBC:;print character, but save B,C registers
 	PUSH	BC
 	LD	E,A
 	LD	C,PCHARF
 	CALL	BDOSJ
 	POP	BC
 	RET
-;
-READERR:
-	;print the read error message
+
+READERR:;print the read error message
 	LD	BC,RDMSG
 	JR	PRINT
-;
+;ret
+
 SAVERR:	;print (must be) full or read only disk
 	LD	BC,FULLMSG
 	JR	PRINT
-;
+;ret
+
 RENERR:	;print file already exists
 	LD	BC,RENMSG
 	JR	PRINT
-;
+;ret
+
 NOFILE:	;print no file message
 	LD	BC,NOFMSG
+	;JR	PRINT
 	;(drop through to print)
-;
-PRINT:	;print string starting at b,c until next '$' entry
+;ret
+
+PRINT:	;print string starting at B,C until next '$' entry
 	CALL	CRLF
 	LD	D,B
 	LD	E,C
 	LD	C,PBUFF
 	CALL	BDOSJ		;now print the string by bdos
-	;(drop through to blank)
-;
 BLANK:	LD	A,' '
 	JR	PRINTBC
+;ret
 
 
-DEL_SUB:
-	;delete the submit file, and set submit flag to false
+DEL$SUB:;delete the submit file, and set submit flag to false
 	LD	HL,SUBMIT+1
 	LD	A,(HL)
 	OR	A
 	RET	Z		;return if no sub file
 	LD	(HL),0		;submit flag is set to false
 	DEC	A
-	CALL	SELECT		;on drive a to erase file
+	CALL	SELECT		;on drive A to erase file
 	LD	DE,SUBFCB
 	JR	DELETE
+;ret
 
 
 SAVEUSER:
@@ -296,56 +311,53 @@ CDISK:	OR	0		;current disk in argument
 	CALL	SELECT
 	POP	AF
 	CALL	SETUSER
+	;JR	SETDMABUFF
 	;(drop through to setdmabuff)
 
 
 SETDMABUFF:
 	;set default buffer dma address
-	LD	DE,BUFF	
-	;(drop through to setdma)
-;
-SETDMA:	;set dma address to d,e
+	LD	DE,BUFF
+SETDMA:	;set dma address to D,E
 	LD	C,DMAF
-	JR	BDOS_RET
+	JR	BDOS$RET
+;ret
 
 
-SETUSER:
-	;sets user number
+SETUSER:;sets user number
 	LD	(SWUSER+1),A
 	LD	E,A
 	LD	C,USERF
-	JR	BDOS_RET
+	JR	BDOS$RET
+;ret
 
 
-SELECTC:
-	;select disk for current operation, if set
+SELECTC:;select disk for current operation, if set
 	XOR	A
 	LD	(FCB),A
 	LD	A,(SDISK+1)
 	OR	A
 	RET	Z
 	DEC	A
-	;(drop through to select)
-;
-SELECT:	;set and select working disk by a
+SELECT:	;set and select working disk by A
 	LD	(SWDISK+1),A
 	LD	E,A
 	LD	C,SELF
-	JR	BDOS_RET
+	JR	BDOS$RET
+;ret
 
 
 OPENC:	;open the file given by default fcb
 	XOR	A
 	LD	(CNTREC),A	;clear next record to read
 	LD	DE,FCB
-	;(drop through to open)
-;
-OPEN:	;open the file given by d,e
+OPEN:	;open the file given by D,E
 	LD	C,OPENF
-	;(drop through to bdos_inr)
+	;JR	BDOS$INR
+	;(drop through to bdos$inr)
 
 
-BDOS_INR:
+BDOS$INR:
 	;counted bdos call, return inside ccp
 	CALL	BDOSJ
 	INC	A
@@ -354,65 +366,61 @@ BDOS_INR:
 
 CLOSEC:	;close the file given by default fcb
 	LD	DE,FCB
-	;(drop through to close)
-;
-CLOSE:	;close the file given by d,e
+CLOSE:	;close the file given by D,E
 	LD	C,CLOSEF
-	JR	BDOS_INR
+	JR	BDOS$INR
+;ret
 
 
 SEARCHCOM:
 	;search for the file given by default fcb
 	LD	DE,FCB
-	;(drop through to search)
-;
-SEARCH:	;search for the file given by d,e
+SEARCH:	;search for the file given by D,E
 	LD	C,SEARF
-	JR	BDOS_INR
+	JR	BDOS$INR
+;ret
 
 
-SEARCHN:
-	;search for the next occurrence of the file given by d,e
+SEARCHN:;search for the next occurrence of the file given by D,E
 	LD	C,SEARNF
-	JR	BDOS_INR
+	JR	BDOS$INR
+;ret
 
 
-DELETEC:
-	;delete the file given by default fcb
+DELETEC:;delete the file given by default fcb
 	LD	DE,FCB
-	;(drop through to delete)
-;
-DELETE:	;delete the file given by d,e
+DELETE:	;delete the file given by D,E
 	LD	C,DELF
-	;(drop through to bdos_ret)
+	;JR	BDOS$RET
+	;(drop through to bdos$ret)
 
 
-BDOS_RET:
+BDOS$RET:
 	;simple bdos call, indirectly return by bdos
 	JP	BDOSJ
+	;(drop through to BDOS)
+;ret
 
 
 RENAMC:	;rename the file given by default fcb
 	LD	DE,FCB
-	;(drop through to renam)
-;
-RENAM:	;rename the file given by d,e
+RENAM:	;rename the file given by D,E
 	LD	C,RENF
-	JR	BDOS_RET
+	JR	BDOS$RET
+;ret
 
 
 DISKREADC:
 	;read the next record from the file given by default fcb
 	LD	DE,FCB
-	;(drop through to diskread)
-;
 DISKREAD:
-	;read the next record from the file given by d,e
+	;read the next record from the file given by D,E
 	LD	C,DREADF
-	;(drop through to bdos_cond)
+	;JR	BDOS$COND
+	;(drop through to bdos$cond)
 
 
-BDOS_COND:
+BDOS$COND:
 	;conditioned bdos call, return inside ccp
 	CALL	BDOSJ
 	OR	A
@@ -422,19 +430,18 @@ BDOS_COND:
 DISKWRITEC:
 	;write the next record to the file given by default fcb
 	LD	DE,FCB
-	;(drop through to diskwrite)
-;
 DISKWRITE:
-	;write the next record to the file given by d,e
+	;write the next record to the file given by D,E
 	LD	C,DWRITF
-	JR	BDOS_COND
+	JR	BDOS$COND
+;ret
 
 
-BREAK_KEY:
+BREAK$KEY:
 	;check for a character ready at the console
 	LD	E,0FFH
 	LD	C,DCIOF
-	CALL	BDOS_COND	;character cleared
+	CALL	BDOS$COND	;character cleared
 	RET	Z
 	LD	BC,BRKMSG
 	CALL	PRINT
@@ -446,11 +453,10 @@ BREAK_KEY:
 MAKEC:	;create the file given by default fcb
 	CALL	DELETEC		;existing file removed
 	LD	DE,FCB
-	;(drop through to make)
-;
-MAKE:	;create the file given by d,e
+MAKE:	;create the file given by D,E
 	LD	C,MAKEF
-	JR	BDOS_INR
+	JR	BDOS$INR
+;ret
 
 
 TRANSLATE:
@@ -463,16 +469,15 @@ TRANSLATE:
 	RET			;translated to upper case
 
 
-READCOM:
-	;read the next command into the command buffer
+READCOM:;read the next command into the command buffer
 	;check for submit file
-SUBMIT:	ld a,000h		;submit file mode in argument
+SUBMIT:	LD A,000H		;submit file mode in argument
 				;00 if no submit file, ff if submitting
 	OR	A
 	JR	Z,NOSUB
 	;scanning a submit file
 	;change drives to open and read the file
-	CALL	BREAK_KEY
+	CALL	BREAK$KEY
 	JP	NZ,COMERR2	;break key depressed
 	LD	A,(SUBMIT+1)
 	DEC	A
@@ -498,34 +503,30 @@ SUBMIT:	ld a,000h		;submit file mode in argument
 	DEC	(HL)		;one less record
 	LD	DE,SUBFCB
 	CALL	CLOSE
-	JR	Z,NOSUB	
+	JR	Z,NOSUB
 	;close went ok, return to original drive
 	CALL	SAVEUSER
 	JR	NOREAD
-;
 NOSUB:	;no submit file
-	CALL	DEL_SUB
+	CALL	DEL$SUB
 	;translate to upper case, store zero at end
 	CALL	SAVEUSER	;user # save in case control c
 	LD	C,RBUFF
 	LD	DE,MAXLEN
 	CALL	BDOSJ
-;
 NOREAD:	;enter here from submit file
 	;set the last character to zero for later scans
 	LD	HL,COMLEN
-	LD	B,(HL)		;length is in b
+	LD	B,(HL)		;length is in B
 	INC	B
-;
 READCOM1:
 	INC	HL
 	DJNZ	READCOM0
-	;end of scan, h,l address end of command
+	;end of scan, H,L address end of command
 	LD	(HL),B		;store a zero
 	LD	HL,COMBUF
 	LD	(COMADDR+1),HL	;ready to scan to zero
 	RET
-;
 READCOM0:
 	LD	A,(SUBMIT+1)
 	OR	A		;echo of scan?
@@ -534,13 +535,14 @@ READCOM0:
 	PUSH	HL
 	CALL	PRINTBC
 	POP	HL
-;
 SKIPECHO:
 	LD	A,(HL)		;get character and translate
 	CALL	TRANSLATE
 	LD	(HL),A
 	JR	READCOM1
+;ret
 
+PAGE
 
 ;
 ;	fcb scan and fill subroutine (entry is at fillfcb below)
@@ -568,9 +570,9 @@ DELIM:	;look for a delimiter
 	RET	Z
 	CP	'>'
 	RET			;delimiter not found
-;
-DEBLANK:
-	;deblank the input line
+
+
+DEBLANK:;deblank the input line
 	LD	A,(DE)
 	OR	A
 	RET	Z		;treat end of line as blank
@@ -578,7 +580,9 @@ DEBLANK:
 	RET	NZ
 	INC	DE
 	JR	DEBLANK
-;
+;ret
+
+
 SETSTADDR:
 	;set starting address of current fillfcb request
 	LD	DE,(COMADDR+1)
@@ -589,40 +593,31 @@ SETSTADDR:
 	RET
 
 
-FILLFCB:
-	;fill default fcb
+FILLFCB:;fill default fcb
 	LD	HL,FCB
-	;(drop through to fillfcbhl)
-;
 FILLFCBHL:
-	;fill fcb given by h,l
+	;fill fcb given by H,L
 	PUSH	HL		;fcb rescanned at end
-	;d,e has command, h,l has fcb address
+	;D,E has command, H,L has fcb address
 	;look for preceding file name A: B: ...
-	CALL	SETSTADDR	;command address in d,e
+	CALL	SETSTADDR	;command address in D,E
 	JR	Z,SETCUR0	;use current disk if empty command
 	SUB	'A'-1
 	JR	C,SETCUR0	;use current disk
-	LD	B,A		;disk name held in b if : follows
+	LD	B,A		;disk name held in B if : follows
 	INC	DE
 	LD	A,(DE)
 	CP	':'
 	JR	Z,SETDSK	;set disk name if :
-;
 SETCUR:	DEC	DE		;back to first character of command
-;
-SETCUR0:
-	XOR	A
+SETCUR0:XOR	A
 	LD	(SDISK+1),A	;clear selected disk (in case A:...)
 	LD	A,(CDISK+1)	;use current disk
 	JR	SETNAME
-;
 SETDSK:	LD	A,B
 	LD	(SDISK+1),A	;mark as disk selected
 	INC	DE		;past the :
-;
-SETNAME:
-	;set the file name field
+SETNAME:;set the file name field
 	LD	(HL),A
 	LD	B,8		;file name length (max)
 	CALL	SETNAM0
@@ -631,62 +626,46 @@ SETNAME:
 	JR	NZ,SETTY0
 	INC	DE
 	CALL	SETNAM0
-;
 EFILL0:	XOR	A
 	CALL	PADNAM0
 	EX	DE,HL
 	LD	(COMADDR+1),HL	;set new starting point
 	;recover the start address of the fcb and count ?'s
 	POP	HL
-	LD	BC,11		;b=0, c=8+3
-;
+	LD	BC,11		;B=0, C=8+3
 SCNQ:	INC	HL
 	LD	A,(HL)
 	CP	'?'
 	JR	NZ,SCNQ0
-	;? found, count it in b
+	;? found, count it in B
 	INC	B
-;
 SCNQ0:	DEC	C
 	JR	NZ,SCNQ
-	;number of ?'s in c, move to a and return with flags set
+	;number of ?'s in C, move to A and return with flags set
 	LD	A,B
 	OR	A
 	RET
-;
 SETTY0:	CALL	PADNAME
 	JR	EFILL0
-;
-SETNAM0:
-	CALL	DELIM
+SETNAM0:CALL	DELIM
 	JR	Z,PADNAME	;not a delimiter
 	INC	HL
 	CP	'*'
 	JR	NZ,SETNAM1	;must be ?'s
 	LD	(HL),'?'
 	JR	SETNAM2		;to dec count
-;
-SETNAM1:
-	LD	(HL),A		;store character to fcb
+SETNAM1:LD	(HL),A		;store character to fcb
 	INC	DE
-;
-SETNAM2:
-	DJNZ	SETNAM0		;count down length
-;
+SETNAM2:DJNZ	SETNAM0		;count down length
 TRNAME:	;end of name, truncate remainder
 	CALL	DELIM
 	JR	Z,SETTY		;set type field if delimiter
 	INC	DE
 	JR	TRNAME
-;
-PADNAME:
-	LD	A,' '		;pad with blanks
-;
-PADNAM0:
-	INC	HL
+PADNAME:LD	A,' '		;pad with blanks
+PADNAM0:INC	HL
 	LD	(HL),A
 	DJNZ	PADNAM0		;count down length
-;
 SETTY:	;set the type field
 	LD	B,3		;file type length
 	RET
@@ -694,10 +673,10 @@ SETTY:	;set the type field
 
 GETNUMBER:
 	;read a number from the command line
-	CALL	SETSTADDR	;command address in d,e
+	CALL	SETSTADDR	;command address in D,E
 	JR	Z,CONVER	;break on error
 	LD	C,0
-	;value accumulated in c, overflow and buffer in b
+	;value accumulated in C, overflow and buffer in B
 CONV0:	CALL	DELIM
 	JR	Z,CONVOK	;found delimiter
 	INC	DE
@@ -715,10 +694,8 @@ CONV0:	CALL	DELIM
 	ADD	A,B		;+digit
 	LD	C,A
 	JR	NC,CONV0	;for another digit
-;
 CONVER:	;handle error condition
 	JP	COMERR
-;
 CONVOK:	;end of digits
 	LD	(COMADDR+1),DE
 	LD	A,C		;recover value
@@ -726,29 +703,25 @@ CONVOK:	;end of digits
 
 
 SPLITNUM:
-	;split a number of base of ten given by a
-	LD	BC,0FF0AH	;(b=255, c=10)
-;
+	;split a number of base of ten given by A
+	LD	BC,0FF0AH	;(B=255, C=10)
 CONV1:	INC	B
 	SUB	C
 	JR	NC,CONV1	;more then base of ten
 	ADD	A,C		;recover one place value
-	LD	C,A		;one place digit in c
-	LD	A,B		;tens place digit in b
+	LD	C,A		;one place digit in C
+	LD	A,B		;tens place digit in B
 	CP	10		;valid? CF=0
 	RET
 
+PAGE
 
 INTRINSIC:
 	;look for intrinsic functions (fcb has been filled)
 	LD	DE,INTVEC	;beginning of entries
-;
-INTRIN0:
-	LD	HL,FCB+1	;beginning of name
-	LD	B,4		;length of match is in b
-;
-INTRIN1:
-	LD	A,(DE)
+INTRIN0:LD	HL,FCB+1	;beginning of name
+	LD	B,4		;length of match is in B
+INTRIN1:LD	A,(DE)
 	OR	A
 	RET	Z		;table termination?
 	CP	(HL)		;match?
@@ -760,7 +733,7 @@ INTRIN1:
 	EX	DE,HL
 	LD	E,(HL)
 	INC	HL
-	LD	D,(HL)		;correspond vector in d,e
+	LD	D,(HL)		;correspond vector in D,E
 	DEC	HL
 	DEC	HL
 	DEC	HL
@@ -769,42 +742,36 @@ INTRIN1:
 	DEC	HL
 	LD	B,(HL)
 	DEC	HL
-	LD	C,(HL)		;precursor vector in b,c
+	LD	C,(HL)		;precursor vector in B,C
 	LD	(TRANP+1),BC	;...and save in TRANP
 	SCF			;valid entry force CF=1
 	RET
-;
-INTRIN2:
-	;mismatch, move to next of intrinsic
+INTRIN2:;mismatch, move to next of intrinsic
 	INC	DE
 	DJNZ	INTRIN2
 	INC	DE
 	INC	DE
 	JR	INTRIN0
+;ret
 
 
-COMREAD:
-	;load user function
+COMREAD:;load user function
 	LD	DE,FCB+9
 	LD	A,(DE)
 	CP	' '
 	JR	NZ,RESTRAND	;type ' '
-	LD	HL,COMTYPE	;.com
+	LD	HL,COMTYPE	;.COM
 	LD	DE,FCB+9
 	LD	BC,3
-	LDIR			;file type is set to .com
-;
+	LDIR			;file type is set to .COM
 RESTRAND:
 	;reset TRAND to zero
 	LD	HL,0
 	LD	(TRAND+1),HL
 	CALL	SELECTC
-;
-TRYOPEN:
-	CALL	OPENC
+TRYOPEN:CALL	OPENC
 	JR	NZ,COMRD0
 	;file opened properly, read it into memory
-;
 RESWUSER:
 	;reset SWUSER to zero
 SWUSER:	LD	A,000H		;selected working user area in argument
@@ -814,24 +781,21 @@ SWUSER:	LD	A,000H		;selected working user area in argument
 	XOR	A
 	CALL	SETUSER		;reset user area to zero
 	JR	TRYOPEN		;(re-)try again
-;
 CHKWDISK:
 	;check SWDISK equal SCDISK
 	LD	HL,SWDISK+1
 SCDISK:	LD	A,0		;saved cold boot media disk in argument
-				;none=0, a=1, b=2 ...
+				;none=0, A=1, B=2 ...
 SWDISK:	CP	0		;selected working disk in argument
-				;none=0, a=1, b=2 ...
+				;none=0, A=1, B=2 ...
 	JR	Z,ERRFN		;current equal working disk?
 	CALL	SELECT
 	JR	TRYOPEN		;(re-)try again
-;
 COMRD0:	LD	DE,TRAN		;transient program base
-;
 COMRD1:	PUSH	DE		;save dma address
 	CALL	SETDMA
 	CALL	DISKREADC	;end of file if last record
-	POP	HL		;recover dma address in h,l
+	POP	HL		;recover dma address in H,L
 	JR	NZ,COMEOF	;last record?
 	LD	DE,128
 	PUSH	HL		;save dma address
@@ -839,7 +803,7 @@ COMRD1:	PUSH	DE		;save dma address
 	ADD	HL,DE
 	LD	(TRAND+1),HL	;increment TPA delta
 	;sector loaded, set new dma address and compare
-	POP	HL		;recover dma address in h,l
+	POP	HL		;recover dma address in H,L
 	ADD	HL,DE
 	LD	BC,(TRANC+1)
 	LD	DE,TRANM
@@ -847,32 +811,32 @@ COMRD1:	PUSH	DE		;save dma address
 	CP	B
 	JR	Z,COMRD2
 	DEC	B
-;
 COMRD2:	LD	D,H
 	LD	E,L
 	SBC	HL,BC
 	JR	C,COMRD1	;has the load overflowed?
 	CALL	SAVERR
-;
 ENDFN:	;normal exit point
 	JP	ENDCOM
-;
 ERRFN:	;error exit point
 	JP	COMERR
-;
-COMEOF:	;handle last record, there must be one in a
-	DEC	A		;adjust bdos result in a
+COMEOF:	;handle last record, there must be one in A
+	DEC	A		;adjust bdos result in A
 	CALL	NZ,READERR	;valid?
 	RET
 
 PAGE
 
+;
+;	console command processing
+;
 CCPCLEAR:
 	;clear the command buffer
 	XOR	A
 	LD	(COMLEN),A
+	;JR	CCPSTART
 	;(drop through to ccpstart)
-;
+
 CCPSTART:
 	;enter here from boot loader
 	LD	SP,STACK
@@ -885,7 +849,6 @@ CCPSTART:
 	DEC	HL
 	DEC	HL
 	LD	(BDOSA),HL	;set bdos entry over ccp
-;
 CCPS0:	LD	A,C
 	AND	0FH		;disk number in accumulator
 	LD	(CDISK+1),A	;clears user code nibble
@@ -907,17 +870,15 @@ CCPS0:	LD	A,C
 	INC	L
 	JR	Z,CCPS1
 	XOR	A
-;
 CCPS1:	;check for initial command
 	LD	(SUBMIT+1),A	;submit flag set if $ file present
 	LD	A,(COMLEN)
 	OR	A
 	JR	NZ,CCPE0	;assume typed already
-;
 CCPE:	;enter here on each command or error condition
 	LD	SP,STACK
 	CALL	SAVEUSER
-	CALL	CRLF		;print d> prompt, where d is disk name
+	CALL	CRLF		;print D> prompt, where D is disk name
 	LD	A,(SWDISK+1)	;get working disk number
 	ADD	A,'A'
 	CALL	PRINTBC
@@ -927,23 +888,16 @@ CCPE:	;enter here on each command or error condition
 	CALL	SPLITNUM
 	OR	A
 	JR	Z,CCPEUE0	;zero in tens place, do not print it
-	;(drop through to ccpeue1)
-;
-CCPEUE1:
-	;print tens place of user number given by a
+CCPEUE1:;print tens place of user number given by A
 	ADD	A,'0'
 	CALL	PRINTBC
-;
-CCPEUE0:
-	;print one place of user number given by c
+CCPEUE0:;print one place of user number given by C
 	LD	A,C
 	ADD	A,'0'
 	CALL	PRINTBC
-;
 CCPEUN:	LD	A,'>'
 	CALL	PRINTBC
 	CALL	READCOM		;command buffer filled
-;
 CCPE0:	;(enter here from initialization with command full)
 	CALL	SAVEUSER
 	CALL	FILLFCB		;command fcb filled
@@ -954,12 +908,11 @@ COMADDR:LD	HL,COMBUF	;address of next to char to scan in argument
 	OR	A
 	JR	NZ,CCPE1
 	LD	A,(FCB+5)
-	CP	' '	
+	CP	' '
 	JR	NZ,CCPE1
 	;check for an intrinsic function
-	CALL	INTRINSIC	;address of vector in d,l
+	CALL	INTRINSIC	;address of vector in D,E
 	JP	C,LOAD0		;load, if found
-;
 CCPE1:	JP	USERFUNC	;... and execute
 
 PAGE
@@ -976,17 +929,14 @@ DIRECT:	;directory search
 	JR	NZ,DIR1		;skip fill of ??? if not blank
 	;set comfcb to all ??? for current disk
 	LD	B,11		;length of fill ????????.???
-;
 DIR0:	LD	(HL),'?'
 	INC	HL
 	DJNZ	DIR0
 	;not a blank request, must be in fcb
-;
 DIR1:	CALL	SEARCHCOM
 	JP	Z,NOFILE	;not found message
 	LD	D,255
 	PUSH	DE		;E counts directory entries
-;
 DIR2:	DEC	A		;get the location of the element
 	RRCA
 	RRCA
@@ -995,34 +945,31 @@ DIR2:	DEC	A		;get the location of the element
 	LD	HL,BUFF
 	ADD	A,L
 	LD	L,A
-	;l contains base index into buff for dir entry
+	;L contains base index into buff for dir entry
 	PUSH	HL
 	POP	IX
 	BIT	7,(IX+10)
 	JR	NZ,DIR6		;skip if system file
-	;l holds index into buffer
+	;L holds index into buffer
 	;another fcb found, new line?
 	POP	AF
 	INC	A
-	;e=0,1,2,3,...new line if mod 4 = 0
+	;E=0,1,2,3,...new line if mod 4 = 0
 	AND	11B
 	PUSH	AF		;and save the test
-	;may delete trailing blanks     	
+	;may delete trailing blanks
 	LD	A,' '
 	JR	NZ,DIRHDR0	;header on current line
 	CALL	CRLF
-	;working disk in a
+	;working disk in A
 	LD	A,(SWDISK+1)
 	ADD	A,'A'
-;
-DIRHDR0:
-	CALL	PRINTBC
+DIRHDR0:CALL	PRINTBC
 	LD	A,':'
 	CALL	PRINTBC
 	CALL	BLANK		;after last one
-	LD	BC,00802H	;count b=8 char in name
-				;count c=2 parts of file
-;
+	LD	BC,00802H	;count B=8 char in name
+				;count C=2 parts of file
 DIR4:	INC	IX
 	LD	A,(IX+0)
 	AND	7FH		;mask flags
@@ -1031,14 +978,12 @@ DIR4:	INC	IX
 	DEC	C
 	JR	Z,DIR6
 	CALL	BLANK
-	LD	B,3		;count b=3 char in type
+	LD	B,3		;count B=3 char in type
 	JR	DIR4
-;
-DIR6:	CALL	BREAK_KEY	;check for interrupt at keyboard
+DIR6:	CALL	BREAK$KEY	;check for interrupt at keyboard
 	JR	NZ,ENDIR	;abort directory search
 	CALL	SEARCHN
 	JR	NZ,DIR2		;for another entry
-;
 ENDIR:	JP	ENDFN
 
 PAGE
@@ -1046,7 +991,7 @@ PAGE
 ERASE:	;file erase
 	CALL	FILLFCB		;cannot be all ???'s
 	CP	11
-	JR	NZ,ERASEFILE	
+	JR	NZ,ERASEFILE
 	;erasing all of the disk
 	LD	BC,ERMSG
 	CALL	PRINT
@@ -1057,13 +1002,11 @@ ERASE:	;file erase
 	;valid input
 	INC	HL
 	LD	A,(HL)
-	CP	'Y'	
+	CP	'Y'
 	RET	NZ
 	;ok, erase the entire diskette
 	INC	HL
 	LD	(COMADDR+1),HL	;otherwise error at retcom
-	;(drop through to erasefile)
-;
 ERASEFILE:
 	CALL	SELECTC
 	CALL	DELETEC
@@ -1082,42 +1025,36 @@ TYPE:	;type file
 	;file opened, read 'til eof
 	CALL	CRLF
 	LD	BC,128		;read first buffer
-;
-TYPE0:	;loop on pointer in b,c
+TYPE0:	;loop on pointer in B,C
 	LD	A,C
 	CP	128		;end buffer
 	JR	C,TYPE1
 	CALL	DISKREADC
 	JR	NZ,TYPEOF	;hard end of file
 	LD	BC,0		;pointer = 0
-;
-TYPE1:	;read character at pointer in b,c and print
+TYPE1:	;read character at pointer in B,C and print
 	LD	HL,BUFF
 	ADD	HL,BC
 	LD	A,(HL)
-	CP	EOFILE	
+	CP	EOFILE
 	JR	Z,TYPEND
 	PUSH	BC
 	CALL	PRINTBC
-	CALL	BREAK_KEY
+	CALL	BREAK$KEY
 	POP	BC		;recover pointer
 	JP	NZ,ENDFN	;abort if break
 	INC	BC		;pointer = pointer + 1
 	JR	TYPE0		;for another character
-;
 TYPEOF:	;end of file, check for errors
 	DEC	A
-	;(drop through to typend)
-;
 TYPEND:	JP	Z,ENDFN
 	CALL	READERR
-;
 TYPERR:	JP	COMERR
 
 PAGE
 
 SAVE:	;save memory image
-	CALL	GETNUMBER	;value to register a
+	CALL	GETNUMBER	;value to register A
 	PUSH	AF		;save it for later
 	;should be followed by a file to save the memory image
 	CALL	FILLFCB
@@ -1128,11 +1065,10 @@ SAVE:	;save memory image
 	XOR	A
 	LD	(CNTREC),A	;clear next record field
 	LD	H,A
-	POP	AF		;#pages to write is in a, change to #sectors
+	POP	AF		;#pages to write is in A, change to #sectors
 	LD	L,A
 	ADD	HL,HL
-	LD	DE,TRAN		;h,l is sector count, d,e is load address
-;
+	LD	DE,TRAN		;H,L is sector count, D,E is load address
 SAVE0:	;check for sector count zero
 	LD	A,H
 	OR	L
@@ -1148,18 +1084,13 @@ SAVE0:	;check for sector count zero
 	POP	HL		;dma address, sector count
 	JR	NZ,FLDSAVE	;may be disk full case
 	JR	SAVE0		;for another sector
-;
 SAVE1:	;end of dump, close the file
 	CALL	CLOSEC
 	INC	A		;255 becomes 00 if error
 	JR	NZ,RETSAVE	;for another command
-;
-FLDSAVE:
-	;must be full or read only disk
+FLDSAVE:;must be full or read only disk
 	CALL	SAVERR
-;
-RETSAVE:
-	JP	ENDFN
+RETSAVE:JP	ENDFN
 
 PAGE
 
@@ -1174,7 +1105,7 @@ RENAME:	;rename a file on a specific disk
 	;file doesn't exist, move to second half of fcb
 	LD	HL,FCB
 	LD	DE,FCB+16
-	;move 16 characters from h,l to d,e addresses
+	;move 16 characters from H,L to D,E addresses
 	LD	BC,16
 	LDIR
 	;check for = or left arrow
@@ -1185,7 +1116,6 @@ RENAME:	;rename a file on a specific disk
 	JR	Z,REN1		;ok if =
 	CP	LA
 	JR	NZ,RENERR2
-;
 REN1:	EX	DE,HL
 	INC	HL
 	LD	(COMADDR+1),HL	;past delimiter
@@ -1202,7 +1132,6 @@ REN1:	EX	DE,HL
 	CP	B
 	LD	(HL),B
 	JR	NZ,RENERR2
-;
 REN2:	LD	(HL),B		;store the name in case drives switched
 	XOR	A
 	LD	(FCB),A
@@ -1210,20 +1139,13 @@ REN2:	LD	(HL),B		;store the name in case drives switched
 	JR	Z,RENERR1
 	;everything is ok, rename the file
 	CALL	RENAMC
-;
 RENEND:	JP	ENDFN
-;
-RENERR1:
-	;no file on disk
+RENERR1:;no file on disk
 	CALL	NOFILE
 	JR	RENEND
-;
-RENERR2:
-	;ambigous reference/name conflict
+RENERR2:;ambigous reference/name conflict
 	JP	COMERR
-;
-RENERR3:
-	;file already exists
+RENERR3:;file already exists
 	CALL	RENERR
 	JR	RENEND
 
@@ -1241,7 +1163,6 @@ PAGE
 CLOCK:	;set CP/A date and time
 	LD	HL,CLKADDR	;set default clock address
 	LD	B,6		;get 6 numbers
-;
 CLK0:	PUSH	BC
 	PUSH	HL
 	CALL	GETNUMBER	;leaves the value in the accumulator
@@ -1270,7 +1191,7 @@ EXTCMD:	;add external user function
 	LD	A,(FCB+5)
 	CP	' '
 	JR	NZ,ERRCMD	;must be 4 character name
-	CALL	INTRINSIC	;address of new vector in d,l
+	CALL	INTRINSIC	;address of new vector in D,E
 	JR	C,INTVECFND	;may not be there
 	LD	HL,IVTERM-1
 	SBC	HL,DE
@@ -1284,10 +1205,7 @@ EXTCMD:	;add external user function
 	;save origin bios warm boot address for later reconstruction
 	LD	HL,(BIOS+WBOOTO+1)
 	LD	(SWBOOTA+1),HL
-	;(drop through to extcmd0)
-;
-EXTCMD0:
-	;overload bios warm boot with ccp function
+EXTCMD0:;overload bios warm boot with ccp function
 	LD	HL,WBOOTCCP
 	LD	(BIOS+WBOOTO+1),HL
 	;copy user function name into intrinsic function table
@@ -1303,14 +1221,14 @@ TRAND:	LD	BC,0		;TPA delta in argument
 	SBC	HL,BC
 	LD	(TRANC+1),HL	;save calculated upper TPA address
 	;store user function vector in intrinsic function table
-	EX	DE,HL		;table entry pointer in h,l
+	EX	DE,HL		;table entry pointer in H,L
 	LD	(HL),E
 	INC	HL
 	LD	(HL),D
 	INC	HL
 	LD	(HL),A		;set new table termination
 	;write preample (JP BDOS) befor user function
-	EX	DE,HL		;start address in h,l
+	EX	DE,HL		;start address in H,L
 	LD	DE,BDOS+6
 	DEC	HL
 	LD	(HL),D
@@ -1326,19 +1244,16 @@ TRAND:	LD	BC,0		;TPA delta in argument
 	DEC	HL
 	LD	A,B
 	OR	C
-	RET	Z		;TPA delta is zero, nothing to copy 
+	RET	Z		;TPA delta is zero, nothing to copy
 	LDDR			;copy user function to target memory
 	RET			;above TPA and return
-;
 INTVECFND:
 	;user function already exists
 	CALL	RENERR
 	JR	ERRCMD
-;
 INTVECFULL:
 	;intrinsic function table must be full
 	CALL	SAVERR
-;
 ERRCMD:	;arrive here on command error
 	JP	COMERR
 
@@ -1349,7 +1264,6 @@ RESCMD:	;remove all added external user function
 	LD	(TRANC+1),HL	;reset current upper TPA address
 	XOR	A
 	LD	(EIVBEGIN),A	;reset table termination
-;
 SWBOOTA:LD	HL,0		;origin bios warm boot address in argument
 	LD	A,H
 	OR	L
@@ -1372,7 +1286,7 @@ WBOOTCCP:
 	LD	A,82H		;cursor on (back to standard)
 	CALL	PRINTBC
 	LD	A,(DISKA)	;preselect system disk
-	LD	C,A	
+	LD	C,A
 	JP	CCP+3		;jump to ccp with clear command buffer
 
 PAGE
@@ -1383,12 +1297,10 @@ SWAPDD:	;swap logical disk drive in bdos
 	PUSH	HL
 	CALL	FILLFCB		;fcb gets second disk
 	CALL	SELDSK		;and activate
-	POP	DE		;1st DPH in d,e and 2nd DPH in h,l
+	POP	DE		;1st DPH in D,E and 2nd DPH in H,L
 	LD	B,16		;16 byte to copied
-;
-EXCHDPH:
-	;exchange amount of byte given by b between memory
-	;area given by d,e and h,l
+EXCHDPH:;exchange amount of byte given by B between memory
+	;area given by D,E and H,L
 	LD	A,(DE)
 	LD	C,(HL)
 	LD	(HL),A
@@ -1396,9 +1308,8 @@ EXCHDPH:
 	LD	(DE),A
 	INC	DE
 	INC	HL
-	DJNZ	EXCHDPH		;count down bytes in b
+	DJNZ	EXCHDPH		;count down bytes in B
 	JR	WBOOTCCP	;restart by ccp warm boot
-;
 SELDSK:	LD	A,(FCB)		;get disk number to select
 	DEC	A		;and adapt to bios number
 	LD	C,A
@@ -1406,7 +1317,7 @@ SELDSK:	LD	A,(FCB)		;get disk number to select
 	CALL	BIOS+SELDSKO	;activate selected disk
 	LD	A,H
 	OR	L
-	RET	NZ		;return with DPH address in h,l
+	RET	NZ		;return with DPH address in H,L
 	JP	COMERR		;no disk, no DPH address
 
 PAGE
@@ -1423,13 +1334,10 @@ USERFUNC:
 	JR	Z,NODISK	;no disk name if 0
 	DEC	A
 	LD	(CDISK+1),A
-;
 NODISK:	JP	ENDCOM
-;
 USER0:	;file name is present
 	CALL	COMREAD		;load user function
 	JR	LOAD1
-;
 LOAD0:	LD	(TRANE+1),DE	;preset TPA execution address
 	LD	HL,TRANM
 	OR	A
@@ -1451,11 +1359,9 @@ TRANP:	LD	HL,0		;TPA address of precursor execution in argument
 	JR	C,CMOVE0
 	CALL	SAVERR
 	JP	ENDCOM
-;
 CMOVE0:	;user function code move ????
 	EX	DE,HL
 	LDIR
-;
 LOAD1:	LD	HL,TRAN		;transient program base
 	LD	(TRANE+1),HL	;save dma address
 	CALL	FILLFCB
@@ -1469,13 +1375,9 @@ LOAD1:	LD	HL,TRAN		;transient program base
 	LD	(CNTREC),A	;record number set to zero
 COMBLA:	LD	HL,0		;address of first blank position in argument
 	;first blank position found
-	;(drop through to bmove1)
-;
 BMOVE1:	LD	B,0
 	LD	DE,128+1
 	;ready for the move
-	;(drop through to bmove2)
-;
 BMOVE2:	LD	A,(HL)
 	LD	(DE),A
 	OR	A
@@ -1485,16 +1387,12 @@ BMOVE2:	LD	A,(HL)
 	INC	HL
 	INC	DE
 	JR	BMOVE2
-;
-BMOVE3:	;b has character count
+BMOVE3:	;B has character count
 	LD	A,B
 	LD	(BUFF),A
 	LD	(COMADDR+1),HL
 	CALL	CRLF
 	;now go to the loaded program
-	;(drop through to execom)
-
-
 EXECOM:	;execute the loaded user function
 	call	SAVEUSER	;user code saved
 TRANE:	call	TRAN		;TPA address of execution in argument
@@ -1509,9 +1407,10 @@ ENDCOM:	;end of intrinsic command
 	LD	A,(FCB+1)
 	SUB	' '
 SDISK:	OR	0		;selected disk for current operation in argument
-				;none=0, a=1, b=2 ...
+				;none=0, A=1, B=2 ...
 	;0 in accumulator if no disk selected, and blank fcb
-	JR Z,COMEND
+	JR	Z,COMEND
+	;JR	COMERR
 	;(drop through to comerr)
 
 PAGE
@@ -1521,11 +1420,10 @@ COMERR:	;error in command string starting at position
 	CALL	SAVEUSER
 	CALL	CRLF		;space to next line
 STADDR:	LD	HL,COMBUF	;starting address of current request in argument
-				;h,l address first to print
-COMERR0:
-	;print characters until blank or zero
+				;H,L address first to print
+COMERR0:;print characters until blank or zero
 	LD	A,(HL)
-	CP	' '	
+	CP	' '
 	JR	Z,COMERR1	;not blank
 	OR	A
 	JR	Z,COMERR1	;not zero, so print it
@@ -1534,16 +1432,11 @@ COMERR0:
 	POP	HL
 	INC	HL
 	JR	COMERR0		;for another character
-;
-COMERR1:
-	;print question mark,and delete sub file
+COMERR1:;print question mark,and delete sub file
 	LD	A,'?'
 	CALL	PRINTBC
-;
-COMERR2:
-	;handle potential breack condistions too
-	CALL	DEL_SUB
-;
+COMERR2:;handle potential breack condistions too
+	CALL	DEL$SUB
 COMEND:	JP	CCPE		;restart with next command
 
 PAGE
@@ -1557,10 +1450,12 @@ ERMSG:	DB	"ALL (Y/N)?",'$'
 FULLMSG:DB	"No Space",07H,'$'
 RENMSG:	DB	"File exists",07H,'$'
 BRKMSG:	DB	"*break*",07H,'$'
-
+; CP/M 2.2 has: this strings beside the corresponding code
+; CP/M 2.2 has: all strings in upper case, w/o beep
+; CP/M 2.2 has: the 8 level stack at this position
 
 ;
-;	submit file control block
+;	'submit' file control block
 ;
 SUBFCB:	DB	0,"$$$     "	;file name is $$$
 	DB	"SUB",0,0	;file type is sub
@@ -1570,7 +1465,7 @@ SUBRC:	DS	1		;record count filed
 SUBCR:	DS	1		;current record to read
 
 
-COMTYPE:DB	"COM"		;for com files
+COMTYPE:DB	"COM"		;for .COM files
 
 PAGE
 
@@ -1581,6 +1476,10 @@ PAGE
 ;	singel entry has a 4 byte name and a 2byte vector:
 ;		DB	"NAME"
 ;		DW	VECTOR
+;
+;	CP/M 2.2 has: a simple string tabel INTVEC with
+;	INTLEN on end of table together with the SERIAL
+;	before and in front of INTRINSIC
 ;
 INTVEC:	DB	"DIR "		;directory search
 	DW	DIRECT
@@ -1635,11 +1534,11 @@ EXTV3:	DS	4,0		;4th entry for external user function
 IVTERM:	DB	0		;termination
 
 
-
 ENTSP:	DS	2*12,0FDH	;12 level stack
 STACK:	DB	0FEH
+
 
 ;
 ;	next module
 ;
-	END
+	END	CCP
