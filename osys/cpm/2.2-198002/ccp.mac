@@ -80,12 +80,12 @@ TESTING	EQU	FALSE		;true if debugging
 ;
 ;	ccp entry and external symbols
 ;
-ENTRY	CCPLOC
-BDOSL	EQU	CCPLOC+0800H	;bdos location
+ENTRY	CCP
+;EXTERNAL	BDOS		; CP/M 2.2 has bios at CCP+0800H
+;EXTERNAL	BIOS		; CP/M 2.2 has bios at BDOS+0E00H
 
 TRAN	EQU	100H		;address of transient execution memory
 TRANM	EQU	$		;maximum of transient execution memory
-CCPLOC	EQU	$
 
 PAGE
 
@@ -108,11 +108,12 @@ PAGE
 ;	* line is initialized, a jump to "jmp ccpclear" dis-   *
 ;	* ables the automatic command execution.               *
 ;	********************************************************
-	JP	CCPSTART	;start ccp with possible initial command
+CCP::	JP	CCPSTART	;start ccp with possible initial command
 	JP	CCPCLEAR	;clear the command buffer
 
 MAXLEN:	DB	127		;max buffer length
 COMLEN:	DB	0		;command length (filled in by dos)
+
 ;
 ;	(command executed initially if comlen non zero)
 ;
@@ -120,6 +121,7 @@ COMBUF:	DB	"        "	;8 character fill
 	DB	"        "	;8 character fill
 	DB	"COPYRIGHT (C) 1979, DIGITAL RESEARCH  " ; 38
 	DS	128-($-COMBUF)
+
 ;
 ;	total buffer length is 128 characters
 ;
@@ -127,12 +129,14 @@ COMADDR:DW	COMBUF		;address of next to char to scan
 STADDR:	DS	2		;starting address of current fillfcb request
 ;
 DISKA	EQU	0004H		;disk address for current disk
-BDOS	EQU	0005H		;primary bdos entry point
+BDOSJ	EQU	0005H		;primary bdos entry point
 BUFF	EQU	0080H		;default buffer
+
 ;
 ;	command file control block
 ;
 FCB	EQU	005CH		;default file control block
+
 ;
 ;	bdos access constants
 ;
@@ -157,11 +161,13 @@ LOGF	EQU	24		;return login vector
 CSELF	EQU	25		;return currently selected drive number
 DMAF	EQU	26		;set dma address
 USERF	EQU	32		;set user number
+
 ;
 ;	special fcb flags
 ;
 ROFILE	EQU	9		;read only file
 SYSFILE	EQU	10		;system file flag
+
 ;
 ;	special characters
 ;
@@ -179,7 +185,7 @@ PRINTCHAR:
 	LD	E,A
 	LD	C,PCHARF
 	;simple bdos call, indirectly return by bdos
-	JP	BDOS
+	JP	BDOSJ
 	;(drop through to BDOS)
 ;ret
 
@@ -217,7 +223,7 @@ PRIN0:	LD	A,(HL)
 INITIALIZE:
 	LD	C,INITF
 	;simple bdos call, indirectly return by bdos
-	JP	BDOS
+	JP	BDOSJ
 	;(drop through to BDOS)
 ;ret
 
@@ -225,14 +231,14 @@ INITIALIZE:
 SELECT:	LD	E,A
 	LD	C,SELF
 	;simple bdos call, indirectly return by bdos
-	JP	BDOS
+	JP	BDOSJ
 	;(drop through to BDOS)
 ;ret
 
 
 BDOS$INR:
 	;counted bdos call, return inside ccp
-	CALL	BDOS
+	CALL	BDOSJ
 	LD	(DCNT),A
 	INC	A
 	RET
@@ -277,14 +283,14 @@ SEARCHCOM:
 DELETE:	;delete the file given by D,E
 	LD	C,DELF
 	;simple bdos call, indirectly return by bdos
-	JP	BDOS
+	JP	BDOSJ
 	;(drop through to BDOS)
 ;ret
 
 
 BDOS$COND:
 	;conditioned bdos call, return inside ccp
-	CALL	BDOS
+	CALL	BDOSJ
 	OR	A
 	RET
 
@@ -318,7 +324,7 @@ MAKE:	;create the file given by D,E
 RENAM:	;rename the file given by D,E
 	LD	C,RENF
 	;simple bdos call, indirectly return by bdos
-	JP	BDOS
+	JP	BDOSJ
 	;(drop through to BDOS)
 ;ret
 
@@ -327,7 +333,7 @@ GETUSER:;return current user code in A
 	LD	E,0FFH
 SETUSER:LD	C,USERF
 	;simple bdos call, indirectly return by bdos
-	JP	BDOS		;sets user number
+	JP	BDOSJ		;sets user number
 	;(drop through to BDOS)
 ;ret
 
@@ -406,14 +412,14 @@ READCOM:;read the next command into the command buffer
 	CALL	BREAK$KEY
 	JP	Z,NOREAD
 	CALL	DEL$SUB
-	JP	CCP		;break key depressed
+	JP	CCPE		;break key depressed
 NOSUB:	;no submit file
 	CALL	DEL$SUB
 	;translate to upper case, store zero at end
 	CALL	SAVEUSER	;user # save in case control c
 	LD	C,RBUFF
 	LD	DE,MAXLEN
-	CALL	BDOS
+	CALL	BDOSJ
 	CALL	SETDISKA	;no control c, so restore diska
 NOREAD:	;enter here from submit file
 	;set the last character to zero for later scans
@@ -440,11 +446,11 @@ READCOM1:
 BREAK$KEY:
 	;check for a character ready at the console
 	LD	C,BREAKF
-	CALL	BDOS
+	CALL	BDOSJ
 	OR	A
 	RET	Z
 	LD	C,RCHARF
-	CALL	BDOS		;character cleared
+	CALL	BDOSJ		;character cleared
 	OR	A
 	RET
 
@@ -452,7 +458,7 @@ BREAK$KEY:
 CSELECT:;get the currently selected drive number to reg-A
 	LD	C,CSELF
 	;simple bdos call, indirectly return by bdos
-	JP	BDOS
+	JP	BDOSJ
 	;(drop through to BDOS)
 ;ret
 
@@ -463,7 +469,7 @@ SETDMABUFF:
 SETDMA:	;set dma address to D,E
 	LD	C,DMAF
 	;simple bdos call, indirectly return by bdos
-	JP	BDOS
+	JP	BDOSJ
 	;(drop through to BDOS)
 ;ret
 
@@ -486,7 +492,7 @@ DEL$SUB:;delete the submit file, and set submit flag to false
 SERIALIZE:
 	;check serialization
 	LD	DE,SERIAL
-	LD	HL,BDOSL
+	LD	HL,BDOS
 	LD	B,6		;check six bytes
 SER0:	LD	A,(DE)
 	CP	(HL)
@@ -518,7 +524,7 @@ COMERR1:;print question mark,and delete sub file
 	CALL	PRINTCHAR
 	CALL	CRLF
 	CALL	DEL$SUB
-	JP	CCP		;restart with next command
+	JP	CCPE		;restart with next command
 
 PAGE
 
@@ -801,8 +807,8 @@ CCPSTART:
 	;check for initial command
 	LD	A,(COMLEN)
 	OR	A
-	JP	NZ,CCP0		;assume typed already
-CCP:	;enter here on each command or error condition
+	JP	NZ,CCPE0	;assume typed already
+CCPE:	;enter here on each command or error condition
 	LD	SP,STACK
 	CALL	CRLF		;print D> prompt, where D is disk name
 	CALL	CSELECT		;get current disk number
@@ -811,7 +817,7 @@ CCP:	;enter here on each command or error condition
 	LD	A,'>'
 	CALL	PRINTCHAR
 	CALL	READCOM		;command buffer filled
-CCP0:	;(enter here from initialization with command full)
+CCPE0:	;(enter here from initialization with command full)
 	LD	DE,BUFF
 	CALL	SETDMA		;default dma address at buff
 	CALL	CSELECT
@@ -845,8 +851,8 @@ JMPTAB:	DW	DIRECT		;directory search
 	DW	USERFUNC	;user-defined function
 BADSERIAL:
 	LD	HL,76F3h	;DI OR (HALT SHL 8)
-	LD	(CCPLOC),HL
-	LD	HL,CCPLOC
+	LD	(CCP),HL
+	LD	HL,CCP
 	JP	(HL)
 
 PAGE
@@ -1076,11 +1082,11 @@ ERASE:	;file erase
 	CALL	READCOM
 	LD	HL,COMLEN
 	DEC	(HL)
-	JP	NZ,CCP		;bad input
+	JP	NZ,CCPE		;bad input
 	INC	HL
 	LD	A,(HL)
 	CP	'Y'
-	JP	NZ,CCP
+	JP	NZ,CCPE
 	;ok, erase the entire diskette
 	INC	HL
 	LD	(COMADDR),HL	;otherwise error at retcom
@@ -1366,7 +1372,7 @@ BMOVE3:	;B has character count
 	LD	SP,STACK	;may come back here
 	CALL	SETDISKA
 	CALL	SELECT
-	JP	CCP
+	JP	CCPE
 USERER:	;arrive here on command error
 	CALL	RESETDISK
 	JP	COMERR
@@ -1392,7 +1398,7 @@ ENDCOM:	;end of intrinsic command
 	OR	(HL)
 	;0 in accumulator if no disk selected, and blank fcb
 	JP	NZ,COMERR
-	JP	CCP
+	JP	CCPE
 
 PAGE
 
@@ -1401,7 +1407,6 @@ PAGE
 ;
 	DS	2*8		;8 level stack
 STACK:
-
 
 ;
 ;	'submit' file control block
@@ -1413,7 +1418,6 @@ SUBMOD:	DB	0		;module number
 SUBRC:	DS	1		;record count filed
 	DS	16		;disk map
 SUBCR:	DS	1		;current record to read
-
 
 ;
 ;	command file control block
@@ -1430,4 +1434,6 @@ BPTR:	DS	1		;buffer pointer
 ;
 ;	next module
 ;
-	END	CCPLOC
+;BDOS   EQU     ($ & 0FF00H)+100H
+        ORG     ((HIGH $)+1)*100H       ;data gap
+BDOS:	END	CCP

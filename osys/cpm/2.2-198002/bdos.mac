@@ -86,8 +86,8 @@ TEST	EQU	OFF
 ;
 ;	bdos entry and external symbols
 ;
-ENTRY	BDOSLOC
-BDOSLOC	EQU	$
+ENTRY		BDOS		; CP/M 2.2 has bdos at CCP+0800H
+;EXTERNAL	BIOS		; CP/M 2.2 has bios at BDOS+0E00H
 
 ;
 ;	bios value defined at end of module
@@ -141,7 +141,7 @@ LF	EQU	0AH		;line feed
 CTL	EQU	5EH		;up arrow
 
 	;CP/M serial number (details, see symbol SERIAL in CCP)
-	DB	0,0,0,0,0,0	;(wrong number, see below)
+BDOS::	DB	0,0,0,0,0,0	;(wrong number, see below)
 	;
 	;http://www.retrotechnology.com/dri/cpm_serial.html
 	;
@@ -192,11 +192,11 @@ BDOSE:	;arrive here from user programs
 	EX	DE,HL
 	JP	(HL)		;dispatched
 
+
 ;
 ;	dispatch table for functions
 ;
-FUNCTAB:
-	DW	WBOOTF, FUNC1, FUNC2, FUNC3
+FUNCTAB:DW	WBOOTF, FUNC1, FUNC2, FUNC3
 	DW	PUNCHF, LISTF, FUNC6, FUNC7
 	DW	FUNC8, FUNC9, FUNC10,FUNC11
 DISKF	EQU	($-FUNCTAB)/2	;disk funcs
@@ -378,7 +378,7 @@ NOTBACKSP:
 CTLOUT:	;send C character with possible preceding up-arrow
 	LD	A,C
 	CALL	ECHOC		;cy if not graphic (or special case)
-	JP	NC,TABOUT	;skip if graphic, tab, cr, lf, or ctlh
+	JP	NC,TABOUT	;skip if graphic, tab, cr, lf, or ctl-h
 	;send preceding up arrow
 	PUSH	AF
 	LD	C,CTL
@@ -407,13 +407,13 @@ BACKUP:	;back-up one screen position
 	CALL	CONOUTF
 	;JR PCTLH
 	;(drop through to pctlh)
-PCTLH:	;send ctlh to console without affecting column count
+PCTLH:	;send ctl-h to console without affecting column count
 	LD	C,CTLH
 	JP	CONOUTF
 	;(drop through to BIOS conout)
 ;ret
 
-CRLFP:	;print #, cr, lf for ctlx, ctlu, ctlr functions
+CRLFP:	;print #, cr, lf for ctl-x, ctl-u, ctl-r functions
 	;then move to strtcol (starting column)
 	LD	C,'#'
 	CALL	CONOUT
@@ -505,7 +505,7 @@ NOTRUB:	;not a rubout character, check end line
 	JP	READN0		;for another character
 NOTE:	;not end of line, list toggle?
 	CP	CTLP
-	JP	NZ,NOTP		;skip if not ctlp
+	JP	NZ,NOTP		;skip if not ctl-p
 	;list toggle - change parity
 	PUSH	HL		;save next to fill - 1
 	LD	HL,LISTCP	;HL=.listcp flag
@@ -514,7 +514,7 @@ NOTE:	;not end of line, list toggle?
 	LD	(HL),A		;listcp = not listcp
 	POP	HL
 	JP	READNX		;for another char
-NOTP:	;not a ctlp, line delete?
+NOTP:	;not a ctl-p, line delete?
 	CP	CTLX
 	JP	NZ,NOTX
 	POP	HL		;discard start position
@@ -526,18 +526,17 @@ BACKX:	LD	A,(STRTCOL)
 	DEC	(HL)		;column = column - 1
 	CALL	BACKUP		;one position
 	JP	BACKX
-NOTX:	;not a control x, control u?
-	;not control-X, control-U?
+NOTX:	;not a ctl-x, ctl-u?
 	CP	CTLU
 	JP	NZ,NOTU		;skip if not
-	;delete line (ctlu)
+	;delete line (ctl-u)
 	CALL	CRLFP		;physical eol
 	POP	HL		;discard starting position
 	JP	READ		;to start all over
 NOTU:	;not line delete, repeat line?
 	CP	CTLR
 	JP	NZ,NOTR
-LINELEN:;repeat line, or compute line len (ctlh)
+LINELEN:;repeat line, or compute line len (ctl-h)
 	;if compcol > 0
 	PUSH	BC
 	CALL	CRLFP		;save line length
@@ -564,7 +563,7 @@ REP1:	;end of repeat, recall lengths
 	LD	A,(COMPCOL)
 	OR	A		;>0 if computing length
 	JP	Z,READN0	;for another char if so
-	;column position computed for ctlh
+	;column position computed for ctl-h
 	LD	HL,COLUMN
 	SUB	(HL)		;diff > 0
 	LD	(COMPCOL),A	;count down below
@@ -575,7 +574,7 @@ BACKSP:	;move back one more space
 	DEC	(HL)
 	JP	NZ,BACKSP
 	JP	READN0		;for next character
-NOTR:	;not a ctlr, place into buffer
+NOTR:	;not a ctl-r, place into buffer
 RDECHO:	INC	HL
 	LD	(HL),A		;character filled to mem
 	INC	B		;blen = blen + 1
@@ -1534,6 +1533,7 @@ ROTR:	;byte value from ALLOC is in register A, with shift count
 	LD	(HL),A		;back to ALLOC
 	RET
 
+
 SCANDM:	;scan the disk map addressed by dptr for non-zero
 	;entries, the allocation vector entry corresponding
 	;to a non-zero entry is set to the value of C (0,1)
@@ -1580,6 +1580,7 @@ SCANM3:	POP	HL
 	INC	HL		;to next bit position
 	POP	BC		;recall counter
 	JP	SCANDM0		;for another item
+
 
 INITIALIZE:
 	;initialize the current disk
@@ -1646,12 +1647,14 @@ PDOLLAR:;now scan the disk map for allocated blocks
 	CALL	SETCDR		;set cdrmax to dcnt
 	JP	INITIAL2	;for another entry
 
+
 COPY$DIRLOC:
 	;copy directory location to lret following
 	;delete, rename, ... ops
 	LD	A,(DIRLOC)
 	JP	STA$RET
 ;ret
+
 
 COMPEXT:;compare extent# in A with that in C, return nonzero
 	;if they do not match
@@ -1670,6 +1673,7 @@ COMPEXT:;compare extent# in A with that in C, return nonzero
 	AND	MAXEXT		;set flags
 	POP	BC		;restore original values
 	RET
+
 
 SEARCH:	;search for directory element of length C at info
 	LD	A,0FFH
@@ -1754,6 +1758,8 @@ ENDSEARCH:
 	XOR	A
 	LD	(HL),A		;dirloc=0
 	RET
+
+
 SEARCH$FIN:
 	;end of directory, or empty name
 	CALL	SET$END$DIR	;may be artifical end
@@ -1780,6 +1786,7 @@ DELETE0:;loop while directory matches
 	CALL	WRDIR		;write the directory
 	CALL	SEARCHN		;to next element
 	JP	DELETE0		;for another record
+
 
 GET$BLOCK:
 	;given allocation vector position BC, find the zero bit
@@ -1836,6 +1843,7 @@ RETBLOCK0:
 	LD	HL,0000H
 	RET
 
+
 COPY$FCB:
 	;copy the entire file control block
 	LD	C,0
@@ -1854,6 +1862,7 @@ COPY$DIR:
 	CALL	GETDPTRA	;HL=.buff(dptr), destination
 	POP	BC		;DE=source, HL=dest, C=length
 	CALL	MOVE		;data moved
+
 SEEK$COPY:
 	;enter from close to seek and copy current element
 	CALL	SEEK$DIR	;to the directory element
@@ -1889,6 +1898,7 @@ RENAME0:CALL	END$OF$DIR
 	CALL	SEARCHN
 	JP	RENAME0
 
+
 INDICATORS:
 	;set file indicators for current fcb
 	LD	C,EXTNUM
@@ -1902,12 +1912,15 @@ INDIC0:	CALL	END$OF$DIR
 	CALL	SEARCHN
 	JP	INDIC0
 
+
 OPEN:	;search for the directory entry, copy to fcb
 	LD	C,NAMLEN
 	CALL	SEARCH
 	CALL	END$OF$DIR
 	RET	Z		;return with lret=255 if end
 	;not end of directory, copy fcb information
+
+
 OPEN$COPY:
 	;(referenced below to copy fcb info)
 	CALL	GETEXTA
@@ -1943,6 +1956,7 @@ OPEN$COPY:
 	LD	A,0
 	JP	C,OPEN$RCNT	;user is larger
 	LD	A,128		;directory is larger
+
 OPEN$RCNT:
 	;A has record count to fill
 	LD	HL,(INFO)
@@ -1950,6 +1964,7 @@ OPEN$RCNT:
 	ADD	HL,DE
 	LD	(HL),A
 	RET
+
 
 MERGEZERO:
 	;HL = .fcb1(i), DE = .fcb2(i),
@@ -1968,6 +1983,7 @@ MERGEZERO:
 	DEC	DE
 	DEC	HL		;back to input form
 	RET
+
 
 CLOSE:	;locate the directory element and re-write it
 	XOR	A
@@ -2102,6 +2118,7 @@ MAKE0:	LD	(HL),A
 	JP	SETFWF
 ;ret
 
+
 OPEN$REEL:
 	;close the current extent, and open the next one
 	;if possible.  RMF is TRUE$ if in read mode
@@ -2170,6 +2187,7 @@ OPEN$R$ERR:
 	JP	SETFWF		;ensure that it will not be closed
 ;ret
 
+
 SEQDISKREAD:
 	;sequential disk read operation
 	LD	A,1
@@ -2215,6 +2233,7 @@ RECORDOK:
 
 DISKEOF:JP	SETLRET1	;lret = 1
 ;ret
+
 
 SEQDISKWRITE:
 	;sequential disk write
@@ -2391,6 +2410,7 @@ NOSPACE:LD	(HL),0		;lret = 00 for returned value
 DISKWR3:JP	SETFCB		;replace parameters
 ;ret
 
+
 RSEEK:	;random access seek operation, C=0ffh if read mode
 	;fcb is assumed to address an active file control block
 	;(modnum has been set to 1100_0000b if previous bad seek)
@@ -2485,6 +2505,7 @@ SEEKOK:	POP	BC		;discard r/w flag
 	JP	STA$RET		;with zero set
 ;ret
 
+
 BADSEEK:;fcb no longer contains a valid fcb, mark
 	;with 1100_000b in modnum field so that it
 	;appears as overflow with file write flag set
@@ -2501,6 +2522,7 @@ SEEKERR:POP	BC		;discard r/w flag
 	JP	SETFWF		;flag set, so subsequent close ok
 ;ret
 
+
 RANDISKREAD:
 	;random disk read operation
 	LD	C,TRUE$		;marked as read operation
@@ -2508,12 +2530,14 @@ RANDISKREAD:
 	CALL	Z,DISKREAD	;if seek successful
 	RET
 
+
 RANDISKWRITE:
 	;random disk write operation
 	LD	C,FALSE$	;marked as write operation
 	CALL	RSEEK
 	CALL	Z,DISKWRITE	;if seek successful
 	RET
+
 
 COMPUTE$RR:
 	;compute random record position for getfilesize/setrandom
@@ -2557,6 +2581,7 @@ COMPUTE$RR:
 	OR	L		;cy/cy = lsb of A
 	AND	1		;A = 0000 000? possible carry-out
 	RET
+
 
 GETFILESIZE:
 	;compute logical file size for current fcb
@@ -2604,6 +2629,7 @@ GETNEXTSIZE:
 SETSIZE:POP	HL		;discard .fcb(ranrec)
 	RET
 
+
 SETRANDOM:
 	;set random record from the current file control block
 	LD	HL,(INFO)
@@ -2617,6 +2643,7 @@ SETRANDOM:
 	INC	HL
 	LD	(HL),A		;to ranrec
 	RET
+
 
 SELECT:	;select disk info for subsequent input or output ops
 	LD	HL,(DLOG)
@@ -2641,6 +2668,7 @@ SELECT:	;select disk info for subsequent input or output ops
 	JP	INITIALIZE
 ;ret
 
+
 CURSELECT:
 	LD	A,(LINFO)
 	LD	HL,CURDSK
@@ -2649,6 +2677,7 @@ CURSELECT:
 	LD	(HL),A		;curdsk=info
 	JP	SELECT
 ;ret
+
 
 RESELECT:
 	;check current fcb to see if reselection necessary
@@ -2687,6 +2716,7 @@ FUNC12:	;return version number
 	JP	STA$RET		;lret = dvers (high = 00)
 ;ret ;JP GOBACK
 
+
 FUNC13:	;reset disk system - initialize to disk 0
 	LD	HL,0
 	LD	(RODSK),HL
@@ -2699,9 +2729,11 @@ FUNC13:	;reset disk system - initialize to disk 0
 	JP	SELECT
 ;ret ;JP GOBACK
 
+
 FUNC14	EQU	CURSELECT
 ;	select disk info
 ;ret ;JP GOBACK
+
 
 FUNC15:	;open file
 	CALL	CLRMODNUM	;clear the module number
@@ -2709,10 +2741,12 @@ FUNC15:	;open file
 	JP	OPEN
 ;ret ;JP GOBACK
 
+
 FUNC16:	;close file
 	CALL	RESELECT
 	JP	CLOSE
 ;ret ;JP GOBACK
+
 
 FUNC17:	;search for first occurrence of a file
 	LD	C,0		;length assuming '?' TRUE$
@@ -2731,6 +2765,7 @@ QSELECT:CALL	SEARCH
 	JP	DIR$TO$USER	;copy directory entry to user
 ;ret ;JP GOBACK
 
+
 FUNC18:	;search for next occurrence of a file name
 	LD	HL,(SEARCHA)
 	LD	(INFO),HL
@@ -2739,21 +2774,25 @@ FUNC18:	;search for next occurrence of a file name
 	JP	DIR$TO$USER	;copy directory entry to user
 ;ret ;JP GOBACK
 
+
 FUNC19:	;delete a file
 	CALL	RESELECT
 	CALL	DELETE
 	JP	COPY$DIRLOC
 ;ret ;JP GOBACK
 
+
 FUNC20:	;read a file
 	CALL	RESELECT
 	JP	SEQDISKREAD
 ;JP GOBACK
 
+
 FUNC21:	;write a file
 	CALL	RESELECT
 	JP	SEQDISKWRITE
 ;JP GOBACK
+
 
 FUNC22:	;make a file
 	CALL	CLRMODNUM
@@ -2761,21 +2800,25 @@ FUNC22:	;make a file
 	JP	MAKE
 ;ret ;JP GOBACK
 
+
 FUNC23:	;rename a file
 	CALL	RESELECT
 	CALL	RENAME
 	JP	COPY$DIRLOC
 ;ret ;JP GOBACK
 
+
 FUNC24:	;return the login vector
 	LD	HL,(DLOG)
 	JP	STHL$RET
 ;ret ;JP GOBACK
 
+
 FUNC25:	;return selected disk number
 	LD	A,(CURDSK)
 	JP	STA$RET
 ;ret ;JP GOBACK
+
 
 FUNC26:	;set the subsequent dma address to info
 	EX	DE,HL		;was lhld info
@@ -2783,19 +2826,23 @@ FUNC26:	;set the subsequent dma address to info
 	JP	SETDATA		;to data dma address
 ;ret ;JP GOBACK
 
+
 FUNC27:	;return the login vector address
 	LD	HL,(ALLOCA)
 	JP	STHL$RET
 ;ret ;JP GOBACK
 
+
 FUNC28	EQU	SET$RO
 ;	write protect current disk
 ;ret ;JP GOBACK
+
 
 FUNC29:	;return r/o bit vector
 	LD	HL,(RODSK)
 	JP	STHL$RET
 ;ret ;JP GOBACK
+
 
 FUNC30:	;set file indicators
 	CALL	RESELECT
@@ -2803,11 +2850,17 @@ FUNC30:	;set file indicators
 	JP	COPY$DIRLOC	;lret=dirloc
 ;ret ;JP GOBACK
 
+
 FUNC31:	;return address of disk parameter block
 	LD	HL,(DPBADDR)
+	;JR STHL$RET
+	;(drop through to sthl$ret)
+
+
 STHL$RET:
 	LD	(ARET),HL
 	RET			;JP GOBACK
+
 
 FUNC32:	;set user code
 	LD	A,(LINFO)
@@ -2818,29 +2871,35 @@ FUNC32:	;set user code
 	JP	STA$RET		;lret=usrcode
 ;ret ;JP GOBACK
 
+
 SETUSRCODE:
 	AND	1FH
 	LD	(USRCODE),A
 	RET			;JP GOBACK
+
 
 FUNC33:	;random disk read operation
 	CALL	RESELECT
 	JP	RANDISKREAD	;to perform the disk read
 ;ret ;JP GOBACK
 
+
 FUNC34:	;random disk write operation
 	CALL	RESELECT
 	JP	RANDISKWRITE	;to perform the disk write
 ;ret ;JP GOBACK
+
 
 FUNC35:	;return file size (0-65536)
 	CALL	RESELECT
 	JP	GETFILESIZE
 ;ret ;JP GOBACK
 
+
 FUNC36	EQU	SETRANDOM
 ;	set random record
 ;ret ;JP GOBACK
+
 
 FUNC37:	LD	HL,(INFO)
 	LD	A,L
@@ -2892,11 +2951,14 @@ RETMON:	;return from the disk monitor
 	LD	B,H		;BA = HL = aret
 	RET
 
+
 FUNC38	EQU	FUNC$RET
 ;	not implemented
 
+
 FUNC39	EQU	FUNC$RET
 ;	not implemented
+
 
 FUNC40:	;random disk write with zero fill of unallocated block
 	CALL	RESELECT
@@ -2986,4 +3048,4 @@ DREC:	DS	WORD		;directory record 0,1,...,dirmax/4
 ;
 ;BIOS	EQU	($ & 0FF00H)+100H
 	ORG	((HIGH $)+1)*100H
-BIOS:	END	BDOSLOC
+BIOS:	END	BDOS
