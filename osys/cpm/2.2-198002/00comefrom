@@ -1,0 +1,46 @@
+[1980-02-01 02:20:00]
+------------------------------------------------------------------------------
+Archive of the original CP/M 2.2, with Z80 mnemonics by V. Pohlers 14.02.2011
+
+		bdos.mac	CP/M Basic Disk Operating System, January 1980
+				<-- adapted and extended from bdos22.asm
+				    <-- rewritten for Z80 from OS3BDOS.ASM
+		ccp.mac		CP/M Console Command Processor, February 1980
+				<-- adapted and extended from ccp22.asm
+				    <-- rewritten for Z80 from OS2CCP.ASM
+				    --> With correction on 'badserial' by
+					comparing to disassembly of Clark
+					Calkins, in that reconstructed
+					mnemonics from memory image it
+					is on 'HALT'.
+
+------------------------------------------------------------------------------
+wget https://hc-ddr.hucki.net/wiki/lib/exe/fetch.php/cpm/cpa_src.zip
+----------------------
+unzip cpa_src.zip bdos22.asm && mv bdos22.asm bdos.mac && gvim bdos.mac
+unzip cpa_src.zip ccp22.asm && mv ccp22.asm ccp.mac && gvim ccp.mac
+----------------------
+rm -f cpa*.*
+------------------------------------------------------------------------------
+https://hc-ddr.hucki.net/wiki/doku.php/cpm/cpa
+--> https://hc-ddr.hucki.net/wiki/lib/exe/fetch.php/cpm/cpa_src.zip
+    --> bdos22.asm
+    --> ccp22.asm
+    --> cpm22src.zip
+        --> OS2CCP.ASM
+        --> OS3BDOS.ASM
+http://www.cpm.z80.de/source.html
+--> http://www.cpm.z80.de/download/cpm2-plm.zip
+    --> OS2CCP.ASM
+    --> OS3BDOS.ASM
+--> http://www.cpm.z80.de/download/cpm22pat.zip
+https://deramp.com/
+--> https://deramp.com/downloads/
+    --> mfe_archive
+    --> 040-Software
+    --> Digital Research
+    --> CPM2-2
+    --> Source Code
+        --> CPM22 reconstructed by Clark Calkins.txt
+        --> CCP/OS2CCP.ASM
+        --> BDOS/OS3BDOS.ASM

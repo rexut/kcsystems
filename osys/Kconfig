@@ -6,14 +6,17 @@
 config OSYS
 	string
 	default "cpa"	if OSYS_CPA
+	default "cpm"	if OSYS_CPM
 	default "cpv"	if OSYS_CPV
 	default ""
 
 source "osys/Kconfig.defaults"
 
 choice
-	depends on MACH_SUPPORTS_OSYS
 	bool
+	default OSYS_CPV	if MACH_PCM_SYS21X
+	default OSYS_CPA	if MACH_PCM_SYS33X
+	depends on MACH_SUPPORTS_OSYS
 	prompt "Operating System"
 	---help---
 		Select the operating system.
@@ -25,8 +28,20 @@ config OSYS_CPA
 	---help---
 		The CP/A operating system was created for Zilog Z80 based
 		microcomputers by the Academy of Sciences of the GDR with
-		full compatibility to CP/M version 2.2 with a minor patch in
-		the BDOS sub routine DISKWR2 and a completely rewritten CCP.
+		full compatibility to CP/M version 2.2 with a minor patch
+		in the BDOS sub routine DISKWR2, a size optimized BDOS
+		and extensions for transient user commands and functions,
+		and a completely rewritten CCP.
+
+config OSYS_CPM
+	bool
+	depends on MACH_SUPPORTS_CPM22
+	prompt "Control Program for Microcomputers (CP/M)"
+	---help---
+		The CP/M operating system was created for Intel 8080/85 based
+		microcomputers by Gary Kildall of Digital Research, Inc. CP/M
+		would also run on systems based on the Zilog Z80 processor
+		since the Z80 was compatible with 8080 code.
 
 config OSYS_CPV
 	bool
@@ -45,9 +60,10 @@ config OSYS_CPV
 endchoice
 
 source "osys/cpa/Kconfig"
+source "osys/cpm/Kconfig"
 source "osys/cpv/Kconfig"
 
-if OSYS_CPA || OSYS_CPV
+if OSYS_CPA || OSYS_CPM || OSYS_CPV
 
 comment "Basic Disk Operating Systme (BDOS) needs CP/M 2.2 compatible BIOS"
 	depends on !MACH_HAVE_CPM22_BIOS
@@ -71,6 +87,7 @@ if OSYS_CPM22_BDOS
 config OSYS_CPM22_BDOS_IMAGE
 	string
 	default "cpabdos.bin"		if OSYS_CPA
+	default "cpmbdos.bin"		if OSYS_CPM
 	default "cpvbdos.bin"		if OSYS_CPV
 	default "bdos.bin"
 	depends on OSYS_SUPPORTS_BDOS_IMAGE
@@ -132,6 +149,7 @@ if OSYS_CPM22_CCP
 config OSYS_CPM22_CCP_IMAGE
 	string
 	default "cpaccp.bin"		if OSYS_CPA
+	default "cpmccp.bin"		if OSYS_CPM
 	default "cpvccp.bin"		if OSYS_CPV
 	default "ccp.bin"
 	depends on OSYS_SUPPORTS_CCP_IMAGE
@@ -171,7 +189,7 @@ config OSYS_CPM22_CCP_ROM_OFFS
 
 endif	# OSYS_CPM22_CCP
 
-endif	# OSYS_CPA || OSYS_CPV
+endif	# OSYS_CPA || OSYS_CPM || OSYS_CPV
 
 # Local variables:
 # coding: utf-8

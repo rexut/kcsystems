@@ -1,0 +1,38 @@
+#
+# For a description of the syntax of this configuration file, see:
+# https://gitlab.com/ymorin/kconfig-frontends/-/blob/master/docs/kconfig-language.txt
+#
+
+if OSYS_CPM
+
+choice
+	prompt "CP/M Version"
+	---help---
+		Select the CP/M version.
+
+config CPM_22_198002
+	bool
+	prompt "2.2"
+	---help---
+		CP/M Operating System version 2.2 of February 1980
+
+		This is the original variant and consist the parts:
+
+		  Assembler sources:
+		    - CCP:  Console Command Processor
+		    - BDOS: Basic Disk Operating System
+
+		Say yes here to generate the CP/M version 2.2 operating system
+		that was written and distributed in 1979 by Digital Research
+		and provided as assembler source code in state of February 1980.
+
+endchoice
+
+endif	# OSYS_CPM
+
+# Local variables:
+# coding: utf-8
+# mode: text
+# mode: kconfig
+# End:
+# vim: fileencoding=utf-8 filetype=kconfig :

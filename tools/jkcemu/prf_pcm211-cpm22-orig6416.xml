@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	<comment>JKCEMU profile for PC/M RAM-Floppy-System V2.11, 64x16 characters, CP/M 2.2 (Feb. 1980)</comment>
+	<entry key="jkcemu.system">PCM</entry>
+	<entry key="jkcemu.pcm.autoinput.count">0</entry>
+	<entry key="jkcemu.pcm.autoload.count">0</entry>
+	<entry key="jkcemu.pcm.graphic">64x32</entry>
+	<entry key="jkcemu.pcm.font.file">images/orig6416.rom</entry>
+	<entry key="jkcemu.pcm.rom.file">images/pcm211.rom</entry>
+	<entry key="jkcemu.pcm.bdos.file">images/cpmbdos.ram</entry>
+	<entry key="jkcemu.pcm.bdos.autoload">true</entry>
+	<entry key="jkcemu.pcm.fdc.enabled">false</entry>
+</properties>
