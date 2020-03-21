@@ -112,6 +112,10 @@ matrix:
   - os: linux
     dist: bionic
     arch: amd64
+    env: DEFCONFIG=pcm211-cpm22-orig6416-rom_defconfig
+  - os: linux
+    dist: bionic
+    arch: amd64
     env: DEFCONFIG=pcm211-cpv1988-orig6416-rom_defconfig
   - os: linux
     dist: bionic
@@ -182,6 +186,10 @@ matrix:
     dist: bionic
     arch: i386
     env: DEFCONFIG=pcm330-cpa1987-orig6416-dsk_defconfig
+  - os: linux
+    dist: bionic
+    arch: i386
+    env: DEFCONFIG=pcm211-cpm22-orig6416-rom_defconfig
   - os: linux
     dist: bionic
     arch: i386
@@ -258,6 +266,10 @@ matrix:
   - os: linux
     dist: xenial
     arch: amd64
+    env: DEFCONFIG=pcm211-cpm22-orig6416-rom_defconfig
+  - os: linux
+    dist: xenial
+    arch: amd64
     env: DEFCONFIG=pcm211-cpv1988-orig6416-rom_defconfig
   - os: linux
     dist: xenial
@@ -328,6 +340,10 @@ matrix:
 #   dist: xenial
 #   arch: i386
 #   env: DEFCONFIG=pcm330-cpa1987-orig6416-dsk_defconfig
+  - os: linux
+    dist: xenial
+    arch: i386
+    env: DEFCONFIG=pcm211-cpm22-orig6416-rom_defconfig
   - os: linux
     dist: xenial
     arch: i386
