@@ -1,0 +1,68 @@
+                                   Karl-Marx-Stadt, den 20.7.89
+
+
+       Beschreibung Wandlerbaustein IFSS auf V.24
+
+
+     Uí    diå    Moeglichkeiteî   deó   ií   FÁ   Jahrganç  198¸ 
+veroeffentlichteî   PC/M-Computeró  miô  seineí   SCP-kompatibleî 
+Betriebssysteí   umfassendeò  nutzeî  zõ  koennen¬   wurdå   nacè 
+Moeglichkeiteî  deò  problemloseî Programmuebertragunç  voí  PC/Í 
+auæ Rechneò beliebigeò Herstelleò unä umgekehrô gesucht®  Auæ deò 
+voî miò aufgebauteî ZVÅ (Leiterplattenstanä 8/88© wurdeî  anfangó 
+beidå IFSS-Schnittstelleî bestueckt¬  spaeteò kaí deò Wunscè nacè 
+eineò  moeglichsô  einfacheî  Umruestunç auæ  diå  wahrscheinlicè 
+gebraeuchlicherå V.2´ auf®  Dá icè diå IFSS-Schnittstelleî  uebeò 
+deî  genormteî  10-poligeî  Steckverbindeò aî deò  Rueckwanä  deó 
+Rechneró    herausgefuehrô   hatte¬    nutztå   icè   diå    dorô 
+offengebliebeneî  µ  Kontaktå zuí Herausfuehreî  deò  benoetigteî 
+Betriebsspannungeî 5P¬  12Ğ unä 12N®  Diå jå zweé  Datenleitungeî 
+(Sendeò 2ø unä Empfaengeò 2x© wurdeî uebeò Optokoppleò wiedeò auæ 
+TTL-Pegeì  umgesetzt¬  diå  Schaltunç zuò Erzeugunç deò beé  V.2´ 
+ueblicheî Pegeì voî +-1² Ö entnahí icè deí Bucè  "Mikroelektronië 
+iî deò Amateurpraxis¢ Seitå 102®  Deò Aufbaõ isô unproblematisch¬ 
+er erfolgte bei mir auf einer Universalleiterplatte in den Maszen
+30x4°  mí  miô aufgeschraubteî Steckverbindern®  Eò wirä auæ  deî 
+herausgefuehrteî IFSS-Steckverbindeò  aufgesteckt¬  anschliessenä 
+kanî  miô Geraeteî ¬  diå miô V.2´ odeò RÓ 23² ausgeruesteô sind¬ 
+gearbeiteô  werden®   Deò  Vorteiì  liegô  auæ  deò  Hand¬   einå 
+Umruestunç isô iî Sekundeî unä ohnå Eingrifæ iî diå Hardwarå  deó 
+Rechneró  moeglich®  Auæ  diå  verbleibendeî ²  Kontaktå  koenneî 
+Statussignalå   deò  SIÏ  fueò  diå   Synchronisatioî   langsameò 
+Peripheriå  geschalteô  werden®  Eó ergaâ sicè beé  miò  folgendå 
+Steckerleistenbelegung:
+          A1: SD-        B1: CTS
+          A2: DTR        B2: SD+
+          A3: ED+        B3: 12P
+          A4: 12N        B4: ED-
+          A5: Masse      B5: 5P
+
+Genutzô  wirä  deò  Moduì  zuò Zeiô ií  Zusammenspieì  miô  eineí 
+Computerkommunikationsprogramm¬   daó   zuí  TLÃ   voî   ROBOTROÎ 
+kompatibeì  isô unä somiô eineî beiderseitigeî  Programmaustauscè 
+zwischeî  unterschiedlichsteî  Rechnerî  moeglicè  macht®  Dieseó 
+Programí  wurdå deò Programmsammlunç fueò deî PC/Í zuò Verfuegunç 
+gestellô  unä  isô dorô nachnutzbar®  (Hinweió auæ  Adresså  fueò 
+Nachnutzung)
+
+
+
+                                      Uwe Beer
+                                      O.-Schuetze-Str. 46
+                                      Karl-Marx-Stadt
+                                      9071 
+
+Š
+
+
+
+Schaltung:
+
+
+
+
+
+
+
+                                                
+                           

@@ -1,0 +1,49 @@
+# DOC: used to generate docs
+
+breathe>=4.20
+docutils>=0.16
+sphinx>=3.2
+sphinx_rtd_theme>=0.5
+sphinx-tabs>=1.2
+sphinx-panels>=0.4
+sphinxcontrib-svg2pdfconverter>=1.1
+sphinxcontrib-programoutput>=0.16
+### not yet ### sphinx-autorun>=1.1
+sphinxcontrib-bibtex>=1.0
+sphinxcontrib-blockdiag>=2.0
+sphinxcontrib-seqdiag>=2.0
+sphinxcontrib-actdiag>=2.0
+sphinxcontrib-nwdiag>=2.0
+sphinxcontrib-spelling>=5.3
+sphinxcontrib-tikz>=0.4
+
+# The LinuxDoc library contains sphinx-doc extensions.
+git+https://github.com/return42/linuxdoc/@master#sha1=2c7fd1e
+
+# ... enables you to use inline syntax highlighting in Sphinx.
+# w/o maintenance since 2013: sphinxcontrib-inlinesyntaxhighlight
+# Issue:  https://github.com/sphinx-doc/sphinx/issues/5157
+# WIP PR: https://github.com/sphinx-doc/sphinx/pull/6916
+# planned for Sphinx v4.0.0, due by April 01, 2021
+# (https://github.com/sphinx-doc/sphinx/milestone/74)
+# workaround for HTML: https://stackoverflow.com/questions/21591107
+
+# ... executes programs during the build and includes the screenshot.
+# w/o maintenance since 2012: sphinxcontrib-programscreenshot
+
+# ... turns ANSI color sequences into colored HTML output.
+# The sphinxcontrib.ansi extension is no longer available on PyPI.
+# w/o maintenance since 2012: git+https://github.com/sphinx-contrib/ansi/@0.6#sha1=c3d70d2
+
+# An email obfuscator for Sphinx-based documentation.
+# w/o maintenance since 2012: sphinxcontrib-email
+# hg+https://bitbucket.org/rexut/sphinx-contrib@default#egg=sphinxcontrib-email&subdirectory=email
+git+https://github.com/rexut/sphinxcontrib-email@python3-fixes#sha1=5c316b2&egg=sphinxcontrib-email
+
+# mathematical/scientific extensions
+matplotlib>=3.3
+ipython>=7.18
+numpydoc>=1.1
+
+# support PDF output from blockdiag
+reportlab>=3.5

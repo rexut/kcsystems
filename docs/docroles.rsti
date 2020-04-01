@@ -1,0 +1,92 @@
+.. Never add or change more than reST role definitions (ex. LaTeX formatting).
+
+.. Roles:
+
+.. simple class mappings
+
+.. role:: strikethrough
+
+.. conditional raw outputs
+
+.. role:: raw-html(raw)
+   :format: html
+
+.. role:: raw-latex(raw)
+   :format: latex
+
+.. inline syntax highlighting for well known languages
+
+.. role:: bash(code)
+   :language: bash
+   :class: highlight
+
+.. role:: c(code)
+   :language: c
+   :class: highlight
+
+.. role:: latex(code)
+   :language: latex
+   :class: highlight
+
+.. role:: nasm(code)
+   :language: nasm
+   :class: highlight
+
+.. role:: rst(code)
+   :language: rst
+   :class: highlight
+
+.. TODO: AsmSdccZ80Lexer: http://bricologica.com/projects/web/
+
+.. role:: reg(code)
+   :language: console
+   :class: highlight
+
+.. role:: port(code)
+   :language: console
+   :class: highlight
+
+.. role:: addr(code)
+   :language: console
+   :class: highlight
+
+.. role:: z80(code)
+   :language: nasm
+   :class: highlight
+
+.. role:: z8080(code)
+   :language: nasm
+   :class: highlight
+
+.. inline syntax highlighting for special objects
+
+.. role:: signal(code)
+   :language: console
+   :class: highlight
+
+.. role:: level(code)
+   :language: console
+   :class: highlight
+
+.. role:: comp(code)
+   :language: console
+   :class: highlight
+
+.. role:: wire(code)
+   :language: console
+   :class: highlight
+
+.. role:: pin(code)
+   :language: console
+   :class: highlight
+
+.. role:: console(code)
+   :language: console
+   :class: highlight
+
+.. Local variables:
+   coding: utf-8
+   mode: text
+   mode: rst
+   End:
+   vim: fileencoding=utf-8 filetype=rst :

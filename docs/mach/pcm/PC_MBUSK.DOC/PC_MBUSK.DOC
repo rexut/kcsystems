@@ -1,0 +1,96 @@
+.lh16
+
+
+
+
+
+                      Í á î õ ó ë ò é ğ t
+
+
+
+
+
+
+              K1520-Adapteò f}ò deî PC/M-Computer
+
+
+
+
+
+        Dr.-Ing® A® Mugler¬ Y27NN» Dipl.-Ing® H® Mathes
+
+.paŠDiå   vielzahì  deò  existierendeî  K1520-Baugruppeî  waò   deò 
+Ausgangspunkô  f}ò diå Entwicklunç eineò Buskoppelbaugruppå voí 
+PC/M- zuí  K1520-Bus®   Damiô  werdeî  f}ò  deî   PC/M-Computeò 
+zahlreichå  neuå  Anwendungsf{llå  erschlossen®  Dieó  betriffô 
+besonderó  diå iî verschiedeneî Zeitschrifteî  ver|ffentlichteî 
+Grafikzus{tzå  unä Baugruppeî zuò analogeî sowiå digitaleî Ein- 
+unä Ausgabe.
+
+Aufgabeî deó Busadapters
+
+Deò  K1520-Busadapteò dienô deò Umsetzunç deò Signalå deó PC/M-
+Buó  iî diå Steckverbinderbelegunç deó  K1520-Systembus®  Dabeé 
+werdeî diå Datenleitungeî bidirektionaì getriebeî (D1¬ DS8286)® 
+Diå  Umschaltunç deò Datenrichtunç iî  Richtunç  PC/M-Systembuó 
+erfolgô iî folgendeî F{llen:
+1® Interruptzyklus
+   IEÏ deó PC/Í haô High-Pegel
+   M± unä IORÑ sinä aktiv
+2® Leseî voî periphereî I/O-Bausteinen
+   beií Leseî voî periphereî I/O-Bausteinen¬ diå au~erhalâ des
+   I/O-Adressbereicheó deó PC/Í liegeî (00H..7FÈ unä 
+   0A0H..0FFH© 
+   RÄ unä IORÑ sinä aktiv
+3® Leseî voî externeî Speicherbaugruppen
+   dabeé muş eineó deò µ MSEL-Signalå aktiö seiî sowie
+   aktiveò Pegeì voî MREÑ unä RÄ vorliegen.
+
+D4.²  negierô deî Ausgangspegeì voî IEÏ deó PC/M-Computeró  unä 
+steuerô    deî    IEI-Einganç   deò    K1520-Peripherie®    Diå 
+Interruptquelleî  deó PC/Í habeî gegen}beò deò  Peripheriå  diå Šh|chstå Priorit{t.
+
+Aufbaõ deó Busadapters
+
+Eineî Vorschlaç zuò Anordnunç deó Busadapteró zeigô Bilä 1®  Jå 
+nacè  mechanischeí  Aufbaõ deó PC/Í kanî  z.B®  X²  durcè  einå 
+Stegleitunç   ersetzô   unä   unmittelbaò   aî   eineî   K1520-
+Steckeinheiteneinsatú  angel|teô  bzw®   gewickelô  werden®  Zõ 
+beachteî  ist¬  daş  Zuleitungeî }beò 20° mí vermiedeî  werden® 
+L{ngerå  Leitungeî  f}hreî  zõ  h|hereò  St|ranf{lligkeiô   deó 
+Systems.
+
+Inbetriebnahmå 
+
+Diå  Inbetriebnahmå  erfolgô  nacè deí  kompletteî  Aufbaõ  deò 
+Leiterplatte®  Bilä ² gibô deî Stromlaufplaî wieder®  Eó isô zõ 
+empfehleî   diå   Stromeinspeisunç  f}ò  diå   K1520-Peripheriå 
+unmittelbaò  aí  K1520-Buó  odeò  aí  Busadapteò   vorzunehmen® 
+Dadurcè  werdeî  Spannungsabf{llå iî deò  Verdrahtung¬  diå  zõ 
+unerw}nschteî St|rungeî f}hreî k|nnten¬  vermieden®  Werdeî diå 
+ií  Best}ckungsplaî  (Bilä  3©  eingezeichneteî  Einl|tkontaktå 
+vorgeseheî  ergibô  sicè einå einfachå M|glichkeiô deò  Testunç 
+deó  Systemó  aucè  ií Betrieb®  Diå Tesô  deò  Funktioneî  deò 
+Schaltunç  solltå  statiscè  erfolgen®   Dazõ  werdeî  miô  miô 
+Widerst{ndeî voî etwá ± KOhí nacè 5Ğ unä voî etwá 33° Ohí  nacè 
+Masså diå  jeweiligeî Pegeì aî diå Eing{ngå gelegô (siehå Punkô 
+1-³   oben)®   Aî   piî  1±  deó  DS828¶  (D1©   kanî   mitteló 
+Vielfachmesser¬   Logiktesteò  o.{®   daó  Resultaô  beobachteô 
+werden®    Dieseò    Tesô   isô   unabh{ngiç   voî   spezielleî 
+Pr}fprogrammeî anwendbar® Iî Bilä ´ unä Bilä µ sinä Leiterseitå Šunä Best}ckungsseitå deò Leiterplattå abgebildet.
+
+
+.paŠ
+Verzeichnió deò Abbildungen
+
+Bilä ±    Anordnunç deò Leiterplattå aí PC/M-Computer
+
+Bilä ²    Stromlaufplaî deó K1520-Busadapters
+
+Bilä ³    Best}ckungsplaî 
+
+Bilä ´    Leiterseitå 
+
+Bilä µ    Best}ckungsseite
+
+

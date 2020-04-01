@@ -1,0 +1,1577 @@
+..!--!----!----!----!----!----!----!----!----!----!----!----!R
+..Zuerst ^Of eingeben !!!
+.pl72
+.mt4
+.hm3
+.mb8
+.po0
+.op
+.uj0                     
+AdW der DDR                               
+.he                            - # -
+Instituô fueò Informatië                  Berlin¬ deî 05.06.89
+unä Rechentechnië                         
+RZ/MR
+
+
+
+            Beschreibung des Betriebssystems CP/A
+                fuer Buerocomputer und PC 1715
+
+1. Ueberblick
+
+Daó  Betriebssysteí CP/Á wurdå aí Instituô fueò Informatië unä 
+Rechentechnië  deò Ad× deò DDÒ aló Hilfsmitteì  zuò  Software-
+Entwicklunç  unä  zuò  Unterstuetzunç voî  Bueroarbeiteî  ent
+wickelt®  Eó  isô miô deí Betriebssysteí CP/Í 2.²  kompatibel¬ 
+d.h®  saemtlichå fueò dieseó Betriebssysteí vorhandenå  Anwen
+der-Softwarå  kanî unveraenderô benutzô werden®  CP/Á isô fueò 
+Buerocomputeò  voí Tyğ A512° unä  A513°  bzw®  hardwaremaessiç 
+aequivalenteî Anlageî (z.B®  K8924¬  K8927© sowiå fueò PÃ 171µ 
+generierbar.
+
+Folgende Konfigurationen werden unterstuetzt:
+- 32..64 K Byte RAM,
+- evtl® vorhandenå OSS-Speichererweiterunç (OSÓ 062-8471» 48K© 
+  aló RAM-Floppù,
+- evtl®  vorhandenå 16-Bit-Erweiterungskartå miô 256k-Speicheò 
+  aló RAM-Floppù,
+- evtl®  vorhandenå  256k/512ë  RAM-Floppù voî  Messelektronië 
+  Dresden,
+- evtl® vorhandenå RAM-Floppù RAF512/RAF2Í deó ZWÇ deò AdW, 
+- evtl®  vorhandenå  NANOS-RAM-Floppù deò  Ingenieurhochschulå 
+  fueò Seefahrt,
+- Bildschirí  2´ ø 8° odeò 1¶ ø 64¬
+  beé Kaltstarô auæ Buerocomputeò automatisch,
+  auæ PC171µ halbautomatiscè erkannt,
+  Steuerzeicheî SCP-kompatibel,
+  zweiter und/oder erweiterter Zeichensatz,
+- Tastatureî  K7604/06¬  K7633¬  K7634¬  K763¶ unä K763·  bzw® 
+  PC1715-Tastatur,
+  untersch®  Tastatureî beé A5120/3° beé Kaltstarô automatiscè 
+  erkannt,
+- Disketteî:
+  5¢ (4° unä 8° Track»  DD/SS, DD/DS©;
+  8¢ (SD/SS, DD/SS),
+  mehrerå  physischå Formatå (u.a®  SCĞ kompatibel)¬  diå  beé 
+  LOGIÎ automatiscè erkannô werden,
+- Druckeò:
+  115², 1157, K63xx (PIO1¬ PIO2¬ IFSS, AFS-Anschluss);
+  115´ (PIO-Spezialanschluss);
+  1156 (PIO-Spezialanschluss FZB Muencheberg, Kolln. Rasch);
+  beé PC171µ seriellå Druckeò aî Printer/V.24/IFSSA/IFSSB.
+  
+Sonstigå Peripheriå (z.B®  Lochstreifen¬ Kassetten© wirä durcè 
+speziellå Dienstprogrammå auæ Anwenderniveaõ unterstuetzt¬  dá 
+ihrå Nutzunç i.a® nichô staendiç erfolgt.
+
+CP/A zeichnet sich aus durch
+- einheitlichå Nutzeroberflaechå fueò diå verschiedeneî Buero
+  computer-Typeî  unä  PC1715¬  sï dasó eiî  Wechseì  zwischeî Š  dieseî Geraeteî relatiö problemloó ist,
+- leichtå    Anpassbarkeiô    aî   gewuenschtå   Hardware- unä 
+  Software-Konfigurationeî    (Neuuebersetzunç deó aló  Quell
+  texô verfuegbareî Betriebssystemteiló BIOS¬ deò entsprechenä 
+  deí  Leistungsumfanç  iî  seineò  Groesså  verschiedeî  sein 
+  kann!»   Linkeî gemeinsaí miô deî restlicheî  Systembestand
+  teilen),
+- Ausnutzunç deò Hardware-Moeglichkeiteî deó Rechneró unä  deò 
+  angeschlosseneî Peripherie,
+- automatischå   Anpassunç  aî  wichtigå   Hardwarekomponenteî 
+  (Tastatur¬ Bildschirm© beií Ladeî deó Systems,
+- keinerleé  Notwendigkeiô zõ Veraenderungeî aí  Buerocomputeò 
+  (z.B®   Lade-PROM¬  sowohì  miô  alteí  aló aucè  miô  neueí 
+  (SCP)Lade-PROÍ ladbar)¬  womiô deò Rechneò aucè fueò  anderå 
+  Anwendungeî einsetzbaò bleibt,
+- einfachå Struktur¬  diå aufgrunä weniger¬  fesô  definierteò 
+  Schnittstelleî  sowohì einå einfachå Bedienunç aló aucè fle
+  xiblå Erweiterungeî zulaesst.
+
+Daó  Betriebssysteí CP/Á bestehô auó deî dreé Hauptteileî BIOÓ 
+(Basiã  Input/Outpuô  System)¬   BDOÓ  (Basiã  Disë  Operatinç 
+System© unä CCĞ (Consolå Commanä Processor)¬  diå deí Anwendeò 
+aló Quelltexô (BIOS© bzw®  aló Link-Eingabeî (BDOS¬  CCP© fueò 
+die Systemgenerierung zuò Verfuegunç stehen.
+
+
+.cp5
+2. Kaltstart des Systems 
+
+Voí  Kaltstart-Loadeò deó jeweiligeî Rechnersystemó  wirä  auæ 
+alleî  Diskettenlaufwerdeî  nacè eineò bestimmteî Kennunç  ge
+sucht®  Diå  erstå  passendeî  Diskettå  wirä  aló  Kaltstart-
+Diskettå  benutzô  unä diå sogenannteî Systemspureî  voî  dorô 
+geladen®  Diå Kaltstartdisketteî fueò A5120/3° unä PC171µ sinä 
+nicht‚ kompatibel.
+Daó  Betriebssysteí  CP/Á  befindeô sicè  auæ  deò  Kaltstart-
+Diskettå aló Filå miô deí (festen© Nameî @OS.COM.
+Beií  Buerocomputeò  besitzô diå  Kaltstart-Diskettå  jå  nacè 
+Diskettenformaô  zweé bió vieò Systemspuren®  Beií PC171µ  isô 
+deò  Systemladeò beé einigeî Diskettenformateî ií  Verzeichnió 
+versteckt¬  sï dasó hieò Kaltstartdisketteî wiå Datendisketteî 
+keinå Systemspureî habeî (Verzeichnió aâ Spuò 0).
+Diå Kaltstartdiskettå kanî nacè deí Kaltstarô wiå anderå  Dis
+ketteî  benutzô  werden®  Iî deò Regeì enthaelô siå  Standard-
+Programmå fuer die Routinearbeit am Rechner.
+
+Diå Systemdateé @OS.COÍ kanî miô PIĞ (o.ae® Software© kopiert¬ 
+mitteló ZSIÄ unä SAVÅ modifizierô wordeî seiî odeò aucè direkô 
+einå Link-Ausgabå darstellen®  Siå wirä wiå einå normalå Dateé 
+behandelô  unä  kanî beií Buerocomputeò auæ  deò  Diskettå  aâ 
+eineò beliebigeî Stellå (u.U® aucè gestreut© gespeicherô sein¬ 
+beií  PC171µ musó siå diå erstå Dateé nacè deí Verzeichnió unä 
+dichô gespeicherô sein.
+Beií  Buerocomputeò  stehô iî deî Systemspureî  lediglicè  eiî 
+Boot-Systeí miô deò konstanteî Laengå 6,5ë (d.h® 2*2¶ Sektoreî 
+zõ  12¸ Byteó Laengå bzw®  2*1³ Sektoreî zõ 25¶ Byteó Laenge)¬ 
+dasó  zuí Ladeî deó eigentlicheî Systemó auó deí Filå  @OS.COÍ 
+dient.
+
+Daó Filå @OS.COÍ kanî aucè direkô aló Kommandï @OÓ  aufgerufeî 
+werden¬  wodurcè  eiî Kaltstarô voî CP/Á auó andereî  Systemeî Šheò moeglicè ist.
+
+Nacè  deí Starteî deó Systemó erfolgô einå automatischå  Posi
+tionierunç alleò Laufwerkskoepfå auæ Spuò 0¬ waó beé weé inneî 
+stehendeí  Kopæ  zõ  entsprechendeî  (normalen!©   Geraeuscheî 
+fuehreî kann.
+
+Nacè  deí Kaltstarô wirä i.a®  daó Kommandï DIÒ *.COÍ voî  deò 
+Kaltstartdiskettå geladeî unä ausgefuehrt® Beé deò Systemgene
+rierunç kanî jedocè aucè eiî andereó Kommandï (aucè eiî leereó 
+odeò  deò Aufruæ voî SUBMIÔ fueò einå ganzå Kommandofolge© aló 
+Standardkommandï  vereinbarô  werden®  Diå  Ausuehrunç  dieseó 
+Kommandoó  kanî  nacè eineí erneuteî Kaltstarô  (z.B®  infolgå 
+eineó Systemzusammenbruchs© durcè diå CP/A-Generierunç  unter
+drueckô odeò durcè Betaetigeî deò STOP- unä deò ^C-Tastå (sie
+hå  Tastaturbelegung©  waehrenä deó  Ladevorgangó  abgebrocheî 
+werden.
+
+
+.cp5
+3. Systemmodifikation
+
+Einå  Modifikatioî  deó Systemó isô leichô mitteló  ZSIÄ  odeò 
+gleichwertigeî Debuggerî moeglich:
+
+     ZSID @OS.COM
+     ...
+     ...
+     ^C
+     SAVE xx @OS.COM
+     Kaltstart 
+
+Isô einå Neuuebersetzunç erforderlich¬ sï laeufô diå Aenderunç 
+wiå folgô aâ (sº seé daó Laufwerë miô Systemprogrammen¬ tº daó 
+Laufwerk mit BIOS-Quelltexten):
+
+a) fuer Buerocomputer
+     (¨ Modifikatioî deó BIOS-Quelltexteó BIOS.MAC))
+     tº
+     s:M80 s:BIOS.ERL=BIOS
+     s:
+     LINKMT @OS=CPABAS,CCP,BDOS,BIOS/P:xxxx
+     ((Kaltstart))
+
+b) fuer PC1715
+     (¨ Modifikatioî deó BIOS-Quelltexteó BIOP.MAC))
+     t:
+     s:M80 s:BIOP.ERL=BIOP
+     s:
+     LINKMT @OS=CPPBAS,CCP,BDOS,BIOP/P:xxxx
+     ((Kaltstart))
+
+
+Die Adresse "xxxx" wird vom Assemblerschritt ausgegeben!
+
+LINKMÔ isô deò zuí Pascal-Pakeô gehoerigå Linkeò unä erforderô 
+deî  File-Tyğ .ERÌ fueò diå Link-Eingabe®  Dieseò Linkeò  wirä 
+hieò benutzt¬ weiì eò ií Gegensatú zõ L8° beé Programmadresseî 
+groesseò 100È keinå Fuellbyteó erzeugt®  
+Diå  Basisadresså  xxxø isô wegeî  deó  vorgelagerteî  Recordó 
+CPxBAÓ  uí  80È kleineò aló diå gewuenschtå Adresså vom CCP® Š 
+Diå  Quelltextmodifikatioî unä diå Uebersetzunç  erforderî  iî 
+deò Regeì auæ Grunä deó Quelltextumfangó Diskettenkapazitaeteî 
+voî 300ë (PC171µ odeò BÃ miô Laufwerkeî MFÓ 1.¶ odeò 8"¬  einå 
+Uebersetzunç  auæ eineí fremdeî Systeí isô ohnå weitereó moeg
+lich¬  z.B®  einå Uebersetzunç auæ PC171µ fueò BC)®  Isô  dieó 
+nichô  moeglicè (MFÓ 1.² Laufwerkå miô max®  200ë Kapazitaet)¬ 
+sï  musó  daó Filå 'BIOx.MAC§ auæ eineò  andereî  Diskettå  uº 
+(kanî gleicè sº sein© liegen¬ deò Assemblerschritô lauteô danî 
+(s.o.):
+     s:M8° s:BIOx.ERL=u:BIOx
+Allå andereî Quelltextfileó muesseî wegeî deò Arbeitsweiså deó 
+Assembleró beé INCLUDE-Fileó auæ Diskettå tº  passen¬ notfalló 
+sinä nichô benoetigtå Quelltextteilå (z.B®  BIOxCP54.MAÃ  fueò 
+Druckertreibeò  1154¬  BIOxCP56.MAÃ fueò Druckertreibeò  1156¬ 
+BIOxRyyy.MAÃ  fueò RAM-Floppù und/odeò BIOxMON.MAÃ fueò  BIOS-
+Monitor© zõ streichen.
+
+Daó CCĞ wirä beií Warmstarô auó eineí Hauptspeicherbereicè (ií 
+BIOS©  voò daó BDOÓ kopiert¬  daó BDOÓ wirä iî deò Regeì nichô 
+durcè Anwendersoftwarå zerstoert¬ dá eó diå gesamtå Logië fueò 
+diå  Arbeiô  miô Disketteî enthaelt®  Dadurcè  entfaellô  beií 
+Warmstarô  jeglichå Notwendigkeiô deó Ladens¬  wodurcè  dieseò 
+beschleunigô  wirä unä Systemspureî nuò auæ deò  Kaltstartdis
+kettå erforderlicè sind¬ auæ alleî andereî koenneî siå miô zuò 
+Datenspeicherunç benutzô werdeî (° Systemspuren).
+Fueò  speziellå  Anforderungeî aî  eineî  grosseî  TPA-Bereicè 
+existiereî  aucè Varianteî zuí Nachladeî deó CCĞ beé Warmstarô 
+ohnå CCP-Kopiå ií BIOS.
+Haô eiî Anwenderprogramí aucè daó BDOÓ zerstoerô (TPÁ danî  uí 
+0E00è - d.h®  3,µ Ë - groesser)¬  sï musó eó deî Kaltstartein
+ganç  deó BIOÓ benutzen®  Hierdurcè wirä eiî  Kaltstartvorganç 
+voí  BIOÓ simuliert¬  d.h®  eó wirä wiå beé eineí ersteî Kalt
+starô einå Systemdiskettå iî deî Laufwerkeî gesucht.
+Diå  Laengå deó Gesamtsystemó haengô sehò starë voí gewuensch
+teî Leistungsumfanç ab¬ fueò Spezialzweckå koenneî aucè "Mini
+versionen¢ miô ca® 7Ë BIOÓ (ca® 53,5Ë TPA© generierô werden.
+
+
+.cp5
+4. Disketten-Arbeit
+
+.cp5
+4.1. Diskettenformate
+
+Sowohì internationaì aló aucè nationaì habeî sicè verschiedenå 
+Diskettenformatå  aló sogenanntå "Hausformate¢ einzelneò CP/M-
+kompatibleò Betriebssystemå herausgebildet®  CP/Á unterstuetzô 
+folgendå  Diskettenformate¬  diå ií BIOÓ automatiscè  beé  deò 
+erstmaligeî  Benutzunç  eineò Diskettå (LOGIN-Biô iî  Reg®  E¬ 
+Bit° beé BIOS-Entrù SELDSË =0© erkannô werdeî  (entsprechendå 
+Laufwerkå vorausgesetzt):
+
+.cp10ŠDisk-  Sektoren      Sektor-  BDOS-     Systemsp.  Gesamt-
+Typ    pro Spur      laenge   Blocklng. /Direintr. kapazitaet
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+5"      26             128      1K        2/64      123K
+DD,SS   26             128      1K        0/64      130K
+40 Sp.  16             256      2K        3/64      148K
+         9             512      1K        0/1       180K
+         5            1024      1K        2/64      190K
+         5            1024      1K        0/64      200K
+
+.cp10
+5"      26             128      2K        2/128     252K
+DD,SS   26             128      2K        0/128     260K
+80 Sp.  16             256      2K        3/64      308K
+         9             512      2K        0/1       360K
+         5            1024      2K        2/128     390K
+         5            1024      2K        0/128     400K
+
+.cp10
+  
+5"      26             128      2K        0/128     260K
+DD,DS   26             128      2K        4/128     246K
+40 Sp.  16             256      2K        4/128     304K
+         9             512      2K        0/1       360K
+         5            1024      2K        4/128     380K
+         5            1024      2K        0/128     400K
+
+.cp10
+5"      26             128      2K        0/128     520K
+DD,DS   26             128      2K        4/128     506K
+80 Sp.  16             256      2K        4/128     624K
+         9             512      2K        0/1       720K
+         5            1024      2K        4/128     780K
+         5            1024      2K        0/192     800K
+
+
+.cp10
+8"      26             128      1K        2/64      243K
+SD,SS   26             128      1K        0/64      250K
+        16             256      2K        3/64      296K
+         9             512      2K        2/128     336K
+         9             512      2K        0/128     346K
+         4            1024      2K        3/64      296K
+         4            1024      2K        0/64      308K
+
+.cp10
+8"      40             128      2K        2/128     374K
+DD,SS   40             128      2K        0/128     384K
+        26             256      2K        2/128     486K
+        16             512      2K        2/128     600K
+        16             512      2K        0/128     616K
+         8            1024      2K        2/128     600K
+         8            1024      2K        0/128     616K
+
+Diå  Angabå  deò Kapazitaeô erfolgô einschliesslicè  deò  Ver
+zeichnisgroesså  voî 2Ë (6´ Directory-Eintraege© bzw®  4Ë (12¸ 
+Directory-Eintraege© bzw®  6Ë (19² Directory-Entraege)®  Habeî 
+diå Disketteî wenigeò Directory-Eintraege¬  sï isô Leseî  ohnå 
+Einschraenkunç  unä aucè Schreibeî moeglich¬  jedocè wirä i.a® 
+nichô diå vollå Diskettenkapazitaeô nutzbar¬ dá daó erstå Filå 
+auæ deò Diskettå aló Directorù interpretierô wird.
+
+Beé Nutzunç voî DS-Formateî wirä diå Rueckseitå iî deî Steuer
+bloeckeî deó BIOÓ aló extrá Spuò behandelt¬  daheò habeî dieså 
+Disketteî  beií  Protokolliereî  deó Formateó  doppelô  sovieì Šlogischå Spureî wiå physische.
+
+Unteò CP/Á habeî Systemspureî (daraî erkannt¬  dasó deò  dezi
+malå  Werô  deó Byteó ° iî Spuò 0¬  Sektoò ± nichô  E5h¬  abeò 
+groesseò aló 1fè isô - deò groesstå moeglichå Nutzeò iî  eineí 
+evtl®  dorô befindlicheî CP/M-Directory-Eintraç isô 31!© keinå 
+weiterå  Bedeutunç  unä dieneî nuò zuí Erkenneî deó  Formates® 
+Beé  SCP-Disketteî  miô eineò Sektorlaengå  25¶  werdeî  unab
+haengiç voí Inhalô deò 0® Spuò immeò  Systemspureî angenommen® 
+Eó koenneî u.a®  damiô direkô Disketteî bearbeiteô werden¬ diå 
+unteò  deí  Robotron-Betriebssysteí  SCĞ erzeugô  wurdeî  bzw® 
+weiterverarbeiteô  werdeî sollen®  SCP-Disketteî  miô  andereî 
+Formateî  (insbesonderå  8¢  SCP-Disketten©  muesseî  auæ  deî 
+Systemspureî  eiî  Kaltstart-Systeí haben¬  sonsô  werdeî  diå 
+unbeschriebeneî  Systemspureî  beé aktiveò automatischeò  For
+materkennunç auæ Grunä deó Eintragó E5è aló leereó Verzeichnió 
+erkannô ("NÏ FILE¢ beé DIR)¡ 
+
+Diå angegebeneî Diskettenformatå werdeî durcè daó CP/A-Dienst
+programí  FORMAÔ erzeugt®  Defektå Spureî werdeî  uebergangen®  
+Miô  Hilfå  deó  CP/M-Dienstprogrammó  POWEÒ  kanî  danî  einå   
+Dummy-Dateé erzeugô werden¬  iî deò allå fehlerhafteî Sektoreî 
+zõ eineò Pseudodateé zusammengefassô werden¬  womiô dieså fueò 
+diå weiterå Nutzunç ausgeschlosseî sind®
+Systemspureî  werdeî durcè FORMAÔ nichô miô E5h¬  sonderî  miô 
+53è beschrieben.
+
+Beií  PC171µ geschiehô daó Anlegeî eineò neueî  Systemdiskettå 
+auæ  einå  formatiertå unä leerå Diskettå durcè  Kopiereî  voî 
+'@OS.COM§ voî L× Á nacè Â durcè daó Kommando:
+
+     CPA1715G B:
+
+Diå     allgemeinå     Aufrufforí     voî     CPA1715Ç     isô 
+  "CPA1715Gz:quellfile"¬
+wobeé  ú daó Ziel-Laufwerë unä quellfilå deò Namå  deó  Quell-
+System-Fileó  ist¬  z.B®  "CPA1715GB:C:@OS54K.COM"®  Auæ deò 
+neueî Systemdiskettå isô deò File-Namå deó Systemó unabhaengiç 
+voí Quell-Nameî immeò @OS.COM.
+
+Beé  eineò spaetereî Modifizierunç deó Fileó @OS.COÍ daræ sicè 
+beií  PC171µ  diå Laengå nichô aendern¬  andernfalló musó  diå 
+gesamtå Systemdiskettå neõ angelegô werden!
+
+Beií  Buerocomputeò  isô CPA1715Ç durcè CPABCGEÎ zõ  ersetzen¬ 
+diå  Zieldiskettå  musó jedocè nichô leeò seiî  unä  daó  Filå 
+@OS.COÍ kanî sicè iî seineò Laengå veraendern®  Deò Kaltstart-
+Loadeò  voî  CP/Á beií Buerocomputeò unterstuetzô  sowohì  deî 
+(alten©  Lade-EPROÍ  auæ deò CPU-Kartå (Versioî 0.6© aló  aucè 
+neuerå Versioneî (i.a®  Versioî 0.9¬  aucè PROÍ statô  EPROM)¬ 
+wobeé  diå  Systemspureî identiscè sinä (Versioî wirä  automa
+tiscè erkannt)®  Wegeî Versioî 0.¶ muesseî dabeé beidå System
+spureî  diå Sektorlaengå 12¸ haben¬  unabhaengiç voí Resô  deò 
+Diskette® Wirä diå Kaltstartdiskettå nuò aî Geraeteî miô neue
+reî Lader-Versioneî benutzt¬  sï koenneî Systemspureî aucè diå 
+Sektorlaengå  25¶  habeî (d.h®  Systemdisketteî fueò  CP/Á  ií 
+gleicheî Formaô wiå fueò SCP)® Sektorlaengeî groesseò 25¶ sinä 
+beií  Buerocomputeò nichô moeglich¬  auó dieseí Grundå  unter
+scheideî sicè beispielsweiså diå 780k-Formatå fueò  5"-Disket
+teî iî deî Systemspureî (128eò odeò 256eò Sektoreî fueò BueroŠcomputer¬  1024eò Sektoreî fueò PC1715)®  Daó Formaô deò neueî 
+Systemdiskettå  (Anzahì unä Formaô deò Systemspuren¬  Lagå deó 
+Verzeichnisses¬  Anzahì deò Spuren¬ einseitigå odeò doppelsei
+tigå  Diskettå  usw.©  wirä  zuí  Zeitpunkô  deó  Aufrufó  voî 
+CPABCGEÎ  entsprechendeî Steuerbloeckeî entnommeî unä  iî  deî 
+Systemspureî vermerkt® Daheò koenneî Systemspureî nuò danî auæ 
+einå  anderå  Diskettå kopierô werden¬  wenî siå  daó  gleichå 
+Formaô aufweist.
+
+Danacè koenneî sowohì beií Buerocomputeò aló aucè beií  PC171µ 
+auæ  diå angelegtå Kaltstartdiskettå weiterå Programmå kopierô 
+werdeî (z.B® FORMAT¬ ZSID¬ POWER...)® 
+
+Einigå  Formatå benutzeî eineî nichtkonstanteî physischeî Sek
+torabstand¬  deò deò Standard-Puffergroesså voî 1Ë (eó  werdeî 
+já  beé  Sektorlaengeî <1Ë  i.a®  mehrerå  aufeinanderfolgendå 
+Sektoreî  gepuffert© sowiå deò Laufwerks- unä Verarbeitungsge
+schwindigkeiô angepassô isô unä daó Leseî bzw® Schreibeî eineò 
+Spuò  miô wenigeò Umdrehungeî erlaubt®   Beé Formateî  miô  2¶ 
+Sektoreî  zõ  12¸  Byteó wirä deò iî  CP/Í  ueblichå  logischå 
+Sektorversatú voî ¶ angewendet.
+
+Nebeî   deí  Formatiereî  voî  Disketteî  erlaubô  daó   CP/A-
+Dienstprogramm FORMAT[P] auch das Kopieren von Disketten.
+Diå  Quelldisketteî koenneî dabeé eineî beliebigeî  physischeî 
+(aucè nichtkonstanten© Sektorabstanä haben¬ deò sicè insbeson
+derå  voî deí deò Zieldiskettå unterscheideî kann®  Damiô  isô 
+z.B® durcè Kopiereî bereitó vorhandeneò Disketteî miô konstan
+teí physischeî Sektorabstanä nachtraeglicè einå Beschleunigunç 
+deó Zugriffó zõ erreichen.
+
+Fueò  speziellå  Untersuchungeî kanî miô Hilfå voî FORMAÔ  daó 
+Diskettenformaô unabhaengiç voî deî standardmaessiç  vorhande
+neî definierô werden.
+
+Allå  ií  Dialoç erforderlicheî Eingabeî fueò  FORMAÔ  koenneî 
+aucè  aló Parameteò beií Aufruæ uebergebeî  werden®  Hierdurcè 
+isô FORMAÔ aucè iî SUBMIT-Jobstroemeî anwendbar®  Diå Eingabeî 
+werdeî  exakô  sï  aló Parameteò angegeben¬  wiå siå  aucè  ií 
+Dialoç erfolgen¬  lediglicè fueò diå "ENTER"-Tastå isô "/¢  zõ 
+schreiben¬ alsï z.B.
+  FORMAÔ 2b//40/50///
+fueò  daó Pruefeî deò Diskettå ií Laufwerë Â ií CP/A-Standard-
+Formaô voî Spuò 4° bió 50®  Leerzeicheî innerhalâ deò  Parame
+terzeilå werdeî uebergangen® Isô diå Parameterzeilå erschoepfô 
+unä  diå  Arbeiô  voî FORMAÔ nocè nichô beendet¬  sï  wirä  ií 
+Dialog-Moduó weitergearbeitet.
+
+Eiî Uebertrageî voî Fileó zwischeî Disketteî unterschiedlicheî 
+Formató geschiehô unteò CP/Á i.a® problemloó durcè diå automa
+tischå Formaterkennunç deó beií Formatiereî festgelegteî  Dis
+kettenformates®  Dieó triffô aucè fueò 8° Track¬  DÓ Laufwerkå 
+zu» eó koenneî hiermiô aucè 4° Track¬ SÓ Disketteî geleseî unä 
+geschriebeî  werdeî (indeí nuò jedå zweitå Spuò benutzô wird)® 
+Treteî  dabeé Diskettenfehleò auf¬  sï solltå maî deî  Vorganç 
+auæ eineí andereî Laufwerë wiederholen¬  dá sicè auæ Grunä deò 
+engeî Toleranzeî beé eineò 80-spurigeî Benutzunç eineò Disket
+tå  geringå  Justierfehleò deò  Laufwerkå  stoerenä  bemerkbaò 
+macheî  koennen®  Ií  Extremfalì  sinä aucè diå  Disketteî  zõ 
+wechseln¬  wenî  siå schoî auæ sehò  vieleî  unterschiedlicheî ŠLaufwerkeî beschriebeî wurden.
+
+5"-Disketteî miô 51² Byteó Sektorlaengå werdeî beé deò automa
+tischeî Formaterkennunç aló DOS- bzw®  DCP-Disketteî miô 9*51² 
+Byteó prï Spuò behandelt® Solchå Disketteî habeî eineî voelliç 
+andereî  logischeî Aufbau¬  sï dasó einå direktå  Verarbeitunç 
+unteò CP/Í nichô moeglicè ist¡ Diå Kennzeichnunç miô nuò eineí 
+Dir-Eintraç  verhinderô  versehentlicheó Schreibeî unteò  CP/Í 
+auæ solchå Disketten.
+Beií Formatiereî solcheò Disketteî (180k¬  360k¬  720k© werdeî 
+Boot-Sektor¬ FAT-¬ Dir- unä Daten-Bereicè ií DOS/DCP-gerechteî 
+Sinnå geschrieben¬ siå koenneî alsï direkô unteò dieseî Syste
+meî weiterverarbeiteô werden.
+  
+CP/Á  gestatteô fueò jedeó Diskettenlaufwerë einzelî diå  Ein
+stellunç deò Funktioî "Kontrolleseî nacè Schreiben¢ (ofô  aucè 
+aló  Verifù odeò Reaä afteò Writå bekannt)®  Hierbeé wirä nacè 
+jedeí Schreibvorganç diå Informatioî nacè eineò erneuteî  Dis
+kettenumdrehunç zurueckgelesen¬ wodurcè abeò daó Schreibeî beé 
+aktiveò  Kontrollå  erheblicè  laengeò aló daó  Leseî  dauert® 
+Schalteô  maî  dagegeî diå Kontrollå  aus¬  sï  isô  Schreibeî 
+genausï  schnelì wiå Lesen®   Dieså Arbeitsweiså isô z.B®  beé 
+16-biô Betriebssystemeî diå normale®  Beé deò CP/A-Generierunç 
+unä durcè daó CP/A-Dienstprogramí FORMAÔ kanî fueò jedeó Lauf
+werë einzelî "Verify¢ ein- odeò ausgeschalteô werden.
+Wenî  maî  miô  Qualitaets-Disketteî  arbeiteô  isô  daó  Kon
+trolleseî i.a® ueberfluessig¬ zumaì diå wenigsteî Anwenderpro
+grammå  einå vernuenftigå Reaktioî nacè deò BDOS-Fehlermeldunç 
+"BAÄ SECTOR¢ gestatten® Fueò Sicherheitskopieî ueberpruefô daó 
+Dienstprogramí  POWEÒ durcè diå Optioî [vİ diå Lesbarkeiô  unä 
+Identitaeô  deò Kopiå relatiö schnelì (nichô sektorweiså  son
+derî  pufferweise)®  Aló  Routine-Technologiå wirä  daheò  diå 
+taeglichå  Arbeiô  ohnå Verifù ií BIOÓ unä  daó  regelmaessigå 
+Anlegeî eineò Sicherheitskopiå miô POWEÒ vorgeschlagen.
+ 
+.cp5
+4.2. Fehlermeldungen
+
+Beé  aufgetreteneî Fehlerî beé deò Arbeiô miô Disketteî werdeî 
+voí  BIOÓ  nacè  erfolgloseò Fehlerkorrektuò  unabhaengiç  voî 
+eineò evtl® folgendeî BDOS-Meldunç folgendå Fehleò detaillierô 
+ausgewiesen¬   uí  eineî  Laufwerks- odeò   Datentraegerdefekô 
+fruehzeitiç unä genaõer zõ lokalisieren:
+
+.cp5
+Kurzkennzeichen               Bedeutung
+  C                 CRC-Error (Daten nicht lesbar)
+  D                 Device-Error (Geraet existiert nicht)
+  L                 Length-Error (unzulaessiges Spurformat)
+  S                 Sector not found (meist falsches Format)
+  T                 Track not found (Spur nicht auffindbar)
+  U                 Undefined (keine Adressmarken auffindbar)
+  Ö                 Verify-Erroò (Kontrolleseî nacè Schreiben)
+  W                 Write protected (schreibgeschuetzt)
+
+
+
+.cp6ŠDie Fehlermeldung lautet:
+    xy;T,S,Se=zz,d,ss
+wobeé  x=Ò  Reaä (Lesen)¬  x=× Writå (Schreiben)¬  ù daó  obeî 
+angegebenå Fehlerkennzeichen¬  zú diå hexadezimalå Spurnummer¬ 
+ä  diå Diskettenseitå (° o®  1© unä só deî  physischeî  Sektoò 
+angeben.
+
+
+.cp5
+5. Besonderheiten des BIOS
+
+Daó  BIOÓ kanî entsprechenä deò Hardware-Konfiguratioî unä deò 
+geplanteî  Betriebsweiså iî verschiedeneî Varianteî  generierô 
+werden® Saemtlichå Angabeî dazõ befindeî sicè aló kommentiertå 
+EQU-Anweisungeî  aí  Anfanç deó  BIOS-Quelltextes®  Eó  folgeî 
+daheò nuò Erlaeuterungeî zõ ií BIOÓ enthalteneî Sonderfunktio
+nen.
+
+
+.cp5
+5.0. I/O-Byte
+
+Fueò  diå  zeichenorientierô arbeitendeî  Geraetå  werdeî  diå 
+Moeglichkeiteî  deó I/O-Byteó voî CP/Í (Hauptspeicherplatú  3© 
+in folgender Weise unterstuetzt:
+
+.cp20
+          i7 i6     i5 i4     i3 i2     i1 i0
+          LST:      PUN:      RDR:      CON:
+
+00        TTY:      CRT:      KBD:      KBD:/CRT:
+01        CRT:      DUM:      DUM:      KBD:/DUM:
+10        LPT:      LST:      DUM:      RDR:/PUN:
+11        DUM:      UC1:      UC1:      UC1:/UC1:
+
+KBD:      Tastatur
+CRT:      Bildschirm
+DUM:      Dummy-Geraet,
+          liefert 1Ah (EOF) bei Eingabe,
+          Hexadezimal-Ausgabe auf CRT: bei Ausgabe,
+          Status (Ein- und Ausgabe) immer bereit
+TTY:      Standard-Drucker (wahlweise, sonst auf DUM:)
+LPT:      weiterer Drucker (wahlweise, sonst auf DUM:)
+UC1:      (SIO-)Geraeô  zuò Datenfernuebertragunç  (wahlweise¬ 
+          sonsô auæ DUM:)
+          Abbildunç auæ diå CON:-Schnittstelle¬  dá dieså einå 
+          Status-Routinå  fueò diå Empfangsbereitschafô unter
+          stuetzt.
+          Diå BIOS-Funktioneî CONIN/CONOUÔ bzw® READER/PUNCHEÒ 
+          warteî  bió  zuò  Empfangs- bzw®   Sendebereitschafô 
+          eineó Zeichens® Einå Statusabfragå fueò diå Sendebe
+          reitschafô existierô fueò UC1º nicht.
+
+Diå  Standardbelegunç  deó I/O-Byteó nacè Kaltstarô  isô  00h¬ 
+davoî  abweichendå  Belegungeî koenneî direkô odeò  uebeò  diå 
+bekannteî  CP/M-Programmå wiå STAÔ gesetzô  werden®  Fueò  deî 
+LST:-Kanaì existierô ausserdeí ií Stop-Zustanä einå  besonderå 
+Tastå zuí Umschalteî deò Geraetezuordnung.
+
+
+.cp5Š5.1. Bildschirm, Tastatur
+ 
+
+Bildschirm
+
+Diå Bildschirm-Steuerzeicheî sinä SCP-kompatibel¬ zusaetzlicè 
+existiereî einigå Erweiterungen:
+
+.cp31
+Steuerzeichen  Wirkung
+--------------------------------------------------------------
+00h            NOP (keine Wirkung)
+01h	       Cursor links oben (home)
+07h 	       akustischeó  Zeicheî aî  Tastatuò  (i.a®  nichô 
+               vorh.¬  danî  Blinkeî  deò Lampeî  nebeî  Stop-
+               Taste bzw. der Statuszeile beim PC1715)
+08h	       Cursor zurueck
+0ah            Linefeed (neue Zeile)
+0ch 	       Bildschirí  loescheî (verzoegerô zuí Leseî  deò 
+               zuletzô ausgegebeneî Bildschirmzeilen)¬  Cursoò 
+               linkó oben
+0dh            Carriage Return (an Zeilenanfang)
+0eh            Umschalten auf 2. Zeichensatz
+0fh            Umschalten auf 1. Zeichensatz
+14h	       Rest des Bildschirms loeschen
+15h	       Cursor nach rechts
+16h	       Rest der Zeile loeschen
+18h	       Zeile loeschen, Cursor an Zeiilenanfang
+1ah	       Cursor eine Zeile hoch
+1bh   	       Einleitunç  Cursorpositionierfolge¬  diå naech
+               steî beideî Byteó beinhalteî Zeilå unä  Spalte¬ 
+               Offseô 00è odeò 80h
+               weitere ESCAPE-Funktionen wahlweise (s.u.)
+7fh            Delete (streichen Zeichen links vom Kursor)
+82h (auch 02h) Cursor an (Standard)
+83h (auch 03h) Cursor aus
+84h (auch 04h) normal    hell, nicht invers
+85h (auch 05h) normal    hell,       invers
+86h (auch 06h) intensiv  hell, nicht invers
+87h            intensiv  hell,       invers
+
+Wurdå  ií  BIOÓ diå Variantå miô Unterstuetzunç  deò  zusaetz
+licheî SCP1715-Steuerzeichenfolgeî 1b/5e/xø fueò Feldattributå 
+unä 1b/5f/xø fueò Pseudografië generiert¬ sï werdeî dieså fueò 
+deî PC171µ ií volleî Umfanç unä fueò deî Buerocomputeò  soweiô 
+aló  moeglicè (nuò Feldattributå unä dorô nuò inveró unä hell© 
+akzeptiert®  Eó  seé  aî dieseò Stellå  fueò  diå  Entwicklunç 
+allgemeiî verwendbareò Softwarå darauæ hingewiesen¬ dasó dieså 
+folgendeî  Steuerzeichenfolgeî voí SCP5120/3° ueberhaupô nichô 
+unterstuetzô werden!
+.cp12Š1b 5e xx       Feldattribuô  setzeî  (belegô  eineî  Platú  ií 
+               Bildschirmpuffer!)
+               Bedeutung von xx:
+               Bit 7     =0
+               Bit 6     =1
+               Bit 5     =1 fuer Unterstreichen
+               Bit 4     =1 fuer invers
+               Bit 3     =0
+               Bit 2     =1 fuer alternativen Code-PROM
+               Bit 1     =1 fuer Blinken
+               Bit 0     =1 fuer intensiv
+
+.cp2
+1b 5f xx       Biô · =0¬ Biô 6=1
+               Pseudografiksymbolå siehå SCP1715-Dokumentation
+
+Wurdå ií BIOÓ diå Variantå miô deí internationaì sehò verbrei
+teteî Terminaltyğ ADM3a/ADM3± (unä kompatiblen© generiert¬  sï 
+werdeî zusaetzlicè folgendå Steuerzeicheî akzeptiert:
+
+.cp10
+1bh,3dh bzw.   Einleitunç  Cursorpositionierfolge¬  diå naech
+1bh,59h        steî beideî Byteó beinhalteî Zeilå unä  Spalte¬ 
+               Offseô 20h
+               Gleichzeitiç  wirä  daó  Steuerzeicheî  1aè  iî 
+               dieseí  Falì  wiå  0cè interpretierô  (bió  zuí 
+               naechsteî Warmstart).
+1ch            Wirkung wie 1ah
+
+Wurdå  ií BIOÓ diå Variantå miô deò Moeglichkeiô nutzereigeneò 
+Tatendefinitioneî    generiert¬    sï    sinä    (nebeî    deò 
+Tastendefinitioî ií Stop-Zustand© folgendå Steuerzeichenfolgeî 
+hierfueò moeglich:
+
+.cp18
+1bh,1bh        Einleitung der Tastendefinition, es folgt:
+               <Taste>,<zugehoerige Zeichenfolge>,00h oder
+               <Taste>,<zugehoerige Zeichenfolge>,fdh
+               fuer eine Tastendefinition bzw. 
+               nuò 00è odeò fdh
+               fueò  daó  Loescheî  alleò  bisherigeî  Nutzer
+               tastendefinitionen.
+               Fueò <Taste¾ gelteî diå Codes¬  diå unabhaengiç 
+               voí  Tastaturtyğ  nacè  deò Abbildunç  auæ  deî 
+               logischeî Tastencodå vorliegen®  Fueò diå  i.a® 
+               umzudefinierendeî    Tasteî    S,S1,..®    bzw® 
+               REC/ENTER,PF1,..®  sinä dieó diå (tastaturunab
+               haengigen!©  Codeó e0h,e1h,...»  deò Codå  fueò 
+               anderå  Tasteî isô deí BIOS-Listinç zõ  entneh
+               men.
+               Beé  eineí  Ueberlauæ deò entsprechendeî  BIOS-
+               Tabellå  erfolgô  diå  beií  Steuerzeicheî  07è 
+               beschriebenå Reaktion¬  diå restlicheî  Zeicheî 
+               erscheineî danî aló direktå Bildschirmausgabe.
+               Diå definierteî Nutzertasteî gelteî aucè  uebeò 
+               deî naechsteî Warmstarô hinauó bió zuí explizi
+               teî Loeschen.
+               Daó  Abschlusszeicheî fdè wurdå nebeî 00è  fueò 
+               solchå Softwarepaketå (wiå dBase© gewaehlt¬ diå 
+               keiî Zeicheî 00è aî deî Bildschirí sendeî koen
+               nen.
+
+Nichô  definiertå  Steuerzeicheî fueò  deî  Bildschirí  (siehå ŠBIOS-Listinç odeò SCP-Dokumentation© werdeî auæ "^¢ abgebildeô 
+(dieó kanî u.a®  beé falscè installierteî CP/M-Programmeî auf
+treten).
+
+
+Statuszeile (nur PC1715)
+
+Unteò Ausnutzunç deò Hardware-Moeglichkeiteî deó PC171µ laessô 
+sicè  iî  CP/Á beií "grossen¢ Bildschirí  (BAB2¬  24*80©  ohnå 
+Umbaõ unä beií "kleinen¢ Bildschirí (BAB1¬  16*24© durcè  Aen
+derî  deò Brueckå X1² voî 2:³ auæ 2:±  auæ deí Bildschirí einå 
+zuaetzlichå Zeilå darstellen®  Dieså wirä zuò Darstellunç fol
+gendeò Informationeî angewendet:
+
+- Normal-/Sonderzustanä deó Rechners
+  (Fehlerlampå  beé Buerocomputer© durcè inverse/normaì inten
+  sivå Darstellunç deò gesamteî Statuszeile®  Insbesonderå isô 
+  hierdurcè  eiî  optischeò Ersatú deó  fehlendeî  akustischeî 
+  Signaló  ií Fehlerfalì (Steuerzeicheî 07h©  moeglich¬  indeí 
+  diå Zeilå einmaì blinkt®  Dá dieseó Blinkeî  softwaremaessiç 
+  durcè  einå Zeitschleifå realisierô wird¬  erfolgô beé jedeò 
+  Ausgabå deó Steuerzeichenó 07è ií Gegensatú zuí  Buerocompu
+  teò einå Programmverzoegerung!
+- z.Zô eingestelltå Wertå fueò Standard-Laufwerë "d¢ unä  Nut
+  zeò "u¢ sowiå System-Laufwerë "s¢ (d.h®  Kaltstart-Laufwerk© 
+  miô  Systemprogrammeî unä zuò Ablagå voî  Submit-Jobstroemeî 
+  iî deò Forí "du\s>¢ (z.B®  "B1\A>")¬  siehå hierzõ aucè  Ab
+  schnitô "Besonderheiteî deó CCP";
+  Pflegå jedå Sekundå entsprechenä Hauptspeicherplatú 4,
+- Speicherkapazitaeô  deò z.Zt®  CP/Á bekannteî Disketteî  aló 
+  Orientierunç    fueò   daó   Formaô   deò   Diskettå   (z.B® 
+  "0:800k1:800k")® Voò deò Kapazitaetsangabå stehô diå physi
+  schå Laufwerksnummer¬  diå sicè aucè nacè eineí evtl®  SWAP-
+  Kommandï  (siehå Abschnitô "Besonderheiteî deó  CCP"©  nichô 
+  aendert®  Beé aktiveí "Verify¢ fueò dieseó Laufwerë wirä ":¢ 
+  durcè "v¢ ersetzô (0:800k1v800k)® Diå Pflegå dieseò Angabeî 
+  erfolgô beé jedeí LOGIÎ durcè daó BDOS;
+- Werô  deó  I/O-Byteó iî  hexadezimaleò  Forí  (z.B®  "i00")¬ 
+  Pflegå jedå Sekundå entsprechenä Hauptspeicherplatú 3),
+- Werô deó Lampenpufferó iî hexadezimaleò Forí  (z.B®  "l80")¬ 
+               Bedeutung, wenn =1:
+     Bit 7:    allå Zeicheî aî CRTº aucè aî LSTº (hardcopy),
+     Bit 6:    Fehlerlampe,
+     Bit 5:    Druck nur auf rechter Druckerbahn
+     Bit 4:    Zeilenvorschub auf beiden Bahnen zugleich
+     Bit 3-0:  Selektoò 3-° (musó beé PC171µ ií  Lampenpuffer
+               bytå durcè Anwendeò gesetzô werden),
+  Pflegå jedå Sekundå entsprechenä Hauptspeicherpaltú 40h,
+- Meldungen des BIOS, werden nach 30 Sek. geloescht,
+- Uhrzeit,
+- Kopf des Tastaturpuffers.
+
+
+Diå Anpassunç deó Bildschirmformató erfolgô beií Kaltstartvor
+ganç automatisch® Beií Buerocomputeò wirä dabeé Biô ¶ voí Porô 
+0Aè abgefragô (16*64¬  wenî =1»  24*80¬ wenî =0)® Dá aí PC171µ 
+einå  solchå Hardware-Abfragå nichô moeglicè ist¬  erfolgô diå 
+Abfragå folgendermassen:
+Beé  deò  Systemgenerierunç  wirä  eiî  Bildschirmformaô   aló 
+Anfangszustanä  vorgegebeî (i.a®  24*80)®  Dieó wirä fueò  diå ŠKaltstart-Meldungeî  zunaechsô angenommen®  Beginnô deò Nutzeò 
+diå Uhrzeiteingabå beií Kaltstarô nichô innerhalâ eineò  maxi
+maleî Zeitspannå voî 20 s¬  sï wirä angenommen¬ dasó deò Bild
+schirí  nichô lesbaò isô unä auæ daó anderå Formaô  umgeschal
+tet®  Deò  gleichå  Effekô isô durcè Betaetigeî voî ESÃ  statô 
+eineò Zifferntastå erreichbar®  Dieó wiederholô sicè  solange¬ 
+bió diå Uhrzeiô eingegebeî ist.
+Eiî  falscheó  Bildschirmformaô  fuehrô  aí  PC171µ  hardware-
+bedingô zõ eineí nichtsynchronisierteí Monitorbild¬ beií rich
+tigeî Formaô wirä eó (wieder© stabil.
+
+Uí Softwarå fueò deî Buerocomputer¬ diå sicè durcè Abfragå deó 
+Bitó  ¶ ií Porô 0Aè deí Bildschirmformaô  anpassen¬  unveraen
+derô auæ deí PC171µ einzusetzen¬  wirä aí PC171µ deò CTC-Kanaì 
+²  miô  deò Portadresså 0Aè "missbraucht¢ unä miô  eineò  ent
+sprechendeî  (unä  sicè  nichô  veraendernden©   Zeitkonstantå 
+geladen.
+
+
+.cp5
+Tastatur
+
+Bió  zõ 4¸ Tastatur-Zeicheî (Laengå modifizierbar© werdeî  voí 
+BIOÓ unabhaengiç voî deò Arbeiô periphereò Geraetå (z.B®  Dis
+kettenlaufwerke©  gepuffert¬  i.a®  geheî  dadurcè selbsô  beé 
+versierteî Schreibkraefteî keinå Zeicheî verloren¬ diå Meldunç 
+"WARTE¢  beé Textverarbeitungssystemeî brauchô nichô  beachteô 
+zõ werden® Beé Programmen¬ diå nichô staendiç deî Tastaturpuf
+feò leereî (wiå z.B®  POWER© kanî bereitó diå Eingabå fueò deî 
+naechsteî Programmschritô "ií Voraus¢ erfolgen.
+Beií  PC171µ sinä diå gepufferteî Zeicheî ií rechteî Teiì  deò 
+Statuszeilå teilweise sichtbar¬ Sonderzeicheî <20è aló Punkt.
+
+Beé  deò  Belegunç  deò Tasteî mussteî beé  deò  Vielfalô  voî 
+Tastatureî einå Reihå voî z.T®  widerspruechlicheî Forderungeî 
+erfuellô  werdeî (diå jedocè wesentlicè fueò diå  Nutzerakzep
+tanú sind!):
+- Anpassunç  aî haeufiç benutztå Funktioneî beé deò  Systembe
+  dienung¬  deí  Textverarbeitungssysteí WordStaò unä  andereò 
+  Standardsoftwarå    (Datenbank-Technik¬     Tabellenkalkula
+  tion...),
+- moeglichsô  gleichå Tasteî fueò gleichå Funktioneî beé  ver
+  schiedeneî Tastaturen,
+- moeglichst wenig SHIFT- oder CTRL-Umschaltungen,
+- Wirkunç deò Tasteî beé alleî Anwendungeî gleicè (keinå  spe
+  ziellå Tastenbelegung fuer WordStar o.ae.),
+- raeumlichå   Gruppierunç   voî  logiscè   zusammengehoerigeî 
+  Tasten,
+- Nutzunç  deò  LED-Anzeigeî fueò  Systemzustaende¬  diå  i.a® 
+  nichô  auæ deí Bildschirí sichtbaò sinä  (z.B®  Insert-Moduó 
+  beé WordStaò auæ deí Bildschirí sichtbar¬  daheò LEÄ  ander
+  weitiç nutzbar),
+- Moeglichkeiô deò Tasten-Umdefinitioî (aucè Zeichenfolgeî auæ 
+  eineò Taste© fueò speziellå Nutzeranwendungen.
+
+
+Iî  deò  folgendeî Tabellå nichô  aufgefuehrtå  Tasteî  werdeî 
+ignoriert®  Diå  Funktioî  deò  jeweiligeî  Tastå  haengô  voí 
+Systemzustanä  (CCĞ odeò Anwendungsprogramm© aâ unä isô iî deî 
+entsprechendeî Dokumentationeî nachzulesen.
+Š.cp51
+---------------------------------------------------------------
+K76x6   ..x4      ..37   PC1715    Code bzw. Funktion
+---------------------------------------------------------------
+
+^|        ^|         ^|       ^|       ^E
+v|,CE    v|,ERINP   v|,CE     v|,CE    ^X
+<-      <-        <-      <-       ^H (kann man auf ^S umdef.) 
+->      ->        ->      ->       ^D     
+|<-     |<-       |<-     |<-      ^A
+->|     ->|       ->|     ->|      ^F
+<-'     <-'       <-'     <-'      ^C
+'\~      FM        '\~      '\~       ^R
+|<-|    |<-|      |<-|    |<-|     ^I (Tab)
+DEL     DEL       DELCH   DEL      7fH (Streichen linkes Z.)
+S       REC       ENTER   S        ^B
+S1      PF1       PF1     F1       ^G
+S2      PF2       PF2     F2       ^Y
+S3      PF3       PF3     F3       ^T
+S4      PF4       PF4     F4       ^V
+S5      PF5       PF5     F5       ^L
+S6      PF6       PF6     F6       ^OD
+S7      PF7       PF7     F7       ^OG
+S8      PF8       PF8     F8       ^W
+S9      PF9       PF9     F9       ^Z
+ex. n.  PF10      PF10    F10      ^KS^QP
+ex. n.  PF11	  PF11    F11      ^KB
+ex. n   PF12	  PF12    F12      ^KK
+ex. n.  VLD       ex. n.  F13      ^KV
+DELLINE DELL      DELL,ESC ESC     ^[ (Escape)
+ex. n.  ex. n.    HLT     ex. n.   ^S (in CP/A STOP-Taste)
+ex. n.  ex. n.    PRINT   ex. n.   ^P (in CP/A Hardcopy-Taste)
+ET1     ENTER     ET1     ET       ^M (CR)
+ET2     RESET     ET2,    ex. n.,  CTRL, nochmaliges Druecken
+                  und     nur      hebt CTRL-Zustand auf;
+                  CTRL    CTRL     ^Q-Prefix fuer alle Sonder-
+                                   tasten (WordStar ^Q-Fktnen.)
+         	                   z.B. ^Q^F, ^Q^D oder ^Q^Y
+                                   Achtung¡   CTRÌ   gehô  beé 
+                                   K763· hardwaremaessiç  fueò 
+                                   ^Q-Prefiø nicht, nur ET2!
+Sel     Sel 0     0..3    ex. n.   Setzen von Bit i (0..3) in
+0..3    durch     unter            Hauptspeicherplatz 40H und
+        DUP;      LED              einschalteî LEÄ daneben;
+        Sel 1..3                   Biô ° wirä aló CAPS-Funkt.
+        ex. n.                     benutzt (gross <-> klein)
+00      ex. n.    00      00       00
+000     ex. n.    ex. n.  ex. n.   000
+M       EREOF     M       F14      Bios-Monitor
+CI      OFF       RESET   F15      Stop des Rechners mit LED-
+                                   und Signalanzeige
+INSMODÅ INSMODÅ   INSMÄ  Minus     Hardcopù Druckeò ein/aus
+                         unteò CÅ  LEÄ danebeî aî beé "ein"
+INSLINE INSL      INSL    INS      Synchronisieren Drucker und
+                                   BIOS-Druckertreiber
+---------------------------------------------------------------
+   
+.cp59ŠDiå Bankschalter-Tastatuò K763³ (nuò aî Steckeinheiô AUĞ  062-
+853±  betreibbar¬  keinå IFSS-Tastatur!© wirä notduerftiç  aló 
+CP/M-Tastatuò  unterstuetzt®  Dá  vielå Sonderzeicheî  fehlen¬ 
+koenneî  siå  nuò durcè Umschalteî miô Hilfå  deò  Alpha-Tastå 
+(warten¬ bió LEÄ danebeî ausgeht© erreichô werden.
+
+---------------------------------------------------------------
+K7633     Code bzw. Funktion
+---------------------------------------------------------------
+Alpha-Á   ß    Solangå Alpha-LEÄ aus¬ gelteî Sonderzeichen!
+Alpha-Â   ¡    Fueò Buchstabeî isô Alphá erneuô zõ druecken!
+Alpha-C   "    Funktionstasten F00-F13 existieren nicht!
+Alpha-D   #
+Alpha-E   $
+Alpha-F   %
+Alpha-G   &
+Alpha-H   '
+Alpha-/   ?
+Alpha-I   (
+Alpha-J   )
+Alpha-K   [
+Alpha-L   ]
+Alpha-.   >
+Alpha-M   {
+Alpha-N   }
+Alpha-O   ;
+Alpha-P   |
+Alpha-,   <
+Alpha-Q   +
+Alpha-R   \
+Alpha-S   @
+Alpha-T   `
+Alpha-U   ^E (Pfeil nach oben)
+Alpha-V   =
+Alpha-W   ~
+Alpha-X   ^
+Alpha-Y   nicht belegt
+Alpha-Z   ^X (Pfeil nach unten)
+CE rot    ^X (Loeschen der Eingabe)
+<-        ^H (kann man auf ^S umdef.) 
+->        ^D     
+|<-       ^A
+->|       ^F
+<-'       ^C
+'\~          ^R
+JA        7fh (Streichen linkes Z.)
+ABBR :    :
+KORR x    *
+WI +      ^[ (Escape)
+Sel rot   Setzen von Bit 0 in Hauptspeicherplatz 40H und
+          einschalteî LEÄ daneben;
+          Biô ° wirä aló CAPS-Funkt. benutzt (gross <-> klein)
+ET3       ^I (Tab)
+ET2       CTRL, nochmaliges Druecken hebt CTRL-Zustand auf;
+          ^Q-Prefix fuer alle Pfeil-Tasten (WordStar ^Q-Fktnen.)
+          z.B. ^Q^F, ^Q^D
+ET1       ^M (CR)
+00        00
+000       000
+M rot     F14 (Bios-Monitor)ŠCI rot    F15 (Stop des Rechners mit LED- und Signalanzeige)
+REP       Synchronisieren Drucker und BIOS-Druckertreiber
+SI -      Hardcopù Druckeò ein/aus
+---------------------------------------------------------------
+   
+
+Erlaeuterungen:
+---------------
+Hardcopù (INS-MODE-Taste© schalteô deî Druckeò direkô paralleì 
+zuò Bildschirmausgabe®  Zuò Kontrollå dieseó Zustandó wirä diå 
+nebeî  deò Tastå liegendå Lampå angesteuerô (beé PC171µ  siehå 
+Statuszeile)®  Erneuteó  Drueckeî deò Tastå hebô  deî  Zustanä 
+wiedeò  auf®  Deò Zustanä bleibô uebeò deî naechsteî Warmstarô 
+hinauó erhalten.
+Eó  isô zõ beachten¬  dasó nichô allå  Bildschirmsteuerzeicheî 
+voí Druckeò verstandeî werden¬  i.a®  betriffô dieó jedocè nuò 
+diå  expliziteî Steuerfolgeî zuò  Kursorpositionierung®  Dieså 
+Steuerzeicheî werdeî beé deò Druckausgabå auæ "^¢ abgebildet.
+Diå  ^P-Funktioî  deó BDOÓ isô  weiterhiî  verfuegbar¬  jedocè 
+sollteî nichô beidå Funktioneî zugleicè aktiö sein.
+
+Miô  deò Tastå INSLINÅ werdeî Druckertreibeò unä Druckeò  syn
+chronisiert® Siå solltå nacè jedeò Neueinstellunç deó Blattan
+fangó gedrueckô werden.
+
+Beií  Betaetigeî  deò  Stop-Tastå  (CI/OFF/RESET/F1µ  jå  nacè 
+Tastatur© wirä deò Tastaturpuffeò geleert¬  daó gesamtå Systeí 
+bió  zuò Betaetigunç eineò beliebigeî andereî Tastå  bzw®  bió 
+zuí  Abbrucè deó laufendeî Programmó durcè Warmstarô (^C©  ge
+stoppô  (Warteschleifå iî Tastatureingabe© unä diå Fehlerlampå 
+eingeschaltet® Dieså Reaktioneî werdeî ggf® bió zuò Beendigunç 
+zeitkritischeò  Diskettentransferó  odeò  deó   Bildneuaufbauó 
+verzoegert.
+Diå  Tastå  enthaelô diå ^S-Funktioî deó BDOÓ iî  verallgemei
+nerteò Forí unä erlaubô aucè danî daó Stoppeî deò Anlage¬ wenî 
+voí  Programí  keinå  Tastatureingabå  odeò  Bildschirmausgabå 
+geforderô wird.
+Ausserdeí  sinä  ií Stop-Zustanä diå  Betaetigungeî  folgendeò 
+Tasteî  moeglicè (diå waehrenä deó Stop-Zustandeó damiô   einå 
+anderå Bedeutunç haben):
+- Hardcopy-Tastå (INSM©
+  Iî  dieseí Falì wirä deò gesamtå momentanå  Bildschirminhalô 
+  auæ daó LIST-Geraeô (i.a® Drucker© kopiert.
+- Taste Drucker-synchronisieren
+  Weiterschalten des LST:-Kanals im I/O-Byte
+- bei generierter Variante 2-Bahn-Drucker:
+  Taste  S (=^B)º  Umschalteî auæ anderå Druckerbahn¬  gleichå 
+               Wirkunç habeî diå CP/A-Druckersteuerzeicheî 88è 
+               unä 89h;
+  Taste  F1 (=^G)º  Ein-/Ausschalteî  paralleleî Vorschuâ  auæ 
+               beideî  Druckerwalzeî  (fueò  breiteó  Papier)¬ 
+               gleichå Wirkunç haô daó  CP/A-Druckersteuerzei
+               cheî 8aè (auóschalten durcè 88h/89h)
+ - Monitor-Taste (M), nur wenn mit BIOS-Uhr generiert!
+  Diå  Uhr-Anzeigå auæ deí Bildschirí  wirä  aus- bzw®  einge
+  schaltet®  Dieseò  Zustanä bleibô aucè uebeò eineî Warmstarô 
+  hinweç erhalten® Diå Uhò laeufô interî weiter¬ aucè wenî diå 
+  Anzeigå ausgeschalteô (bzw® beé PC171µ "eingefroren"© ist.
+- Escape-Taste¬  wenî  Nutzer-Tastendefinitioî  ií BIOÓ  gene
+  riert.Š  Iî  dieseí Falì sinä anschliessenä folgendå Handlungeî  fueò 
+  einå Tastendefinitioî notwendig:
+   - Betaetigeî deò umzudefinierendeî Taste,
+   - Eingabå  deò zugehoerigeî Zeichenfolgå (einschl®  Controì 
+     unä andereî schoî umdefinierteî Tasten¬ diå geradå neõ zõ 
+     definierendå Tastå enthaelô dabeé diå bió dahiî definier
+     tå Zeichenfolge),
+   - Betaetigeî voî Escapå zuí Abschluss.
+  Eó koenneî bió auæ Begrenzungeî deó Speicherplatzeó ií  BIOÓ 
+  (beé Generierunç definierbar© beliebiç vielå Tasteî waehrenä 
+  deò Nutzerarbeiô umdefinierô werden® Einå vollå Tabellå wirä 
+  durcè Blinkeî deò Fehlerlampå (unä akustischeó Signal¬  wenî 
+  vorhanden© angezeigt.
+  Solì  einå schoî umdefiniertå Tastå erneuô umdefinierô  wer
+  den¬  sï muesseî zuvoò allå bió dahiî erfolgteî Umdefinitio
+  neî  geloeschô  werdeî  (waó sicè auæ Grunä  deó  begrenzteî 
+  Tabellenplatzeó ohnehiî aló notwendiç erweiseî  wird)®  Dieó 
+  geschiehô  ií  Stopzustanä durcè zweimaligeó Betaetigeî  deò 
+  Escape-Tastå hintereinander.
+  Einå Umdefinitioî voî Tasteî bzw® eiî Loescheî deò Umdefini
+  tionstabellå kanî aucè voí Anwenderprogramí errreichô werdeî 
+  (siehå Bildschirm-Steuerzeichen).
+  Aló  Spezialfalì eineò Umdefinitioî seé auæ diå  Neubelegunç 
+  deò Tastå "<-¢ miô ^Ó statô ^È hingewiesen¬ sï dasó aucè diå 
+  Softwarepakete¬  diå  aló "Kursoò nacè links¢ nichô aucè  ^È 
+  sonderî nuò ^Ó verstehen¬ unveraenderô arbeiteî koennen® Daó 
+  BDOÓ  voî  CP/Á behandelô ^È unä ^Ó  beé  deò  Stringeingabå 
+  gleichberechtigô  (durcè Wegfalì deò ^S-Funktioî zuí Stoppeî 
+  moeglicè geworden)® POWEÒ beispielsweiså arbeiteô jedocè nuò 
+  miô  ^È richtig¬  daheò wurdå aló Kaltstart-Belegunç ^È  ge
+  waehlt.
+
+Wurdå  diå Monitor-Variantå deó BIOÓ generiert¬  sï wirä  beií 
+Betaetigeî  deò M-Tastå deò BIOS-Monitoò aufgerufeî  (s®  5.6» 
+ggf®  ebenfalló verzoegert)» iî deò Variantå ohnå Monitoò wirä 
+diå Tastå ignoriert.
+
+Beií  PC171µ wirä diå Tastå SI/S° unterstuetzô (Umschalteî deó 
+Zeichensatzes, auch ueber Bildschirm-Steuerzeichen - s.d.).
+
+Beií  Buerocomputeò  kanî eiî deutscheò Zeichensatú wiå  folgô 
+realisierô werdeî (zõ genauereî Auskuenfteî  unä  EPROM-Inhalô 
+bittå IÈ Mittweida¬ Koll® Geileò konsultieren):
+Beé  Anwendunç eineó spezielleî Zeichengeneratoró (EPROM© fueò 
+diå  Bildschirmå BAB1/BAB² kanî deò Zeichenvorraô  deó  SD115² 
+(dt®  Typenrad¬  einschliesslicè Umlaute¬ sz© dargestellô wer
+den® Diå Moeglichkeiô deò Darstellunç wirä miô deò Generierva
+riableî "umlaut¢ gesteuert®  Beé generierteò Umlautdarstellunç 
+wirä  zwischeî Normalzeichensatú unä Zeichensatú miô  Umlauteî 
+durcè  Drueckeî  deò "Stop"-Tastå unä anschliessendeò  Eingabå 
+voî "u¢ bzw® "U¢ hin- unä hergeschaltet.
+Fueò   deî   Bildschirí  BAB³  (²  Steckeinheiten©   isô   diå 
+Umlautdarstellunç  nichô  zweckmaessig¬   dá  diå  Umlautå  ií 
+Zeichenformspeicheò  auæ Zeicheî liegeî  (10h..1fh)¬  diå  beé 
+BAB3 als Steuerzeichen fuer Intensiv/Inversdarstellung dienen.
+Eó gilô folgendå Zuordnunç zwischeî ASCII- unä dt® Zeichensatú 
+des SD1152:
+
+   [   =   AE       \   =   OE        ]   =   UE
+   {   =   ae       |   =   oe        }   =   ueŠ   ~   =   sz       @   =   Paragr.   ^   =   my
+   <   =   Exp.2    >   =   Exp.3
+
+Diå  Umcodierunç  deò  Umlautå wirä  voí  BIOÓ  durchgefuehrt® 
+Programme¬  diå  Memorù  mappeä Videï Displaù  benutzeî  (z.B® 
+entsprechenä  generiertå WordStaò unä DataStar)¬  zeigeî keine‚ 
+Umlaute an!
+
+
+.cp5
+5.2. Drucker
+
+Eó   werdeî  2-Bahn-Druckeò  miô  deò  Schnittstellå  ±  (z.B® 
+1152IFSS¬  1157©  fueò beidå Bahneî getrennô unä paralleì un
+terstuetzt®  Dazõ sinä iî CP/Á (nichô gueltiç fueò SCP!©  fol
+gendå Steuerzeicheî definiert:
+
+88h  Drucken auf linker Bahn (Standard)
+89h  Drucken auf rechter Bahn (absolute Position 138)
+8ah  Drucken auf linker und rechter Bahn (Linefeed auf beiden)
+
+Diå  gleichå  Wirkunç wiå obigå Steuerzeicheî kanî ií  Stopzu
+stanä durcè Betaetigeî deò Tasteî Ó (^B© bzw® F± (^G© erreichô 
+werdeî (siehå Abschnitô Tastatur).
+Deò  eingestelltå Zustanä wirä ií Lampenpuffer¬  Biô µ  unä  ´ 
+gespeicherô.
+
+Uí  eiî  Blockiereî  deó  Rechneró  beé  falscè  ausgewaehlteí 
+Druckerausgang¬  defekteí  odeò  nichô vorhandeneí Druckeò  zõ 
+vermeiden¬  erfolgô ií BIOÓ einå time-out-Ueberwachunç voî  3° 
+Sekundeî auæ diå Empfangsbereitschafô deó Druckers® Wirä dieså 
+Zeiô  ueberschritteî (u.U®  musó ersô deò Druckpuffeò  geleerô 
+werdeî  ehå  deò Druckeò wiedeò bereiô ist)¬  sï  werdeî  nacè 
+eineò  BIOS-Meldunç entwedeò bió zuí naechsteî Warmstarô  odeò 
+deí  Betaetigeî deò Tastå "Druckeò synchr.¢ allå  Ausgabeî  aî 
+dieseó  Geraeô  ignorierô odeò eó wirä einå  Wiederholunç  deò 
+Ausgabå versucht.
+
+Eó  erfolgô  (ausseò beé generierteò Variantå  2-Bahn-Drucker© 
+keinå Interpretatioî deò ausgegebeneî Zeichen¬  sï dasó  statô 
+eineó Druckeró aucè anderå Geraetå miô entsprechendeò Schnitt
+stellå (einschl®  Datenfernuebertragung¬ insbesonderå beé UC1º 
+- hieò  erfolgô  grundsaetzlicè  keinå Interpretatioî  deò  zõ 
+sendendeî unä zõ empfangeneî Zeicheî unä keinå time-out-Ueber
+wachung© angeschlosseî werdeî koennen.
+
+
+.cp10
+5.3. Zeitgeberdienste
+
+5.3.1. Ueberblick
+
+Unteò  Ausnutzunç  deò beií  Buerocomputeò  kaskadierteî  CTC-
+Kanaelå  ² unä ³ wurdeî Zeittaktå voî µ mó  unä ± ó bereitges
+tellt® 
+Beií PC171µ sinä diå freieî CTC-Kanaelå nichô kaskadiert¬ hieò 
+wirä aló Kompromisó eiî 25mó Takô bereitgestellt¬  auæ desseî 
+Basió softwaremaessiç eiî 1ó Takô erzeugô wird® Auæ Grunä voî 
+zeitkritischeî  Ablaeufeî aí PC171µ (nuò eiî  Prozessor!©  voî 
+laengeò aló 25mó (z.B®  Diskettentransfeò voî ± KBytå Sektor
+laengå  ca®  40ms© koenneî 25mó Taktå verloreî  gehen¬  d.h® 
+sowohì  25mó  aló aucè 1ó Takô koenneî uebeò  laengerå  Zeiô Šhinweç "nachgehen"® 
+Ií  folgendeî sinä ií Fallå deó PC171µ allå "5ms¢ sinngemaesó 
+(Faktoò 5© durcè "25ms¢ zõ ersetzen.
+
+Deò Zeittakô voî µ mó isô fueò Zeitmessungeî  vorgesehen®  Diå 
+Einheiô voî µ mó isô eiî Kompromisó zwischeî deò zusaetzlicheî 
+Interruptbelastunç  unä deí maximaì moeglicheî Faktoò voî  25¶ 
+zuò  Erreichunç deó kaskadierteî 1-s-Taktes®  Beé jedeí Inter
+rupô  ií  Abstanä  voî µ mó wirä eiî  2-Byte-Zaehleò  auæ  deí 
+Hauptspeicherplatú  TIM5CÎ (s®  5.7.2© zykliscè uí ±  erhoeht® 
+Deò Anfangswerô isô beliebig¬  d.h®  eó sinä durcè  staendigeó 
+Aktivieren/Deaktiviereî  aucè kumulativå  Zeitmessungeî  moeg
+lich®  Diå  maximalå Messdaueò betraegô fueò einå Periodå  ca® 
+32· ó beé eineò Genauigkeiô voî µ ms® 
+
+Deò 5-ms-Zeittakô isô standardmaessiç aktiviert®  Nacè  Rueck
+kehò  auó  deò Interruptreaktionsroutinå deó Takteó wirä  beií 
+Buerocomputeò CONSÔ aufgerufeî unä damiô eiî (nichô existiere
+nder©  Tastaturinterrupô  simulierô unä  einå  moeglicherweiså 
+gedruecktå Tastå gelesen.
+
+Deò  Zeittakô  voî ± ó isô zuò  Realisierunç  eineó  Time-Out-
+Apparató  vorgesehen®  Beé  jedeí Interrupô wirä  eiî  2-Byte-
+Zaehleò auæ Hauptspeicherplatú TIM1CÎ (s®  5.7.2© uí ± vermin
+dert® Deò Nulldurchganç stellô i.a® daó Time-Out-Ereignió dar¬ 
+musó jedocè expliziô abgefragô werdeî (keinå Unterbrechunç deó 
+geradå  aktiveî  Programms!)®  Diå  maximalå  Time-Out-Groesså 
+betraegô hierbeé ca®  9.± Std®  Ausserdeí wirä jedå Sekundå zõ 
+deò  durcè TIM1RÔ (s®  5.7.2© definierteî Routinå  gesprungen¬ 
+wodurcè  beliebigå Nutzerroutineî aktivierbaò sinä (allå Regi
+steò frei¬  Rueckkehò miô RET¬  Interruptverboô musó  erhalteî 
+bleiben!)® Standardmaessiç wirä beé jedeí Warmstarô diå Adres
+så  eineò  leereî  Routinå (nuò RET-Befehl©  auæ  TIM1RÔ  hin
+terlegt.
+Aucè deò 1-s-Zeittakô isô standardmaessiç aktiviert.
+
+
+
+.cp8
+5.4. Speicherschutzdienste (nur fuer Buerocomputer)
+
+.cp5
+5.4.1. Ueberblick
+
+Diå Speicherschutzeinrichtunç basierô auæ eineò Einteilunç deó 
+verfuegbareî  Hauptspeicheró  voî  64Ë Bytå iî 6´  Bytå  langå 
+Abschnitte¬ diå unabhaengiç voneinandeò aló geschuetzô gekenn
+zeichneô werdeî koennen® Schreibbefehlå iî dieså Bereichå sinä 
+nuò  auó geschuetzteî Bereicheî selbsô  erlaubt¬  anderenfalló 
+erfolgô einå Unterbrechung®  Gekoppelô miô deí  Speicherschutú 
+isô  eiî Schutú gegeî Ausfuehrunç voî E/A-Befehleî  ausserhalâ 
+voî  geschuetzteî Bereicheî (fuehrô  zõ  NMI-Interrupt)¬  d.h® 
+geschuetztå  Bereichå werdeî aló privilegiertå Systemprogrammå 
+betrachtet.
+
+Beé  Nutzunç  deò  Speicherschutzeinrichtunç  musó  daheò  deò 
+BIOS/BDOS-Bereicè  grundsaetzlicè  mitgeschuetzô  werdeî  (voí 
+BDOÓ  auó wirä iî Disketten-Tabelleî geschrieben¬  diå ií BIOÓ 
+liegen)® Allå sonstigeî Programmbereiche¬ iî deneî E/A-Befehlå 
+abgearbeiteô werdeî koennen¬ muesseî ebenfalló unabhaengiç voî 
+deí  eigentlicè  gegeî Ueberspeicherî  zõ  sicherndeî  Bereicè 
+geschuetzô werden.Š
+
+.cp7
+5.4.2. Routinen zur Realisierung
+
+MPINIT
+
+  Initialisierunç deò Speicherschutzeinrichtunç unä Definitioî 
+  deó  standardmaessiç zõ schuetzendeî Bereichó  voî  BDOS+40è 
+  bió voò Bildschirmpuffer.
+
+MPSET(i_Register_BC:_Anfangsadresse,
+      i_Register_DE:_Endadresse)
+
+  Definitioî   eineó  zusaetzlicè  zõ  schuetzendeî  Bereichs® 
+  Sinä  diå Adresseî nichô durcè 6´ teilbar¬  sï wirä diå  An 
+  fangsadresså ab- und diå Endadresså aufgerundet.
+
+MPOFF
+
+  Deò gesamtå Speicherschutú wirä ausseò Krafô gesetzt®  MPOFÆ 
+  wirä  beé  jedeí  Warmstarô  aufgerufen¬  d.h®  deò  normalå 
+  CP/A-Betrieâ erfolgô ohnå Speicherschutz.
+
+
+.cp5
+5.4.3. Reaktioî beé Verletzeî deó Speicherschutzes
+
+Deò Schreibversucè wirä unterdrueckt®  Auæ deí Bildschirí  er
+folgô  einå  Ausschrifô  miô  Angabå deò  Adresså  deó  ueber
+naechsteî Befehló (keinå sofortigå Unterbrechunç auæ Grunä deò 
+Bearbeitungszeiô deò Hardware)®  Isô daó Systeí miô BIOS-Moni
+toò  generiert¬  sï  wirä anschliessenä zõ  dieseí  verzweigt¬ 
+andernfalló  wirä daó laufendå Programí nichô  gestoppô  (einå 
+Verlangsamunç  deò Speicherschutz-Ausschrifteî kanî iî  dieseí 
+Falì z.B® durcè Hardcopù auæ deî Druckeò erreichô werden)® 
+
+
+.cp5
+5.4.4. Reaktioî beé Verletzeî deó E/A-Schutzes
+
+Deò  E/A-Befehì  ií ungeschuetzteî Bereicè  wirä  ausgefuehrt® 
+Anschliessenä erfolgô einå NMI-Unterbrechung¬ d.h® eó wirä zuò 
+Adresså 66È verzweigt® Dá dieså Zellå evtl® voí auszutestendeî 
+Programí  benutzô  wirä (Standard-FCÂ voî 5CÈ bió  7FH)¬  kanî 
+hieò nichô standardmaessiç eiî Sprunç zuò entsprechendeî Reak
+tionsroutinå  hinterlegô werden®  Deshalâ wurdå innerhalâ  deó 
+BIOS-Monitoò  diå  Moeglichkeiô geschaffen¬  auæ  Adresså  66È 
+wahlweiså 
+- eineî Sprungbefehì zuò Reaktionsroutinå (Reaktioî danî  ana
+  loç zõ Speicherschutz, jedoch ohne Aufruf BIOS-Monitor)
+  oder
+- eineî  Sprungbefehì  zõ eineò leereî  Reaktionsroutinå  (nuò 
+  RETN© zuí Ignoriereî deó Schutzes
+  oder
+- keinen Sprungbefehl
+zõ hinterlegeî (s®  5.6.5)® Eiî hinterlegteò Sprungbefehì musó 
+bió nacè deí Aufruæ voî MPOFÆ dorô steheî bleiben!
+
+
+5.5. Konsol-Eingabe/Ausgabe
+
+Diå  deî alphanumerischeî Tasteî unä deî andereî  FunktionstaŠsteî  entsprechendeî logischeî Zeichenfolgeî gelangeî iî eineî 
+Tastaturpuffer®  Diå  Mehr-Zeichen-eingabeî  (z.B®  "00¢  odeò 
+"^KB"© werdeî vorheò aufgeloest®  CONSÔ meldeô zurueck¬ oâ deò 
+Puffeò wenigstenó eiî Zeicheî enthaelt.
+
+CONIÎ  uebergibô - wenî vorhandeî - daó erstå Zeicheî auó  deí 
+Puffer®  Anderenfalló  wirä auæ diå naechstå Eingabå gewartet® 
+Desweitereî  realisierô CONIÎ diå Dauerfunktioî fueò allå  al
+phanumerischeî Tasteî deò Tastatuò K7606/7604.
+
+Iî  CONOUÔ  wirä  diå Ausgabå deó Zeichenó  07h  (BELL©  durcè 
+einmaligeó Blinkeî deò Fehlerlampeî realisiert.
+
+.cp7
+5.6. BIOS-Monitor
+
+Deò  BIOS-Monitoò  stellô - seinå Generierunç vorausgesetzô  - 
+eineî  Satú voî residenteî Funktioneî bereit¬  diå somiô  ohnå 
+Veraenderunç  deò Speicherplatzbelegunç  staendig¬  d.h®  aucè 
+waehrenä deò Arbeiô eineó Nutzerprogrammó zuò Verfuegunç  ste
+hen.
+
+Diå Aktivierunç dieseò Funktioneî isô ií Dialoç durcè Drueckeî 
+deò  Monitor-Tastå  odeò direkteî Aufruæ deò  Prozeduò  MONCAÌ 
+moeglich® 
+
+Deò BIOS-Monitoò schuetzô sicè gegeî rekursiveî Aufruf.
+
+
+.cp7
+5.6.1. Monitor-Taste
+
+Diå  Monitor-Tastå isô gegenuebeò andereî Tasteî deò  Tastatuò 
+nichô ausgezeichnet®  Insbesonderå erzeugô aucè siå beé  ihreò 
+Betaetigunç aí Buerocomputeò keineî Interrupt¬  d.h®  siå musó 
+abgefragô werden®  Folgendå zweé Methodeî wurdeî aí Burocompu
+teò implementiert:
+
+  -  Abfragå  beé Eingabå eineó Zeichenó durcè daó BIOS¬  d.h® 
+     nuò  zõ Zeitpunkten¬  wï aucè einå Eingabå  voí  Programí 
+     geforderô wirä unä diå Steuerunç ohnehiî ií BIOÓ liegt;
+
+  -  Abfragå ií 5-ms-Zeitinterrupt¬ falló dieseò aktiö isô. 
+
+Nacè  Drueckeî deò Monitor-Tastå erfolgô einå  Ausschrifô  miô 
+Angabå  deò Rueckkehradresså  (d.h®  deò  Unterbrechungsstellå 
+beií  5-ms-Interrupô bzw®  deò Aufrufstellå beé normaleò  Zei
+cheneingabe)® Danacè koenneî nacheinandeò beliebiç vielå Moni
+tor-Funktioneî  durcè Eingabå ihreó Anfangsbuchstabenó  (grosó 
+odeò klein© aufgerufeî werden.
+Einå  leerå Eingabå odeò diå erneutå Betaetigunç deò  Monitor-
+Tastå fuehreî zuí Verlasseî deó BIOS-Monitors.
+
+
+.cp7
+5.6.2. Uebersicht ueber die Monitor-Kommandos
+
+  Zeichen           Funktion
+
+    S               Lesen/Modifizieren Speicher      
+    C               Aufruf Unterprogramm
+    P               Ein-/Ausschalten Speicherschutz
+    Ò               Anzeigå der Registerstaende beim AufrufŠ                    des Monitors 
+    T               Ein-/Ausschalten Zeittakt           
+    H               Help (Konvertieren Hex->Dez->ASCII)
+    O               Aus-/Eingabe
+
+
+.cp7
+5.6.3. Substitute-Kommando
+
+Nacè Eingabå voî "S¢ wirä einå 2-Byte-Adresså iî hexadezimaleò 
+Forí erwartet®  Siå gibô diå Anfangsadresså eineó  Speicherbe
+reichó an.
+
+Jeweiló  eiî Bytå wirä aufsteigenä iî hexadezimaleò Forí ange
+zeigô unä einå Eingabå erwartet:
+
+  keine Eing.:        keine Veraenderung; naechstes Byte
+  2 Hex-Ziffern:      Ueberschreiben des Bytes; naechstes Byte
+  "-" (Minus):        keine Veraenderung; vorheriges Byte
+  3..4 Hex-Ziffernº   keinå Veraenderung» neueò Speicherbereich
+  "." (Punkt):        Ende des Kommandos
+
+
+.cp7
+5.6.4. Call-Kommando
+
+Nacè Eingabå voî "C¢ wirä einå 2-Byte-Adresså iî hexadezimaleò 
+Forí erwartet®  Siå gibô diå Startadresså eineó Unterprogrammó 
+an®  Aló  Rueckkehradresså wird voò deí Ansprunç  dieseó  Pro
+grammó einå Rueckkehò zuí BIOS-Monitoò iî daó Stacë gebracht.
+
+
+.cp7
+5.6.5. Protect-Kommando (nur fuer Buerocomputer)
+
+Nacè Eingabå voî "P¢ (Aufruæ MPINITº  Definitioî deó standard
+maessiç  zõ  schuetzendeî  Bereichs© wirä einå  deò  folgendeî 
+Eingabeî erwartet:
+- "." (keine weitere Aktion),
+- ein Adressenpaar (bezeichnet einen zu schuetzenden Bereich),
+- "-" (Aufruf MPOFF: Aufhebung des gesamten Speicherschutzes),
+- "I¢  (Einstellunç deó Regimeó  "Ignoriereî voî   E/A-Schutz-
+       Verletzungen"¬  d.h® Hinterlegeî voî RETÎ auæ 66H» vgl® 
+       5.4.4),
+- "L¢ (Einstellunç deó Regimeó "Protokolliereî voî E/A-Schutz-
+      Verletzungen"¬  d.h® Hinterlegeî eineó Sprungbefehló auæ 
+      66H» vgl® 5.4.4).
+
+Wirä  keinå Regimeeinstellunç ("I¢ odeò "L"©  vorgenommen¬  sï 
+bleibô  diå Zellå 66È unveraenderô (Standard-FCÂ voî  5CÈ  bió 
+7FH).
+
+
+.cp7
+5.6.6. Reg-Kommando
+
+Nacè  Eingabå  voî  "R¢ werdeî diå Staendå  deò  Registerpaarå 
+AF,BC,DE,HL,IX,IY,SĞ  aî deò Aufrufstellå deó  Monitoró  sowiå 
+diå  Leitadresså deó Rettebereichó dieseò Registeò (fueò even
+tuellå Modifizierunç mitteló S-Kommando© angezeigt.
+
+
+.cp7Š5.6.7. Time-Kommando
+
+Nacè Eingabå voî "T¢ wirä einå "5¢ zuò  Aktivierung/Deaktivie
+runç  deó  5-ms- (beé PC171µ 25-ms-© Zeittakteó odeò einå  "1¢ 
+zuò Aktivierung/Deaktivierunç deó 1-s- (beé PC171µ wiå 25-ms-© 
+Zeittakteó erwartet®  Folgô danacè keiî Zeichen¬  sï wirä  deò 
+Takô aktiviert¬ eiî anschliessendeó "-¢ deaktivierô ihn.
+
+
+.cp7
+5.6.8. Help-Kommando 
+
+Nacè Eingabå voî "H¢ wirä einå Hexadezimal-Zahì zwischeî ° unä 
+FFFÆ erwartet® Ihò Dezimalwerô unä ggf® daó zugeordnetå ASCII-
+Zeicheî (nuò fueò Zahleî zwischeî 20È unä 7EH© werdeî ausgege
+ben.
+
+
+.cp7
+5.6.9. Out/In-Kommando
+
+Nacè Eingabå voî "O¢ wirä einå Hexadezimal-Zahì aló Portadres
+så erwartet® Dieså isô miô Enteò abzuschliessen® Anschliessenä 
+wirä  einå  weiterå  Hexadezimal-Zahì aló  auszugebendeó  Bytå 
+erwartet® Wirä stattdesseî nuò Enteò eingegeben¬ sï handelô eó 
+sicè  uí  einå Eingabe¬  deò gelesenå  Werô  wirä  hexadezimaì 
+protokolliert.
+Deò  hoeherwertigå Teiì deò Portadresså liegô beé deò Ausfueh
+runç  deó E/A-Befehló auæ deí Adressbuó aló Biô  15-8¬  werdeî 
+wenigeò  aló dreé Hex-Zifferî angegeben¬  sï isô  dieseò  Teiì 
+gleicè 0.
+
+
+.cp7
+5.7. Einbindung der Erweiterungen in CP/A
+
+5.7.1. Sprungvektor
+
+Deò  Aufruæ  deó Monitors¬  deò Zeitgeber- unä  deò  Speicher
+schutzroutineî u.a®  BIOS-Unterprogrammå isô voî normaleî Pro
+grammeî  auó  isô uebeò eineî  Sprungvektoò  moeglich®  Dieseò 
+bestehô auó jå ³ Bytå langeî Sprungbefehlen® Diå Anfangsadres
+så deó Sprungvektoró befindeô sicè auæ Hauptspeicherplatú 4EH® 
+
+.cp10
+Folgendå  Entrieó sinä vergebeî (Funktioî unä genauå  Schnitt
+stellå siehå BIOS-Listing):
+
+     Entry                      Parameter         Funktion
+
+       °       JĞ   MONCAÌ       -            Monitor-Aufruf
+       3       JP   TIM5ON       -            5ms/25ms ein
+       6       JP   TIM5OF       -            5ms/25ms aus
+       9       JP   TIM1ON       -            1 sec ein
+       C       JP   TIM1OF       -            1 sec aus
+       F       JP   MPINIT       -            Sp.schutz init
+      12       JP   MPSET        Reg. BC,DE   Sp.schutz ein
+      15       JP   MPOFF        -            Sp.schutz aus
+      18       JP   DELSPS       -            verz. Sondertast
+      1B       JP   DELSPR       -            zul. Sondertast
+      1E       JP   CRTUML       Reg. A       Umlaut umkodir.
+      21       JP   DISKIO       Reg. HL,IX,AF phys. Disk-E/A
+
+Sinä diå betreffendeî Funktioneî nichô generiert¬ sï stehô auæ Šdeí Entrù  eiî RET-Befehì (unä ² NOP-Befehle).
+
+.cp12
+Der Aufruf ist z.B. ueber folgende Befehlsfolge moeglich:
+
+          ld   a,<entry>
+          ld   hl,(4eh)
+          add  a,l
+          ld   l,a
+          jr   nc,novcpx
+          inc  h
+novcpx:   jp   (hl)
+
+
+.cp12
+5.7.2. Feste Adressen im unteren Hauptspeicher
+
+     00h..02h       JP   BIOS+3    (Warmstart)
+          03h       IOBYTE
+          04h       User/Defaultdrive
+     05h..07h       JP   BDOS
+     08h..1fh       frei           (fuer RST-Routinen nutzbar)
+     20h..2ch       bei OSS-RAM-Floppy belegt, sonst frei
+     2dh..37h       frei           (fuer RST-Routinen nutzbar)
+          38h       JP   Break     (BIOS-Monitor oder Debugger)
+     3bh..3fh       reserviert
+
+
+Aló  Scratch-Bereicè deó BIOÓ sinä iî CP/Í diå Zelleî 40È  bió 
+4FÈ freigehalten®  Siå werdeî voî CP/Á wiå folgô benutzt¬  bió 
+auæ CPMEXÔ koenneî allå Wertå aucè voí Nutzeò gesetzô werden:
+
+.cp12
+          40h       Pufferspeicher fuer Tastatur-Lampen
+                    (° beé aus¬ ± beé ein©     beé K760¶ neben
+                    Bit  7    Hardcopy-Lampe    INS MODE
+                         6    Fehler-Lampe        CI
+                      5..4    2-Bahn-Drucker oder reserviert
+                      3..0    Selektor 3-0      Selektortasten
+   
+     41h..42h       TIM5CN    Zaehler 5-ms-Zeittakt
+     43h..44h       TIM1CN    Zaehler 1-s-Zeittakt
+     45h..46h       TIM1RT    Adr. der 1-s-Nutzerroutine
+     47h..49h       reserviert
+     4ah..4bh       KRITBG    Adresså  eineò  Anwenderroutine¬ 
+                              diå   beií   Beginî   kritischeò 
+                              Funktioneî   deó   BIOÓ    (z.B® 
+                              Floppytransfer¬    Bildschirmar
+                              beit©  aufgerufeî  wird®   Dieså 
+                              Adresså wirä beé jedeí Warmstarô 
+                              auæ  eineî  RET-Befehì  ií  BIOÓ 
+                              gestellt.
+     4ch..4dh       KRITEN    siehe KRITBG, jedoch Ende
+     4eh..4æh       CPMEXÔ    Sprungvektoradresså fueò
+                              CP/A-Erweiterung
+--------------
+     50h..52h       BIOS-BCD-Uhr in der Form HHMMSS
+     53h..55h       von ACCOUNT hinterlegtes BCD-Datum TTMMJJ
+     56h..5bh       reserviert
+     5ch..7fh       Standard-FCB
+     80h..ffh       Standard-DMA
+
+     ab 100h        Beginn TPAŠ
+.cp7
+5.7.3. Belegung der Interruptsaeule
+
+Diå  Interruptsaeulå  befindeô  sicè i.a®  40è Byteó  voò  deí 
+Beginî deó Bildschirmpuffers¬  d.h® auæ f7c0h® Diå genauå Lagå 
+solltå  uebeò daó I-Registeò ermittelô  werden¬  ií  folgendeî 
+wird hierfuer 'ii' verwendet:
+
+     voò  iic0è     BIOS¬ d.h® Interruptsaeulå ohnå Systemmo
+                    difikation nicht nach vorn "verlaengerbar"
+     iic0h..iicfh   Kassettenanschluss, frei wenn nicht vorh.
+     iid0h..iidfh   SIO (V.24 o.ae.)
+     iie0h..iie1h   Paritaet 256k Speichererweiterung
+     iie2h..iie5h   frei
+     iie6h..iie7h   Speicherschutz
+     iie8h..iiebh   Disketten
+     iiech..iiefh   frei
+     iif0h..iif7h   Lochstreifen Leser/Stanzer
+     iif8h..iifbh   System-CTC Kanal 0, 1 (frei)
+     iifch..iiffh   System-CTC Kanal 2, 3 (5ms, 1sec)
+
+.cp7
+6. Besonderheiten des BDOS
+
+CP/Á unterscheideô sicè durcè folgendå inhaltlicheî  Veraende
+rungeî  ií  BDOÓ voí Betriebssysteí  CP/M¬  Versioî  2.²  (beé  
+gleichem Hauptspeicherbedarf von E00h Bytes):
+
+- Beschleunigunç deò Arbeiô miô Nicht-Default-Laufwerken®  Isô 
+  ií    FCÂ  eiî  andereó aló daó  Default-Laufwerë  angegebeî 
+  (FCB[0]<>0© unä dieó isô nichô ausgewaehlt¬ sï wirä voí BDOÓ 
+  auæ  dieseó umgeschalteô (SELDSK© unä beií  Verlasseî  nichô 
+  zurueckgeschaltet¬  sonderî  nuò einå haengendå  Umschaltunç 
+  vermerkt.
+  Dadurcè  wirä einå staendigå Uebernahmå  deò  Disk-Parameteò 
+  durcè  daó BDOÓ vermieden¬  sï dasó aucè iî dieseí Falì  diå 
+  gleichå  Geschwindigkeiô  wiå  beé deò Arbeiô  miô  Default-
+  Disketteî erreichô wird.
+
+- Wegfall der ^S-Funktion.
+  Daó  Stoppeî  voî Konsolausgabeî kanî  aló  Spezialfalì  deò 
+  allgemeineî Stop-Funktioî ií BIOÓ (s.5.1.3© erreichô werden® 
+  Verbundeî  miô  deí Wegfalì deò ^S-Funktioî konntå  auæ  diå 
+  Pufferunç voî Konsoleingabeî ií BDOÓ voelliç verzichteô wer
+  den¬  d.h® eó werdeî keinå Zeicheî vertauscht¬ wenî zwischeî 
+  BDOÓ- unä direkteò BIOS-Tastatureingabå gewechselô wird.
+
+- ^Ó  unä DEÌ wirkeî beé deò Stringeingabå uebeò daó BDOÓ  wiå 
+  ^H.
+
+- Uí einå Arbeiô ohnå L× Á (weiì eó geradå defekô isô unä  diå 
+  Laufwerkå nichô umgesteckô werdeî koennen© zõ erlauben¬ wirä 
+  statô Laufwerë Aº  dasjenigå Laufwerk¬ voî deí auó deò Kalt
+  starô  erfolgtå  beé deò BDOS-Funktkioî "Disk-Reset¢  selek
+  tiert®  Dá miô dieseò BDOS-Funktioî aucè diå Abarbeitunç voî 
+  SUBMIT-Stroemeî  verbundeî ist¬  musó daheò beií Aufruæ  voî 
+  SUBMIÔ daó Kaltstart-Laufwerë aló Standardlaufwerë  zugewie
+  seî sein, damit der Kommandostrom dort abgelegt wird!
+  Erfolgtå  deò Kaltstarô voî Laufwerë A¬  sï haô dieså  BDOS-
+  Aenderunç keinå Auswirkungen.
+Š- IØ  unä  IÙ werdeî durcè daó BDOÓ (unä darauó  resultierendå 
+  BIOS-Aufrufe© nichô zerstoert.
+
+- Eó  wurdå  eiî Kopierschutú  integriert¬  daó  Kopiereî  ge
+  schuetzteò  Dateieî  fuehrô zõ deò Fehlermeldunç  'FileR/O§ 
+  (unabhaengiç voí evtl®  R/O-Statuó deò Dateien)®  Wiå dieseò 
+  Schutú funktioniert¬ wirä hieò nichô verraten.
+
+
+.cp7
+7. Besonderheiten des CCP
+
+Daó CCĞ enthaelô gegenuebeò deò Versioî CP/Í 2.² einigå Erwei
+terungeî  (beé gleicheí Hauptspeicherbedaræ voî  800è  Bytes)® 
+Siå  betreffeî voò alleí diå Arbeiô miô verschiedeneî  Nutzer
+bereichen¬ wiå siå sicè beé 800k-Disketteî aló sinnvolì erwei
+seî kann.
+
+Beé  eineí eingestellteî Nutzerbereicè groesseò aló  °  lauteô 
+diå Promt-Meldunç du¾ statô nuò d¾ (ä fueò Default-Laufwerk¬ õ 
+fueò  dezimalå Nutzernummer)®  Hierdurcè haô deò Anwendeò  beé 
+deò  Aufteilunç eineò Diskettå iî mehrerå Nutzerbereichå eineî 
+leichtereî Ueberblick¬  iî welcheí Bereicè eò sicè  z.Zt®  be
+wegt.
+
+Kommandofileó  werdeî  beé USER>° aucè unteò USEÒ °  unä  wenî 
+dorô erfolgloó auæ deò Systemdiskettå (ií Kaltstart-LW©  unteò 
+USEÒ ° gesuchô (gilô nichô fueò nachgeladenå Files!).
+
+Weiterhiî existiereî zusaetzlichå residentå Kommandos:
+
+  CLK hh:mm:ss tt.mm.jj
+          Durcè  dieseó  Kommandï  koenneî Uhrzeiô  unä  Datuí 
+          (beidå Angabeî aâ 50è iî BCD-Forí voí Kaltstarô bzw® 
+          voî  ACCOUNÔ hinterlegt© neõ gestellô  werden®  Dieó 
+          kanî sicè z.B®  nacè Programmen¬  diå dieseî Bereicè 
+          zerstoerô odeò wegeî zõ langeò geschlosseneò  Inter
+          ruptó  einå  falschå Uhrzeiô verursachô  haben¬  aló 
+          notwendiç erweisen.
+          Ií  angegebeneî  Parameterformaô  bedeuteô  (jeweiló 
+          dezimal, auch einstellig erlaubt):
+          hh:mm:só  Stunden:Minuten:Sekunden
+          tt.mm.jê  Tag.Monat.Jahr
+          Allå  Angabeî aâ só koenneî fehlen¬  iî dieseí  Falì 
+          werdeî dieså Wertå nichô veraendert.
+  GO <beliebige Parameter>
+	  Daó  letztå  geladenå Programí wirä   ohnå  Neuladeî 
+          aktiviert¬  Parameteò koenneî wiå beií  Direktaufruæ 
+          angegebeî werden¬  Nutzerbereicè beliebiç (d.h®  daó 
+          Programí  kanî  zuvoò uebeò eineî andereî  Nutzerbe
+          reicè iî deî Hauptspeicheò gebrachô wordeî sein),
+  EXT [d:]<filename>
+	  Daó  angegebeî  COM-Filå  wirä zõ  eineí  residenteî 
+          Kommandï erklaert¬  indeí eó voò BDOS¬  CCĞ unä  voò 
+          evtl®  schoî  residenteî zusaetzlicheî Kommandoó  ií 
+          Hauptspeicheò abgelegô wird¬ uí beé Aufruæ statô voî 
+          Diskettå voî dorô nacè 100è geladeî zõ werden® Hier
+          durcè  verringerô sicè jedocè deò TPÁ  entsprechend® 
+          Dá  residentå  Kommandoó nuò maximaì ´ Zeicheî  lanç 
+          seiî duerfen¬ triffô dieó aucè auæ <filename¾ zu.
+Š  RES
+	  Streicheî alleò zusaetzlicè residenteî Kommandos
+  SWAP    <Laufwerk>: <Laufwerk>:
+          logisches Austauschen der beiden Laufwerke,
+          z.B®  machô "SWAĞ Aº  M:¢ nacè deí Fuelleî deò  RAM-
+          Floppù  dieså zuí Laufwerë Á (schnellereó  Nachladeî 
+          beé WordStar¬ dBaså u.ae.).
+          Aló Nebeneffekô bieteô daó Kommmandï "SWAĞ Aº A:¢ iî 
+          Submit-Jobstroemeî diå Moeglichkeiô fueò eiî Disket
+          ten-Reseô (^C-Ersatz).
+
+Beé  jedeí  Warmstarô pruefô daó BIOS¬  oâ daó uebeò  daó  CCĞ 
+definiertå Standard-Laufwerë ií Systeí definierô ist® Ií nega
+tiveî  Falì (z.B®  Tippfehler© wirä auæ daó Kaltstart-Laufwerë 
+umgeschaltet¬ deò Nutzerbereicè bleibô erhalten.
+
+------------------ Ende der Dokumentation --------------------

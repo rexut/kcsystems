@@ -1,0 +1,45 @@
+.po10
+.op
+Dr. Albrecht Mugler
+PSF 24
+Oberlungwitz
+9273
+
+
+Werter PC/Mer!
+
+Beií  Einsatú voî U273² (4Ë ª ¸ EPROM's© ií PC/M-Computeò  sinä 
+folgende [nderungen auf der zentralen Platine erforderlich:
+
+1. Auftrennen der Verbindung pin 21 von D14...D17 (EPROM-
+   Fassung) an plus 5V (5P)
+2. Verbindung zwischen pin 21 von D14..D17 mit pin 17 von D7
+   (DS8282) herstellen (Adresse 13!)
+3. Verbindung von pin 9/10 von D12 (D154) an pin 17 von D7 Auf-
+   trennen und pin 9/10 von D12 an Masse legen
+4. U2732 einsetzen
+
+Diå  Aufteilunç  deò  Speicherbereichå  isô  wiå  folgô   damiô 
+festgelegt:
+0000H - 07FFH       D14  niederwertige 2 kByte
+0800H - 0FFFH       D15  niederwertige 2 kByte
+1000H - 17FFH       D16  niederwertige 2 kByte
+1800H - 1FFFH       D17  niederwertige 2 kByte
+2000H - 27FFH       D14  h|herwertige 2 kByte
+2800H - 2FFFH       D15  h|herwertige 2 kByte
+3000H - 37FFH       D16  h|herwertige 2 kByte
+3800H - 3FFFH       D17  h|herwertige 2 kByte
+
+Diå logischå Aufteilunç erfolgô jå nacè Betriebssysteí unä  isô 
+zuò Zeiô wiå folgô festgelgt:
+0000H - 1FFFH       ROM-BIOS
+2000H - 27FFH       CCP
+2800H - 37FFH       BDOS
+3800H - 3FFFH       reserviert f}r Systemerweiterungen
+                    (Zeichensatz f}r Grafikerweiterung...).
+
+
+
+
+
+Dr. A. Mugler

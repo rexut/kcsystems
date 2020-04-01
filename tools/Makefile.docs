@@ -4,12 +4,14 @@ HAVE_MAKEFILE_DOCS := included
 include $(TOPDIR)/tools/Makefile.lib
 include $(TOPDIR)/tools/Makefile.sphinx
 
-DOCS_IDIR = $(TOPDIR)/Documentation
-DOCS_ODIR = $(DOCS_IDIR)/build
+DOCS_IDIR = $(TOPDIR)/docs
+DOCS_ODIR = $(DOCS_IDIR)/_build
 
 # make pdf command
 quiet_cmd_mkpdf = LATEX$(tab)BLD$(tab)$(notdir $(3))
-      cmd_mkpdf = $(MAKE) -s -C $(2) PDFLATEX=$(4) $(3) $(qsout) 2>&1
+      cmd_mkpdf = $(MAKE) -s -C $(2) \
+                  PDFLATEX="latexmk -pdf -pdflatex='$(4) %O %S' -dvi- -ps-" \
+                  $(3) $(qsout) 2>&1
 
 PHONY += testdocs spelldocs htmldocs pdfdocs cleandocs
 
@@ -25,7 +27,7 @@ htmldocs:
 	$(call cmd,sphinx,$(DOCS_IDIR),$(DOCS_ODIR),html)
 
 pdfdocs:
-	$(call cmd,sphinx,$(DOCS_IDIR),$(DOCS_ODIR),latex)
+	$(call cmd,sphinx,$(DOCS_IDIR),$(DOCS_ODIR),latex,-t svgconvert)
 	$(call cmd,mkpdf,$(DOCS_ODIR)/latex,all-pdf,xelatex)
 
 cleandocs:

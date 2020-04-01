@@ -1,0 +1,48 @@
+\tikzstyle{every node}=[font=\normalsize]
+\tikzset{
+   every picture/.style={/utils/exec={\sffamily}},
+   square matrix/.style={
+      matrix of nodes,
+      nodes in empty cells,
+      column sep=-\pgflinewidth,
+      row sep=-\pgflinewidth,
+      nodes={draw,
+         minimum height=#1,
+         text width=#1,
+         anchor=center,
+         align=center,
+         inner sep=0pt
+      },
+   },
+   square matrix/.default=1.0cm,
+   E/.style={fill=white,draw=white},
+   k/.style={circle,fill=lightgray,font=\scriptsize\bfseries},
+   K/.style={circle,fill=lightgray,font=\Large\bfseries},
+   s/.style={fill=green!10,draw=green!10,font=\scriptsize},
+   S/.style={fill=green!10,draw=green!10},
+   n/.style={fill=cyan!10,draw=cyan!10,font=\scriptsize},
+   N/.style={fill=cyan!10,draw=cyan!10},
+   c/.style={fill=purple!10,draw=purple!10,font=\scriptsize},
+   C/.style={fill=purple!10,draw=purple!10}
+}
+
+\matrix[square matrix, row sep=1pt, column sep=1pt](table){
+   |[c]|CTRL   & |[n]|Normal \\
+   |[k]|Taste  & |[s]|SHIFT  \\
+   |[C]|{2F}   & |[N]|{2F} & |[C]|{3B}       & |[N]|{3B} & |[C]|{0C}       & |[N]|{6C} & |[C]|{0F}  & |[N]|{6F} & |[C]|{39}   & |[N]|{39} & |[C]|{11}    & |[N]|{11} \\
+   |[k]|{/\\?} & |[S]|{3F} & |[k]|{:\\;}     & |[S]|{3A} & |[K]|{L}        & |[S]|{4C} & |[K]|{O}   & |[S]|{4F} & |[k]|{(\\9} & |[S]|{28} & |[k]|{F9}    & |[S]|{11} \\
+   |[C]|{27}   & |[N]|{27} & |[C]|{1B}       & |[N]|{7B} & |[C]|{10}       & |[N]|{70} & |[C]|{2D}  & |[N]|{2D} & |[C]|{30}   & |[N]|{30} & |[C]|{0B}    & |[N]|{0B} \\
+   |[k]|{'\\"} & |[S]|{22} & |[K]|{[}        & |[S]|{5B} & |[K]|{P}        & |[S]|{50} & |[K]|{\_}  & |[S]|{5F} & |[k]|{)\\0} & |[S]|{29} & |[k]|{F10}   & |[S]|{0B} \\
+   |[C]|{03}   & |[N]|{03} & |[C]|{0D}       & |[N]|{0D} & |[C]|{1D}       & |[N]|{7D} & |[C]|{1C}  & |[N]|{7C} & |[C]|{3D}   & |[N]|{3D} & |[C]|{18}    & |[N]|{18} \\
+   |[K]|{π}    & |[S]|{03} & |[k]|{RET\\URN} & |[S]|{0D} & |[K]|{]}        & |[S]|{5D} & |[K]|{←}   & |[S]|{5C} & |[k]|{+\\=} & |[S]|{2B} & |[k]|{LF}    & |[S]|{18} \\
+   |[E]|       & |[E]|     & |[C]|{1F}       & |[N]|{1E} & |[C]|{7E}       & |[N]|{7E} & |[C]|{04}  & |[N]|{04} & |[C]|{08}   & |[N]|{08} & |[C]|{05}    & |[N]|{05} \\
+   |[E]|       & |[E]|     & |[k]|{C=}       & |[S]|{1F} & |[k]|{INS\\DEL} & |[S]|{60} & |[K]|{→}   & |[S]|{04} & |[K]|{←}    & |[S]|{08} & |[k]|{LB}    & |[S]|{05} \\
+   |[C]|{30}   & |[N]|{30} & |[C]|{31}       & |[N]|{31} & |[C]|{34}       & |[N]|{34} & |[C]|{37}  & |[N]|{37} & |[C]|{3F}   & |[N]|{3F} & |[C]|{01}    & |[N]|{01} \\
+   |[K]|{0}    & |[S]|{30} & |[K]|{1}        & |[S]|{31} & |[K]|{4}        & |[S]|{34} & |[K]|{7}   & |[S]|{37} & |[K]|{?}    & |[S]|{3F} & |[k]|{HOME}  & |[S]|{0C} \\
+   |[C]|{2E}   & |[N]|{2E} & |[C]|{32}       & |[N]|{32} & |[C]|{35}       & |[N]|{35} & |[C]|{38}  & |[N]|{38} & |[C]|{7F}   & |[N]|{7F} & |[C]|{15}    & |[N]|{15} \\
+   |[K]|{.}    & |[S]|{2E} & |[K]|{2}        & |[S]|{32} & |[K]|{5}        & |[S]|{35} & |[K]|{8}   & |[S]|{38} & |[k]|{CE}   & |[S]|{7F} & |[k]|{OFF}   & |[S]|{15} \\
+   |[C]|{0A}   & |[N]|{0A} & |[C]|{33}       & |[N]|{33} & |[C]|{36}       & |[N]|{36} & |[C]|{39}  & |[N]|{39} & |[C]|{2A}   & |[N]|{2A} & |[C]|{18}    & |[N]|{18} \\
+   |[k]|{00}   & |[S]|{0A} & |[K]|{3}        & |[S]|{33} & |[K]|{6}        & |[S]|{36} & |[K]|{9}   & |[S]|{39} & |[K]|{*}    & |[S]|{2A} & |[k]|{GRAPH} & |[S]|{18} \\
+   |[E]|       & |[E]|     & |[C]|{0D}       & |[N]|{0D} & |[C]|{2B}       & |[N]|{2B} & |[C]|{2D}  & |[N]|{2D} & |[C]|{2F}   & |[N]|{2F} & |[C]|{13}    & |[N]|{13} \\
+   |[E]|       & |[E]|     & |[k]|{ENTER}    & |[S]|{0D} & |[K]|{+}        & |[S]|{2B} & |[K]|{-}   & |[S]|{2D} & |[K]|{/}    & |[S]|{2F} & |[k]|{RUN}   & |[S]|{13} \\
+};

@@ -109,12 +109,20 @@ install it in a Python virtual environment, please do:
 
 ## Howto build the documentation
 
-**Python virtual environment:**
+**Python 3.7 virtual environment:**
 
 ```bash
-$: python2.7 tools/sphinx/virtualenv_bootstrap.py
-$: source .py27venv/bin/activate
-$: pip install -r tools/sphinx/virtualenv_requirements_freezed.txt
+$: python3 -m venv --copies --promp="$(basename $(pwd))[$(python3 --version)]" .py38env
+$: source .py38env/bin/activate
+$: pip install --upgrade pip
+$: pip install --upgrade setuptools
+$: pip install --upgrade --requirement tools/requirements.txt
+```
+
+**Bootstrap fonts:**
+
+```bash
+$: ./docs/_static/fonts/.rebuild-dejavu
 ```
 
 **Documentation tests:**
@@ -136,14 +144,21 @@ $: make pdfdocs
 ```bash
 $: make cleandocs
 $: deactivate
-$: rm -rf .py27venv
+$: rm -rf .py38env
 ```
 
 ### System packages on Ubuntu (>= 16.04):
 
 ```bash
-$: sudo apt-get install build-essential python2.7-dev
+$: sudo apt-get install build-essential python3.7-dev
+$: sudo apt-get install curl tar bzip2 woff2 eot-utils
+$: sudo apt-get install fontconfig fontforge-nox
 $: sudo apt-get install libfreetype6-dev librsvg2-bin icoutils
-$: sudo apt-get install poppler-utils imagemagick texlive-xetex texlive-pictures
-$: sudo apt-get install enchant aspell aspell-en
+$: sudo apt-get install poppler-utils imagemagick pdf2svg
+$: sudo apt-get install latexmk xindy unifont fonts-dejavu
+$: sudo apt-get install fonts-wqy-microhei fonts-font-awesome
+$: sudo apt-get install texlive-xetex texlive-pictures
+$: sudo apt-get install texlive-fonts-recommended texlive-fonts-extra
+$: sudo apt-get install enchant aspell aspell-en aspell-de
+$: sudo apt-get install wamerican-huge wngerman wgerman-medical
 ```

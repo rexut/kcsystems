@@ -1,0 +1,21 @@
+Probleme im Interrupt-Betrieb des PC/M
+
+Ií  Fallå deò Nutzunç voî Interruptó ií PC/Í kanî eó zõ Fehlerî 
+beé deò Abarbeitunç kommen®  Dieså treteî z.B® beé Installatioî 
+der Uhr (PCMDEF.MAC) in der Version 3.XX auf.
+Dieseò Effekô kanî behobeî werden¬ wenî folgendå [nderungen 
+vorgenommen werden:
+
+ - trennen der Verbindung D9 (DS8212) pin 13 von pin 10 des
+   davor liegenden Negators 
+ - Einfuegen eines Gatters eines DL008 an dieser Stelle;
+   Ausgang des DL008 auf pin 13 von D9 und ein Eingang
+   auf pin 10 des Negators
+ - der verbleibende Eingang wird auf /M1 gelegt; z.B. an D8
+   (DS8282) pin 13
+ - Der benoetigte DL008 wird entweder "Huckepack" z.B. auf den
+   auf der Platte vorhandenen DL008 aufgeloetet, oder es wird
+   die Schrittbetriebslogik ausser Betrieb genommen und damit
+   der freiwerdende DL008 verwendet.
+
+

@@ -71,6 +71,7 @@ help:
 	@echo  'Documentation targets:'
 	@echo  '  htmldocs        - HTML'
 	@echo  '  pdfdocs         - PDF'
+	@echo  '  spelldocs       - spelling checker of all documentation files'
 	@echo  '  cleandocs       - clean all generated files'
 	@echo  ''
 	@echo  'Machine specific targets ($(MACH_DIR)):'

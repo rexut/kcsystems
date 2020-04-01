@@ -1,0 +1,1121 @@
+.PN17
+5®        Daó Betriebssystem
+
+5.1®      Diå Struktur
+
+Daó  Betriebssysteí deó PC/M-Computeró wurdå iî Forí  einzelneò 
+Bloeckå  erstellt®  Dieså Bloeckå (Module© arbeiteî  weitgehenä 
+unabhaengiç   voneinander®   Siå   sinä  damiô  sowohì   leichô 
+austauschbaò  aló  aucè  aî  anderå  Hardwarå  anpassbar®   Diå 
+erforderlicheî   Informationeî   sinä  iî   deî   nachfolgendeî 
+Abschnitteî enthalten®  Diå Ein- unä Austrittspunktå deò Modulå 
+sinä  iî  Listeî (Sprungvektoren© auæ deî ersteî  Adresseî  deó 
+jeweiligeî  Moduleó  zusammengefasst®   Einå  Erweiterunç   isô 
+moeglich¬  wenî  weiterå Sprungvektoreî angefuegô  werden®  Diå 
+Reihenfolgå  deò Spruengå unä dereî Bedeutunç solltå abeò unteò 
+alleî  Umstaendeî erhalteî bleiben¬  uí diå Kompatibilitaeô  zõ 
+andereî Computerî deó gleicheî Typó zõ erhalten® 
+Diå Bestandteilå deó PC/M-Grundbetriebssystemeó sind:
+
+- daó BIOÓ (Basiã Inpuô Outpuô System)
+- deò Debuggeò (Eingeben¬ Aenderî unä Testeî voî Programmeî und
+  Dateien)
+- daó Kassettenmoduì V-Tapå (logischeò Kerî deó Grundbetriebs-
+  systemeó unä Kassettenarbeit)
+
+Werdeî diå Programmteilå 
+
+- CCĞ (Consoì Commanä Processor© und
+- BDOÓ (Basiã Disã Operating System)
+
+nachgeladen¬  erhaelô maî eiî CP/Í kompatibleó  Betriebssystem¬ 
+miô deí einå Vielzahì voî Programmeî abgearbeiteô werdeî kann.
+
+5.2®      Deò Software-Kerî 
+
+Kerî  deó  gesamteî  Betriebssystemeó  isô  einå  Sammlunç  voî 
+Programmen¬  diå  diå Hardwarå deó Rechneró unmittelbaò steuerî 
+(physischå  Treiber)®  Dieså Routineî trageî deî Charakteò  voî 
+Standardschnittstellen¬ diå deí CP/M- bzw® SCP-BIOÓ entsprecheî 
+[5]®  Vielå  Programmå voî Heimcomputerî odeò andereî  Systemeî 
+verwendeî  dieså odeò sehò  aehnlichå  Schnittstellen¬  wodurcè 
+sicè   deò   Aufwanä  beé  deò  Programmanpassunç  sehò   starë 
+reduziereî laesst®  Voraussetzunç isô natuerlicè einå aehnlichå 
+Hardwarå unä deò gleichå Mikroprozessortyp® 
+Daó  BIOÓ  beginnô auæ deò Adresså  0DE00È  deó  Computers®  Iî 
+lueckenloseò  Folgå steheî aâ dieseò Adresså Spruenge¬  diå  zõ 
+deî einzelneî Programmteileî deó BIOÓ verzweigen®    
+Daó BIOÓ isô iî zweé Versioneî vorgestellt¬ jå nacè Ausbaustufå 
+deó  RAM-Bereiches®  Wirä  nuò  einå RAM-Banë verwendeô  (6´  Ë 
+Byte)¬  sï sinä verschiedenå Routineî ií BIOÓ nichô  verwendbaò 
+unä   daó  Systeí  kanî  nichô  aló  CP/M-kompatibleò   Rechneò 
+eingesetzô  werden®  Trotzdeí  isô  eiî Fuellå  voî  Programmeî 
+nutzbar®  Wirä  deò  Rechneò  miô  insgesamô  12¸  Ë  Bytå  RAÍ 
+ausgeruestet¬  kanî bereitó miô eineí RAM-Floppù voî 6² Ë  Bytå 
+gearbeiteô werden®  Dazõ existierô eiî BIOS¬  welcheó zweé RAM-
+Floppù zõ jå 6² Ë Bytå verwalteî kanî (Bilä 5)®  Beé 19² Ë Bytå 
+RAÍ solltå danî eiî BIOÓ miô eineí RAM-Floppù zõ 12´ Ë Bytå RAÍ 
+eingesetzô    werden¬    dá   vielå   Programmå   eineî   hoheî 
+Speicherbedaræ  habeî  unä  nichô auæ  mehrerå  Floppy'ó  (RAM-
+Bereiche©  verteilô werdeî duerfeî (z.B®  WordStar)®  Daó  BIOÓ 
+Listinç isô iî Bilä 3¶ dargestellt.
+ŠDiå BIOS-Routineî sinä ií einzelnen:
+BOOÔ (Kaltstart» 0DE00H)
+
+Deò Starô deó Betriebssystemeó erfolgô nacè RESEÔ odeò nacè deí 
+Einschalten® Diå Hardwarå wirä fueò deî Betrieâ vorbereiteô unä 
+eó  werdeî  verschidenå  Grundeinstellungeî  vorgenommen®   Daó 
+Betriebssysteí  wirä  voí ROÍ iî deî RAÍ geladeî unä  deò  ROM-
+Bereicè  wirä  danacè  abgeschalten®  Dadurcè isô  deò  gesamtå 
+Arbeitsspeicheò deó Mikroprozessoò aló RAÍ verfuegbaò unä  kanî 
+beliebiç beschriebeî werden¬ waó wiederuí diå Anpassunç fremdeò 
+Softwarå  erleichtert®  Deò Bildschirí wirä geloescht¬  unä  eó 
+erfolgô einå Kaltstartausschrifô miô Anzeigå deò Systemversion® 
+Diå  Systemportó (Kassettengeraeô unä SIO-Schnittstelle© werdeî 
+initialisiert®  Diå Steuerwoerteò fueò diå Initialisierunç sinä 
+iî  eineò  Tabellå zusammengefassô unä koenneî  erweiterô  bzw® 
+ergaenzô  werdeî (Adresså 0E3B2È - 0E3F1H¬  beé 12´  KBytå  RAÍ 
+Floppy)® Iî dieseò Tabellå isô zuersô daó Porô eingetragen¬ auæ 
+welcheó  daó  nachfolgendå Steuerworô ausgegebeî  werdeî  soll® 
+Schliesslicè  erfolgô eiî Sprunç iî daó Kassettenmoduì  V-Tape¬ 
+welcheó zusaetzlicè diå Steuerunç deó Systemeó uebernimmt® 
+
+WBOOÔ (Warmstart» 0DE03H)
+
+Diå   Routinå   versuchô   iî   daó   RAM-Floppy-Betriebssysteí 
+(Bestandteiì   deó  CP/V-Systemes©  einzusteigeî  bzw®   wiedeò 
+dorthiî zurueckzukehren®  Gleichzeitiç werdeî deò Debuggeò  unä 
+daó V-Tapå Moduì voí ROÍ nachgeladen® Nuî wirä geprueft¬ oâ CCĞ 
+unä  BDOÓ bereitó geladeî wurden®  Isô daó deò Fall¬  erscheinô 
+diå  Angabå deó aktuelleî Laufwerkes¬  unä diå Arbeiô  ií  CP/Í 
+kompatibleî  CP/V-Systeí  kanî  beginnen®   Verschiedenå  CP/M-
+Programmå  zerstoereî  waehrenä ihreò Arbeiô deî  CCP®  Uí  eiî 
+haeufigeó  Nachladeî  zõ  vermeiden¬   wurdå  deò  CCĞ  ií  ROÍ 
+abgelegt® Daó BDOÓ musó grundsaetzlicè voî Kassettå nachgeladeî 
+werden¬  eó wirä abeò ií Normalfalì waehrenä deò Programmarbeiô 
+nichô   zerstoert®   Wurdå   eiî  Fehleò  ií  BDOÓ   bzw®   CCĞ 
+festgestellt¬  erscheinô diå Ausschrifô "CCP/BDOÓ Laden!¢ (CCP-
+ROÍ  nichô  gesteckô odeò defekt© odeò "BDOÓ  Laden!¢  (CCP-ROÍ 
+ok)® Danî musó daó entsprechendå Moduì voî Kassettå nachgeladeî 
+werden.
+
+Diå ROM-Belegunç ist:
+
+IÓ D1´  BIOS
+IÓ D1µ  Debugger
+IÓ D1¶  V-Tape
+IÓ D1·  CCP
+
+Deò  Rechneò isô bereitó miô eineò Bestueckunç voî D1´ unä  D1µ 
+arbeitsfaehig.
+
+CSTÓ (Consoì STatuS¬ Tastaturstatus» 0DE06H)
+
+Diå   Routinå   kehrô   miô   eineò   Informatioî   uebeò   deî 
+Tastaturstatuó iî daó aufrufendå Programí zurueck®  Wurdå  einå 
+Tastå gedrueckt¬ enthaelô daó Registeò Á deò CPÕ deî Werô 0FFH¬ 
+wurdå keinå Tastå gedrueckt¬ deî Werô 00H.
+
+CÉ (Consoì Input¬ Tastaturabfrage» 0DE09H)
+
+Dieså  Routinå  kehrô  miô deí Codå deò  gedrueckteî  Tastå  ií 
+Registeò Á deò CPÕ zurueck.ŠWirä  deò Tastencodå 01EÈ erzeugt¬  kanî damiô deò  Tastenklicë 
+(kurzeò  Signalton©  ein- bzw®  ausgeschalteî werden®  Isô  deò 
+Signaltoî ausgeschalten¬ wirä dieseó durcè LEÄ ² angezeigt.
+Deò  Codå  013È  wirä fueò diå  Run/Stoğ  (Lauf/Halt©  Funktioî 
+verwendeô unä durcè LEÄ ± angezeigt® 
+Deò  Tastencodå  01FÈ kanî zuò Rueckkehò  auó  deí  RAM-Floppy-
+Systeí iî daó CP/V-Grundbetriebssysteí genutzô werden® 
+
+CÏ (Consoì Output¬ Zeichenausgabe» 0DE0CH)
+
+Eiî ií Registeò Ã deò CPÕ abgelegteó ASCII-Zeicheî wirä auæ deò 
+Consolå ausgegeben® Deò Bildschirí wirä zeilenweise¬ linkó obeî 
+beginnenä beschrieben®  Wurdå diå Cursordarstellunç zugelassen¬ 
+erscheinô diå naechstå zõ beschreibendå  Bildschirmpositioî miô 
+deò  inverseî Zeichendarstellunç (Bildpunktå helì statô  dunkeì 
+unä  umgekehrt)®  Einigå Zeicheî habeî einå besonderå Bedeutunç 
+unä  werdeî  zuò  Ausfuerhunç  bestimmteò  Funktioneî  auæ  deò 
+Consolå genutzt:
+Codå Kurzforí  Wirkung
+01È  HÃ        Homå Curs» Cursoò wirä auæ diå linkå oberå Eckå 
+               deó Bildschirmeó positioniert
+07È  BELÌ      Bell» Ausgabå eineó Signaltones
+08È  BÓ        Backspace» Cursoò eiî Zeicheî zurueck
+09È  TAÂ       Tabulator» Cursoò auæ naechstå 8eò Tabulatorpo-
+               sition
+0AÈ  LÆ        Linå Feed» Cursoò einå Zeilå nacè unten
+0CÈ  CLÓ       Cleaò Screen» Bildschirí loescheî unä Cursor
+               iî diå linkå oberå Bildschirmeckå positionieren
+0DÈ  CÒ        Cursoò auæ Zeilenanfanç setzen
+14È  CTEOÓ     Cleaò Tï Enä Oæ Screen» Bildschirí aâ Cursorpos.
+               bió zuí Endå deó Bildschirmeó loeschen
+15È  SKIĞ      Skip» Cursoò eiî Zeicheî weiter
+16È  CTEOÌ     Cleaò Tï Enä Oæ Line» wiå CTEOS¬ abeò bió zum
+               Endå deò Zeile
+18È  CLÉ       Cleaò Line» Zeilå Loescheî unä Cursoò aî Zeilen-
+               anfanç positionieren
+1AÈ  LÂ        Linå Back» Cursoò einå Zeilå nacè oben
+1BÈ  ESÃ       Escape» Einleiteî deò direkteî Cursorposition.,
+               nachfolgendeó Zeicheî gibô diå Zeilenpositioî 
+               unä dritteó Zeicheî diå Spaltenpositioî auæ deí 
+               Bildschirí an¬ Biô · beé Spalten- unä Zeilenan-
+               gabå sinä jeweiló gesetzt
+               diå Zaehlunç beginnô miô 80È fueò diå erstå 
+               Spaltå bzw® diå erstå Zeile
+               Beispielº 1BH» 82H» 8AH
+               Deò Cursoò wirä auæ diå 11® Spaltå (08AH© deò 
+               dritteî Zeilå (082H© gesetzt.
+82È  COÎ       deò Cursoò wirä eingeschalten
+83È  COFÆ      deò Cursoò wirä ausgeschalten
+     
+LISÔ (Druckerausgabe» 0DE0FH)
+
+Eiî  ií  Registeò  Ã deò CPÕ abgelegteó Zeicheî  wirä  auæ  deî 
+Druckeò  ausgegeben®  Diå Datenausgabå erfolgô auæ SIÏ Kanaì  Á 
+miô 960° Bä beé · Biô Dateî unä geradeò Paritaeô (8®  Bit)® Diå 
+Informationeî  voí Druckeò werdeî miô gleicheî Bedingungeî  voí 
+RxDÁ  deò  SIÏ  empfangen®  Uebeò  eineî  entsprechendeî  IFSS-
+Verbindeò (s® Hardware© sinä Druckeò voí Tyğ SD115² odeò SD115· 
+miô     IFSS-Schnittstellå    direkô     anschliessbar®     Eiî 
+Umprogrammiereî  auæ V.2´ odeò RS232Ã isô  ebenfalló  moeglich® 
+Druckeò  miô paralleò Schnittstellå koenneî uebeò diå Anwender-ŠPIÏ betriebeî werden.
+
+PUNCÈ (Stanzerausgabe» 0DE12H)
+
+Zeichenausgabå aî deî Stanzeò uebeò Registeò Ã deò CPÕ (isô  ií 
+CP/V-Systeí nichô vorgesehen¬ abeò nachruestbar).
+
+READEÒ (Lochbandleser» 0DE15H)
+
+Eiî Zeicheî wirä voí Lochbandleseò geholô unä ií Registeò Á deò 
+CPÕ  aî daó aufrufendå Programí uebergebeî (isô ií  CP/V-Systeí 
+nichô vorgesehen¬ abeò nachruestbar).
+
+HOMÅ (Spuò ° justieren» 0DE18H)
+
+Diå Spuò ° deó ausgewaehlteî Laufwerkeó wirä eingestellt.
+
+SELDSË (Laufwerë auswaehlen» 0DE1BH)
+
+Ií  Registeò  Ã  wirä diå Nummeò  deó  gewuenschteî  Laufwerkeó 
+uebergebeî  (°  ½ A¬  ± ½ Â bió 1µ ½ P© unä ií Registeò HÌ  diå 
+Adresså      deó     zugehoerigeî      Diskettenparameterkopfeó 
+zurueckgegeben®  Isô daó Laufwerë nichô vorhanden¬  wirä  0000È 
+uebergeben® Diå Laufwerksauswahì erfolgô physiscè ersô beé REAÄ 
+odeò WRITE.
+
+SETTRË (Spuò auswaehlen» 0DE1EH)
+
+Iî   BÃ  wirä  diå  gewuenschtå  Spurnummeò   uebergeben®   Diå 
+Spurauswahì erfolç physiscè wiedeò ersô beé REAÄ odeò WRITE.
+
+SETSEÃ (Sektoò auswaehlen» 0DE21H)
+
+Iî  BÃ  wirä  diå  gewuenschtå  Sektornummeò  uebergeben®   Diå 
+Sektorauswahì erfolgô ersô beé REAÄ odeò WRITE.
+
+SETDMÁ (DMA-Buffeò festlegen» 0DE24H)
+
+Iî   BÃ  wirä  diå  Adresså  eineó  12¸  Bytå  langeî   Bufferó 
+uebergeben¬  iî deí diå Dateî nacè REAÄ abgeholô werdeî koenneî 
+bzw® iî deí diå Dateî voò WRITÅ eingetrageî werdeî muessen.
+
+REAÄ (Leseî eineó Sektors» 0DE27H)
+
+Deò   vorheò   eingestelltå  Sektoò  (SETSEC©  wirä   voî   deò 
+vereinbarteî Spuò (SETTRK© deó gewuenschteî Laufwerkeó (SELDSK© 
+iî  deî gewaehlteî DMA-Buffeò (SETDMA© gelesen®  Ií Registeò  Á 
+deò  CPÕ wirä ° uebergebeî (fehlerfreieó Lesen¬  sonsô wuerdå ± 
+uebergeben).
+
+WRITÅ (Schreibeî eineó Sektors» 0DE2AH)
+
+Eiî  wiå  beé  REAÄ ausgewaehlteò Sektoò wirä  durcè  deî  DMA-
+Bufferinhalô  beschrieben®  Isô  daó nichô  moeglich¬  wirä  ií 
+Registeò   Á  deò  CPÕ  deò  Fehlerkodå   ±   uebergeben®   Beé 
+fehlerfreieí Schreibeî wirä ° uebergeben® Zusaetzlicè erscheinô 
+diå Ausschrifô "BIOÓ RAÍ ERROR"¬ diå auæ nichô vorhandeneî bzw® 
+defekteî RAÍ hinweist.
+
+LISTSÔ (Druckerstatus» 0DE2DH)
+ŠIsô  deò  Druckeò bereiô eiî Zeicheî zõ  uebernehmen¬  wirä  ií 
+Registeò Á deò CPÕ deò Werô 00È uebergeben¬ anderenfalló 0FFH.
+
+SECTRAÎ (Umwandelî deò Sektornummer» 0DE30H)
+
+Ií  Registerpaaò BÃ wirä einå logischå Sektornummeò uebergeben¬ 
+diå  iî  einå  physischå Sektornummeò  umgewandelô  unä  iî  HÌ 
+zurueckgegebeî  wird®  Diå  Umrechnungstabellå wirä  durcè  diå 
+Adresså   ií  Registeò  DÅ  angezeigt®   Daó  RAM-Floppy-Systeí 
+unterscheideô   nichô   zwischeî   logischeò   unä   physischeò 
+Sektornummer.
+
+ 
+5.3®      Daó Kassettenmoduì V-Tape
+
+Magnetbandspeicheò    besitzeî    einå    nahezõ    unbegrenztå 
+Speicherkapazitaet®    Durcè    geringå   Kosteî   unä    freiå 
+Verfuegbarkeiô   deò   erforderlicheî   Geraetå   habeî    sicè 
+Kassettenmagnetbandgeraetå      (KMBG©     iî     verschiedeneî 
+Einsatzgebieteî    voî    Mikrorechnerî    verbreitet®     Fueò 
+unterschiedlichå  Anwendungsfaellå  entstanä sï  einå  Vielzahì 
+verschiedeneò  Aufzeichnungsverfahren¬   diå  zuí  Teiì   starë 
+differenziertå Merkmalå aufweisen.
+Daó  Kassettenmoduì  V-Tapå  uebernimmô ií  PC/M-Computeò  zweé 
+Funktionen®  Zuí ersteî kontrollierô unä steuerô eó diå  Arbeiô 
+ií Grundbetriebssysteí deó Rechners¬ unä zuí zweiteî haô eó diå 
+Aufgabe¬  Dateî unä Programmå sicheò unä schnelì auæ Magnetbanä 
+zõ  speicherî unä wiedeò leseî zõ koennen®  Hard- unä  Softwarå 
+fueò dieså Aufgabeî sinä auæ deò zentraleî Platinå installiert.
+
+5.3.1®    Diå Magnetbandarbeit
+
+Daó Aufzeichnungsverfahren
+
+Diå  Aufzeichnunç  voî  Dateî  auæ  eineí  KMBÇ  erfolgô  durcè 
+Erzeugeî  eineó serielleî Datenstromeó beé moeglichsô  geringeí 
+Hardwareaufwand®  Dazõ eigneô sicè besonderó einå PIO¬  beé deò 
+eiî  Biô  eineó Kanaleó zuò Ausgabå voî Dateî unä eiî  weitereó 
+Biô  zuò  Eingabå voî Dateî verwendeô  wird®  Durcè  serielles¬ 
+kodierteó  Ausgebeî  deò  Dateî  koenneî  dieså   aufgezeichneô 
+werden®  Deò  Lesevorganç  erfolgô  durcè Abfragå deò  PIÏ  unä 
+Dekodierunç deò geleseneî Informationen.
+Ií Poly-Computeò 88° wirä nacè deò Kodierungsvorschrifô  Split-
+Phase-Spacå   aufgezeichneô  (Bilä  21a)®   Diå   erforderlichå 
+Leistungsbandbreitå  zuò  Speicherunç auæ eineí KMBÇ  kanî  beé 
+eineò   Geschwindigkeiô  voî  120°  Bit/ó  problemloó  erreichô 
+werden®  Diå  Struktuò  deò  Dateé [18İ  weisô  allå  fueò  eiî 
+komfortableó  Verfahreî  erforderlicheî Parameteò auf®  Diå  ií 
+Poly-Computeò implementiertå Softwarå nutzô diå  Moeglichkeiteî  
+dieseò  Struktuò nichô auó (Umfanç ca®  40°  Byte)®  Nachteiliç 
+ist¬  dasó  diå  Dateinameî nichô automatiscè erkannô  unä  zuí 
+Starteî deó Lesevorgangeó verwendeô werden.
+Daó  fueò  deî  Datenaustauscè zwischeî  Heimcomputerî  haeufiç 
+verwendetå Verfahreî "SuperTape¢ [19İ arbeiteô gleichfalló nacè 
+deò Kodierungsvorschrifô fueò Split-Phase-Space®  Bemerkenswerô 
+ist¬ dasó eiî zeitlicè optimierteó Programí verwendeô wird® Diå 
+erforderlichå  Zeiô zwischeî deî Abfrageî  bzw®  Ausgabeî  beií 
+Leseî  unä  Schreibeî  wirä durcè diå Anzahì  deò  verbrauchteî 
+Taktå  deò  auszufuehrendeî Befehlå iî  Abhaengigkeiô  voî  deò 
+Taktfrequenú  deò  CPÕ  deó Rechneró  bestimmt®  Daó  Verfahreî 
+erreichô  damiô  Bitrateî voî 360° Bit/ó  odeò  wahlweiså  720° ŠBit/s.
+Allerdingó   konntå  nichô  miô  jedeí  KMBÇ  einå  ausreichenä 
+niedrigå  Fehlerratå  erreichô  werden®   Ungenuegenä  isô  diå 
+implementiertå  Fehlererkennung®  Eó wirä lediglicè diå  Anzahì 
+alleò uebertrageneî logischeî Einseî verglichen® Diå Angabå deó 
+Dateinameî   unä   -typó   entsprichô   uebelicheî   Standards® 
+Automatischå    Synchronisatioî   unä   Fehlererkennunç    sinä 
+gewaehrleistet.
+Daó  iî [8İ beschriebenå Verfahreî fueò deî AC±  arbeiteô  nacè 
+deò        Kodierungsvorschrifô       fueò       Phase-Encodinç 
+(Richtungstaktschrift¬ Bilä 21b)® Daó zeitlicè nichô optimiertå 
+Programí verwendeô einå Bitratå voî 150° Bit/s®  Diå  Erkennunç 
+deò Phasenlagå erfolgô durcè bitweiså Abfragå deò Synchronbyteó 
+deò  zõ  lesendeî Dateé (beé Verwendunç  verschiedeneò  Geraetå 
+erforderlich)®  Blockstruktur¬ automatischå Synchronisatioî unä 
+Namenserkennunç  sinä nichô vorgesehen®  Kritiscè isô ausserdeí 
+diå    Uebertragunç   voî   Dateiparameterî    (Anfangsadresse¬ 
+Startadresse¬ etc.© ohnå Pruefung.
+
+Anforderungeî aî eiî Aufzeichnungsverfahreî fueò KMBÇ 
+- automatischå Synchronisation
+- automatischå Erkennunç deò gewuenschteî Daten
+- Uebertragunç wichtigeò Dateiparameter
+- hohå Ubertragungsgeschwindigkeit
+- hohå Datensicherheit
+- minimaleò Hardwareaufwand
+- leichô anpassbarå Software
+
+Daó  nachfolgenä beschriebenå Programí stellô eineî  Kompromisó 
+deó Forderungskatalogeó dar.
+
+Programmbeschreibung
+
+Daó Programí V-Tapå arbeiteô nacè deò Kodierungsvorschrifô fueò 
+Phase-Encodinç [20İ beé eineò typischeî Bitratå voî 360°  Bit/ó 
+(Bitrateî  voî 120° Bit/s¬  240° Bit/ó unä 480° Bit/ó sinä aucè 
+moeglich)®   Dieså  Bitratå  setzô  eiî  zeitlicè   optimierteó 
+Programí  voraus®  Diå  Verwendunç voî CTC-Interruptó fueò  daó 
+Timinç  deó Programmeó isô nuò eingeschraenkô moeglich¬  dá  eó 
+selbsô  beé staendigeò Interruptfreigabå  zõ  unterschiedlicheî 
+Zeiteî  bió  zuò Annahmå deò Interruptanforderunç kommeî  kann® 
+Fueò eineî geradå auszufuehrendeî OÒ Á Befehì sinä das¬ beé 2,µ 
+MHú Taktfrequenú deò CPU¬  1.¶ us¬  fueò deî Befehì INÃ  (IX+d© 
+9.²  us®  Bezogeî   auæ  einå Halbperiodå  deò  Bittaktfrequenú 
+ergibô  sicè  eiî  Zeitfehleò  (beé  360°  Bit/s©  bió  zõ  5%® 
+Existierô einå NMI-Quelle¬  sï vergroesserô sicè dieseò  Fehleò 
+programmabhaengig®   Weiterhiî   musó  deò  CTÃ  diå   hoechstå 
+Prioritaeô  ií  Systeí  besitzeî odeò diå  einzigå  zugelassenå 
+Interrupt-Quellå sein® Fueò V-Tapå wurdå deò Weç deò zeitlicheî 
+Optimierunç  deó  Programmeó  gewaehlt®   Dabeé  betraegô   deò 
+Zeitfehleò  beií  Schreibeî  unä beií Leseî  deò  Informationeî 
+wenigeò aló 1¥ deò halbeî Periodå deò Bittaktfrequenú unä wirkô 
+sicè  praktiscè  nichô  mehò auæ diå  Datensicherheiô  beé  deò 
+Uebertragunç aus®  Diå Anpassunç deó Programmeó aî verschiedenå 
+Taktfrequenzeî unä diå Geschwindigkeitsaenderunç erfolgô  durcè 
+Einfuegeî  voî Warteschleifeî iî diå Unterprogrammå zuò Ausgabå 
+eineó  Biô bzw®  Bytå unä zuí Leseî eineó Biô bzw®  Bytå  (Bilä 
+19)®  Durcè deî Zeitverbraucè fueò Operationeî zuí Einleseî deò 
+Dateî iî deî Speicher¬  zuí Vergleichen¬ zuò Pruefsummenbildunç 
+usw®  ergibô sicè einå erforderlichå Mindesttaktfrquenú deò CPÕ 
+voî 1,³ MHz® Diå erforderlichå Leistungbandbreitå betraegô nacè Š[17İ  fueò einå Bitratå voî 360° Bit/ó  72° Hú bió 504° Hú  unä 
+isô damiô voî jedeí Heimmagnetbandgeraeô uebertragbar¬ richtigå 
+Kopfpositioî vorausgesetzt® Diå Erkennunç deò Phasenlagå deò zõ 
+lesendeî   Dateî  erfolgô  programmseitiç  beé   selbsttaetigeò 
+Inversioî deò geleseî Datenbits.
+
+Diå Dateistruktur
+
+Diå  Dateî  werdeî  beé deò  Aufzeichnunç  iî  geblockteò  Forí 
+gesendet®    Eiî   Rahmeî   bestehô   auó   Kennzeichnungs- unä 
+Datenblock®   Voò  eineí  Datenblocë  wirä  eiî  vollstaendigeò 
+Kennzeichnungsblocë    ausgegeben®     Jedeí    Blocë    werdeî 
+Synchronzeicheî  vorangestellt®  Danacè folgeî unterschiedlichå 
+Kennbytes¬  diå  Kennzeichnungsblocë unä  Datenblocë  eindeutiç 
+voneinandeò  unterscheiden®  Somiô  wirä  gesichert¬  dasó  daó 
+Empfangsprogramí  innerhalâ  eineò Aufzeichnunç  synchronisierô 
+unä wichtigå Parameter¬  wiå deò aktuellå Name¬  geleseî werdeî 
+koennen®   Daó   Auffindeî  eineò  Dateé  auæ  eineò   Kassettå 
+vereinfachô sicè dadurcè wesentlich®  Weiterhiî wirä voî  eineò 
+dynamischeî  Rahmenlaengå ausgegangen®  Innerhalâ eineó Rahmenó 
+bleibô   diå   Struktuò   dabeé   vollstaendiç   erhalten®   Ií 
+Kennzeichnungsblocë wirä dazõ einå Informatioî uebeò diå Laengå 
+deó  nachfolgendeî Datenblockeó mitgefuehrt®  Folglicè  koenneî 
+beliebigå  Dateilaengeî  auæ  eiî Bytå  genaõ  gespeicherô  unä 
+wiedeò geleseî werden.
+     
+Diå Rahmenstruktur
+
+Deò  Kennzeichnungsblocë (Bilä 20a© bestehô auó Dateinameî  unä 
+Dateityp®  Eó  wurdå diå fueò daó Betriebssysteí CP/Í  ueblichå 
+Struktuò  verwendet®  Dabeé bestehô deò Dateinamå auó ¸  ASCII-
+Zeichen¬  gefolgô  voî eineí Punkô (02EH)¬  unä  deí  Dateityp¬ 
+bestehenä  auó  ³ ASCII-Zeichen®  Diå weitereî  Byteó  besitzeî 
+nachfolgendå Bedeutung:
+Bytå 12¬ 1³    Kennzeichnungsnummeò deó Rahmenó 0...65535
+Bytå 1´        Dateiendekennunç     0È ½ Dateé nichô zõ Ende
+                                  0AAÈ ½ Dateé zõ Ende
+Bytå 1µ        Anzahì deò Byteó ií nachfolgendeî Datenblock
+               (1...256)
+Bytå 16¬ 1·    Adresse¬ auæ diå deò nachfolgendå Datenblocë 
+               geladeî werdeî solì (0H...0FFFFH)
+Bytå 18¬ 1¹    Startadresså fueò unmittelbaò lauffaehigå 
+               Programme
+Bytå 2°        Bytepruefsummå deó Kennzeichnungsblockeó 
+               (Bytå ± - Bytå 19)
+Deò Datenblocë (Bilä 20b© setzô sicè auó deò Anzahì deò iî Bytå 
+1µ deó Kennzeichnungsblockeó festgelegteî Anzahì voî Datenbyteó 
+unä deò nachfolgendeî Bytepruefsummå zusammen.
+
+Zusammenfassung
+
+Durcè  Verwendunç  eineò  Bytepruefsummå konntå einå  fueò  daó 
+Anwendungsgebieô ausreichendå Datensicherheiô erreichô  werden® 
+Diå testweiså Pruefunç voî meherereî hunderô KBytå mitteló CRC-
+Berechnunç  erbrachtå keinå zusaetzlicheî Fehlermeldungen®  Eiî 
+Ueberpruefunç  deò  gespeicherteî Dateé isô durcè  deî  VERIFY-
+Befehì  moeglich®  Hauptfehlerursachå wareî Fehlstelleî iî  deò 
+Magnetschichô  deò verwendeteî  (ungeprueften©  Kassetten®  Zuí 
+Einpegeln¬    insbesonderå    fueò   KMBÇ   miô   automatischeò 
+Pegelregelung¬  wirä  voò deò  Ausgabå eineò Dateé eiî  Kenntoî 
+gesendet.Š
+Daó    beschriebenå    Programí    stellô    einå     deutlichå 
+Komfortverbesserunç  zõ  deî bisheò verwendeteî Verfahreî  dar® 
+Datensicherheiô unä Ubertragungsgeschwindigkeiô sinä fueò vielå 
+Anwendugeî   ausreichend®   Auæ  eineò   C60-Kassettå   koenneî 
+mindestenó ± MBytå Dateî (beé 360° Bit/s© aufgezeichneô werden.
+
+Mitteló  deò  nachladbareî Programmå ACTAPÅ unä SUPERÔ  koenneî 
+aucè  Dateieî unä Programmå ií AC1-Formaô unä  ií  "SuperTape"-
+Formaô geladeî unä gespeicherô werden.
+   
+5.3.2®    Deò Kommandoprozessor
+
+Deò logischå Teiì deó Grunbetriebssystemeó gestatteô daó Lesen¬ 
+Speicherî  unä Vergleicheî voî Dateieî unä Programmeî miô  KMBÇ 
+miô    unterschiedlicheî    Geschwindigkeiten®     Zusaetzlichå 
+Moeglichkeiteî sinä durcè deî Aufruæ voî Programmen¬ Umschalteî 
+deò   Speicherbereichå  unä  speziellå   RAM-Floppy-Operationeî 
+gegeben.
+Voí  Kommandoprozessoò auó kanî daó RAM-Floppy-Systeí gestarteô 
+werden¬   abeò  aucè  miô  andereî  Programmen¬   Dateieî   unä 
+Betriebssystemeî gearbeiteô werden.
+Daó  V-Tapå Moduì befindeô sicè aâ Adresså 0F000È bió 0F7FFÈ ií 
+RAÍ deó PC/M-Computeró (Bilä 39).
+
+Adresså   Funktion
+0F000È    Eintritô iî daó V-Tape-Modul
+0F003È    Sprunç zuò CI-Routinå (BIOS)
+0F006È    Sprunç zuò CO-Routinå (BIOS)
+
+Daó  Grundbetriebssysteí meldeô sicè immeò miô  deò  Ausschrifô 
+"V>"®  Danacè  werdeî  Eingabeî erwartet¬  diå immeò miô  ENTEÒ 
+(0DH©    abgeschlosseî   werdeî   muessen®    Deò    eingebautå 
+Zeileninterpreteò   wandelô  diå  Eingabezeilå  unä   uebergibô 
+eventuellå   Parameteò   deò   Eingabå   aî   diå    jeweiligeî 
+Unterprogramme® Buchstabeî koenneî sowohì iî Gross- aló aucè iî 
+Kleinschreibunç  angegebeî werden®  Zuò Eingabå deó Dateinamenó 
+unä deó Dateitypó koenneî diå Symbolå "*¢ (02AH© unä "?¢ (03FH© 
+verwendeô werden®  Beé "*¢ werdeî allå Zeicheî deó  Dateinamenó 
+odeò -typó aâ deò Positioî deó "*¢ ueberlesen¬  d.h®  nichô zuí 
+Namensvergleicè  verwendet®  Diå  Eingabå  deó "?¢  fuehrô  zuí 
+Ueberleseî deó Zeichenó miô deò Positioî deó "?".
+
+Deò  Kommandoprozessoò  kanî nachfolgendå  Befehlå  ausfuehren® 
+Zuersô  isô  immeò  deò  Befehlskodå  miô  kurzeò  Erlaeuterunç 
+angegeben¬   danacè   folgô  diå  Forí  deò  Eingabezeilå   unä 
+schliesslicè diå Erlaeuterung.
+Verwendetå Symbole:
+namå           Namå eineò Dateé bestehenä auó 0...¸ ASCII-
+               Zeichen
+tyğ            Tyğ eineò Dateé bestehenä auó 0...³ ASCII-
+               Zeichen
+aaaa¬ bbbb..®  Paramteò voî 0...0FFFFÈ iî hexadezimaleò 
+               Schreibweise
+ï              Option
+Ø              Angabå deó gewuenschteî Laufwerkeó (A¬ B...)
+
+
+±    (Speicherbanë 1)
+V>1
+Diå Speicherbanë ± wirä aló Arbeitsspeicheò verwendet.Š
+²    (Speicherbanë 2)
+V>2
+Diå Speicherbanë ² wirä aló Arbeitsspeicheò verwendet.
+
+Â    (Betriebssystem)
+V>B
+Deò  System-ROÍ Bereicè wirä eingeblendeô (RAÍ voî  0H...01FFFÈ 
+isô abgeschalten).
+
+Ã    (RAM-Floppy-System-Start)
+V>C
+Eó wirä versucht¬  daó RAM-Floppy-Systeí (miô CCĞ unä BDOS©  zõ 
+starten¬  ií  Fehlerfalì  erscheinô  diå  Ausschrifô  "CCP/BDOÓ 
+Laden!¢  odeò "BDOÓ Laden!"®  Beé erfolgreicheí Starô erscheinô 
+diå Ausschrifô deó aktuelleî Laufwerkeó z.B® "A>".
+Danacè  wirä entsprechenä deò Bedingungeî deò CP/M-Versioî  2.² 
+weitergearbeitet.
+
+Ä    (Debugger)
+V>D
+Deò   Debuggeò  wirä  auæ  Adresså  0E800È   angesprungeî   unä 
+gestartet.
+
+Æ    (Formatieren)
+V>Æ X
+Deò  Bereicè  deó  Inhaltsverzeichnisseó  ií  Laufwerë  Ø  wirä 
+formatierô (loescheî unä neuinitialisieren).
+
+Ç    (Go)
+V>Ç aaaa
+Durcè  dieseî Befehì wirä durcè diå CPÕ direkô auæ diå  Adresså 
+aaaá  gesprungen¬  uí  z.B®  eiî dorô befindlicheó Programí  zõ 
+starten.
+
+É    (Inhaltsverzeichnis)
+V>É .
+Diå  auæ  deí  KMBÇ  aufgezeichneteî  Dateieî  werdeî  auæ  deí 
+Bildschirí  entsprechenä  deò Reihenfolgå  auæ  deí  Magnetbanä 
+dargestellt.
+
+Ì    (Lesen)
+V>Ì name.tyğ aaaá ¯ bbbâ cccc
+Eó wirä versucht¬ diå Dateé miô name.tyğ voî Kassettå zõ lesen® 
+Wirä  aaaá  angegeben¬  erfolgô  daó Leseî auæ  diå  angegebenå 
+Adresså  (01H...0FFFFH)¬  sonsô wirä diå Dateé auæ deî  Bereicè 
+abgelegt¬  voî deí siå gespeicherô wurde®  Wirä bbbâ angegeben¬ 
+erfolgô  daó Leseî aâ Blocknummeò bbbâ unä beé Angabå voî  cccã 
+wirä beé cccã abgebrocheî (sonsô allå Bloecke).
+Nacè Erkenneî eineó Fehleró ií Kennzeichnungs- odeò  Datenblocë 
+(Pruefsumme©   wirä   deò   Lesevorganç   unterbrochen®   Durcè 
+Rueckspuleî  deó  Magnetbandeó unä erneuteó Einleseî  kanî  deò 
+Lesevorganç  fortgesetzô  werden®  Durcè Betaetigeî voî  CTRL-Ã 
+(03H© wirä deò Lesevorganç abgebrochen.
+
+Ò    (Read)
+V>Ò name.tyğ X
+Diå  RAM-Diskettå  Ø  wirä miô deí Inhalô  deò  Dateé  name.tyğ 
+gefuellô (Abbrucè miô CTRL-C).
+
+Ó    (Speichern)ŠV>Ó name.tyğ aaaá bbbâ cccã /ï dddd
+Einå  Dateé name.tyğ wirä aâ Adresså aaaá bió Adresså bbbâ  deó 
+Arbeitsspeicheró auæ Magnetbanä abgelegt®  Beé Angabå voî  cccã 
+wirä  dieseò  Werô aló Startadresså fueò lauffaehigå  Programmå 
+verwendeô (Dateé voí Tyğ ".COM")®  Nacè deí Optionsstricè  wirä 
+beé  Bedaræ  diå  Optioî  "F¢  eingetragen®  Dadurcè  wirä  daó 
+Eintrageî  deò  Dateiendekennunç verhinderô unä diå Dateé  kanî 
+unteò Angabå deò naechsteî freieî Rahmennummeò (Parameteò dddd© 
+fortgesetzô werden®  Damiô wirä beií Ladeî eineó Programmeó diå 
+komplettå  Dateé  bió zuò Endekennunç  ohnå  erneuteî  L-Befehì 
+gelesen®  Ohnå  Eingabå deò Optioî "F¢ erfolgô diå  Speicherunç 
+unteò  Verwendunç  deò aló dddä angegebeneî  Rahmennummer®  Diå 
+Optioî  "D¢  fuehrô zuò Vergroesserunç deò  Abstaendå  zwischeî 
+zweé Bloeckeî beií Speichern.
+Deò  Speichervorganç  kanî durcè Betaetigeî  deò  Tastå  CTRL-Ã 
+(03H© abgebrocheî werden.
+
+Ö    (Vergleich)
+V>Ö (weiteò wiå L)
+Diå  Dateé  auæ Magnetbanä wirä miô  deí  Arbeitsspeicherinhalô 
+verglichen¬ sonsô wiå "L".
+
+×    (Write)
+V>× name.tyğ X
+Deò  Inhalô deó RAM-Floppù Laufwerkeó Ø wirä unteò name.tyğ auæ 
+Magnetbanä abgelegô (Abbrucè miô CTRL-C).
+
+Ø    (Execute)
+V>Ø (weiteò wiå L)
+Eiî  Programí  miô name.tyğ wirä geleseî unä auæ  deò  beé  "S¢ 
+vereinbarteî Adresså gestarteô (Abbrucè miô CTRL-C).
+
+Ú    (Zeitkonstanten)
+V>Ú aaaa
+Diå Bitratå aaaá kanî betragen:
+aaaá     Bitratå 
+120°  ½  120° Bit/s
+240°  ½  240° Bit/s
+360°  ½  360° Bit/ó (Standard» nacè RESET)
+480°  ½  480° Bit/ó 
+
+namå (Ladeî unä Starteî eineò ".COM¢ Datei)
+V>name
+Diå  Dateé  (Programm©  namå  miô deí Typå .COÍ  wirä  auæ  deò 
+Kassettå  gesucht¬  geladeî  unä auæ deò  beé  "S¢  (Speichern© 
+angegebeî Adresså gestartet.
+
+      
+5.4®     Deò Debugger
+
+Deò Debuggeò (Versioî 2.2© dienô deí Eingeben¬  Aendern¬ Testeî 
+unä  zuí Sucheî voî Fehlerî iî Maschinenprogrammeî unä Dateien¬ 
+sowiå deò Unterstuetzunç beií Bedieneî periphereò Geraetå (z.B® 
+Drucker» Bilä 40).
+Diå  Struktuò  deó  Programmeó gestatteô  diå  Erweiterunç  deó 
+Befehlssatzeó  uí speziellå Anwenderbefehle®  Diå Anpassunç  aî 
+beliebigå    U880-Systemå   erfolgô   durcè    Aenderunç    deò 
+Sprungvektoreî   iî   eineò   Tabelle®    Diå   anzuspringendeî 
+systemspezifischeî  Programmteilå sinä deî uebelicheî Standardó 
+angepasst® Besonderheiteî stelleî Routineî zuò Realisierunç deó 
+Schrittbetriebeó  unä zuí Setzeî eineó Software-Breakpoinô  zuò Šgezielteî Programmunterbrechnunç dar.
+Diå Gesamtlaengå deó Programmeó betraegô ² KByte¬ beginnenä auæ 
+Adresså 0E800È deó PC/M-Computers®  Diå Sprungvektoreî sinä  iî 
+Bilä 3· zusammengefasst.
+
+Befehlseingabe
+
+Nacè deí Aufruæ (Befehì Ä ií Kommandoprozessor© meldeô sicè daó 
+Programí miô seineí Symboì ¢ R>"® Diå jeweiligeî Befehlå werdeî 
+iî  Forí  eineò Eingabezeilå editierô unä nacè  Betaetigeî  deò 
+ENTER-Tastå  (0DH©  aî deî  Zeileninterpreteò  uebergeben®  Daó 
+Uebersetzeî  erfolgô iî zweé Stufen®  Zuersô wirä deò eingebenå 
+Befehì  ií Arbeitsbereicè deó Programmeó gesucht®  Danacè  wirä 
+geprueft¬  oâ diå Eingabezeilå miô ":¢ abgeschlosseî wurde®  Iî 
+dieseí  Falì  werdeî diå Parameteò aaaa¬  bbbâ unä  cccã  nichô 
+gelesen¬  sonderî  diå  Argumentå deò  letzteî  Eingabå  werdeî 
+verwendet:
+ R>Á aaaá bbbâ cccã      diå Parameteò (aaaa¬ bbbb...© werden
+                         gelesen
+ R>Á aaaá bbbâ cccã º    eó werdeî diå Parameteò deò letzten
+                         Eingabå verwendet» daó Zeicheî ":"
+                         musó durcè eiî Leerzeicheî voí letzten
+                         Parameteò getrennô sein
+Anschliessenä  wirä  deò  entsprechendå Befehì  aufgerufeî  unä 
+weiterå    angegebenå   Optioneî    bzw®    Parameteò    werdeî 
+interpretiert® Allå Zahlenangabeî erfolgeî hexadezimal® Eó sinä 
+Gross- unä        Kleinschreibunç        zugelassen®        Deò 
+Bildwiederholspeicheò wirä aló Eingabebuffeò verwendet.
+
+Diå Kommandos
+
+Â  (Breakpoint)
+ R>Â aaaa
+Deò  Breakpoinô  dienô deò Unterbrechunç eineó  Programmeó  auæ 
+eineò   freé  waehlbareî  Adresså  aaaá  innerhalâ  eineó  RAM-
+Bereiches®  Eiî  miô  deî  Befehleî "E¢  odeò  "F¢  gestarteteó 
+Programí wirä aî deò Positioî deó Breakpoinô  unterbrochen®  Eó 
+erfolgô  diå Ausschrifô deò aktuelleî PC-Adresse®  Diå  Adresså 
+deó  Breakpoinô  unä  deò  Inhalô  deò  Speicherzelleî  aâ  deò 
+Breakpointadresså wirä durcè diå Ausschrifô "BP:440°   C³ 2´ 1¸ 
+00¢  angezeigt®  Diå  Programmunterbrechunç  wirä  durcè  eineî 
+RESTART-Befehì  auæ  diå  Adresså 038È  deó  Computeró  erzeugô 
+(0FFH)¬   deò  aî  deò  Stellå  deò  Breakpointadresså  ií  RAÍ 
+eingetrageî  wird®  Nacè Ausfuehrunç deó RESTART-Befehleó  wirä 
+deò urspruenglichå Werô wiedeò eingetragen.
+
+Ã (Compare» Vergleich)
+ R>Ã aaaá bbbâ cccc
+Miô  dieseí  Befehì koenneî zweé  Speicherbereichå  miteinandeò 
+verglicheî  werden®  Eó isô aaaá diå Anfangsadresså deó  ersteî 
+Speicherbereicheó  unä  bbbâ  diå  Anfangsadresså  deó  zweiteî 
+Speicherbereiches¬   diå  uebeò  diå  Laengå  cccã  miteinandeò 
+verglicheî werden® Nichtuebereinstimmunç fuehrô zuò Anzeigå deò 
+Adresså   deó   ersteî  Bereicheó  unä  deó   Inhalteó   dieseò 
+Speicherzellå  sowiå deò Adresså deó zweiteî  Speicherbereicheó 
+unä  deó Inhalteó deò Speicherzelle®  Nacè Betaetigeî voî ENTEÒ 
+wirä miô deí Vergleicè fortgefahren®  Diå Eingabå eineó Punkteó 
+(02EH© fuehrô zuí Abbrucè deó Befehles.
+ R>Ã 100° 200° 10
+100²   4µ   200²   46
+ R>Š
+Ä (Device¬ Geraet)
+Eó  kanî eiî Druckeò paralleì zuò Bildschirmausgabå  aufgerufeî 
+werdeî (s® Debuggeò Sprungvektoren).
+ R>Ä ×         Druckeò zugewiesen
+ R>Ä           nuò Bildschirmausgabå zugelassen
+
+Å (Execute» Ausfuehrung)
+ R>Å aaaa
+Eiî  Programí  wirä aâ Adresså aaaá  unteò  Breakpointkontrollå 
+gestartet.
+
+Æ (Programí fortsetzen)
+ R>F
+Diå Ausfuerunç deó Programmeó erfolgô unteò Breakpointkontrollå 
+aâ deò durcè deî PÃ festgelegteî Adresse.
+
+Ç (Go» direkteó Anspringeî eineò Adresse)
+ R>Ç aaaa
+Eiî  Programí wirä auæ deò Adresså aaaá angesprungen®  Isô  daó 
+Programí miô REÔ (0C9H© abgeschlossen¬ erfolgô diå Rueckkehò iî 
+deî Debugger.
+
+É (Init» Debuggeò iî Grundstellunç bringen)
+ R>I
+Allå  Registeò  werdeî  auæ 00È gesetzô  (SĞ  auæ  4300H)®  Aló 
+Ausgabegeraeô isô nuò diå Consolå (Bildschirm© zugelassen®  Daó 
+Schrittregisteò (SR© wirä auæ ± gestellt.
+ R>I
+CLEAR
+ R>
+
+Ë (Registeò unä Speicheò anzeigen)
+R>K
+Nacè  Eingabå voî "K¢ werdeî allå Registeò deò  CPÕ  angezeigt® 
+Miô  "MAIN¢ isô deò Arbeitsregistersatú gekennzeichnet®  "EXXR¢ 
+zeigô auæ diå Schattenregister®  Diå Flagó werdeî durcè Ausgabå 
+deò jeweiligeî Buchstabeî beé gesetzteî Flagó angezeigô  (Flagó 
+deó Schattenregisteró iî Klammern).
+Flagzeilå (allå Flagó gesetzt)º CZPSNÈ  (CZPSNH)
+Deò   Angabå   deó   "SP¢  folgô  diå  aktuellå   Adresså   deó 
+Stackpointeró  unä  deò  naechsteî  vieò  Byte®  Daó  geschiehô 
+gleichermasseî  fueò "BP"¬  daó  Breakpointregister®  Ausserdeí 
+kommô  daó  Schrittregisteò  zuò  Anzeigå  ("SR")®  Zusaetzlicè 
+erfolgô  diå  Anzeigå  deò 080È Byte¬  iî  deneî  sicè  deò  PÃ 
+befindet®  Diå  aktuellå  PC-Postioî isô durcè  eiî  ">"-Symboì 
+markiert.
+
+Ê (Jump» Sprung)
+ R>Ê aaaa
+Eiî Anwenderprogramí wirä auæ deî Adresså aaaá angesprungen® Eó 
+erfolgô keinå Breakpointaktivierung.
+
+Í (Modifù Memory¬ Speicherinhalô aendern)
+ R>Í aaaa
+Aâ  Adresså  aaaá kanî deò Speicheò  beschriebeî  werden®  Dazõ 
+erfolgt¬  nacè Betaetigeî voî ENTER¬  diå Anzeigå deò aktuelleî 
+Eingabepositioî   unä   deó   dorô   befindlicheî   Datenbytes® 
+Nachfolgenä koenneî diå Dateî eingegebeî werden® Diå zulaessigå 
+Laengå  eineò  Eingabezeilå (einå Bildschirmzeile©  daræ  nichô 
+ueberschritteî werden®  Durcè Eingabå eineó Punkteó (02EH© wirä Šdiå Routinå verlassen.
+R>Í 800°                                     Aufruæ voî "M"
+800° 7Å R>3Å 0± D³ 1± DÂ 1° DÂ 1° E¶ 0¸      Eingabå voî Daten
+800Á 2± R>2± 3³ DÅ                           Fortsetzeî deò E.
+800Ä 7´ R>®                                  Abschlusó deò E.
+ R>
+
+Ï (Loweò Block» PÃ uí 80È verringern)
+ R>O
+Daó  Bilä  analoç  "K¢ wirä ausgegeben¬  wobeé deò PÃ  uí  080È 
+erniedrigô wird.
+
+Ğ (Pattern» Muster)
+ R>Ğ aaaá bbbâ cc
+Deò  Bereicè  voî aaaá bió bbbâ wirä miô deí Musteò  (Byte©  cã 
+aufgefuellt® Ohnå Angabå voî cã wirä 00È eingetragen.
+
+Ñ (Quit» Ruecksprunç zuí CP/V-Grundsystem)
+ R>Q
+Eó erfolgô deò Ruecksprunç iî daó Betriebssystem.
+
+Ò (Register)
+ R>Ò NÎ aaaa
+Daó  angegebenå Registerpaaò (Register© "NN¢ wirä auæ deî  Werô 
+aaaá  (aa© eingestellt®  Diå Eingabå voî "Ò :¢ haô diå  Anzeigå 
+deó kompletteî Registersatzeó zuò Folge®  Danacè wirä immeò daó 
+Bilä  analoç "K¢ ausgegeben®  Durcè "'¢ (027H© nacè Angabå  deó 
+Registeró    werdeî   diå   EXXR-Registeò    (Schattenregister© 
+ausgewaehlt.
+ R>Ò AF§ 01E¶       daó Registerpaaò AF§ wirä auæ 01È fueò A'
+                    unä 0E6È fueò F§ eingestellt
+ R>Ò Í C³           deò Inhalô deò Speicherzellå auæ diå HÌ 
+                    zeigt¬ wirä auæ 0C3È gestellt
+ R>Ò º              deò komplettå Registersatú wirä angezeigt
+Fueò "NN¢ kanî stehen:
+AF¬ BC¬ DE¬ HL¬ AF'¬ BC'¬ DE'¬ HL'¬ M¬ M'¬ I¬ SP¬ PC¬ 
+IX¬ IY¬ SR
+
+Ó (Speicheò schreiben)
+ R>Ó nn
+Diå  Dateî (± Byte© nî werdeî auæ diå durcè deî  PÃ  angezeigtå 
+Speicherzellå geschrieben.
+
+Ô (Transfer)
+ R>Ô aaaá bbbâ cccc
+Eiî  Speicherbereicè wirä voî Adresså aaaá auæ diå Adresså bbbâ 
+miô eineò Laengå voî cccã verschoben.
+
+Õ (Uppeò Block» PÃ uí 080È erhoehen)
+ R>U
+Daó  Bilä  analoç "K¢ wirä ausgegeben¬  wobeé deò  PÃ  uí  080È 
+erhoehô wird.
+
+Ø (Speicherbereicè anzeigen)
+ R>Ø aaaá bbbâ N
+Deò  Bereicè voî aaaá bió bbbâ wirä aî diå zugewieseneî Geraetå 
+ausgegeben® Fueò "N¢ isô zugelassen:
+È ½ Heø Dumğ   Ausgabå deó hexadezimaleî Speicherinhalteó unter
+               Angabå deò Adresså (nacè 010È Byte)
+Ó ½ ASCIÉ      deò Speicherbereicè wirä aló ASCII-Zeicheî aus-
+               gegeben» Steuerzeicheî (00H..01FH© werdeî Š               unterdrueckô unä aló Punkô (02EH© ausgegeben,
+               Biô · wirä rueckgesetzt
+Ô ½ ASCITXÔ    wiå "S"¬ abeò miô Ausgabå deò ASCII-
+               Steuerzeicheî (ASCII-Text)
+Í ½ Manuaì     Consolå unä zugewieseneó Geraeô sinä parallel
+               geschalten¬ direktå Ausgabe¬ Biô · wiå "S"
+
+(020H)(020H© (zweé Leerzeichen)
+ R¾  aaaá bbbâ cccc
+Diå    Argumentå    aaaa¬    bbbâ   unä    cccã    werdeî    iî 
+Zwischenspeicherzelleî  eingetrageî (Vorbereitunç fueò "FA¢ unä 
+"FH").
+
+FÁ (Finä ASCIÉ String» ASCIÉ Zeichenkettå suchen)
+ R>FÁ abc...xyz...
+Eó   kanî   eiî  beliebigeò  ASCII-Strinç   (Zeichenkettå   miô 
+alphanumerischeî  Zeichen©  eingegebeî unä  ií  Speicherbereicè 
+gesuchô werden®  Wirä diå Zeichenkettå nichô gefunden¬  erfolgô 
+diå  Ausschrifô  "NOÔ  FOUND"®  Isô  einå  solchå  Zeichenkettå 
+vorhanden¬ wirä diå Positioî angezeigô unä iî deî "Modifù (M)"-
+Modå   uebergegangen®   Isô   diå  Zeichenkettå   durcè   eineî 
+Doppelpunkô  (¢  :"© abgeschlossen¬  beginnô diå Suchå  aâ  deò 
+zuvoò eingetrageneî Adresse.
+ R>FÁ Tesô          diå Zeichenkettå "Test¢ solì gesuchô 
+NOÔ FOUNÄ           werden¬ isô abeò nichô vorhanden
+ R>
+
+ R¾  100°           aâ Adresså 1000È solì nacè deò Zeichen-
+ R>FÁ HELĞ º        kettå "HELP¢ gesuchô werden
+872Å 4¸  R¾         Zeichenkettå auæ Adresså 0872EÈ gefunden,
+ R¾                 ersteó Zeicheî 'H§ ½ 48H
+
+FÈ (Finä Hexadecimaì String» Hexwertå suchen)
+ R>FÈ aá bâ cã dä eå ...
+Deò  Befehì arbeiteô analoç "FA"¬  jedocè koenneî  hexadezimalå 
+Zahleî eingebeî werden.
+ R>FÈ 0° 0¹ 5³ 0D
+E04µ 0°  R>
+
+¦ (Checksum» Pruefsummå bilden)
+ R>¦ aaaá bbbb
+Diå Pruefsummå (Kontrollsumme© deó Bereicheó voî aaaá bió  bbbâ 
+wirä berechneô unä ausgegeben.
+ R>¦ 000° 03FF
+SUMº E2
+ R>
+
+Direktfunktionen
+
+Nachfolgendå Funktioneî werdeî soforô ausgefuehrt¬  nachdeí diå 
+entsprechendå  Tastå betaetigô wurde®  Ausnahmå isô deò "Ø  M"-
+Mode®  Dabeé  werdeî diå Direktfunktioneî (ausseò BREAË  (03H)© 
+gesperrt.
+
+BREAË (03H» CTRL-C)
+Diå Ausgabeî beé "X...¢ werdeî unterbrochen¬ deò Schrittbetrieâ 
+wirä abgebrochen.
+
+STEĞ (019H» CTRL-Y)
+Miô   dieseí  Befehì  wirä  deò  Schrittbetrieâ  deó  Computeró 
+realisiert®  Dadurcè  isô  eiî  einfacheó  Testeî  deò  Wirkunç Šeinzelneò Befehlå unä Befehlsgruppeî moeglich®  Dazõ wirä uebeò 
+daó  NMI-Porô  deò  zentraleî  Platinå  nacè  Ausfuehrunç   deó 
+naechsteî Befehleó ií Anwenderprogramí eiî NMÉ ausgeloest®  Diå 
+Rueckkehò  iî  deî Debuggeò erfolgô uebeò  eineî  Sprungvektor® 
+Danacè  werdeî  allå  Registeò unä deò  Speicheò  (analoç  "K"© 
+angezeigt¬   uí   Aenderungeî  feststelleî  zõ   koennen®   Daó 
+Schrittregisteò    legô   diå   Anzahì   deò    auszufuehrendeî 
+Anwenderbefehlå fest¬ bió wiedeò einå Anzeigå erfolgt.
+
+IPÃ (01AH» CTRL-Z)
+Deò  Befehlszaehleò erhoehô sicè uí 1¬  unä daó Bilä analoç "K¢ 
+wirä ausgegeben.
+
+DPÃ (0AH» CTRL-J)
+Deò  Befehlszaehleò wirä uí ± erniedrigt¬  unä daó Bilä  analoç 
+"K¢ wirä ausgegeben.
+ 
+
+Fehlermeldungen
+
+INIÔ SP!
+Deò Stackpointeò befindeô sicè nichô ií RAM®  Wirä beé J¬ Å unä 
+Æ geprueft.
+
+INP-ERROR
+Deò  eingebenå  Befehì existierô nichô odeò  haô  einå  falschå 
+Syntax.
+
+FC-ERROR
+Diå angegebenå Funktioî haô unzulaessigå Parameter.
+
+NOÔ FOUND
+Deò Ausdrucë existierô nichô bzw® wurdå nichô gefunden.
+
+RAM-ERROR
+Diå   Speicherzellå   laessô   sicè  nichô   beschreibeî   bzw® 
+ordnungsgemaesó lesen.
+
+
+5.5®     Daó RAM-Floppy-Systeí 
+
+Eiî wesentlicheò Bestandteiì deó Betriebssystemeó CP/Ö ií PC/M-
+Computeò    isô    daó    RAM-Floppy-Betriebssystem®     Dieseó 
+Betriebssysteí ermoeglichô diå Nutzunç alleò Programme¬ diå diå 
+ueblicheî  CP/M-Schnittstelleî  einhalteî (Stanä  CP/Í  Versioî 
+2.2© [5]®  Einschraenkungeî sinä lediglicè durcè deî Bildschirí 
+(manchå  Programmå  arbeiteî  nuò sinnvolì miô  eineí  ²  KBytå 
+Bildschirm» 8° Zeichen/Zeilå unä 2´ Zeilen© unä diå verfuegbarå 
+Diskettenkapazitaeô gegeben¬ denî grosså Programmpaketå koenneî 
+ohnå  weitereó eineî Umfanç bió 50° KBytå annehmen¬  sinä  abeò 
+spezielì fueò deî kommerzielleî Bereicè gedacht®  12´ KBytå RAÍ 
+aló  "Floppù  Speicher¢ sinä einå gutå  Basió  fueò  zahlreichå 
+Programmå unä Dateien.
+Bilä  µ  zeigô deî Speicheraufbaõ deó PC/M-Computers®  Jå  nacè 
+Bestueckunç isô deò CCĞ auæ ROÍ abgelegt¬ odeò eò musó fueò deî 
+Starô  deó  Systemó zusammeî miô deí  BDOÓ  nachgeladeî  werdeî 
+(Bilä  38b)®  Ií TPÁ (Transienô Prograí Area© werdeî  Programmå 
+unä Dateieî abgelegt® Diå Programmå werdeî grundsaetzlicè durcè 
+deî  CCĞ  auæ diå Adresså 100È deó Computeró geladeî  unä  aucè 
+dorô  gestartet®  Diå  Groesså  deó  TPÁ ergibô  sicè  auó  deò 
+Anfangsadresså  deó BDOS¬  diå auæ Adresså 06È unä 07È  ií  RAÍ Šabgelegô  ist®  Deò CCĞ wirä alsï unteò Umstaendeî waehrenä deò 
+Arbeiô  iî eineí Programí ueberschriebeî unä musó  danî  erneuô 
+nachgeladeî  werden®  Isô  deò  EPROÍ  miô  deí  CCĞ  gesteckt¬ 
+uebernimmô  dieså  Aufgabå  daó  BIOS¬   anderenfalló  isô  eiî 
+Nachladeî voî Kassettå erforderlich.
+Deò CCĞ haô diå Aufgabe¬ diå Kontrollå uebeò daó Betriebssysteí 
+zõ uebernehmen¬ verschiedenå Kommandoó zuzulasseî unä Programmå 
+voî  Diskettå  (RAM©  zõ ladeî unä zõ  starten¬  diå  danî  diå 
+Kontrollå uebeò deî PC/M-Computeò uebernehmen.
+Deò  CCĞ unä vielå Programmå erwarteî einå typischå Datei- bzw® 
+Programmbezeichnung® Dieså siehô grundsaetzlicè wiå folgô aus:
+          [d:]name[.typİ           namå  0...¸ Zeichen
+                                   tyğ   0...³ Zeichen
+Diå Angabeî iî eckigeî Klammerî sinä nichô immeò  erforderlich® 
+"d:¢  weisô auæ daó Floppy-Laufwerë hin¬  auæ deí miô deò Dateé 
+"name¢   gearbeiteô   werdeî  soll®   Deò   "typ¢   isô   nichô 
+erforderlich¬   solltå   abeò  zuò  Kennzeichnunç  deò  Dateieî 
+verwendeô werden® Typischå Bezeichnungeî sind:
+COÍ       Programme¬ diå soforô lauffaehiç sinä unä auf
+          Adresså 100È gestarteô werdeî koennen
+BAÓ       BASIC-Dateieî 
+DBÆ       Datenbanë Dateé 
+FOÒ       FORTRAÎ Quellprogramm
+PAÓ       PASCAÌ Quellprogramm
+MAÃ       Makroassembleò Datei
+DOÃ       Programmbeschreibung¬ Dokumentation
+REÌ       verschieblichå Dateé (Programm© 
+...
+Bspl.º    BASIC.COÍ     isô deò BASIC-Interpreter
+          SORT.BAÓ      isô eiî BASIC-Programí (Sortieren)
+          LOCATOR1.PAÓ  isô eiî PASCAÌ Quellprogramí 
+
+Weiteò   koenneî   diå   Zeicheî  "*¢  unä   "?¢   analoç   deí 
+Kassettenmoduì  verwendeô werden®  Diå Zeicheî "<>.,:;[]¢  sinä 
+nichô zulaessig.
+Diå Funktioneî (residentå Kommandos© deó CCĞ sind:
+
+d:‚ (Laufwerë umschalten)
+Eó  wirä  daó Laufwerë  "d¢  (A¬  B...©  aktiviert¬  d.h®  allå 
+weitereî  Kommandoó  bezieheî sicè vorrangiç auæ  daó  Laufwerë 
+"d".
+
+DIR‚ (Inhaltsverzeichnis)
+Daó   Inhaltsverzeichnió  (diå  vorhandeneî  Dateien©  auæ  deí 
+aktuelleî Laufwerë wirä angezeigt® Deò Vorsatú "d:¢ ermoeglichô 
+diå  Anwendunç  deó Kommandoó auæ  eiî  andereó  Laufwerk¬  beé 
+gleichzeitigeò Laufwerkumschaltung® Wirä "d:¢ nacè deí Kommandï 
+angeben¬  wirä  daó  Kommandï  lediglicè auæ  deí  bezeichneteî 
+Laufwerë ausgefuehrt¬ ohnå daó einå Umschaltunç erfolgt® 
+
+ERA‚ name.tyğ (Dateé loeschen)
+Diå  Dateé  name.tyğ wirä ií  Inhaltsverzeichnió  deò  Diskettå 
+geloeschô ("?¢ unä "*¢ anwendbaò fueò mehrerå Dateien¬  diå deò 
+Bedingunç entsprechen).
+
+REN‚ NAME.TYP=name.tyğ (Dateé umbennenen)
+Diå  Dateé name.tyğ bekommô diå neuå Bezeichnunç  NAME.TYP®  Eó 
+sinä keinå "?¢ unä "*¢ zulaessig.
+
+TYPE‚ name.tyğ (Anzeigeî eineò Datei)
+Diå  Inhalô  deò Dateé name.tyğ wirä auæ deí Displaù  angezeigô 
+(nuò sinnvolì beé Dateieî auó ASCII-Zeichen).Š
+SAVE‚ î [d:]name.tyğ (Speicherî eineò Datei)
+Deò  TPA-Inhalô  wirä aâ Adresså 0100È  unteò  deò  Bezeichnunç 
+name.tyğ  [auæ  deí Laufwerë d:İ gespeichert®  Dabeé isô î  diå 
+Anzahì  deò 25¶ Byte-Bloecke®  Isô î ½ 4¬  sï werdeî 102´  Bytå 
+Dateî (alsï ± KByte© abgespeichert.
+
+USER‚ î (Nutzerbereicè zuweisen)
+Eó laessô sicè eiî Nutzerbereicè î (voî 0...15© einstellen¬  uí 
+diå  Diskettå fueò verschiedenå Nutzeò aufzuteileî  (fueò  RAM-
+Floppù nichô sinnvoll).
+
+Deò  CCĞ  gibô nocè einigå Fehlermeldungeî beé  Fehlbedienungeî 
+aus¬ diå leichô verstaendlicè sinä unä nichô weiteò erklaerô 
+werden® 
+
+Daó BDOÓ (Basiã Disë Operatinç System© organisierô  wesentlichå 
+Teilå  deó  Betriebssystemeó (insbesonderå diå Arbeiô  miô  deî 
+Floppy-Laufwerken)® Uebeò daó BDOÓ nutzeî diå meisteî Programmå 
+daó  Betriebssysteí  eineó  CP/Í  kompatibleî  Computers®   Diå 
+Schnittstellå  dafueò isô diå Adresså 005È deó  Computers¬  auæ 
+deò  eiî  Sprunç zuí BDOÓ eingetrageî ist®  Wirä dieså  Adresså 
+aufgerufeî  unä ií Registeò Ã einå  Kommandonummeò  uebergeben¬ 
+fuehrô  daó BDOÓ diå entsprechendeî Funktioneî auó unä kehrô iî 
+daó  aufrufendå Programí zurueck®  Daó BDOÓ selbsô greifô  abeò 
+niemaló  direkô  auæ diå Hardwarå  deó  Computeró  zu¬  sonderî 
+organisierô  diå  erforderlichå  Arbeiô immeò uebeò  daó  BIOS® 
+Diå  einzelneî  BDOS-Funktioneî habeî unterschiedlichå  Aufruf- 
+unä Rueckkehrparameter¬  diå ií Detaiì entsprechendeò Literatuò 
+zõ entnehmeî sind® Folgendå BDOÓ Funktioneî sinä moeglich:
+
+Fkt®      Wirkung
+--------------------------------------------------------------
+0°        Systemneustarô (Warmstart)
+0±        Tastaturabfragå unä Echï auæ Display
+0²        Zeichenausgabe
+0³        Lesereingabe
+0´        Stanzerausgabe
+0µ        Druckerausgabe
+0¶        direktå Consolenein- unä ausgabe
+0·        I/O-Bytå abfragen
+0¸        I/O-Bytå setzen
+0¹        Ausgabå Zeichenkette
+1°        Eingabå eineò Zeichenkettå iî deî Eingabebuffer
+1±        Tastaturstatus
+1²        Ermittelî deò Versionsnummeò deó Betriebssystemes
+1³        Ruecksetzeî deó Diskettensystemeó (Schreibschutz)
+1´        Aktuelleó Laufwerë auswaehlen
+1µ        Eroeffneî eineò Datei
+1¶        Schliesseî eineò Datei
+1·        erstå Eintragunç ií Inhaltsverzeichnió suchen
+1¸        naechstå Eintragunç ií Inhaltsverzeichnió suchen
+1¹        Loescheî eineò Dateé 
+2°        Leseî deó naechsteî Sektoró (12¸ Byte)
+2±        Schreibeî deó naechsteî Sektoró (12¸ Byte)
+2²        Anlegeî eineò Dateé (neuå Datei)
+2³        Umbenenneî eineò Datei
+2´        Fragå nacè angeschlosseneî Laufwerken
+2µ        Fragå nacè deí aktuelleî Laufwerk
+2¶        DMA-Buffer-Adresså (Direcô Memorù Acces© festlegen
+2·        Disk-Belegunç ermittelî (Allocatioî Vector)Š2¸        Schutú deó aktuelleî Laufwerkes
+2¹        Fragå nacè geschuetzteî Laufwerken
+3°        Dateikennzeichnungeî setzeî (R/W¬ R/O...)
+3±        Adresså deó Diskettenparameterblockó (DBP© ermitteln
+3²        Setzeî bzw® Abfrageî deò Nutzernummer
+3³        Leseî eineó direkô adressierteî Sektors
+3´        Schreibeî eineó direkô adressierteî Sektors
+3µ        Bereitstelleî deò naechsteî freieî Sektorposition
+3¶        Bereitstelleî deò aktuelleî Sektorposition
+3·        Ruecksetzeî einzelneò Laufwerke
+4°        Schreibeî miô direkteí Zugrifæ unä Block-
+          initialisierung
+
+Daó  BDOÓ  isô iî deò  Lage¬  verschiedenå  Fehlermeldungeî  zõ 
+erzeugen¬  diå  abeò  vorrangiç  beé  deò  Arbeiô  miô  Floppy-
+Laufwerkeî voî Bedeutunç sind® 
+
+Besonderå  Bedeutunç  fueò deî Nutzeò habeî  diå  verschiedeneî 
+Ebeneî   deò   Arbeiô  ií   PC/M-Computer®   Bilä   3µ   stellô 
+verschiedeneî Ebenen¬  dereî Aufruæ unä diå moeglichå Rueckkehò 
+dar® 
+
+
+5.6®       Ladeî unä Speicherî voî Programmen
+
+Nacè  deí Einschalteî isô deò Arbeitsspeicheò sowiå deò  Inhalô 
+deó  RAM-Floppù unbestimmt¬  d.h®  durcè eiî zufaelligeó Musteò 
+belegt®   Lediglicè   diå   EPROM-Bestandteilå   (BIOS¬   CP/V-
+Grundsytem¬  Debuggeò unä CCP© sinä soforô verfuegbar®  Nachdeí 
+sicè  daó CP/V-Systeí gemeldeô hat¬  koenneî diå  verschiedeneî 
+Kommandoó   genutzô   werden®   Damiô   isô   daó   Ladeî   deò 
+Systemprogrammå  moeglicè  (Bilä 35)®  Wilì  maî  deî  Debuggeò 
+nutzen¬  sï  isô dieseò durcè daó Kommandï "D¢ voí  CP/V-Systeí 
+auó  erreichbar®   Diå  Arbeiô  miô  deí  RAM-Floppù  erforderô 
+entwedeò     daó    Ladeî    eineó    Disketteninhalteó     voí 
+Kassettenmagnetbandgeraeô  ("R"© odeò diå RAM-Diskettå wirä neõ 
+formatierô ("F")¬  uí danî mitteló deó "SAVE"-Kommandoó deó CCĞ 
+beschriebeî  zõ  werden®  Isô einå  RAM-Diskettå  geladeî  odeò 
+formatierô  worden¬  musó  daó  BDOÓ  geladeî  werden¬  uí  daó 
+komplettå RAM-Floppy-Systeí zuò Verfuegunç zõ haben® Deò Aufruæ 
+deó  RAM-Floppy-Systemó erfolgô miô deí Kommandï "C¢ deó  CP/V-
+Systems¬  diå  Rueckkehò iî daó CP/V-Systeí miô deí  Tastencodå 
+01FH®  Diå  Rueckkehò  isô immeò danî  erforderlich¬  wenî  deò 
+veraendertå  RAM-Floppy-Inhalô abgespeicherô ("W"© werdeî soll® 
+Daó  Speicherî  deò RAM-Floppù Inhaltå  solltå  auæ  gepruefteî 
+Kassetteî erfolgeî uí Fehlstelleî ií Bandmateriaì ausschliesseî 
+zõ  koennen®  Anderenfalló  isô eó sinnvoll¬  daó Speicherî  zõ 
+wiederholen®  Auæ  eineò Kassettå C6° lasseî sicè etwá 1°  RAM-
+Disketteî abspeicherî (beé V-Tapå miô 360° Bit/ó benoetigô  maî 
+fueò eiî RAM-Floppù miô 12´ KBytå ca®  µ min)® Solì nichô immeò 
+deò komplettå RAM-Floppù Inhalô gespeicherô werden¬  isô daó V-
+Tapå Kopierprogramí VTCOĞ einsetzbar¬  miô deí einzelnå Dateieî 
+unä  Programmå  deò  Diskettå  abgespeicherô  unä  aucè  wiedeò 
+eingeleseî  werdeî koennen®  Dadurcè laessô sicè diå Zeiô  fueò 
+daó Kopiereî bestehendeò Programmå wesetlicè verringern.
+Befindeô sicè eiî Programí bereitó ií Arbeitsspeicher¬  kanî eó 
+durcè   daó  "SAVE"-Kommandï  deó  CCĞ  ií   RAM-Floppy-Bereicè 
+abgelegô werden®  Fueò speziellå Operationeî innerhalâ deó RAM-
+Floppù Systemó stehô deò Debuggeò VDÂ zuò Verfuegung¬ deò eineî 
+deí Systemdebuggeò aehnlicheî Befehlssatú besitzt.
+Diå  Vielzahì deò moeglicheî Programme¬  einschliesslicè  dereî ŠBeschreibung¬ isô nichô ií Rahmeî dieseó Beitrageó vorstellbar® 
+Haeufiç  genutztå Programmå  (BASIC¬  PASCAL¬  Textbearbeitung¬ 
+div®   Assembleò  unä  Linkeò  unä  diå  ueblicheî  Dienst- unä 
+Hilfsprogramme© steheî auæ Kassettå zuò Verfuegung.
+
+
+6®    Zusammenfassung
+
+Deò  PC/M-Computeò gestatteô diå Arbeiô miô eineí heutå  beé  ¸ 
+Bit-Mikrorechnerî  weiô  verbreiteteî  Betriebssystem®   Eigenå 
+Programme¬ diå diå beschriebeneî BDOS-Schnittstelleî einhalten¬ 
+sinä  aucè auæ Rechnerî miô voelliç andereò Hardwarå lauffaehiç 
+(A5120, A5130, PC1715 usw.).
+Nichô   zuletzô   sinä   verschiedenå   peripherå    Baugruppeî 
+anschliessbar¬   diå   deî  PC/M-Computeò  erweiterî   koennen® 
+Ueblichå  Baugruppeî  sinä  Farbgrafik¬  Floppy-Disk-Steuerung¬ 
+EPROM-Programmiereinheit¬  AD/DA-Wandleò usw®  Dafueò wurdå deò 
+Systembuó einschliesslicè spezielleò Nutzer-Schnittstelleî nacè 
+ausseî gefuehrt.
+Schliesslicè   stehô  einå  Vielzahì  voî  Softwarå  fueò   diå 
+Ausbaustufå  miô nuò 64Ë Bytå RAÍ zuò Verfuegung®  Dazõ gehoreî 
+beé  6´ Ë Bytå RAÍ eiî Tiny-BASIÃ (2K)¬  eiî erweiterteó  BASIÃ 
+(15K©   einschliesslicè  verschiedeneò   BASIC-Programme¬   eiî 
+PASCAL-Compileò (20K)¬ verschiedenå Texteditoren¬ Assembleò unä 
+Reassembleò    fueò   Z80/U88°    sowiå    Z8/U8800¬    Schach¬ 
+Morseuebungsprogramme¬     Sprach-Ein/Ausgabe¬    Speichertest¬ 
+Debuggeò  sowiå verschiedenå Modulå fueò AC1-¬  SuperTape¬  unä 
+Kleincomputeraufzeichnungeî (KC85/1¬ KC85/2¬ KC85/3)® 
+Diå   Nutzunç   deó   PC/M-Computers¬    einschliesslicè    deò 
+Systemsoftware¬  unterliegô  ií  Fallå deò  privateî  Anwendunç 
+keinerleé  Einschraenkungen®  Kommerziellå Interessenteî wendeî 
+sicè bittå direkô aî diå Autoren.
+
+
+      A. Mugler                    H. Mathes
+      PF24                         Karl-Marx-Strasse 2c
+      Oberlungwitz                 Hohenstein-Ernstthal
+      9273                         9270
+

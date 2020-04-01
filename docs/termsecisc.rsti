@@ -1,0 +1,157 @@
+.. Never add or change more than term replacements (ex. LaTeX formatting).
+
+.. Electronic Components Replacements:
+
+.. |GBR 7|		replace:: :term:`GBR 7`
+.. |GBR 111|		replace:: :term:`GBR 111`
+
+.. |B08x|		replace:: :term:`B08x`
+.. |B080|		replace:: :term:`B080`
+.. |B081|		replace:: :term:`B081`
+.. |B082|		replace:: :term:`B082`
+.. |B 082 D|		replace:: :term:`B 082 D`
+.. |B 082 Dm|		replace:: :term:`B 082 Dm`
+.. |B 082 Dp|		replace:: :term:`B 082 Dp`
+.. |B 082 Dt|		replace:: :term:`B 082 Dt`
+.. |B083|		replace:: :term:`B083`
+.. |B084|		replace:: :term:`B084`
+
+.. |B61x|		replace:: :term:`B61x`
+.. |B 611 D|		replace:: :term:`B 611 D`
+.. |B 615 D|		replace:: :term:`B 615 D`
+
+.. |U214|		replace:: :term:`U214`
+.. |U 214 D|		replace:: :term:`U 214 D`
+.. |U 214 D20|		replace:: :term:`U 214 D20`
+.. |U 214 D30|		replace:: :term:`U 214 D30`
+.. |U 214 D45|		replace:: :term:`U 214 D45`
+.. |S 214 D|		replace:: :term:`S 214 D`
+
+.. |U2164|		replace:: :term:`U2164`
+.. |U 2164 C|		replace:: :term:`U 2164 C`
+.. |U 2164 C15|		replace:: :term:`U 2164 C15`
+.. |U 2164 C20|		replace:: :term:`U 2164 C20`
+.. |U 2164 C20/1|	replace:: :term:`U 2164 C20/1`
+.. |U 2164 C25|		replace:: :term:`U 2164 C25`
+
+.. |U224|		replace:: :term:`U224`
+.. |U 224 D|		replace:: :term:`U 224 D`
+.. |U 224 D35|		replace:: :term:`U 224 D35`
+.. |U 224 D30|		replace:: :term:`U 224 D30`
+.. |UL 224 D|		replace:: :term:`UL 224 D`
+.. |UL 224 D35|		replace:: :term:`UL 224 D35`
+.. |UL 224 D30|		replace:: :term:`UL 224 D30`
+.. |US 224 D|		replace:: :term:`US 224 D`
+.. |US 224 D20|		replace:: :term:`US 224 D20`
+.. |VL 224 D|		replace:: :term:`VL 224 D`
+.. |VL 224 D20|		replace:: :term:`VL 224 D20`
+.. |S 224 D|		replace:: :term:`S 224 D`
+
+.. |U2716|		replace:: :term:`U2716`
+.. |U 2716 C|		replace:: :term:`U 2716 C`
+.. |U 2716 C 35|	replace:: :term:`U 2716 C 35`
+.. |U 2716 C 39|	replace:: :term:`U 2716 C 39`
+.. |U 2716 C 45|	replace:: :term:`U 2716 C 45`
+.. |U 2716 C 65|	replace:: :term:`U 2716 C 65`
+
+.. |U2732|		replace:: :term:`U2732`
+.. |U 2732 C|		replace:: :term:`U 2732 C`
+.. |U 2732 C 35|	replace:: :term:`U 2732 C 35`
+.. |U 2732 C 39|	replace:: :term:`U 2732 C 39`
+.. |U 2732 C 45|	replace:: :term:`U 2732 C 45`
+.. |U 2732 C 55|	replace:: :term:`U 2732 C 55`
+
+.. |U6516|		replace:: :term:`U6516`
+.. |U 6516 DG|		replace:: :term:`U 6516 DG`
+.. |U 6516 DG15|	replace:: :term:`U 6516 DG15`
+.. |U 6516 DG25|	replace:: :term:`U 6516 DG25`
+.. |UL 6516 D|		replace:: :term:`UL 6516 D`
+.. |UL 6516 DG|		replace:: :term:`UL 6516 DG`
+.. |UL 6516 DG15|	replace:: :term:`UL 6516 DG15`
+.. |UL 6516 DG25|	replace:: :term:`UL 6516 DG25`
+.. |UL 6516 DC|		replace:: :term:`UL 6516 DC`
+.. |UL 6516 DC15|	replace:: :term:`UL 6516 DC15`
+
+.. |U88xx|		replace:: :term:`U88xx`
+
+.. |U881x|		replace:: :term:`U881x`
+.. |UB 8810 D|		replace:: :term:`UB 8810 D`
+.. |UD 8810 D|		replace:: :term:`UD 8810 D`
+.. |UB 8811 D|		replace:: :term:`UB 8811 D`
+.. |UD 8811 D|		replace:: :term:`UD 8811 D`
+
+.. |U882x|		replace:: :term:`U882x`
+.. |UB 8820 M|		replace:: :term:`UB 8820 M`
+.. |UC 8820 M|		replace:: :term:`UC 8820 M`
+.. |UD 8820 M|		replace:: :term:`UD 8820 M`
+.. |UB 8821 M|		replace:: :term:`UB 8821 M`
+.. |UC 8821 M|		replace:: :term:`UC 8821 M`
+.. |UD 8821 M|		replace:: :term:`UD 8821 M`
+
+.. |U883x|		replace:: :term:`U883x`
+.. |UB 8830 D|		replace:: :term:`UB 8830 D`
+.. |UC 8830 D|		replace:: :term:`UC 8830 D`
+.. |UD 8830 D|		replace:: :term:`UD 8830 D`
+.. |UB 8831 D|		replace:: :term:`UB 8831 D`
+.. |UC 8831 D|		replace:: :term:`UC 8831 D`
+.. |UD 8831 D|		replace:: :term:`UD 8831 D`
+
+.. |U884x|		replace:: :term:`U884x`
+.. |UB 8840 M|		replace:: :term:`UB 8840 M`
+.. |UC 8840 M|		replace:: :term:`UC 8840 M`
+.. |UD 8840 M|		replace:: :term:`UD 8840 M`
+.. |UB 8841 M|		replace:: :term:`UB 8841 M`
+.. |UC 8841 M|		replace:: :term:`UC 8841 M`
+.. |UD 8841 M|		replace:: :term:`UD 8841 M`
+
+.. |U886x|		replace:: :term:`U886x`
+.. |UB 8860 D|		replace:: :term:`UB 8860 D`
+.. |UC 8860 D|		replace:: :term:`UC 8860 D`
+.. |UD 8860 D|		replace:: :term:`UD 8860 D`
+.. |UB 8861 D|		replace:: :term:`UB 8861 D`
+.. |UC 8861 D|		replace:: :term:`UC 8861 D`
+.. |UD 8861 D|		replace:: :term:`UD 8861 D`
+
+.. |U8611|		replace:: :term:`U8611`
+.. |U 8611 DC08|	replace:: :term:`U 8611 DC08`
+.. |U 8611 DC08/1|	replace:: :term:`U 8611 DC08/1`
+.. |UL 8611 DC08|	replace:: :term:`UL 8611 DC08`
+.. |UL 8611 DC08/1|	replace:: :term:`UL 8611 DC08/1`
+
+.. |U880|		replace:: :term:`U880`
+.. |UA 880 D|		replace:: :term:`UA 880 D`
+.. |UB 880 D|		replace:: :term:`UB 880 D`
+.. |VB 880 D|		replace:: :term:`VB 880 D`
+
+.. |U855|		replace:: :term:`U855`
+.. |UA 855 D|		replace:: :term:`UA 855 D`
+.. |UB 855 D|		replace:: :term:`UB 855 D`
+.. |VB 855 D|		replace:: :term:`VB 855 D`
+
+.. |U856|		replace:: :term:`U856`
+.. |UA 856 D|		replace:: :term:`UA 856 D`
+.. |UB 856 D|		replace:: :term:`UB 856 D`
+.. |VB 856 D|		replace:: :term:`VB 856 D`
+
+.. |U8560|		replace:: :term:`U8560`
+
+.. |U8563|		replace:: :term:`U8563`
+.. |UA 8563 D|		replace:: :term:`UA 8563 D`
+.. |UB 8563 D|		replace:: :term:`UB 8563 D`
+.. |VB 8563 D|		replace:: :term:`VB 8563 D`
+
+.. |U857|		replace:: :term:`U857`
+.. |UA 857 D|		replace:: :term:`UA 857 D`
+.. |UB 857 D|		replace:: :term:`UB 857 D`
+.. |VB 857 D|		replace:: :term:`VB 857 D`
+
+.. |U858|		replace:: :term:`U858`
+.. |UA 858 D|		replace:: :term:`UA 858 D`
+.. |UB 858 D|		replace:: :term:`UB 858 D`
+
+.. Local variables:
+   coding: utf-8
+   mode: text
+   mode: rst
+   End:
+   vim: fileencoding=utf-8 filetype=rst :

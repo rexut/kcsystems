@@ -1,5 +1,6 @@
-cache:
-  apt: true
+language: shell
+script:
+- ./.travis/${MXRUNNER}
 addons:
   apt:
     update: true
@@ -17,12 +18,9 @@ addons:
     - cpmtools
     - make
     - kconfig-frontends
-language: shell
-script:
-- ./.travis/${MXRUNNER}
 matrix:
   include:
-  # Python 2.7 on Ubuntu Linux 18.04 "Bionic" (amd64) for Sphinx/DOC
+  # Python 3.8 on Ubuntu Linux 18.04 "Bionic" (amd64) for Sphinx/DOC
   - os: Linux
     dist: bionic
     arch: amd64
@@ -34,31 +32,53 @@ matrix:
           key_url: 'https://download.opensuse.org/repositories/home:/rexut:/CPM4L/x$(lsb_release -si)_$(lsb_release -sr)/Release.key'
         packages:
         - *native_deps
+        - curl
+        - tar
+        - bzip2
+        - woff2
+        - eot-utils
+        - fontconfig
+        - fontforge-nox
         - libfreetype6-dev
         - librsvg2-bin
         - icoutils
         - poppler-utils
         - imagemagick
-        - texlive-xetex
-        - texlive-pictures
+        - pdf2svg
+        - unifont
+        - fonts-dejavu
+        - fonts-wqy-microhei
+        - fonts-font-awesome
+        - latexmk
+        - xindy
         - texlive-latex-extra
         - texlive-fonts-recommended
         - texlive-fonts-extra
-        - fonts-dejavu
+        - texlive-pictures
+        - texlive-xetex
         - enchant
         - aspell
         - aspell-en
+        - aspell-de
+        - wamerican-huge
+        - wngerman
+        - wgerman-medical
     language: python
-    python: "2.7"
+    python: "3.8"
+    cache:
+      directories:
+      - $HOME/.cache/pip
+      - ./docs/_static/fonts
+    before_cache:
+    - rm -f $HOME/.cache/pip/log/debug.log
     install:
-    - python2.7 tools/sphinx/virtualenv_bootstrap.py
-    - source .py27venv/bin/activate
-    - pip install -r tools/sphinx/virtualenv_requirements_freezed.txt
+    - ./docs/_static/fonts/.rebuild-dejavu -n
+    - pip install -U -r tools/requirements.txt
     script:
     - make -i V=1 testdocs
     - make -i V=1 spelldocs
-    - make V=1 htmldocs
-    - make V=1 pdfdocs
+    - make V=1 cleandocs htmldocs
+    - make V=1 cleandocs pdfdocs
   # Ubuntu Linux 20.04 "Focal" for x86-64bit (amd64)
   - os: linux
     dist: focal

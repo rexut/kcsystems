@@ -1,0 +1,497 @@
+Systemzellen und Sprungvektoren
+
++++++ Verstaendigungsbereich bei RAM-Floppy-System ++++++++++++
+
+00000H    JP WBOOT  Sprung zu BIOS-Warmstart
+00003H              I/O-Byte
+00004H    LOGDSK    aktuelles logisches Laufwerk
+                    (0 = A, 1 = B...)
+00005H    JP BDOS   Sprung zum BDOS-Eintritt (gleichzeitig 
+                    Endadresse des TPA)
+0005CH-   FCB       Dateisteuerblock (FCB) Standardadresse 
+0007CH     
+00080H-   DMABUF    READ/WRITE-Buffer (DMA-Buffer) 
+000FFH              Standardadresse
+
+
++++++++++ BIOS ++++++++++++++++++++++++++++++++++++++++++++++++
+
+0DE00H    BOOT      Kaltstart
+0DE03H    WBOOT     Warmstart
+0DE06H    CSTS      Tastaturstatus
+0DE09H    CI        Tastaturabfrage
+0DE0CH    CO        Zeichenausgabe Console
+0DE0FH    LIST      Druckerausgabe
+0DE12H    PUNCH     Stanzerausgabe (Lochband)
+0DE15H    READ      Lesereingabe (Lochband)
+0DE18H    HOME      Spur 0 justieren
+0DE1BH    SELDSK    Laufwerk auswaehlen
+0DE1EH    SELTRK    Spur auswaehlen
+0DE21H    SELSEC    Sektor auswaehlen
+0DE24H    SETDMA    DMA-Buffer festlegen
+0DE27H    READ      Sektor lesen
+0DE2AH    WRITE     Sektor schreiben
+0DE2DH    LISTST    Druckerstatus
+0DE30H    SECTRAN   Umwandeln Sektornummer
+
+
+++++++++ Debugger +++++++++++++++++++++++++++++++++++++++++++++
+
+0E800H         Eintritt in den Debugger
+0E803H         Sprung zur CSTS-Routine (BIOS)
+0E806H         Sprung zur CI-Routine (BIOS)
+0E809H         Sprung zur CO-Routine (BIOS)
+0E80CH         Sprung zur LIST-Routine (BIOS)
+0E80FH         Sprung zur NMI-Bearbeitung (Debugger)
+0E812H         Sprung zur BREAK-Bearbeitung (Debugger)
+
+
+++++++++ V-Tape +++++++++++++++++++++++++++++++++++++++++++++++
+
+0F000H         Eintritt in das V-Tape-Modul
+0F003H         Sprung zur CI-Routine (BIOS)
+0F006H         Sprung zur CO-Routine (BIOS)
+
+.pa äStueckliste BILDSCHIRMANSTEUERUNG
+---------------------------------
+
+Pos. Stueck    Bezeichnung
+-------------------------------------------------------------
+01   1         Leiterplatte BSA
+02   1         EFS-Steckerleiste 58polig / TGL 29331
+03   1         IC-Steckfassung 24polig
+04   1         IC D 110
+05   1         IC D 103
+06   2         IC D 193
+07   2         IC D 195
+08   1         IC D 200
+09   1         IC D 204
+10   2         IC DS 8205
+11   1         IC DS 8282
+12   1         IC DS 8286
+13   1         IC DL 000
+14   1         IC DL 004
+15   1         IC DL 074
+16   3         IC DL 192
+17   1         IC DL 193
+18   3         IC DL 257
+19   4         sRAM 1K x 4Bit  U 214
+20   1         EPROM 2K x 8Bit U 2716
+21   2         HF-Transistor SF 245
+22   1         Quarz 10500 KHz
+23   1         Elektrolyt-Kondensator 100 uF/ 10V
+24   2         Trimmer 4...20 pF
+25   1         Foliekondensator 470 nF
+26   1         Scheibenkondensator 47 nF
+27   9         Scheibenkondensator 33 nF
+28   2         Scheibenkondensator 15 nF
+29   1         Scheibenkondensator 1 nF
+30   2         Scheibenkondensator 100 pF
+31   1         Scheibenkondensator 2,2 pF
+32   1         Drossel 10 uH
+33   1         Luftspule d=5; CuL 0,8; 5Wdg. - 2Wdg.
+34   1         Einstellregler 10 KOhm
+35   3         Widerstand 2,2 KOhm
+36   2         Widerstand 1,2 KOhm
+37   5         Widerstand 1 KOhm
+38   3         Widerstand 270 Ohm
+39   1         Widerstand 220 Ohm
+40   2         Widerstand 100 Ohm
+41   1         Widerstand 56 Ohm
+
+.paäStueckliste TASTATURSTEUERUNG
+-----------------------------
+
+Pos. Stueck    Bezeichnung
+--------------------------------------------------------------
+01   1         Leiterplatte TAST
+0≤   ±         SteckerleistÂ 39polig / TGÃ 29331
+03   1         IC V 4001
+04   2         IC V 4011
+05   5         IC V 4012
+06   1         IC V 4023
+07   1         IC V 4050
+08   11        Schaltransistor SS 218 C
+09   11        Widerstand 10 KOhm
+10   10        Widerstand 3,3 KOhm
+11   11        Widerstand 1 KOhm
+12   6         Widerstand 160 Ohm
+
+.paäStueckliste ZENTRALE PLATINE
+----------------------------
+Pos. Stueck    Bezeichnung
+------------------------------------------------------------
+01   1         Leiterplatte ZPLAT
+02   2         EFS-Buchsenleiste 58polig / TGL 29331
+03   1         EFS-Buchsenleiste 39polig / TGL 29331
+04   4         IC-Steckfassung 24polig
+05   1         IC UA 880 D
+06   2         IC UA 855 D
+07   1         IC UA 856 D
+08   2         IC UA 857 D
+09   4         EPROM 2K x 8Bit U 2716
+10   24        dRAM 64K x 1Bit U 2164
+11   3         IC DS 8282
+12   1         IC DS 8212
+13   2         IC DS 8216
+14   3         IC DS 8205
+15   2         IC DL 257
+16   2         IC DL 000
+17   3         IC DL 004
+18   2         IC DL 008
+19   1         IC DL 010
+20   1         IC DL 020
+21   2         IC DL 074
+22   1         IC D 103
+23   1         IC D 154
+24   1         IC D 204
+25   1         IC D 274
+26   1         Quarz 10 000 KHz
+27   2         IC MB 104 C
+28   2         IC MB 111 C
+29   1         Einstellregler 10 KOhm
+30   1         Einstellregler 4,7 KOhm
+31   2         Schalttransistor SS 216 C
+32   1         Schalttransistor SS 218 D
+33   2         Diode SAY 17
+34   6         Diode SAY 30
+35   3         LED VQA 13
+36   1         IC B 082
+37   2         Scheibenkondensator 68 pF
+38   1         Scheibenkondensator 330 pF
+39   2         Scheibenkondensator 1 nF
+40   1         Scheibenkondensator 3,3 nF
+41   1         Scheibenkondensator 10 nF
+42   2         Scheibenkondensator 15 nF
+43   1         Scheibenkondensator 22 nF
+44   35        Scheibenkondensator 33 nF
+45   2         Scheibenkondensator 47 nF
+46   2         Scheibenkondensator 100 nF
+47   1         Elektrolyt-Kondensator 22 uF/ 10 V
+48   1         Elektrolyt-Kondensator 470 u/ 25 V
+49   2         Widerstand 22 Ohm
+50   1         Widerstand 100 Ohm
+51   2         Widerstand 120 Ohm
+52   2         Widerstand 270 Ohm
+53   1         Widerstand 330 Ohm
+54   4         Widerstand 470 Ohm
+55   8         Widerstand 560 Ohm
+56   3         Widerstand 1 KOhm
+57   4         Widerstand 1,5 KOhmä58   1         Widerstand 2,7 KOhm
+59   5         Widerstand 3,9 KOhm
+60   6         Widerstand 4,7 KOhm
+61   3         Widerstand 6,8 KOhm
+62   2         Widerstand 10 KOhm
+63   2         Widerstand 33 KOhm
+64   1         Widerstand 100 KOhm
+65   24        Wickelstift F1 / TGL 32 587
+.paäStueckliste NETZTEIL
+--------------------
+Pos. Stueck    Bezeichnung
+------------------------------------------------------------
+01   1         Leiterplatte NT
+02   4         Diode SY 180/1
+03   15        Diode SY 360/1
+04   1         Z-Diode SZX 21/5,6
+05   2         Z-Diode SZ 600/13
+06   1         Z-Diode SZ 600/5,6
+07   1         Diode SAY 17
+08   1         LED VQA 13
+09   1         LED VQA 13-1
+10   1         LED VQA 23
+11   1         LED VQA 33
+12   1         HF-Transistor SF 016
+13   1         Transistor SD 339
+14   1         Transistor KU 607
+15   1         Thyristor ST 103/1
+16   1         IC MAA 723
+17   1         IC MA 7805
+18   2         IC MA 7812
+19   1         Relais GBR 111/6
+20   3         Feinsicherung T 1,25 A
+21   1         Feinsicherung T 4 A
+22   2         ElektrKondensator 2200 uF/10 V
+23   3         Elektrolyt-Kondensator 1000 uF/25 V
+24   6         MKL-Kondensator 1 uF/63V
+25   1         Scheibenkondensator 1 nF/63 V
+26   1         Widerstand 4,7 Ohm / 0,2 W
+27   1         Widerstand 100 Ohm / 0,2 W
+28   1         Widerstand 130 Ohm / 0,2 W
+29   1         Widerstand 330 Ohm / 0,2 W
+30   2         Widerstand 470 Ohm / 0,2 W
+31   2         Widerstand 1,2 KOhm / 0,2 W
+32   2         Widerstand 2,2 KOhm / 0,2 W
+33   1         Widerstand 5,1 KOhm / 0,2 W
+34   1         Einstellregler 470 Ohm (gross/ stehend)
+35   4         Sicherungshalter fuer Lpl.
+36   4         Isolierscheiben aus Glimmer fuer T03-Gehaeuse
+37   X         Kuehlprofil Typ 03841 TGL 26 151    X=300 mm
+.paäSteckverbinder X1 (Tastatur)
+39 poliger Steckverbinder
+
+          A         B         C
+
+ 1        5P        5P        5P
+ 2        n.b.      A7        n.b.
+ 3        n.b.      A6        n.b.
+ 4        n.b.      A5        B5
+ 5        n.b.      A4        B4
+ 6        n.b.      A3        B3
+ 7        n.b.      A2        B2
+ 8        n.b.      A1        B1
+ 9        /NMI-Ta   A0        B0
+10        /HALT     /ASTB     /BSTB
+11        /RESET-Ta ARDY      BRDY
+12        n.b.      n.b.      n.b.
+13        GND       GND       GND  
+
+
+
+PIO       Tastatur       Verwendung
+
+A0        TD0            >
+A1        TD1            >
+A2        TD2            >
+A3        TD3            > 7 Bit ASCII - Zeichen 
+A4        TD4            >
+A5        TD5            >
+A6        TD6            >
+A7        TAST           High = Taste gedrueckt
+/ASTB     GND
+B0        LED 0          Betriebsanzeige
+B1        LED 1          Run/Stop
+B2        LED 2          Ton Ein/Aus
+B3        LED 3          n. b.
+B4        LED 4          High = SAVE, Low = LOAD
+B5        LED 5          High = Motor Ein
+B6                       SAVE = Eingang KMBG
+B7                       LOAD = Ausgang KMBG
+          LED 6          Halt-Zustand der CPU
+
+.paäKoppelbusverbinder X2 
+58 poliger Steckverbinder
+
+          A              B
+
+ 1        GND            GND
+ 2        CTSB           DCDB 
+ 3        ZC/TO 2        n.b.     
+ 4        ZC/TO 0        ZC/TO 1
+ 5        C/TRG 1        C/TRG 0
+ 6        C/TRG 3        C/TRG 2
+ 7        B7             A7
+ 8        B6             A6
+ 9        B5             A5
+10        B4             A4
+11        B3             GND
+12        B2             A3
+13        B1             A2
+14        B0             A1
+15        5P             A0
+16        /BSTB          /ASTB
+17        BRDY           ARDY
+18        TxDB           n.b.
+19        /RTSA          /DTRA
+20        /DTRB          /RTSB
+21        TxDA 2         TxDA 1
+22        TxDB 2         TxDB 1
+23        n.b.           RxDB
+24        RxDA 1         RxDA 2
+25        RxDB 1         RxDB 2
+26        5N             5N
+27        12N            12N
+28        12P            12P
+29        5P             5P
+.paäSystembusverbinder X3
+58poliger Steckverbinder
+
+          A              B
+
+01        GND            GND
+02        GND            GND 
+03        A15            A14
+04        A13            A12
+05        A11            A10
+06        A9             A8
+07        /MSEL4         SEL2
+08        /MSEL3         SEL1
+09        /MSEL2         SEL0
+10        /MSEL1         12P
+11        /MSEL0         IOSEL0
+12        IEO            IEI
+13        A7             5N
+14        A6             12N
+15        A5             CP
+16        A4             D4
+17        A3             D3
+18        A2             D5
+19        A1             D6
+20        A0             n.b.
+21        /M1            D2
+22        /RFSH          D7
+23        /RESET         D0
+24        /BUSRQ         D1
+25        /WAIT          /INT
+26        /HALT          /NMI
+27        /WR            /MREQ
+28        /RD            /IORQ
+29        5P             5P
+
+
+.paäInput/Output-Adressen
+
+80H - 83H      Kanal 0 bis Kanal 3       System-CTC D55
+
+84H - 85H      Daten Port A/ Port B      System-PIO D56
+86H - 87H      Steuerwort A/ B           System-PIO D56
+
+88H - 89H      Daten Port A/ Port B      Anwender-SIO D57
+8AH - 8BH      Steuerwort A/ B           Anwender-SIO D57
+
+8CH - 8FH      Kanal 0 bis Kanal 3       Anwender-CTC D58
+
+90H - 91H      Daten Port A/ Port B      Anwender-PIO D59
+92H - 93H      Steuerwort A/ B           Anwender-PIO D59
+
+94H - 97H      Speicherblockselektport
+
+98H - 9BH      NMI-Generator
+
+9C» - 9F»      /IOSEÃ ∞ fueÚ deÓ AnschlusÛ periphereÚ 
+               Bausteine
+.paäVerzeichnis der Bilder
+
+Bild      Titel
+--------------------------------------------------------------
+ 1(a,b)   Uebersichtsplan des Computers
+ 2        Stromlaufplan der Zentralen Platine - Systemseite
+ 3        Stromlaufplan der Zentralen Platine - Input-Output-
+          Seite
+ 4        Bestueckungsplan der Zentrale Platine
+ 4a       Leiterzuege Bestueckungsseite Zentrale Platine
+ 4b       Leiterzuege Leiterseite Zentrale Platine
+ 4c       Busplatine Leiterseite und Bestueckungsseite
+ 5        Aufteilung des 192 KByte-Speicherraumes
+ 6        Uebersichtsplan der Bildschirmansteuerung
+ 7        Stromlaufplan der Bildschirmansteuerung
+ 8        Bestueckungsplan der Bildschirmansteuerung
+ 8a       Leiterzuege Bestueckungsseite Bildschirmsteuerung
+ 8b       Leiterzuege Leiterseite Bildschirmansteuerung    
+ 9        Bestueckungsplan des Video-Modulators
+10        Darstellung der im Zeichengenerator generierten 
+          Graphiksymbole und Sonderzeichen
+11        Aufbau von alphanumerischen Zeichen und
+          Graphiksymbolen
+12        Adressen der Zeichenpositionen auf dem Bildschirm
+13        Taktdiagramm BAS-Signal
+14        Uebersichtsplan der Tastatur
+15        Stromlaufplan der Tastaturelektronik
+16        Bestueckungsplan der Tastaturelektronik
+16a       Leiterzuege Bestueckungsseite Tastaturelektronik
+16b       Leiterzuege Leiterseite Tastaturelektronik
+17        Darstellung der in der Matrix angeordneten 65 Tasten
+18        Realisierte Tastenanordnung
+19        Prinzipieller Ablaufplan einer Byte-Ausgabe
+20        Rahmenstruktur
+21        Kodierungsvorschriften
+22        Kassettenmagnetbandsteuerung
+23        Stromlaufplan des Netzteils
+24        Bestueckungsplan des Netzteils
+24a       Leiterzuege Leiterseite Netzteil
+25        Taktdiagramm Zeilenerzeugung
+26        Taktdiagramm Bilderzeugung
+27        Blockschaltbild U 2164
+28        Taktdiagramm "READ" und "EARLY-WRITE"-Zyklus
+29        Taktdiagramm "RAS-ONLY-REFRESH"-Zyklus
+30        Input/Output Adresse
+31        System-PIO Belegung        
+32        Belegung Steckverbinder X1
+33        Belegung Steckverbinder X2
+34        Belegung Steckverbinder X3
+35        Ebenen und Aufrufe der Software
+36a       BIOS Listing (2 * 62 KByte RAM-Floppy)
+36b       BIOS Listing (1 * 124 KByte RAM-Floppy)
+37        Systemzellen und Sprungvektoren
+38a       Listing CCP
+38b       Listing BDOS
+39        Listing Kommandoprozessor und V-Tape
+40        Listing Debugger
+         
+
+.paäLiteraturverzeichnis
+
+ [1] Kieser, H.,Meder, M.: Mikroprozessortechnik
+     4. Aufl. Berlin: VEB Verlag Technik 1986
+
+ [2] Kuehn, E.: Handbuch TTL- und CMOS-Schaltkreise
+     2. Aufl. Berlin: VEB Verlag Technik 1986
+
+ [3] Classen, L., Oefler, U.: Wissensspeicher Mikrorechner-
+     programmierung
+     1. Aufl. Berlin: VEB Verlag Technik 1986
+
+ [4] Barthold, H., Baeurich, H.: Mikroprozessoren - 
+     Mikroelektronische Schaltkreise und ihre Anwendung
+     electronica * Band 222/223 und Band 224/225
+     3. Aufl. Berlin: Militaerverlag der DDR 1985
+
+ [5] -,Systemhandbuch SCP, Anleitung fuer den Programmierer
+     VEB Robotron Bueromaschinenwerk Soemmerda 1984
+
+ [6›†Quendt¨† W.¨† Rupp¨† D.∫† DatensichtgeraeÙ fueÚ Mikroç
+     rechneÚ    
+     radio fernsehen elektronik  Berlin 34 (1985) H. 4
+     S.226-229 
+
+ [7› Sterl¨ H.¨ Franke¨ K.∫ MikrorechnergesteuerteÛ fernseh- 
+     kompatibles Datensichtgeraet
+     radio fernsehen electronik  Berlin 28 (1979) H. 4
+     S.235-240
+
+ [8] Heyder, F.: Funkamateure entwickeln Amateurcomputer
+     "AC 1" (5)
+     FUNKAMATEUR, Fortsetzungsreihe ab Heft 12/1983
+
+ [9] Ergaenzung zur Service-Anleitung "anett" IS2
+     Nr. 2304.02  Ausgabe 1977
+
+[10] Heimcomputer Robotron Z 9001
+     Anhang zum Programmierhandbuch
+
+[11] Bildschirmgeraet K 8911  Robotron
+     Betriebsdokumentation
+
+[12] Streng, K.: Daten digitaler integrierter Schaltkreise
+     - TTL-Schaltkreise -
+     1. Aufl. Berlin: Militaerverlag der DDR 1985
+
+[13] Aktive elektronische Bauelemente 1985
+     VEB Kombinat Mikroelektronik
+
+[14] Huebler, B., Evert, K.-P.: Ausbaufaehiger Mikrocomputer
+     mit dem U880
+     electronica * Band 227/228       
+     1. Aufl. Berlin: Militaerverlag der DDR 1985
+
+[15] Jungnickel, H.: Stromversorgungseinrichtungen
+      . Aufl. Berlin: VEB Verlag Technik 1982
+
+[16] Buerger, B.: Halbleiterspeicher Teil2
+     Mikroelektronik-Information/Applikation
+     Kombinat Mikroelektronik /KdT 1985ä
+[17›†Schmelovsky¨†Weisse¨†Engelmann∫†EntzerrungfreieÛ 
+     Demodulationsverfahren fuer Magnetbandspeicher
+     radio fernsehen elektronik 28(1979) H.10, S. 633
+
+[18] Troll, Huebner: Daten- und Programmspeicherung auf Heim-
+     magnetbandgeraeten
+     radio fernsehen elektronik 31(1982) H.12 S. 796 ff.
+
+[19] Stiller: SuperTape mit dem Z80
+     c't H.4, S.23 ff.
+
+[20] Krauss, Woschni, Kutschbach: Handbuch der Datenerfassung
+     VEB Verlag Technik Berlin 1. Aflage 1984
+
+
+

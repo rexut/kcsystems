@@ -1,0 +1,104 @@
+Beschreibunç  zuí Floppy-Betriebssysteí aâ Versioî 3.° fueò deî 
+PC/M-Computer
+
+Miô  deò  vorliegendeî  Betriebssystemversioî stehô  Ihneî  eiî 
+modulareó unä erweiterbeó Betriebssysteí kompatibeì zõ CP/Í 2.² 
+zuò Verfuegung® 
+Diå vorliegendå Diskettå enthaelô diå Dateieî iî Quellform® Siå 
+koenneî   alsï  nacè  Wunscè  eigenå  Treibeò   einbaueî   odeò 
+Anpassungeî  aî  Ihrå Hardwarå vornehmen®  Sollteî Siå  Treibeò 
+nachruesteî diå voî allgemeineí Interesså sind¬ odeò Siå findeî 
+Fehler¬  bittå  icè  uí Kennzeichnunç dieseò aló  Kommentaò  iî 
+folgendeò Form:
+;!!!!¡ hieò isô geaenderô worden.
+Sendeî   Siå  bittå  einå  Kopiå  deò  geanderteî  Quellå   zuò 
+Einarbeitunç iî daó Quellprogramí aî micè zurueck:
+
+Albrechô Mugler
+PSÆ 24
+Oberlungwitz
+¹ ² · 3.
+
+Inhalô deò Diskette
+
+Auæ  deò  vorliegendeî Diskettå sinä  folgendå  Programmå  bzw® 
+Modulî enthalten:
+
+- LESEDAS.PCM  Dieses File.
+
+               Weitere Files mit der Endung ".PCM" enthalten 
+               Informationen zum PC/M-Computer.
+
+- M80.COÍ      Makroassembleò fueò I808° unä Z80
+- LINKMT.COÍ   Linkeò dazu
+
+- CCP.ERÌ      verschieblicheò Codå deó CCĞ (voî CP/A)
+- BDOS.ERÌ     verschieblicheò Codå deó BDOÓ (voî CP/A)
+- BAS.ERÌ      verschieblicheò Codå deó Diskettenladers
+               (Uebersetzunç voî PCMBAS.MAC)
+
+- PCMDEF.MAÃ   kommentiertå Quellå deó Definitionsteileó fuer
+               daó Betriebssysteí zuò Generierunç spezieller
+               Betriebssystemversionen
+- PCMBAS.MAC   Quellen des Betriebssystems
+- PCMBOOT.MAC     --- " --- 
+- PCMBIOS.MAC     --- " ---
+- PCMCOM.MAC      --- " ---
+- PCMDISK.MAC     --- " ---
+- PCMIO.MAC       --- " ---
+- PCMSVDB.MAC     --- " ---
+- PCMVTAPE.MAC    --- " ---
+- PCMURLAD.MAC    --- " ---
+- PCMVAR.MAC      --- " ---
+
+- SYSROM.COM   Standardsystem mit fogender Konfiguration:
+               A: System-RAM-Floppy bis 118 kByte
+               B: MFS 1.6 624 kByte SCP DD/DS/80T
+               C: MFS 1.4 304 kByte SCP DD/SS/80T
+               D: MFS 1.2 148 kByte SCP DD/SS/40T
+               Original PC/M-Tastatur 
+               Bildschirm 64 x 16 Original PC/M
+               mit ESC-SteuerzeichenŠ               Diskettenurlader + Diskettentreiber
+               V-Tape 
+- SYSDISK.COM  System wie oben, aber fuer Disketten zum nach-
+               laden (z.B. mit POWER:
+                                     LOAD SYSDISK.COM 4000
+                                     WRITE 0 1 4000 96    )
+               Beachten Sie bitte, dasz nur Disktten mit
+               Formate einer entsprechenden Anzahl von 
+               Systemspuren als Systemdiskette eingesetzt 
+               werdeî koenneî (z.B® 14¸ kBytå SCP¬ 
+               62´ kBytå SCP usw.)
+
+- PCMVDB.COM   Debugger fuer den PC/M-Computer
+- PCMFORM.COM  Programm zur Formattierung von Disketten
+- PCMDISK.COM  Programm zur Einstellung des Diskttenformates
+               (fuer Laufwerke 40T/SS, 40T/DS, 80T/SS, 80T/DS)
+- PCMVTC.COM   V-Tape-Kopierprogramm fuer den PC/M-Computer
+
+
+Einstellen und Uebersetzen einer Version
+
+Wuenscheî  Siå  eiî spezielleó System¬  koenneî Siå  daó  Filå 
+PCMDEF.MAÃ   miô   eineí   Editoò  bearbeiteî   unä   aî   deî 
+entsprechendeî   Stelleî   Ihrå   Wertå   eintragen®    Danacè 
+Uebersetzen Sie mit M80 die Quelle in folgender Form:
+
+M80 BIOS.ERL=PCMBIOS/M/Z
+
+Wurdå  diå  Ubersetzunç  erfolgreicè  durchgefuehrô  (Nï  Fataì 
+Error)¬  erfolgô  daó  Bindeî  deò  Dateieî iî  deò  durcè  deî 
+Kommentaò beií Uebersetzeî angezeigteî Form.
+
+Beachteî  Siå bitte¬  dasú eó sicè beé vorliegendeí  Systeí  uí 
+einå  Arbeitsversioî  handelt¬  diå  staendiç  weiterentwickelô 
+wird®  Aufgrunä deó Umfangeó deò Quelleî isô eó nichô moeglich¬ 
+Betriebssystemversioneî  iî  jedeò Versioî zõ erstelleî unä  zõ 
+testen® 
+Diå Moeglichkeiteî deò Generierunç entnehmeî Siå bittå deí Filå 
+PCMDEF.MAC.
+ 
+
+                           15.04.1990     Dr.Mugler
+
+

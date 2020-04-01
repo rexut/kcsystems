@@ -1,0 +1,81 @@
+/* https://stackoverflow.com/a/57840173 */
+.wy-nav-content {
+    max-width: 1200px !important;
+}
+
+.wy-nav-content-wrap {
+    max-width: 100% !important;
+}
+
+/* force the original 40% of 1200px */
+.rst-content .sidebar {
+    max-width: 480px !important;
+}
+
+/* force word wraping in table cells */
+.wy-table-responsive table td,
+.wy-table-responsive table th {
+    white-space: initial !important;
+}
+
+/* https://github.com/readthedocs/sphinx_rtd_theme/issues/764 */
+@media screen and (min-width: 1800px)  {
+    /* Pop out the in-page links to the right instead of the left */
+    div.wy-side-scroll li.toctree-l1.current > ul {
+        position: fixed;
+        margin-left: 0px;
+        overflow-y: auto;
+        padding-left: 5px;
+        border-left: 0px solid #343131;
+        height: 95%;
+        top: 79px;
+        left: 1500px;
+    }
+
+    div.wy-side-scroll li.toctree-l1.current a {
+        border-right: none;
+    }
+
+    div.wy-side-scroll li.toctree-l1.current ul {
+        max-width: 400px;
+    }
+
+    div.wy-side-scroll li.toctree-l1.current ul, li.toctree-l1.current li, li.toctree-l1.current a {
+        background-color: transparent !important;
+    }
+
+    /* All items should now be visible regardless of expandy state */
+    div.wy-side-scroll li.toctree-l1.current ul {
+        display: block !important;
+    }
+
+    /* hide the expandy buttons */
+    div.wy-side-scroll li.toctree-l1.current span.toctree-expand {
+        display: none !important;
+    }
+
+    /* Make the padding correct */
+    div.wy-side-scroll li.toctree-l2 li.toctree-l3 > a {
+        padding: .4045em 4.045em !important;
+    }
+
+    div.wy-side-scroll li.toctree-l4 > a {
+        padding: .4045em 5.663em !important;
+    }
+
+    div.wy-menu-vertical li.toctree-l5 a {
+        padding: .4045em 7.281em !important;
+    }
+
+    div.wy-side-scroll li.toctree-l6 > a {
+        padding: .4045em 7.281em !important;
+    }
+
+    div.wy-menu-vertical li.toctree-l6 a {
+        padding: .4045em 8.899em !important;
+    }
+
+    div.wy-side-scroll li.toctree-l6 > a {
+        padding: .4045em 8.899em !important;
+    }
+}

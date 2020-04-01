@@ -1,6 +1,65 @@
+# additionals
+*.cab
+*.egg
+*.eot
+*.msi
+*.msm
+*.msp
+*.woff2
+.py*env*
 
-# Created by https://www.gitignore.io/api/vim,linux,python,windows
-# Edit at https://www.gitignore.io/?templates=vim,linux,python,windows
+
+# Created by https://www.gitignore.io/api/vim,font,linux,python,windows,archives,fontforge
+# Edit at https://www.gitignore.io/?templates=vim,font,linux,python,windows,archives,fontforge
+
+### Archives ###
+# It's better to unpack these files and commit the raw source because
+# git has its own built in compression methods.
+*.7z
+*.jar
+*.rar
+*.zip
+*.gz
+*.tgz
+*.bzip
+*.bz2
+*.xz
+*.lzma
+*.cab
+
+# Packing-only formats
+*.iso
+*.tar
+
+# Package management formats
+*.dmg
+*.xpi
+*.gem
+*.egg
+*.deb
+*.rpm
+*.msi
+*.msm
+*.msp
+
+### Font ###
+*.fnt
+*.fon
+*.otf
+*.ttf
+
+### FontForge ###
+*.sfd-*
+*.sfd~
+
+# No Binaries
+
+*.ttc
+*.woff
+*.pfb
+*.pfa
+*.pt3
+*.suit
 
 ### Linux ###
 *~
@@ -44,7 +103,6 @@ pip-wheel-metadata/
 share/python-wheels/
 *.egg-info/
 .installed.cfg
-*.egg
 MANIFEST
 
 # PyInstaller
@@ -163,13 +221,9 @@ ehthumbs_vista.db
 $RECYCLE.BIN/
 
 # Windows Installer files
-*.cab
-*.msi
 *.msix
-*.msm
-*.msp
 
 # Windows shortcuts
 *.lnk
 
-# End of https://www.gitignore.io/api/vim,linux,python,windows
+# End of https://www.gitignore.io/api/vim,font,linux,python,windows,archives,fontforge

@@ -1,0 +1,59 @@
+.. Don't change this file, instead edit content in files:
+   docmeta.rsti, docaudience.rsti, and docsubst.rsti
+
+.. only:: html
+
+   .. sidebar:: Summary
+
+      :Abstract:	|dm_mach_pcm_abstract|
+
+			.. include:: docinvolcomps.rsti
+
+      :Audience:	.. include:: docaudience.rsti
+      :Status:		|dm_mach_pcm_status|
+      :Version:		|version|
+      :Release:		|release|
+      :Date:		|today|
+      :Authors:		|dm_mach_pcm_authors|
+
+			* |pdamu_obfuscated|
+			* |hma_obfuscated|
+			* |slz_obfuscated|
+			* |ube_obfuscated|
+
+      :Copyright:	|dm_mach_pcm_copyright|
+      :Organization:	|dm_mach_pcm_organization|
+      :Contact:		|dm_mach_pcm_contact_obfuscated|
+      :Address:		|dm_mach_pcm_address|
+
+.. only:: latex or man or texinfo or text
+
+   .. rubric:: Summary of |mach_pcm_project|
+
+   :Abstract:		|dm_mach_pcm_abstract|
+
+			.. include:: docinvolcomps.rsti
+
+   :Audience:		.. include:: docaudience.rsti
+   :Status:		|dm_mach_pcm_status|
+   :Version:		|version|
+   :Release:		|release|
+   :Date:		|today|
+   :Authors:		|dm_mach_pcm_authors|
+
+			* |pdamu_plain_text|
+			* |hma_plain_text|
+			* |slz_plain_text|
+			* |ube_plain_text|
+
+   :Copyright:		|dm_mach_pcm_copyright|
+   :Organization:	|dm_mach_pcm_organization|
+   :Contact:		|dm_mach_pcm_contact_plain_text|
+   :Address:		|dm_mach_pcm_address|
+
+.. Local variables:
+   coding: utf-8
+   mode: text
+   mode: rst
+   End:
+   vim: fileencoding=utf-8 filetype=rst :

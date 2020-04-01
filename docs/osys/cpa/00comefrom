@@ -1,0 +1,86 @@
+[2007-10-29 21:12:40]
+------------------------------------------------------------------------------
+Documentation of the CP/A operating system by Academy of Sciences of the GDR
+
+		CPA2_85.DOK		CP/A, Version 2, state 11-Jun-1985
+		CPA3_86.DOK		CP/A, Version 3, state 11-Sep-1986
+		CPA4_87.DOK		CP/A, Version 4, state 06-Apr-1987
+		CPA5_88.DOK		CP/A, Version 5, state 25-Mar-1988
+		CPA6_89.DOK		CP/A, Version 6, state 05-Jun-1989
+
+		(was all manually converted, splited and adapted to reST)
+
+------------------------------------------------------------------------------
+CP/A, Version 2 - 1985
+----------------------
+wget -O CPA2_85.DOK/CPA2_85.pdf http://rechenwerk-halle.de/usr/digital-ag/archiv/handbuecher/Beschreibung_des_Betriebssystems_CPA.pdf &&
+pdftotext CPA2_85.DOK/CPA2_85.pdf
+----------------------
+CP/A, Version 3 - 1986
+----------------------
+wget -O CPA3_86.DOK/CPA3_86.TXT ftp://ftp.informatik.uni-stuttgart.de/pub/cm/robotron/pc1715/CPA/cpa.txt &&
+wget -U "Mozilla/5.0" -qO- https://hc-ddr.hucki.net/wiki/lib/exe/fetch.php/cpm:cpa.zip | \
+bsdtar -xOvf- CPA.DOC > CPA3_86.DOK/CPA3_86.DOK
+libreoffice --convert-to pdf --outdir CPA3_86.DOK CPA3_86.DOK/CPA3_86.TXT
+----------------------
+CP/A, Version 4 - 1987
+----------------------
+wget -U "Mozilla/5.0" -qO- https://hc-ddr.hucki.net/wiki/lib/exe/fetch.php/cpm:cpa.zip | \
+bsdtar -xOvf- 'CPA#87.DOC' > CPA4_87.DOK/CPA4_87.DOK
+curl -sL https://github.com/rexut/vp-ws2rtf-perl/raw/master/ws2rtf.pl | \
+perl - CPA4_87.DOK/CPA4_87.DOK && mv CPA4_87.rtf CPA4_87.DOK/CPA4_87.rtf &&
+libreoffice CPA4_87.DOK/CPA4_87.rtf   ### SAVE AS TXT: CPA4_87.DOK/CPA4_87.txt
+libreoffice --convert-to pdf --outdir CPA4_87.DOK CPA4_87.DOK/CPA4_87.txt
+----------------------
+CP/A, Version 5 - 1988
+----------------------
+wget -U "Mozilla/5.0" -qO- https://hc-ddr.hucki.net/wiki/lib/exe/fetch.php/cpm:cpa.zip | \
+bsdtar -xOvf- 'CPA5#88.DOK' > CPA5_88.DOK/CPA5_88.DOK
+curl -sL https://github.com/rexut/vp-ws2rtf-perl/raw/master/ws2rtf.pl | \
+perl - CPA5_88.DOK/CPA5_88.DOK && mv CPA5_88.rtf CPA5_88.DOK/CPA5_88.rtf &&
+libreoffice CPA5_88.DOK/CPA5_88.rtf   ### SAVE AS TXT: CPA5_88.DOK/CPA5_88.txt
+libreoffice --convert-to pdf --outdir CPA5_88.DOK CPA5_88.DOK/CPA5_88.txt
+----------------------
+CP/A, Version 6 - 1989
+----------------------
+wget -qO- https://www.tiffe.de/Robotron/CPA/cpa-enrico/CPA.zip | \
+bsdtar -xOvf- CPA.DOK > CPA6_89.DOK/CPA6_89.DOK
+curl -sL https://github.com/rexut/vp-ws2rtf-perl/raw/master/ws2rtf.pl | \
+perl - CPA6_89.DOK/CPA6_89.DOK && mv CPA6_89.rtf CPA6_89.DOK/CPA6_89.rtf &&
+libreoffice CPA6_89.DOK/CPA6_89.rtf   ### SAVE AS TXT: CPA6_89.DOK/CPA6_89.txt
+libreoffice --convert-to pdf --outdir CPA6_89.DOK CPA6_89.DOK/CPA6_89.txt
+
+------------------------------------------------------------------------------
+Digital AG Archive: Bürocomputer 8-Bit
+--> http://rechenwerk-halle.de/usr/digital-ag/archiv/#B%C3%BCrocomputer%208-Bit
+    ----------------------
+    CP/A, Version 2 - 1985
+    --> http://rechenwerk-halle.de/usr/digital-ag/archiv/handbuecher/Beschreibung_des_Betriebssystems_CPA.pdf
+------------------------------------------------------------------------------
+Computer Museum, University of Stuttgart
+--> http://computermuseum.informatik.uni-stuttgart.de/
+    ----------------------
+    CP/A, Version 3 - 1986
+    --> ftp://ftp.informatik.uni-stuttgart.de/pub/cm/robotron/pc1715/CPA/cpa.txt
+------------------------------------------------------------------------------
+Volker Pohlers CP/A area
+--> https://hc-ddr.hucki.net/wiki/doku.php/cpm:cpa
+    ----------------------
+    CP/A, Version 3 - 1986
+    --> https://hc-ddr.hucki.net/wiki/lib/exe/fetch.php/cpm:cpa.zip
+        --> CPA.DOC
+    ----------------------
+    CP/A, Version 4 - 1987
+    --> https://hc-ddr.hucki.net/wiki/lib/exe/fetch.php/cpm:cpa.zip
+        --> CPA#87.DOC
+    ----------------------
+    CP/A, Version 5 - 1988
+    --> https://hc-ddr.hucki.net/wiki/lib/exe/fetch.php/cpm:cpa.zip
+        --> CPA5#88.DOK
+------------------------------------------------------------------------------
+Holm Tiffe CP/A area
+--> https://www.tiffe.de/Robotron/CPA/
+    ----------------------
+    CP/A, Version 6 - 1989
+    --> https://www.tiffe.de/Robotron/CPA/cpa-enrico/CPA.zip
+        --> CPA.DOK

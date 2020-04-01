@@ -1,0 +1,167 @@
+
+
+               Intelligente Tastatur am PC/M
+
+
+
+
+
+      Dipl.-Ing. A.Mugler, Y27NN, Dipl.-Ing. H. Mathes
+
+
+
+
+
+
+Berarbeitungsstand: 17.09.1988 
+.paŠDaó  Filå  PC/MEPT.DOÃ enthaelô einigå Informationeî  fueò  diå 
+Nutzunç  deó  EPR² aló Tastaturrechneò fueò deî  PC/M-Computer® 
+Diå   Tastatuò  isô  Hardwareseitiç  volì  kompatibeì  zuò   ií 
+FUNKAMATEUÒ  vorgestellteî  Variante®  Diå Belegunç deò  Tasteî 
+weichô  jedocè zuí Teiì ab®  Wesentlicheò Unterschieä  isô  diå 
+schreibmaschinenkompatiblå      Ausgabå     voî      Grosz- unä 
+Kleinschreibunç (Groszschreibunç beé gedrueckteò  Shift-Taste)¬ 
+diå  ií Betriebssysteí nichô mehò korrigierô werdeî musz®  Dieó 
+solltå  beé  deò Anpasseî bzw®  Uebersetzeî deó  Fileó  PCM.MAÃ 
+(Versioî   2.XX©   unä  deò  nachfolgendeî  Versioî   miô   deí 
+Definitionsfilå PCMDEF.MAÃ (Versioî 3.XX© beachteô werden.
+Diå     Tastatuò    verfuegô    uebeò    einå    eigenstaendigå 
+Autorepeatfunktion.
+Diå  LED-Steuerunç  wurdeî  iî deò vorliegendeî  Versioî  nichô 
+uebernommen.
+
+Tastaturbelegung und EPR2 - Anschluesse bei Commodore-Tastatur
+                          (C500 etc.)
+
+
+Farbe                         dkl  dkl  gelb oran rot  braun 
+                              bl   gn  
+
+          EPR2                C3   C6   C7   C8   A15  C10
+
+                    PIO       Ab0  Ab1  Ab2  Ab3  Ab4  Ab5
+
+sw/ws     C24       Aa0       ?    :    L    O    (    F9
+                              /    ;              9
+grau/ws   C23       Aa1       "    [    P    -    )    F10
+                              ,                   0
+viol/ws   C22       Aa2       Pi RETURN ]         +    LF
+                                             <-
+blau/ws   C21       Aa3            C=   INS  ->   <-   LB
+                                        DEL
+gn/ws     C19       Aa4       0    1    4    7    ?    CLR
+                                                       HOME
+ge/ws     C18       Aa5       .    2    5    8    CE   OFF
+                                                       RSV
+orange/ws C17       Aa6       00   3    6    9    *    NORM
+                                                       GRAPH
+rosa/ws   C16       Aa7           ENTER +    -    /    RUN
+                                                       STOP
+braun/ws  A23       Ba0       CTRL SHFT      TAB  ESC  F1
+
+hellgn    A22       Ba1            Z    A    Q    !    F2
+                                                  1     
+hellbl    A21       Ba2       C    X    S    W    @    F3
+                                                  2
+rosa      A20       Ba3       V    F    D    E    #    F4
+                                                  3     
+sw        A19       Ba4       B    G    T    R    $    F5
+                                                  4
+ws        A18       Ba5       N    H    Y         %    F6
+                                             6    5
+grau      A17       Ba6     Space  M    J    U    &    F7
+                                                  7
+violett   A16       Ba7       >    <    K    I    *    F8
+                              .    ,              8           
+
+ŠAnschluesse zur Zentralen Platine des PC/M
+
+EPR2 X2             Zentrale Platine X1
+
+OT0  A13            TD0  B9
+OT1  A12            TD1  B8
+OT2  C11            TD2  B7
+OT3  C12            TD3  B6
+OT4  C14            TD4  B5
+OT5  A11            TD5  B4
+OT6  C10            TD6  B3
+OT7  A10            TAST B2
+BAT3 A3             5P   ABC1
+GND  A4             GND  ABC13
+
+
+Tastaturbelegung fuer Commodore-Tastatur
+(Angaben hexadezimal!)
+
+Ctl       Normal
+Taste     Shift
+
+2F  2F     3B  3B     0C  6C     0F  6F     39  39     11  11
+?/  3F     ;:  3A     L   4C     O   4F     9)  28     F9  11
+
+27  27     1B  7B     10  70     2D  2D     30  30     0B  0B
+"`  22     [   5B     P   50     _   5F     0)  29     F10 0B
+
+03  03     0D  0D     1D  7D     1C  7C     3D  3D     18  18
+PI  03   RETUR 0D     ]   5D     <-  5C     =+  2B     LF  18
+
+           1F  1E     7E  7E     04  04     08  08     05  05
+           C=  1F     INS 60     ->  04     <-  08     LB  05
+
+30  30     31  31     34  34     37  37     3F  3F     01  01
+0   30     1   31     4   34     7   37     ?   3F    HOME 0C
+
+2E  2E     32  32     35  35     38  38     7F  7F     15  15
+.   2E     2   32     5   35     8   38     CE  7F     RVS 15
+
+0A  0A     33  33     36  36     39  39     2A  2A     18  18
+00  0A     3   33     6   36     9   39     *   2A   GRAPH 18
+
+           0D  0D     2B  2B     2D  2D     2F  2F     13  13
+         ENTER 0D     +   2B     -   2D     /   2F     RUN 13
+
+                                 09  09     1B  1B     12  12
+CTRL      SHIFT                  TAB 09     ESC 1B     F1  12
+
+           1A  7A     01  61     11  71     31  31     03  03
+           Z   5A     A   41     Q   51     1!  21     F2  03
+
+03  63     18  78     13  73     17  77     32  32     01  01
+C   43     X   58     S   53     W   57     2@  40     F3  01
+
+16  76     06  66     04  64     05  65     33  33     06  06
+V   56     F   46     D   44     E   45     3#  23     F4  06
+
+02  62     07  67     14  64     12  72     34  34     07  07
+B   42     G   47     T   54     R   52     4$  24     F5  07
+Š0E  6E     08  68     19  79     36  36     35  35     14  14
+N   4E     H   48     Y   59     6^  5E     5%  25     F6  14
+
+20  20     0D  6D     0A  6A     15  75     37  37     19  19
+SPA 20     M   4D     ]   4A     U   55     7&  26     F7  19
+
+2E  2E     2C  2C     0B  6B     09  69     38  38     10  10
+.>  3E     ,<  3C     K   4B     I   49     8*  2A     F8  10
+
+
+Hinweise zur Bestueckung und Tastatur 
+ 
+D1± (2716)¬  D· (UB857)¬  D1¶ (V40098)¬ D1µ (74154)¬ Dµ (DL123© 
+sowiå V2¬ V3¬ V4¬ V5¬ C5¬ R7¬ R8¬ R13¬ R15-R2³ unä Ñ sinä nichô 
+zõ bestuecken® 
+Fueò  Ñ  wirä  eiî Ã miô 1nÆ eingesetzt®  Vµ  wirä  durcè  einå 
+Brueckå zwischeî Ã unä Å ersetzt®  V³ wirä gebrueckt®  Dµ  wirä 
+durcè einå Brueckå voî piî 1± zõ piî µ ersetzt.
+D¸  musú aî IEÉ piî 2´ zusaetzlicè miô eineí pulì uğ Widerstanä 
+voî ca® ³ kOhí verseheî werden.
+Diå  Datenleitungeî fueò PIÏ D¹ Kanaì A0-Aµ werdeî  miô  ca®  µ 
+kOhí nacè Masså geschalten.
+Bittå  diå Brueckå fueò Vpğ aí EPROÍ zõ 5Ğ nichô vergesseî  unä 
+piî ¶ deó DS820µ (IS12© auæ 5Ğ legen.
+Weiterhiî  solltå diå RESET-Leitunç fueò diå Tastatuò  unä  diå 
+Zentralå Platinå parallelgeschalteî werden.
+Diå  Eprom-Versioî  TAST8282.002 wirä beé Einsatú eineó  DS828² 
+aló  D1· unä diå Versioî TAST8283.002 beé Einsatú eineó  DS828³ 
+verwendet® Beidå sinä Versioneî diå auæ diå Arbeiô miô WordStaò 
+(TP© zugeschnitteî wurden® 
+

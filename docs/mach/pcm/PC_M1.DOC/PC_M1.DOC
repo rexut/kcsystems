@@ -1,0 +1,899 @@
+
+
+
+
+
+
+     ***************************************************        
+     *                                                 *
+     *           Der  P C / M  -  Computer             *
+     *                                                 *
+     *        Hard- und Softwaredokumentation          *
+     *                                                 *
+     *    Dipl.-Ing. A. Mugler, Dipl.-Ing. H. Mathes   *
+     *                                                 *
+     *                                                 *
+     ***************************************************
+
+
+
+
+
+
+
+    (C) 1986,1987,1988  Karl-Marx-Stadt, den 16.12.1986
+
+
+
+
+
+                Bearbeitungsstand: 30.08.1988
+
+.paŠInhaltsverzeichnis
+
+
+1.        Der PC/M Computer                            
+
+2.        Die Zentrale Platine                             
+2.1.      Systemseite                                  
+2.1.1.    Taktversorgung, Reset-Logik, NMI-Generator   
+2.1.2.    Bustreiber                                   
+2.1.3.    Bootstrap-Lader (Urlader)                    
+2.1.4.    Adressdekodierung fuer die Speicher          
+2.1.5.    /RAS- /CAS-Signalgenerierung                  
+2.1.6.    192 KByte dRAM Block                         
+2.1.7.    8 KByte EPROM Block                          
+2.2.      Input/Output-Seite                         
+2.2.1.    Adressdekodierung fuer I/O-Ports            
+2.2.2.    System-PIO, System-CTC                      
+2.2.3.    Anwender-PIO, Anwender-CTC                  
+2.2.4.    Anwender-SIO, V.24- bzw. IFSS-Interface     
+2.2.5.    Kassetteninterface                          
+
+3.        Die Peripherie                     
+3.1.      Bildschirmansteuerung                       
+3.2.      Tastatur                                    
+3.3.      Kassettenmagnetbandgeraet                   
+3.4.      Stromversorgung                             
+
+4.        Inbetriebnahme                              
+
+5.        Das Betriebssystem
+5.1.      Die Struktur                         
+5.2.      Der Software-Kern
+5.3.      Das Kassettenmodul V-Tape
+5.3.1.    Die Magnetbandarbeit
+5.3.2.    Der Kommandoprozessor
+5.4.      Der Debugger
+5.5.      Das RAM-Floppy-System
+5.6.      Laden und Speichern von Programmen 
+
+6.        Zusammenfassung                             
+
+.paŠ1. Der PC/M Computer
+
+Hardware
+
+- Einsatú eineó RAM-Floppù statô eineó Floppy-Disk-Laufwerkes
+  (6´ KBytå odeò 12¸ KBytå RAÍ ©  
+- Nutzunç eineó Kassettenmagnetbandgeraeteó zuò Programm- und
+  Datenspeicherung
+- Anschlussmoeglichkeiteî fueò Tastatur¬ Druckeò (IFSÓ odeò 
+  V.24)
+- Anschlussmoeglichkeiô verschiedeneò Bildschirmsteuerungen
+  (Grundversioî 6´ Zeicheî maì 1¶ Zeileî miô 1¶ Zwischenzeilen,
+  pseudografikfaehig)
+- freé verfuegbarå Hardware-Schnittstelleî (PIO¬ SIO¬ CTC)
+- stufenweiser RAM-Ausbau moeglich
+- Systembus zum Anschluss weiterer Baugruppen (EPROM-Pro-
+  grammierung, Grafik-Modul usw.)
+
+Software
+
+- Grundbetriebssystem mit Schnittstellen identisch zum
+  CP/M BIOS
+- Kassettenmodul zur Nutzung eines Kassettenmagnetbandgeraetes
+  fuer die Daten- und Programmspeicherung
+- systemeigener Debugger
+- CP/M kompatibles RAM-Floppy-Betriebssytem
+- Grundsoftware fuer das Grundbetriebssystem (bereits bei 
+  64 K RAM lauffaehig; BASIC, PASCAL, Assembler U8800 und 
+  U880, Reassembler U880, Editor, CW-RX, Morseuebungsprogramm,
+  Schach usw.)
+- Lauffaehigkeit CP/M kompatibler Software
+- Anpassbarkeit vieler 8080, Z80 bzw. U880 Programme durch
+  uebliche Schnittstellen, 64 KByte RAM als Arbeitsspeicher
+  und Dokumentation von Hard- und Software
+
+
+2® Die zentrale Platine
+
+Diå  zentralå Platinå stellô daó Herzstuecë deó PC/Í  Computeró 
+daò  unä  bestimmô  durcè ihrå Konzeptioî deî  Umfanç  unä  diå 
+Erweiterungsmoeglichkeiteî  deó  gesamteî Systemó (Bilä 1á  unä 
+16).
+Siå beinhalteô folgendå Funktionsgruppen:
+          - Takterzeugung
+          - Reset-Logik
+          - NMI-Generator
+          - CPÕ unä Bustreibeò  
+          - Bootstrap-Lader
+          - Adressdekodierunç fueò Speicher
+          - RFSH-¬ /RAS-¬ /CAS- Steuerung
+          - 19² KBytå dRAÍ Block
+          - ¸ KByte-EPROM-Block
+          - Adressdekodierunç fueò I/O-Port's
+          - System-PIO¬ System-CTC
+          - Anwender-PIO¬ Anwender-CTC
+          - Anwender-SIO¬ V.24- bzw® IFSS-Interface
+          - Kassetten-Interface
+Daó Rechnerkonzept¬ basierenä auæ deí ¸ biô Prozessoò U880¬ isô 
+softwareseitiç  kompatibeì zõ Systemeî wiå deí Buerocomputeò  Á 
+5120¬ Á 5130¬ PÃ 171µ usw® miô deí Betriebssysteí SCP® 
+Eó  wurdeî 12´ KBytå dRAÍ aló RAM-Floppù  organisiert¬  uí  diå Šdiskettenorientiertå   Arbeitsweiså  deó  Betriebssystemeó   zõ 
+gewaehrleisten.
+Aló dauerhafteò Speicheò wird¬  wiå aucè ií Grundbetriessystem¬ 
+diå  Kassettå  eingesetzt¬  worauæ  diå  "RAÍ  Disketten¢  odeò 
+einzelnå Dateieî voî dieseî dauerhafô abgelegô werdeî koennen.
+
+2.1® Systemseite‚ (Bilä 2)
+
+2.1.1® Taktversorgung¬ Reset-Logik¬ NMI-Generator
+
+Aló  Taktgeneratoò  wirä eiî quarzstabilisierteò  TTL-Generatoò 
+verwendeô (D1)®  Dieseò schwingô miô eineò Frequenú voî 1°  MHú 
+unä lieferô deò zentraleî Platine¬  nacè eineò 1:4-Teilunç (D2© 
+unä anschliessendeí passiveî pulì uğ (geforderteò High-Pegeì aî 
+deî Takteingaengeî deò Systembausteine)¬ deî Systemtakô voî 2,µ 
+MHz.
+Uí   deî   Rechneò   hardwaremaessiç   iî   eineî   definierteî 
+Grundzustanä  bringeî  zõ koennen¬  wurdå diå RESET-Logië  (D3© 
+realisiert®   Dieså   bewirkô  uebeò   eiî   RC-Glied¬   desseî 
+Kondensatoò  sicè beií Einschalteî auflaedô (D³ wirkô dabeé aló 
+Trigger)¬  daó  Einschaltreseô (poweò on)®  Ií  eingeschalteteî 
+Zustanä  kanî  deò  Computeò  uebeò  diå  Reset-Tastå  iî   deî 
+Ausgangszustanä   versetzô   werden®   Eiî  weitereó   RC-Glieä 
+verhinderô dabeé deî Datenverlusô deò dynamischeî RAÍ durcè  zõ 
+langeó Betaetigeî deò Reset-Taste.
+Durcè  diå UND-Verknuepfunç deó Reset-Signaló miô /M± (D3© wirä 
+daó fueò diå PIO-Schaltkreiså benoetigtå /M1-Signaì  generiert¬ 
+welcheó  ií Zustanä /RÄ ½ Higè unä /IORÑ ½ Higè zuí Ruecksetzeî 
+deò PIÏ U855Ä benoetigô wird.
+Uebeò deî NMI-Generatoò wirä deò Schrittbetrieâ deó  Prozessoró 
+ermoeglicht¬   wodurcè   erstelltå  Programmå  getesteô  werdeî 
+koenneî (s®  Debugger)®  Weiterhiî isô einå NMI-Tastå  paralleì 
+zuí NMI-Generatoò zuí Erreicheî deó nichtmaskierteî Interrupteó 
+eingebunden.
+Diå Signalå /INT¬  /WAIÔ unä /BUSRÑ sind¬  dá Low-aktiv¬  uebeò 
+3,¹  KOhm-Widerstaendå auæ eiî sichereó High-Potentiaì gebrachô 
+worden®  Dieså  sinä nebeî deî Signaleî /RESET¬  /NMÉ  unä  deí 
+Systemtakô  CĞ auæ deî Systembuó X³ gefuehrt®  Uebeò LED¶  wirä 
+deò HALT- Zustanä deò CPÕ angezeigô [1¬ 14].
+
+2.1.2® Bustreiber‚ 
+
+Diå  CPU-Ausgaengå  koenneî  nuò  einå  TTL-Lasô  treiben®  Diå 
+Adress- unä  Steuerausgaengå  deò  CPÕ  werdeî  zuí  Zwecë  deò 
+Vergroesserunç  deò  Busbelastbarkeiô uebeò Bustreibeò (D¶  bió 
+D8©  getrieben®   Damiô  wirä  aucè  einå  Unterdrueckunç   deó 
+Einflusseó    voî   Stoerimpulseî    unä   Leitungskapazitaeteî 
+erreicht®  Ausserdeí  nehmeî diå Ausgaengå deò Bustreibeò  beií 
+Aktiviereî  deó  /BUSAK-Signaló  (aî  /BUSRÑ  liegô  einå  DMA-
+Anforderunç an© deî hochohmigeî Zustanä ein® Deò bidirektionalå 
+Datenbuó liegô wegeî deò geringeî Belastunç ungepufferô vor.
+Daó miô /Reseô verknuepftå /M1-Signaì stehô ebenfalló getriebeî 
+zuò Verfuegunç (Bedingunç fueò PIO's© [1]® 
+
+2.1.3® Bootstrap-Ladeò (Urlader)
+
+Deò Bootstrap-Ladeò haô diå Aufgabå beé eineí hardwaremaessigeî 
+Reseô (z.B®  Poweò On¬  Reset© daó Grundbetriebssysteí fueò diå 
+Anfangsinitialisierunç  bereitzustellen®  Dieseó befindeô  sicè 
+auæ  deí ¸ KByte-EPROM-Block®  Nacè deò  Anfangsinitialisierunç 
+wirä  daó  Betriebssysteí  uebeò einå Laderoutinå  iî  deî  RAÍ Šgeladeî unä deò EPROM-Bereicè ausgeblendet® 
+Kerî  deó  Bootstrap-Laderó isô deò Schaltkreió DÓ  821²  (D9)® 
+Dieseò   bestehô  auó  eineí  ¸  Biô  Datenregisteò   unä   deî 
+dazugehoerigeî Treiberî miô Tré Statå Ausgangsstufen® Uebeò deî 
+/CLR-Einganç  lasseî sicè allå Ausgaengå zuruecksetzen®  Dieseò 
+Umstanä   wirä   genutzt¬   uí  nacè  Reseô   deî   EPROM-Blocë 
+einzublenden®  Darueberhinauó wirä uebeò dieseî Schaltkreió diå 
+Auswahì  deò 6´ KBytå dRAÍ Bloeckå realisiert®  Wirä  nichô  ií 
+Blocë ° gearbeitet¬ kanî desseî obereò 1¶ KBytå Bereicè (0C000È 
+- 0FFFFH©  iî  deî geradå aktuelleî Blocë eingeblendeô  werden® 
+Dazõ wirä durcè eineî OUT-Befehì Bit¶ auæ Adresså 94È  gesetzt® 
+Wilì  maî deî EPROÍ Blocë anstellå deó dRAÍ Bereicheó 0000È bió 
+1FFFÈ eingeblendeô haben¬  musó Bit· rueckgesetzô werden® (Bilä 
+5)
+
+2.1.4® Adressdekodierunç fueò diå Speicher
+
+Uebeò  daó  Registeò D¹ unä deî Dekodeò D1°  koenneî  diå  dreé 
+interneî  6´  KBytå dRAÍ Bloeckå unä weiterå fuenæ  externå  6´ 
+KBytå  Bloeckå (beé eventuelleò RAM-Erweiterung© uebeò Porô 94È 
+ausgewaehlô  werden®  Beé RAM-Erweiterungeî muesseî diå  /RAS-¬ 
+/CAS- Signalå  exterî  erzeugô werdeî (Verknuepfunç  miô  /RFSÈ 
+beachteî  !)®  Ií  Grundzustanä  (nacè  Reset¬  Poweò  On©  isô 
+automatiscè deò dRAÍ Blocë ° ií Zugriff® 
+Diå  Adressdekodierunç fueò diå vieò EPROÍ Schaltkreiså Õ  271¶ 
+(D1´  bió D17©  aâ  Adresså  0000È bió 1FFFÈ   uebernimmô   deò 
+Dekodeò D11¬  indeí eò auó deî Adresseî A1± unä A1² vier¬  jå ² 
+KBytå vesetzte¬ /OE-Signalå bildet® Diå /CE-Eingaengå deò EPROÍ 
+Schaltkreiså  sinä paralleì geschalteô unä nuò  danî aktiö (/CÅ 
+½  Low)¬  wenî sicè deò EPROM-Blocë ií  Zugrifæ  befindet®  Deò 
+Adressdekodeò wirä nuò beé /RÄ ½ LO× aktivierô [1].
+
+2.1.5® /RAS-¬ /CAS-Signalgenerierung
+
+Diå  Signalå  /RAS¬  /WÒ  sowiå diå Freigabå  deò  /CAS-Signalå 
+werdeî  uebeò daó D-Flip-Floğ D5° unä diå Gatteò D46.2¬  D47.2¬ 
+D47.3¬  D51.³  unä D5³ iî zeitlicheò Reihenfolgå unä  Zuordnunç 
+(Bilä 28¬  29© generiert®  Dabeé isô diå /RAS-¬  /CAS-Logië nuò 
+aktiö  beií  Zugrifæ  auæ  eineî deò  dreé  interneî  6´  KBytå 
+Bloecke®  /RAÓ wirä weiterhiî zuò Uebernahmå deò Refreshadresså 
+beé   Aktiviereî   voî  /RFSÈ  erzeugt®   Fueò   einå   externå 
+Speichererweiterunç  bedeuteô  dieseò  Umstand¬  dasó  auæ  deò 
+Erweiterungsplatinå diå /RAS-¬  /CAS-Signalerzeugunç fueò dieså 
+realisierô  werdeî  muss®  Siå kanî analoç deò  interneî  Logië 
+aufgebauô sein®  Diå /CAS-Freigabå wirä verzoegerô unä  negierô 
+zuò Busanschaltunç deò Bustreibeò benutzt.
+Diå voí Dekodeò D1° kommendeî Blockauswahl-Signalå werdeî uebeò 
+diå  Gatteò  D4· unä D4¸ miô deò /CAS-Freigabå zõ deî  Signaleî 
+/CAS0¬  /CAS±  unä /CAS² verknuepfô unä uebeò  D4¹  zusaetzlicè 
+verzoegert®  Dieså liegeî auæ deî /CAS-Eingaengeî deò einzelneî 
+6´  KBytå  Bloecke®  Diå /RAS- unä /WR-Eingaengå deò dRAÍ  IC'ó 
+sowiå  diå  /CAS-Eingaengå  jå 6´  KBytå  Blocë  sinä  paralleì 
+geschalteî [1¬ 16]® 
+
+2.1.6® 19² KBytå dRAÍ Block
+
+Deò RAM-Speicheò deó Computeró bestehô auó ³ ø ¸ Stuecë 6´ KBiô 
+dRAÍ Schaltkreiseî Õ 216´ (D2° bió D43)®  Diå notwendigå 1¶ Biô 
+Adresså   wirä  uebeò  diå  Multiplexeò  D4´  unä  D4µ  aî  diå 
+Adresseingaengå A° bió A· gelegt®  Miô /RAÓ liegeî diå Adresseî 
+A°  bió A· (Zeilenadresse)¬  miô /CAÓ diå Adresseî A¸  bió  A1µ Š(Spaltenadresse©  aî deî Eingaengeî deò Speicheò an®  Daó  SEL-
+Signaì  (/CAS-Freigabe© wirä iî deò /RAS- /CAS-Logië  gebildet® 
+Diå  Datenein- unä  Datenausgaengå werdeî uebeò diå  Bustreibeò 
+D1¸  unä  D1¹ gepufferô unä beé Zugriffeî auæ  eineî  deò  dreé 
+Bloeckå aî deî Buó geschalten® Miô /RÄ werdeî beé Lesezugriffeî 
+diå Ausgaengå deò Speicheò uebeò diå Bustreibeò aî deî Datenbuó 
+gekoppelt®  Isô daó /CAS-Freigabesignaì inaktiö (Low)¬ befindeî 
+sicè  diå Ausgaengå deò Bustreibeò ií hochohmigeî Zustand®  Diå 
+Adress- unä   Datenleitungeî   deò   Bloeckå   sinä    paralleì 
+geschaltet¬  dá  diå Blockauswahì uebeò diå /CAS-Eingaengå  deò 
+Speicheò realisierô wird.
+
+
+2.1.7® ¸ KBytå EPROÍ Block
+ 
+Hardwaremaessiç  wurdå  deò EPROM-Blocë miô ´ IC'ó Õ 271¶  (D1´ 
+bió D17© realisiert® Diå /CE-Eingaengå sinä paralleì geschalteî 
+unä  werdeî  beií Zugrifæ durcè diå  CPÕ  aktiviert®  Diå  /OE-
+Eingaengå werdeî durcè diå Dekodierunç deò Adresseî A1± unä A1² 
+(D11© erzeugt® 
+
+
+2.2®      Input/Output-Seite‚ (Bilä 3)
+
+2.2.1®    Adressdekodierunç fueò diå I/O-Ports
+
+Diå   Auswahlsignalå  fueò  diå  Peripheriebausteinå  sinä   iî 
+Schritteî zõ jå vieò Adresseî dekodiert® Dieså vieò Kanaelå deò 
+Systembausteinå  (SIO¬  CTC¬  PIO© werdeî uebeò diå Adresseî A° 
+unä   A±   ausgewaehlt®   Durcè  deî  Dekodeò  D5´   wirä   deò 
+entsprechendå  Bausteiî  ausgewaehlt¬   wobeé  diå   niedrigstå 
+Adresså 80È (System-CTC© betraegt®  D5´ erzeugô diå /CE-Signalå 
+auó  deî  Adresseî A² bió A7®  Diå Adressleitungeî A¸  bió  A1µ 
+werdeî nichô dekodiert®  Deò Dekodeò wurdå nichô miô deí Signaì 
+/IORÑ  verknuepft¬   dá  allå  verwendeteî  Peripheriebausteinå 
+dieseó  Signaì  zõ  ihreò  Aktivierunç  nutzen®   Zuí  externeî 
+Anschlusó eineó weitereî Bausteineó dienô diå auæ deî Systembuó 
+gefuehrtå Leitunç /IOSEL0¬ diå auæ deî /CE-Einganç deó externeî 
+Peripheriebausteinó  geschalteô wird®  Einå Erweiterunç auæ  6´ 
+Bausteinå isô durcè diå externå Dekodierunç deò Adresseî A² bió 
+A·  (00È bió 7CÈ unä 0A0È bió 0FCH© moeglich®  Aló internå I/O-
+Bausteinadresseî        zaehleî       aucè       diå        deó 
+Speicherblockselektierungsporô (D9© unä diå deó  NMI-Generatoró 
+(D60.2© [3].
+
+2.2.2® System-PIO¬ System-CTC
+
+Beé Interrupô diå hoechstå Prioritaeô besitzend¬  befindeô sicè 
+aâ  Adresså 80È deò System-CTÃ (D55)®  Deò Einganç IEÉ  bildet¬ 
+auæ     deî    Systemsteckverbindeò    X³     gefuehrt¬     diå 
+Einbindungsmoeglichkeiô   weitereò   Bausteinå   miô   hoehereò 
+Prioritaeô iî diå "Daisù chain"® Beé deò Nutzunç eineò externeî 
+Erweiterunç  solltå fueò weiterå Bausteinå einå  Umgehungslogië 
+vorgeseheî werden® 
+Ausganç TD° deò System-CTÃ stellô deî Takô fueò deî Kanaì Á deò 
+Anwender-SIÏ  Õ 856Ä (D57© zuò Verfuegung®  TD± realisierô dieó 
+fueò  deî Kanaì Â deò SIÏ (Einstellunç deò  Baudrate)®  Ausganç 
+TD² hingegeî steuerô eiî Fliğ Floğ (D60.1)¬  uí diå aí  Ausganç 
+deò  CTÃ  auftretendeî  Impulså iî einå Impulsfolgå  miô  eineí 
+Tastverhaeltnió voî 1:± zõ formen® 
+Auæ   Adresså  84È folgô aló zweiteò  Bausteiî  diå  System-PIÏ ŠUebeò  sechó LED¬  diå sicè auæ deò Tastatuò  befinden¬  werdeî 
+bestimmtå  Zustaendå deó Computeró angezeigô (Bilä 31)®  Aî deî 
+Anschluesseî  A° bió A· (PIÏ Porô A© wirä diå Tastatuò miô  deî 
+Leitungeî TD° bió TD¶ unä TASÔ angeschlossen® B° bió Bµ steuerî 
+LED°   bió   LED5¬   B¶   unä  B·  voî  Porô   Â   dieneî   deí 
+Kassettenmagnetbandgeraeô aló Aus- bzw®  Eingang®  Diå  gesamtå 
+Belegunç deò System-PIO-Portó isô auó Bilä 3± ersichtlicè [3].
+
+2.2.3® Anwender-PIO¬ Anwender-CTC
+
+Diå Kanaladresseî 8CÈ bió 8FÈ belegô diå Anwender-CTÃ (D58© miô 
+deî Kanaeleî ° bió 3¬  wobeé nuò diå Kanaelå 0¬ ± unä ² Ein-unä 
+Ausgaengå  besitzen®  Diå  Eingaengå TD0¬  TD1¬  TD² sowiå  diå 
+Ausgaengå  TRG° bió TRG³ wurdeî auæ deî Koppelbuó gefuehrô  unä 
+steheî  deí  Anwendeò  freé  zuò  Verfuegung®  Einå  eventuellå 
+Kaskadierunç  mehrereò Kanaele¬  z.B®  beé  Uhrenbetrieb¬  musó 
+uebeò  deî  Koppelsteckverbindeò  X²  realisierô   werden®   Eó 
+existierô dazõ keiî separateó Koppelfeld® 
+Deî  zweiteî Anwenderbausteiî stellô diå  PIÏ D5¹ (90È bió 93H© 
+dar® Ausganç IEÏ (auæ Systembuó X³ gefuehrt© dienô deò weitereî 
+Einbindunç  voî  periphereî Bausteineî  niedrigereò  Prioritaeô 
+uebeò dereî IEI-¬ IEO-Anschlusó iî diå "Daisù Chain¢ [3].
+
+2.2.4® Anwender-SIO¬ V.24- bzw® IFSS-Interface
+ 
+Zuò  Realisierunç serielleò Schnittstelleî  (Anschlusó  Floppy-
+Controler¬    Druckeò   unä   andereò   serielì   ansteuerbareò 
+Baugruppen©  befindeô sicè auæ deò zentraleî Platinå einå SIÏ Õ 
+856Ä (D57)®  Diå beideî Taktsignalå /RxCÁ unä /RxCÂ werden¬ wiå 
+bereitó  beschrieben¬  durcè deî System-CTÃ (D55©  erzeugt®  Uí 
+nebeî  deò IFSS-Schnittstellå einå V.24-Schnittstellå (aucè  RÓ 
+232Ã  moeglich©  realisiereî zõ  koennen¬  werdeî  diå  Signalå 
+/RTSA¬ /RTSB¬ /DTRÁ unä /DTRÂ auæ deî Koppelbuó gefuehrt.
+Aló  IFSS-Schnittstellå  wurdeî fueò diå Kanaelå Á unä Â 2°  mÁ 
+Stromschleifeî  (Sendeò unä Empfaenger© realisiert®  Uebeò  diå 
+Optokoppleò A² bió Aµ erfolgô diå galvanischå Trennunç zwischeî 
+Geraeô  unä  Uebertragungsleitung®   Sowohì  Sendeò  aló   aucè 
+Empfaengeò  koenneî  aktiv¬  alsï  miô  Stromeinspeisung¬  odeò 
+passiö   betriebeî  werden®   Diå  Stromquelleî  werdeî   durcè 
+Widerstaendå  gebildet®  Diå  Auswahì deò  Betriebsarô  (aktiv¯ 
+passiv©  kanî mitteló Brueckeî ií Koppelfelä auæ deò  zentraleî 
+Platinå erfolgen®  Uebeò dieså Schnittstelleî kanî deò Computeò 
+aucè aî eiî lokaleó Netú (z.B®  Ringnetz© angeschlosseî werden® 
+Diå Leitungeî TxDA1¬ TxDA2¬ RxDA± unä RxDA² sinä auæ einå IFSS-
+Anschlusó gefuehrô [2].
+
+2.2.5® Kassetteninterface
+
+Fueò  diå Ansteuerunç deó KMBÇ wurdå auæ deò zentraleî  Platinå 
+ií  LOAÄ  Zweiç eiî Bandpasó miô nachfolgendeí Triggeò  mitteló 
+Doppeì  OPÖ  Â 08² (A1© aufgebaut¬  uí daó  voí  KMBÇ  kommendå 
+Signaì  fueò  diå  aló  Einganç programmiertå  Leitunç  B·  deò 
+System-PIÏ (D56© aufzubereiten®  Diå beideî Diodeî dieneî dabeé 
+zuò  Spannungsbegrenzung®  Ií  SAVÅ  Zweiç  befindeô  sicè  eiî 
+passiveò Spannungsteileò zuò Anpassunç aî diå Eingangsstufå deó 
+KMBG®  Diå  Pegeì  ií LOAD- bzw®  SAVE-Zweiç  koenneî  miô  deî 
+Einstellreglerî R± unä R² angepassô werden.
+
+
+3® Diå Peripherie
+Š3.1® Bildschirmansteuerunç (BSA)
+
+Beé   deò   vorliegendeî  BSÁ  wurdeî  31²  Zeileî  miô   eineò 
+Bildfolgefrequenú  voî  5° Hú (ohnå  Zeilensprung©  realisiert® 
+Dieó  ermoeglichô diå Darstellunç voî 3² Zeichenzeileî zõ jå  ¸ 
+Fernsehzeilen®    Ausserdeí   dieneî   siebeî   dunkelgetastetå 
+Zeichenzeileî  deò  Darstellunç deó  obereî  (³  Zeichenzeilen© 
+sowiå   deó   untereî  Bildrandeó   (´   Zeichenzeilen)®   Jedå 
+Zeichenzeilå bestehô auó 6´ Zeicheî zuò Informationsdarstellunç 
+unä   3²  dunkelgetasteteî  Zeicheî  zuò  linkeî  unä   rechteî 
+Bildranddarstellunç  (jå 1¶ Zeichenpositionen)®  Ií  Normalfalì 
+werdeî   zuò   Darstellunç  alphanumerischeò  Zeicheî  nuò   1¶ 
+Zeichenzeileî  angesprochen¬  jedå zweitå Zeilå bleibô  dunkel¬ 
+kanî  jedocè  beé deò Arbeiô miô deò  moeglicheî  Pseudographië 
+genutzô werden®  Eó sinä alsï 102´ bzw®  beé Pseudographië 204¸ 
+Zeicheî  prï Bilä darstellbar®  Eiî Zeicheî bestehô  dabeé  auó 
+eineò  8x7- Punktmatrix®    Diå  Adressbelegunç  deò  einzelneî 
+Zeichenpositioneî deó Bildschirmeó isô auó Bilä 1² ersichtlich® 
+Dá  ií  Gegensatú  zõ eineò "echten¢ Graphië  diå  Zeicheî  beé 
+dieseò  BSÁ  fesô kodierô vorliegeî muessen¬  wirä deò  gesamtå 
+Zeichensatú  auæ EPROÍ (Zeichengenerator©  programmiert®  Durcè 
+deî  Einsatú  eineó  Õ  271¶ (² Ë ø  ¸  Bit©  lasseî  sicè  25¶ 
+unterschiedlichå Zeicheî darstellen® 
+Deî  Uebersichtsplaî deò gesamteî BSÁ zeigô Bilä 6®  Uebeò  diå 
+Adressdekodierunç  (D114¬  D115.1© wirä diå Anfangsadresså  deó 
+Bidschirmeó  miô  0F800È festgelegt®  Beé /RFSÈ ½ Lo÷ wirä  deò 
+Zugrifæ   auæ  diå  BSÁ  gesperrt®   Daó   Ausgangssignaì   deò 
+Adressdekodierunç  schalteô beé Speicherzugriffeî (/MREÑ aktiv© 
+uebeò  deî Multiplexeò (D10´ bió D106© diå CPU-Adresså auæ  diå 
+Adresseingaengå  A° bió A1° deó  Bildwiederholspeicheró  (BWS)® 
+Dieseò  wirä durcè vieò IC'ó Õ 21´ (D10· bió D110© gebildeô unä 
+verfuegô somiô uebeò einå Speicherkapazitaeô voî 204¸ ø ¸  Bit® 
+Ií BWÓ wirä immeò eiî kompletteó Bild¬ d.h® diå ASCII-Kodierunç 
+deò auæ deí Bildschirí dargestellteî Zeichen¬ abgespeichert® Dá 
+deò   Arbeits-RAÍ  deò  zentraleî  Platinå  6´  KBytå  umfasst¬ 
+arbeiteî  deò  BWÓ unä diå letzteî beideî KBytå  deó  aktuelleî 
+dRAÍ  Blockeó parallel®  Uí Buskonfliktå zõ vermeideî wirä  deò 
+BWÓ  nuò beschrieben¬  daó Leseî erfolgô voí RAÍ deò  zentraleî 
+Platine®  Daheò  kanî  aló Datentreibeò (D111© diå IÃ  DÓ  828² 
+eingesetzô werden®  Einå Datenrichtungsumschaltunç isô fueò diå 
+BSÁ  dadurcè nichô erforderlich®  Greifô diå CPÕ nichô auæ  diå 
+BSÁ zu¬ liegeî diå Adresseî deó Bildwiederholzaehleró (D12³ bió 
+D127©   aí   BWS®   Dieseò   realisierô   unteò   andereí   diå 
+Bereitstellunç   deò   Spalten- unä  Zeilenadresseî   beé   deò 
+zyklischeî Bildwiederholung.
+Deî  Bildpunkttakô erzeugô eiî Quarzgenerator¬  deò  miô  eineò 
+Frequenú voî 10,µ MHú schwingô (D101)® Hierbeé isô durchauó deò 
+Einsatú  eineó Spulenoszillatoró moeglicè [8]®  D10² zaehlô diå 
+fueò  einå Zeichenbreitå  notwendigeî ·  Bildpunkte®  Fueò  diå 
+Darstellunç      alphanumerischeò      Zeicheî     isô      deò 
+Zeichenzwischenrauí ií Zeichengeneratoò programmiert® Nacè jå · 
+Bildpunkteî wirä deò Bildwiederholzaehleò durcè deî Zeichentakô 
+uí  ±  weitergeschalten®   D12³  unä  D12´  bildeî  dabeé   deî 
+Zeichenspaltenzaehler¬  deò  diå insgesamô 9¶ ø 667,¶ nó langeî 
+Zeicheî  zaehlt®   Auó  deî  Zaehlerstaendeî  werdeî  diå   zuò 
+Zeichenspaltenadressierunç  notwendigeî ¶ Adressleitungen¬  deò 
+Zeilensynchronimpuló  unä diå  Zeichenaustastunç  erzeugt®  Deò 
+sicè anschliessendå Zeichenlinienzaehleò (D125© zaehlô diå fueò 
+einå  Zeichenreihå notwendigeî ¸ Fernsehzeileî unä erzeugô  diå 
+Adresseî  A°  bió A² fueò deî Zeichengeneratoò D113®  Nacè  deò 
+achteî  Fernsehzeilå  eineò  Zeichenreihå wirä  deò  durcè  diå ŠZaehleò  D12¶  unä  D12· gebildetå  Zeichenreihenzaehleò  uí  ± 
+weitergeschalten®  Aî  seineî Ausgaengeî steheî diå µ  Adresseî 
+(3² Zeichenreihen© fueò deî BWÓ an®  Weiterhiî wirä uebeò  einå 
+Dekodierunç   diå  Austastunç  deò  ·  Bildrandzeileî  unä  diå 
+Generierunç deó Bildsynchronimpulseó realisiert.
+Deò   Zeichentakô  wirä  weiterhiî  zuò  Uebernahmå   deò   voí 
+Zeichengeneratoò  bereitgestellteî  ·  Bit-Informatioî  iî  deî 
+Parallel-Serien-Wandleò  (Registeò  D11¹ unä  D120©  benoetigt® 
+Zweé   Gatteò  deó  D103.±  erzeugeî  zusammeî  miô  eineò  RC-
+Kombinatioî   (Impulsverkuerzung©   zuò   Erzeugunç   deî   zuò 
+Uebernahmå  erforderlicheî H-Impuls®  Nacè deò  Uebernahmå  deó 
+Bitmusteró   iî   diå  Register-IC'ó  D19µ  werdeî  durcè   deî 
+Bildpunkttakô   diå  ·  Biô  auó  deí   Parallel-Serien-Wandleò 
+herausgeschoben® Dieså stelleî diå Videoinformatioî dar® 
+Deò Zeichengeneratoò D11³ liegô miô seineî Adresseingaengeî  A³ 
+bió  A1°  uebeò daó durcè D11² realisiertå Zeichenlatcè aî  deî 
+Datenausgaengeî deó BWS® A° bió A² liegeî aî deî Ausgaengeî deó 
+Zeichenlinienzaehleró    D125®    Ií    Zeichengeneratoò    isô 
+entsprechenä  deó  aî A³ bió A1°  anliegendeî  ASCII-Kodeó  daó 
+Bitmusteò deó entsprechendeî Zeichenó abgespeichert® A0¬ A± unä 
+A² bezeichneî dabeé diå aktuellå Fernsehzeile¬  iî deò sicè deò 
+Elektronenstrahì   geradå  befindet®   Diå  Grafiksymbolå   unä 
+Sonderzeicheî sinä iî Bilä 1° dargestellt®  Deò Zeichensatú isô 
+sï aufgebaut¬ dasó diå zweitå Haelftå diå Inversdarstellunç deò 
+ersteî   12¸  Zeicheî  realisiert®   Dieseò  Umstanä  wirä  zuò 
+Darstellunç  deó  Cursoró  mitteló  Setzeî  voî  Bit·  genutzt® 
+Prinzipielì bestehô unteò Beachtunç voî Zeichenaufbaõ (Bilä 11© 
+unä Kodierunç diå Moeglichkeit¬ einå Aenderunç deó vorliegendeî 
+Zeichensatzeó (z.B® speziellå Pseudographikelementå zuò Loesunç 
+bestimmteò    Aufgaben)¬     vorzunehmen®    Diå    verwendeteî 
+Pseudographikelementå  besteheî  auó jå  vieò  Feldern®  Darauó 
+ergibô   sicè   diå  Moeglichkeiô  deò   Darstellunç   voî   1¶ 
+Graphiksymbolen¬  wobeé  sicè  ¸  deò  Symbolå  wiederuí  durcè 
+Inversdarstellunç  deò Symbolå deò Kodierunç aâ 00È ergebeî unä 
+somiô  aâ  Kodå 80È liegen®  Nebeî  dieseî  1¶  Graphiksymboleî 
+wurdeî ií Zeichensatú nocè speziellå Symbolå geschaffen¬ welchå 
+z.B® deò Darstellunç voî Schaltzeicheî unä Ablaufgrapheî dieneî 
+koennen® Weiterhiî sinä diå Umlautå programmiert.
+Diå beideî IC'ó D19µ (D119¬ D120© arbeiteî aló Parallel-Serien-
+Wandler®  Entsprechenä  deò  Adressierunç durcè deî  jeweiligeî 
+Zeichenkodå liegô diå aktuellå Bildpunktinformatioî eineò Zeilå 
+deó   darzustellendeî  Zeichenó  aî  deî  Datenausgaengeî   deó 
+Zeichengeneratoró  unä somiô aî deî paralleleî  Eingaengeî  deó  
+Parallel-Serien-Wandleró   an®   Diå  ·  Biô  Informatioî  wirä 
+synchroî  miô deí Bildpunkttakô serielì ausgegebeî unä voí BAS-
+Mischeò   weiterverarbeitet®   Deò  BAS-Mischeò   vereinô   zuò 
+Erzeugunç  eineó  BAS-Signaló diå Synchron- unä  Austastsignalå 
+miô deò Videoinformation®  Miô deí deí BAS-Mischeò  zusaetzlicè 
+zugefuehrteî  Bildpunkttakô wirä realisiert¬  dasó allå Zeicheî 
+auó  gleichlangeî Bildpunkteî zusammengesetzô sind¬  diå  keinå 
+Helligkeitsunterschiedå aufweisen.
+Uebeò diå beideî Flip-Floğ D117.1¬  D117.² (DÌ 074© werdeî  auó 
+deî    Zaehlerstaendeî   diå   Zeilen- unä   Bildaustastsignalå 
+(Bildrahmen©  gebildet®  Deò Dekodeò IÃ DÓ 820µ (D118©  lieferô 
+deî  Startimpuló  fueò  diå Bildaustastunç  unä  generierô  deî 
+Bildsynchronimpuls®   Deò  monostabilå  Multivibratoò  (D103.2¬ 
+D116© erzeugô dabeé diå konstantå Laengå voî 15° us®  Deò durcè 
+diå  Gatteò  D103.³ unä D121.±  gebildetå  Zeilensynchronimpuló 
+wirä   gemeinsaí  miô  deí  Bildsynchronimpuló   (D122.2©   aló 
+Synchronsignaì deí BAS-Mischeò zugefuehrt® 
+Daó  Ausgangssignaì  deó  BAS-Mischeró (D122©  kanî  uebeò  deî ŠTransistoò  VT10±  direkô  iî  deî  TV-Empfaengeò  eingespeissô 
+werden®  Zuí Anschlusó aî deî Antenneneinganç wurdå auæ deò BSÁ 
+eiî Modulatoò vorgesehen® Deò Modulatoò musó zuò Vermeidunç voî 
+Stoerstrahlungeî vollstaendiç geschirmô sein® 
+Diå  hieò  beschriebenå  BSÁ ermoeglichô  diå  Darstellunç  voî 
+maximaì   204¸  Zeicheî  mitteló  eineó  handelsueblicheî   TV-
+Geraetes®  Durcè  diå  Austast- unä  Synchronimpulså  wirä  diå 
+Darstellunç    deò   beschreibbareî   Bildflaechå   symmetriscè 
+innerhalâ  deó dunkelgetasteteî  Bildrahmenó  ermoeglicht®  Diå 
+204¸ Zeicheî werdeî iî 6´ Spalteî unä 3² Reiheî dargestellt® Ií 
+Zeichengeneratoò  sinä 25¶ alphanumerischå unä pseudographischå 
+Zeicheî abgespeichert¬  diå Kursordarstellunç erfolgô uebeò diå 
+Inversdarstellunç deó sicè auæ deò aktuelleî Bildschirmpositioî 
+befindendeî Zeichens®  Diå CCIR-Norí wurdå iî Bezuç auæ Zeilen- 
+unä Bildfrequenú eingehalten¬  waó diå problemloså Anpassunç aî 
+jedeî TV-Empfaengeò gewaehrleisteô [6¬ 7¬ 10¬ 11].
+
+3.2® Tastatur
+
+Diå  vorgestelltå Tastatuò erzeugô beií Betaetigeî eineò  Tastå 
+nebeî  deí Tastaturcodå (TD° bió TD7© daó  Tastaturstatussignaì 
+(TAST)®  Dieseó  ¸ Biô Worô wirä hardwaremaessiç iî  eineò  miô 
+CMOÓ   IC'ó   aufgebauteî  Logië  erzeugô  unä  beé   gesetzteí 
+Statussignaì voî deò CPÕ uebernommen®  Diå Uebernahmå sowiå diå 
+Entprellunç  deò  Tasteî  wurdå  softwareseitiç  geloest®   Deò 
+Tastaturkodå   entsprichô  deí   ASCII-Kode®   Diå   aufgebautå 
+Tastaturelektronië  ermoeglichô deî Anschlusó voî insgesamô  8° 
+Tasten¬  wobeé diå Funktionstasteî (z.B® BEL¬ CR¬ CLS¬ ESC© miô 
+deí   ASCIÉ  Kodå  00È  bió  1FÈ  direkô  iî  diå  8x1°  Matriø 
+eingebundeî   werdeî  koennen®   Somiô   konnteî   z.B®    allå 
+Cursorfunktioneî aló Direkttasteî realisierô werden.
+Deî  Stromlaufplaî  deò Tastatursteuerunç zeigô  Bilä  15®  Diå 
+Anordnunç  deò 6µ realisierteî Tasteî iî deò Matriø isô iî Bilä 
+1· dargestellô unä kanî nacè Bedaræ erweiterô werden®  Miô  deî 
+uebeò  diå  Anschluesså SHIFÔ bzw®  CTRÌ  eingebundeneî  Tasteî 
+werdeî allå Tasteî mehrfacè belegt®  Eó kanî deò gesamtå ASCII-
+Zeichensatú  erzeugô werden®  Mitteló deò Shift-Tastå wirä  diå 
+Zweitbelegung¬  beé  deî  Buchstabentasteî diå  Kleinschreibunç 
+erzeugt¬ diå danî softwareseitiç iî Grossbuchstabeî umgewandelô 
+werdeî  (Schreibmaschinentastatur)®   Uebeò  diå  Control-Tastå 
+werdeî diå Tasteî miô bestimmteî Steuerzeicheî  belegt®  Dieseò 
+Umstanä  wirä beé deî meissteî CP/M-Programmeî (z.B®  Wordstar¬ 
+dBASE© fueò diå Realisierunç deò Cursorfunktioneî sowiå andereò 
+programmabhaengigeò     Funktioneî     genutzt®     Auó     deî 
+Spaltenleitungeî  wirä  durcè  ä  D200¬  D20±  unä  D207.±  deò 
+Spaltenteiì deó ASCII-Kodeó erzeugt® Isô keinå Tastå betaetigt¬ 
+werdeî  diå Spaltenleitungeî S± bió S¸ uebeò  Widerstaendå  auæ 
+eiî sichereó Higè Potentiaì gebracht®  Damiô sinä diå Ausgaengå 
+TD° bió TD² Low®  Diå zehî Zeilenleitungeî Z± bió Z1° sowiå diå 
+SPACE-Leitunç  sinä miô deî Basisanschluesseî deò  Transistoreî 
+VT20±  bió  VT21±  verbunden¬   welchå  uebeò  Widerstaendå  ií 
+nichtaktiveî  Zustanä  auæ eiî sichereó Lo÷  Potentiaì  gezogeî 
+werden® Diå Emitteò liegeî gemeinsaí auæ Masse¬ diå Kollektoreî 
+uebeò Widerstaendå aî +5V®  Somiô fuehreî diå Ausgaengå TD³ bió 
+TD¶  ií  inaktiveî Zustanä (gesperrteò Transistor©  Lo÷  Pegel® 
+Wirä  einå  Tastå  betaetigt¬  wirä diå  Basió  deó  jeweiligeî 
+Transistoró  aî  diå  entsprechendå Spaltenleitunç  gelegô  unä 
+durcè dereî positiveó Potentiaì durchgesteuert®  Iî Folgå davoî 
+nimmô deò Kollektoò Lo÷ Potentiaì an¬  unä aî deò Basió  stellô 
+sicè eiî Pegeì voî 0,7Ö (Flussspannung© ein®  Diå entsprechendå 
+Spaltenleitunç  fuehrô  somiô Lo÷  Potential®  Diå  Kodierlogië Šwerteô  nuî diå Pegelveraenderungeî aî deî Spaltenleitungeî unä 
+Zeilentransitoreî aus¬  erzeugô deî ASCII-Kodå deò  betaetigteî 
+Tastå unä setzô daó Tastaturstatussignaì TAST.
+Diå  Ausgaengå  TD°  bió TD¶ unä TASÔ werdeî uebeò Porô  Á  deò 
+System-PIÏ (D56© aî diå zentralå Platinå angeschlosseî [2¬ 3].
+
+
+3.3® Kassettenmagnetbandgeraet
+
+Aló  Laufwerë kanî jedeó KMBÇ  Laufwerë  (z.B®  Anett¬  Babett© 
+verwendeô   werden®   Ií  Mustergeraeô  wurdeî  diå  NF-Platinå 
+2/2304.03-61.0°    unä   daó   Regelteiì   6001.01-43.0°    deó 
+Kassettenrecorderó  "Anetô IS2¢ sowiå deò Kombikopæ X1K28Å  unä 
+deò  Loeschkopæ L1K³ eingesetzt®  Auæ deò NF-Platinå wurdå  deò 
+Schiebeschalteò  Aufnahme/Wiedergabå  entfernô  unä  durcè  diå 
+Kontaktå  deò  durcè VT40² angesteuerteî Relaió K40²  bió  K40´ 
+ersetzt®   Diå   Umschaltunç  erfolgô  nuî   entsprechenä   deó 
+eingegebeneî  Befehleó  uebeò  Porô Â - Biô  ´  deò  System-PIÏ 
+(D56)® Beé ausgebrocheneò Aufnahmesperrå aî eineò Kassettå wirä 
+uebeò deî mechanischeî Kontakô "Aufnahmesperre¢ diå Umschaltunç 
+deò Relaió K40² bió K40´ unä somiô eiî ungewollteó Ueberspieleî 
+voî Programmeî bzw® Dateieî verhindert® Uebeò Bitµ deó PIO-Porô 
+wirä  daó  Einschalteî deó Motoró beé gedrueckteò  Wiedergabe-¬ 
+Vor- bzw®  Ruecklauftastå realisiert®  Diå LEÄ VD40± unä  VD40² 
+zeigeî  diå Zustaendå "Motoò EIN¢ unä "SAVE¢ an®  Diå uebeò deî 
+OPÖ  A40± angesteuertå LEÄ VD40³ dienô deò Anzeigå  deó  Pegeló 
+beé  Magnetbandarbeit®  Paralleì  dazõ  wirä dieseò  uebeò  diå 
+Mithoerkontrollå (VT1© akustiscè wiedergegeben.
+
+
+3.4® Stromversorgung
+
+Fueò  deî  Betrieâ  deó Computeró  werdeî  folgendå  Spannungeî 
+benoetigtº    5Ğ - zentralå Platinå 
+                   Bildschirmansteuerung
+                   Tastatur
+                   Kassetteninterface
+              5Î  - Kassetteninterface¬  neg®  Betriebsspannunç                    
+fueò deî OPÖ       
+             12Ğ - IFSÓ - Schnittstelle
+             12Î - IFSÓ - Schnittstelle
+
+Diå  Stromversorgunç (Bilä 23© fueò daó KMBÇ  erfolgô  getrennô 
+voí PC/Í Computer.
+Grundlagå     fueò    diå    Erzeugunç    deò    stabilisierteî 
+Gleichspannungeî  stelleî diå Spannungsregleò IC'ó MAÁ 72³  unä 
+MÁ 780µ bzw®  MÁ 781² dar®  Dá iî Folgå deó Ausgangsstromeó deò 
+aí  meisteî belasteteî Betriebsspannunç 5Ğ deò Regleò  MÁ  780µ 
+(Imaø ½ 1A© nichô ausreichenä ist¬ wurdå iî dieseí Fallå deò IÃ 
+MAÁ  72³  iî  Verbindunç  miô eineí  durcè  dieseî  gesteuerteî 
+Laengstransistoò  (VÔ 303© eingesetzt®  Dieseò  IÃ  ermoeglichô 
+ausserdeí  uebeò  Piî  7/¸ diå Steuerunç  deò  Zuschaltunç  deò 
+Spannunç  5Ğ beií Vorhandenseiî deò Spannunç 12P®  Zusammeî miô 
+Relaió Ë 30± wurdå somiô diå gefordertå Einschaltreihenfolgå 5Î 
+- 12Ğ   - 5Ğ  fueò  bestimmtå  evtl®   zuí   Einsatú   kommendå 
+Bauelementå (z.B®  Õ 555¬  Õ 256© realisiert® Beií vorliegendeî 
+Computeò  wirä  dieså Funktioî durcè deî Einsatú  deò  Speicheò 
+IC'ó  Õ  216´  unä  Õ 2716¬  diå nuò  diå  5Ğ  Betriebsspannunç 
+benoetigen¬ nichô genutzt® 
+Uí  daó  Zerstoereî  voî Bauelementeî  beé  Ueberschreiteî  deò 
+Spannunç   zõ   verhindern¬    wirä   diå   5Ğ   durcè    eineî ŠParallelthyristor¬  deò  beé Erreicheî deò Referenzspannunç voî 
+5,6Ö (Z-Diode© zuendet¬  abgesichert®  Beé deî Zweigeî 12P¬ 12Î 
+unä  5Î  sinä dafueò diå paralleì zuí Ausganç  geschalteteî  Z-
+Diodeî SZ600/1³ bzw®  SZ600/5,¶ ausreichend®  Diå LEÄ VD30± bió 
+VD30´  zeigeî daó Vorhandenseiî deò Spannungeî  an®  Uebeò  diå 
+vieò  Graetz-Brueckenschaltungeî werdeî auó deî Trafospannungeî 
+diå  Rohspannungeî  fueò  diå  Regleò  erzeugt®   Deò  Einflusó 
+netzbedingteò   Stoerungeî   kanî  durcè  deî   Einsatú   eineó 
+Netzfilteró wirksaí verhinderô werdeî [15].
+
+4.   Inbetriebnahme
+
+Eiî paaò Hinweise
+
+Deò Computeò solltå iî deò folgendeî Reihenfolgå aufgebauô  unä 
+iî Betrieâ genommeî werden:
+          1® zentralå Platine:(Durchkontaktierungen),Bruecken,
+             Fassungeî unä Steckverbinder
+          2® Netzteil
+          3® Funktionsgruppenweiså Bestueckunç unä 
+             Inbetriebnahmå deò zentraleî Platine
+          4® Tastatur
+          5® Fernsehinterfacå (BSA© 
+          6® Kassetteninterface
+Diå  Punktå 4®  unä 5®  koenneî dabeé aucè paralleì unä voò deí 
+Aufbaõ deò Zentraleî Platinå realisierô werden.
+Beé  deò Inbetriebnahmå deò einzelneî  Funktionsgruppeî  solltå 
+aló  ersteó immeò diå Spannunç aî deî IÃ pin'ó unä deò Werô deò 
+Stromaufnahmå  deò  Baugruppå gemesseî werden®  Danî  sinä  diå 
+einzelneî Signalå unä Pegeì ií Signalzweiç zõ kontrollieren® Uí 
+diå  einwandfreiå Funktioî alleò Baugruppeî zõ  gewaehrleisten¬ 
+muesseî       allå       vorgeseheneî       Stuetzkondensatoreî 
+(Bestueckungsplan© bestueckô werden® 
+
+Zentralå Platine
+
+Zuersô  werdeî deò Quarzoszillatoò (D1.1©  einschliesslicè  deó 
+1:4-Teileró (D2)¬  diå Reset-Logië (D3.2© unä deò NMI-Generatoò 
+(D4.1¬ D60.2¬ D3.1© eingeloetet® Aí Ausganç deó Oszillatoró isô 
+diå Frequenú voî 10,° MHú zõ kontrolliereî unä miô C± eventuelì 
+abzugleichen®  Aí Loetaugå fueò Piî ¶ deò CPÕ musó deò 2,µ MHz-
+Takô miô deî geforderteî Pegel- unä Flankenverhaeltnisseî (pulì 
+up© anliegen® 
+Beií  Einschalteî deò Betriebsspannunç 5Ğ musó aí Loetaugå fueò 
+Piî  2¶  deò CPÕ eiî Reset-Impuló (poweò  on©  vorhandeî  sein® 
+Dabeé  musó diå Breitå deó Impulseó unteò ² mó liegen¬  uí  deî 
+Refresè  fueò  diå  dynamischeî Speicheò  zõ  garantieren®  Diå 
+Kontrollå deó NMI-Generatoró wirä zõ eineí spaetereî  Zeitpunkô 
+ií    Zusammenhanç     miô   deò   Softwarå    (Betriebssystem© 
+durchgefuehrt® 
+Nuî koenneî diå Bustreibeò D¶ bió D¸ eingeloeteô  werden®  Ihrå 
+Funktioî  kontrollierô  maî durcè statischeó Anlegeî  voî  Low- 
+bzw®   High-Pegeì   aî   deî  Bustreibereingaengeî  unä   durcè 
+Nachmesseî deò Pegeì aî deî Ausgaengen® Wirä Piî 1± deó Gatteró 
+D1.² auæ Lo÷ gelegt¬  muesseî sicè diå Ausgaengå deò Bustreibeò 
+D¶ bió D¸ ií hochohmigeî Zustanä befinden® Nacè dieseò Pruefunç 
+kanî  diå CPÕ eingeloeteô werden®  Deò Datenbuó liegô auæ  Higè 
+Pegel®  Damiô  werdeî nacè deí Reset-Impuló voî deò CPÕ RSÔ  3¸ 
+Befehlå  geleseî  unä deò gesamtå  Speicherbereicè  wuerdå  miô 
+0039È   beschrieben®   Dieseò   Umstanä  haô   eiî   zyklischeó 
+Durchlaufeî   deó   gesamteî  Adressbereicheó  zuò  Folgå   unä Šermoeglichô diå Kontrollå verschiedeneò Impulsfolgen® Eó werdeî 
+diå Adressleitungeî A° bió A1µ aî deî Ausgaengeî deò Bustreibeò 
+D¶ bió D¸ kontrolliert® Diå aî A° anliegendå Pulsfolgå musó diå 
+hoechstå Frequenú aufweisen¬ miô ansteigendeò Adressreihenfolgå 
+liegô  aî  jedeò  Adressleitunç  jå  diå  halbå  Frequenú   deò 
+vorhergehendeî Adresse® Aucè aî deî Steuersignalausgaengeî /RD¬ 
+/MREÑ  unä /M± muesseî Impulsfolgeî anstehen®  Dieseò Kontrollå 
+schliessô     sicè    deò    Aufbaõ     voî     Bootstraplader¬ 
+Speicherblockselektport¬  Ueberblendlogië unä Adressdekodierunç 
+fueò diå EPROM'ó an®  Dazõ werdeî diå Bauelementå D9¬ D10¬ D11¬ 
+D1²  unä  D5³ eingeloetet®  Aî deî Ausgaengeî deò  Dekodeò  D1° 
+(Ausgaengå ° bió 7© unä D1± (Ausgaengå ° bió 3© muesseî jeweiló 
+versetzô zueinandeò Pulsfolgeî erkennbaò sein®  Diå Ausgaengå ° 
+bió  ³  voî  D1± entsprecheî deî /OE-Signaleî deò  EPROM'ó  unä 
+koenneî  aî Piî 2° deò jeweiligeî  EPROM-Fassungeî  ueberpruefô 
+werdeî  ®  Dabeé  musó miô Aktiviereî deó  entsprechendeî  /OE-
+Signaleó  aucè  daó  /CE-Signaì fueò diå EPROM'ó (Piî  18©  Lo÷ 
+einnehmen®  Dazõ  musó  daó Speicherblockselektporô  (DÓ  8212© 
+durcè  deî  Reset-Impuló beií Einschalteî  zurueckgesetzô  seiî 
+(allå Ausgaengå ½ Low-Pegel)®  Diå Signalå /OÅ unä /CÅ  duerfeî 
+nuò beé /RÄ ½ Lo÷ aktiö sein® 
+Nuî  koenneî diå restlicheî Bauelementå deò Systemseitå  ausseò 
+deî  dRAM'ó bestueckô werden®  Anhanä deò Impulsdiagrammå (Bilä 
+28¬  29© wirä daó Zeitverhalteî deò Signalå /RAS¬ /CAS0¬ /CAS1¬ 
+/CAS2¬  /WÒ  (Piî  ³ voî Ä 52.4© unä SEÌ  (Multiplexeò  Piî  1© 
+kontrolliert®  Nacè dieseò Kontrollå werdeî diå IC'ó deó ersteî 
+dRAÍ  Blockeó bestueckt®  Sollteî sicè beií spaetereî Tesô  deó 
+kompletteî  PC/Í  Computeró  Speicherzelleî  nichô  beschreibeî 
+lasseî  odeò  verliereî dieså ihrå  Information¬  muesseî  nocè 
+einmaì  diå  Impulsbildeò gepruefô unä eventuelì C²  veraenderô 
+werden®  
+Beií   Aufbaõ  weitereò  Exemplarå  deó  PC/M-Computeró   wurdå 
+festgestellt¬  dasú diå Bestueckunç miô dRAÍ  unterschiedlicheò 
+Herstelleò  zõ  Schwierigkeiteî miô deò  RAS/CAS-Signal-Bildunç 
+unä damiô zõ Schreib- odeò Lesefehlerî fuehreî kann®  Innerhalâ 
+eineò  Speicherbanë sollteî keinesfalló unterschiedlichå  Typeî 
+eingesetzô  werden®  Beé einigeî U216´ waò eó erforderlicè  diå 
+RAS-Leitunç  aî deî Speicherî miô eineí Pulì Uğ Widerstanä  voî 
+56° Ohí zõ verseheî bzw® D5² (DL000© durcè eineî D10° odeò D20° 
+zõ ersetzen® Unterschiedå beé deò Bestueckunç miô verschiedeneî 
+Typeî   iî   deî   ³  Baenkeî  lasseî   sicè   durcè   seperatå 
+Verzoegerungskapazitaeteî  (10° pÆ bió ca®  1nF© direkô aî  deî 
+CAS-Leitungeî ausgleichen® Beé Verwendunç voî K565RUµ bewaehrtå 
+sicè diå ií Stromlaufplaî angegebenå Dimensionierung® 
+Miô  deí  eventuelleî  Bestueckeî unä Testeî  deó  zweiteî  unä 
+dritteî dRAÍ Blockeó isô deò systemseitigå Aufbaõ deò Zentraleî 
+Platinå abgeschlossen.
+Nuî  werdeî  deò I/O-Adressdekodeò (D54)¬  diå Bauelementå  deò 
+Tonausgabå  (D60.1¬   VT1©  sowiå  diå  Bauelementå  deò  IFSS-
+Schnittstelleî  (D61¬  A²  bió A5¬  VT² bió  VT5¬  passivå  BE© 
+eingeloetet® Aí Adressdekodeò D5´ (DÓ 8205© sinä diå ¸ zeitlicè 
+zueinandeò  versetzteî  /CE-Signalå  (Piî  7¬   ¹  bió  15©  zõ 
+kontrollieren®  Dieså Signalå liegeî unabhaengiç voî /IORÑ  an¬ 
+dá  diå periphereî Bausteinå (PIO¬  CTC¬  SIO© daó Signaì /IORÑ 
+direkô zõ ihreò Aktivierunç verwenden®  Werdeî anderå aló  obeî 
+genanntå    Systembausteinå    eingesetzt¬     muesseî    dereî 
+Aktivierungssignalå miô /IORÑ verknuepfô werden® Diå Tonausgabå 
+kanî  durcè  Anlegeî eineò Impulsfolgå aî Piî 1± voî D60.±  (DÌ 
+074© ueberpruefô werden® Beé hoeherohmigeî Schallwandlerî (z.B® 
+Kopfhoereò miô  Ú groesseò 20° Ohm© kanî deò 10° Ohí Widerstanä 
+ií Kollektorzweiç deó VT± entfalleî odeò verringerô werden® ŠFueò diå Inbetriebnahmå deò IFSS-Schnittstelleî werdeî ubeò deî 
+Anwendersteckverbindeò  (Koppelbus© diå Spannungeî 12Ğ unä  12Î 
+zugefuehrt®  Legô maî High-Pegeì aî diå Piî 12/1³ bzw® 9/1° voî 
+D6± (TxDÁ bzw®  TxDB)¬  muesseî diå zugehoerigeî LEÄ  leuchten¬ 
+zwischeî  X2:B2± unä X2:A2± bzw®  X2:B2² unä X2:A2² muesseî 24Ö 
+anliegen®  Verbindeô  maî  X2:A2´ unä X2:B2´  bzw®  X2:A2µ  unä 
+X2:B25¬  musó aî Piî ¶ bzw®  ³ voî D6± (RxDÁ bzw®  RxDB©  High-
+Pegeì nachweisbaò sein® 
+Nacè dieseò Kontrollå werdeî diå CTC'ó D55¬ D58¬ diå PIO'ó D56¬ 
+D5¹ unä diå SIÏ D5· eingeloetet®  Mitteló Pruefprogrammeî (z.B® 
+Emulator©  koenneî diese¬  wenî diå Moeglichkeiô  besteht¬  auæ 
+ordnungsgemaesså  Funktioî kontrollierô  werden®  Abschliessenä 
+wirä  daó  KMBÇ  Interfacå (A1©  bestueckt®  Dieseó  wirä  nacè 
+vollstaendigeí Aufbaõ deó PC/Í Computeró miô deí Betriebssysteí 
+(Monitor© iî Betrieâ genommen® 
+Damiô  isô diå zentralå Platinå vollstaendiç bestueckô unä kanî 
+ií Zusammenspieì miô Betriebssysteí (programmiertå EPROM'ó  D1´ 
+bió D16)¬  Tastatur¬ BSÁ unä eineí KMBÇ aló lauffaehigeó Systeí 
+auæ deî volleî Funktionsumfanç getesteô werden.
+
+
+Bildschirmansteuerung
+
+Diå  BSÁ wirä direkô uebeò deî Systembuó (X³ - X103© odeò uebeò 
+einå    Rueckverdrahtunç   (Erweiterungsmoeglichkeiô    andereò 
+Baugruppen© aî diå zentralå Platinå angekoppelt® Voò Beginî deò 
+Inbetriebnahmå sinä diå Brueckeî ± bió 4¬  6-10¬  E3¬ R¬ D¬ Z0¬ 
+Z1¬ Z2¬ 5Ğ unä GND¬ sowiå beé BAÓ Signalauskopplunç diå Brueckå 
+Á zõ realisieren® 
+Zuersô  solltå  deò  Quarzgeneratoò  (D101©  bestueckô  werden® 
+Mitteló C10± wirä aí Piî ¶ voî D10± diå Frequenú auæ 1050°  KHú 
+abgeglichen® Anschliessenä werdeî allå Zaehleò IC'ó (D102¬ D12³ 
+bió D127© sowiå D10³ unä D12± bestueckt® D10² arbeiteô aló 1:7-
+Teiler®  Aî  desseî Ausganç QÃ (Piî 7© musó einå Pulsfolgå  miô 
+deò  Frequenú voî 150° KHú anliegen®  Aî deî  Zaehlerausgaengeî 
+muesseî Impulsfolgeî sinkendeò Frequenú (voî D12³ - QÁ bió D12· 
+- QB©      nachweisbaò      sein®      Aí      Ausganç      deò 
+Impulsverkuerzerschaltunç (D10³ - Piî 8© wirä nuî diå Pulsfolgå 
+fueò  diå Uebernahmå jedeó Byteó iî deî Parallel-Serien-Wandleò 
+kontrolliert¬ dereî H-Impulså schmaleò aló diå deò Pulsfolgå aî 
+D10² - QÃ sind®  Nacè deí Einloeteî deò IC'ó D117¬  D118¬  D12± 
+unä   D12²  sowiå  deò  passiveî  Bauelementå  werdeî  aî   deî 
+Eingaengeî  deó BAS-Mischeró daó Bildsynchron- (D12² - Piî  4)¬ 
+daó Zeilensynchron- (D12² - Piî 5© unä daó Austastsignaì  (D12± 
+- Piî 11© sowiå aí Ausganç daó BAS-Signaì (VT101© kontrolliert® 
+Entsprecheî diå Verlaeufå deî Bilderî     unä    ¬  werdeî allå 
+Bauelementå  bió auæ deî BWÓ (Õ 214)¬  deî Zeichengeneratoò  (Õ 
+2716©  unä deî Modulatoò bestueckt®  Sinä diå Adresseî A1±  bió 
+A1µ  unä daó Signaì /RFSÈ gleicè Higè (iî deî /RFSH-Zykleî daræ 
+diå  CPÕ nichô auæ diå BSÁ zugreifen)¬  besitzô Ausganç  ·  deó 
+Dekoderó D11´ (Piî 7© Lo÷ Potential®  Beií Aktiviereî voî /MREÑ 
+liegô  aí  /OE-Einganç deó Datentreiberó D11± (Piî 9© sowiå  aí 
+Multiplexeò  (Piî 1© Lo÷ Potential®  Piî ¸ voî D11¶  wirä  Low¬ 
+wenî   /WÒ   aktiö  ist®   Nacè  dieseò  Kontrollå   wirä   deò 
+Zeichengeneratoò   D11³   iî  diå  Fassunç  gesteckô  unä   diå 
+Multiplexerausgaengå   A°  bió  A·  miô  deî   Eingaengeî   deó 
+Zeichenlatcheó D11² verbunden® Eó werdeî diå BAS-Auskoppelstufå 
+(VT101© unä deò Modulatoò bestueckt® Daó BAS-Signaì kanî aî deî 
+Punkteî Â bzw®  phasenverschobeî aî /Â abgegriffeî werden®  Miô 
+deí  Trimmeò C10² wirä einå Frequenú ií Fernsehbanä É  (47...6¸ 
+MHz©  eingestellt¬  wobeé  einå Umdimensionierunç auæ Banä  IIÉ Šohnå  weitereó moeglicè ist®  Auæ deí Bildschirí erscheinô  nuî 
+deò  gesamtå Zeichensatú deó  Zeichengenerators®  Deò  Kontrasô 
+kanî   miô   R10±  deó  Modulatoró   korrigierô   werden®   Diå 
+Verbindungeî   zwischeî  Zeichenlatcè  unä  Multiplexeò  werdeî 
+wiedeò  aufgetrennt®  Deò  BWÓ  wirä  miô  deî  ´  IC'ó  Õ  21´ 
+bestueckt® Diå sonsô kompatibleî CMOS-RAM'ó Õ 22´ koenneî wegeî 
+ihreò dynamischeî Uebernahmå nicht‚ eingesetzô werden¡  Nuî musó 
+nacè   deí   Einschalteî  deó   Computeró   eiî   feststehendeó 
+Zufallsmuster¬ bestehenä auó deí Zeichenvorrat¬ symmetriscè auæ 
+deí  Bildschirí erscheinen®  Jedå Speicherzellå deò Õ 21´ nimmô 
+beií Zuschalteî deò Betriebsspannunç einå Vorzugsstellunç  ein¬ 
+worauó sicè daó dargestelltå Zeicheî ergibt.
+Abschliessenä kanî diå BSÁ uebeò deî Systembuó bzw®  direkô miô 
+deò   bereitó  fertiggestellteî  Zentraleî  Platinå   verbundeî 
+werden.
+
+Tastatur
+
+Diå   Tastaturelektronië  findeô  auæ  eineò  Leiterplattå  deò 
+Groesså 10µ mí ø 7µ mí Platz®  Siå kanî ohnå Zwischenpruefungeî 
+vollstaendiç aufgebauô werden®  Diå LED-Treibeò werdeî statiscè 
+durcè Anlegeî voî High- bzw®  Low-Potentiaì aî deî Anschluesseî 
+X201:C´  bió X201:C¹ beé aî LED° bió LEDµ  angeschlosseneî  LEÄ 
+(VQÁ  13¬  23¬  3³ o.a.© getestet®  Diå Tasteî sollteî auæ einå 
+Leiterplattå  entsprechenä  Bilä 1¸ angeordneô unä  nacè  ihreò 
+Anordnunç iî deò Matriø verdrahteô werden®  Diå  Tastaturmatriø 
+wirä uebeò diå Anschluesså S± bió S8¬  Z± bió Z8¬ Z1A¬ Z2A¬ SP¬ 
+SHIFT¬  CTRÌ  unä GNÄ aî diå Tastaturelektronië  angeschlossen® 
+Einå  folgendå  Pruefunç beziehô sicè auæ diå  ordnungsgemaesså 
+Erzeugunç   deó  ASCII-Kodeó  beé  Tastenbetaetigunç  unä   diå 
+richtigå    Einbindunç    deò    Shift- unä     Controlfunktioî 
+(Mehrfachbelegunç  deò Tasten)®  Dazõ koenneî aî diå  Ausgaengå 
+TD°  bió TD¶ unä TASÔ uebeò Vorwiderstaendå (ca®  47° Ohm©  LEÄ 
+gegeî  Masså  angeschlosseî werden®  Daó Signaì TASÔ  musó  miô 
+jedeò  Betaetigunç  eineò sicè iî deò Matriø befindendeî  Tastå 
+High-Signaì aufweisen® Diå aî TD° bió TD¶ angeschlosseneî LED'ó 
+zeigeî binaeò deî ASCII-Kodå deò gedrueckteî Tastå an® 
+
+Stromversorgung
+
+Diå Leiterplattå kanî bió auæ deî Ueberspannungsschutú deó  5P-
+Regleró  (VT302¬  VT304© vollstaendiç bestueckô werden®  Danacè 
+wirä  Wicklunç ´ deó Trafoó aî deî Einganç  deò  Graetz-Brueckå 
+deó  12N-Regleò  angeschlossen®  Nacè deí Einschalteî musó  LEÄ 
+VD30´    leuchteî unä aí Ausganç +12Ö GÓ anliegen®  Desgleicheî 
+wirä  miô deí  5N-Regleò unä Wicklunç ³ verfahren® Liegeî diå -
+5Ö  GÓ  aî (LEÄ VD30³ leuchtet)¬  musó  Relaió  K30±  anziehen¬ 
+desseî  Kontakô  K301/±  ií 12P-Regleò  schliesseî  unä  K301/² 
+oeffneî unä somiô deî Regleò freigeben® Nuî kanî deò 12P-Regleò 
+uebeò   seinå  Brueckeneingaengå  aî  Wicklunç  ²  deó   Trafoó 
+angeschlosseî  werden®  Steheî aí Ausganç +12Ö GÓ aî (LEÄ VD30² 
+leuchtet)¬  kanî deò 5P-Regleò iî Betrieâ genommeî werden®  Deò 
+Laengstransistoò VT30³ (KÕ 607© wurdå auæ eineí Aì - Kuehlblecè 
+deò Groesså 20° mí ø 10° mí ø 2,µ mí montiert®  Nacè  Anschlusó 
+deò Trafowicklunç ± unä Einschalteî deò Netzspannunç muesseî aí 
+Ausganç  +5Ö GÓ anstehen®  Diå LEÄ VD30± musó daó Vorhandenseiî 
+deò  Spannunç signalisieren®  Mitteló deó Einstellregleró  R30± 
+wirä diå Strombegrenzunç auæ ca®  3Á eingestellt® Abschliessenä 
+werdeî   deò   5P-Ueberspannungsschutú   bestueckô   unä   allå 
+Spannungeî  nocè  einmaì nachgemesseî unä auæ  Stabilitaeô  beé 
+Belastunç  kontrolliert®   Beé  Verwendunç  voî  auæ   Funktioî Šgepruefteî  Bauelementeî stellô deò Aufbaõ deò  Stromversorgunç 
+keinå Schwierigkeiô dar.
+
+Deò komplettå PC/Í Computer
+
+Wurdå   deò   Aufbaõ  unä  diå  Inbetriebnahmå  deò   einzelneî 
+Baugruppeî entsprechenä Punkô 3.5®  erfolgreicè  durchgefuehrt¬ 
+koenneî  allå  Baugruppeî miteinandeò verschalteô unä deò  PC/Í 
+Computeò  aló Einheiô getesteô werden®  Aló ersteó  werdeî  diå 
+Anschluesså 5P¬ 5Î unä GNÄ deò Stromversorgunç auæ diå Zentralå 
+Platinå  gefuehrt®  Nacè  deí Einschalteî muesseî diå  LEÄ  deò 
+IFSS-Schnittstelleî  leuchten¬  diå  Spannunç 5Ğ musó aî  alleî 
+Punkteî deò Zentraleî Platinå stabiì (minimaì 4,75V©  anliegen¬ 
+diå  Stromaufnahmå daræ 1,5Á nichô uebersteigen®  Nuî wirä  diå 
+Tastatuò angeschlossen® Dabeé daræ diå Stromaufnahmå maximaì uí 
+9°  mÁ  ansteigen®  Nachdeí diå BSÁ miô deò  Zentraleî  Platinå 
+verbundeî  wurde¬  musó diå Stromaufnahmå beé ca®  2,5Á liegen® 
+Jetzô  koennen¬   beé  abgeschalteteò   Betriebsspannung¬   diå 
+programmierteî  EPROM'ó  D1´  bió  D1¶  gesteckô  werden®   Beé 
+ordnungsgemaesseò   Funktioî   alleò   Baugruppeî   unä   ihreò 
+Verbindunç  musó nacè deí Einschalteî deó Computers¬  beginnenä 
+auæ deò 1® Bildschirmzeile¬ diå Systemausschrifô zõ seheî sein.
+Iî dieseí Zustanä kanî diå Tastatuò ueberpruefô werden¬  oâ beé 
+Betaetigunç  deò  Tasteî  daó  entsprechendå  Zeicheî  auæ  deí 
+Bildschirí dargestellô wird.
+Nuî  bleibeî nocè diå Kontrollå  deó  Kassetteninterfaces¬  deó 
+NMI-Generatoró  sowiå  eiî umfassendeò Tesô deó PC/Í  Computeró 
+durcè diå Arbeiô miô deî einzelneî Kommandoó unä Funktioneî deò 
+beschriebeneî Software® 
+Beé  deò  Arbeiô miô deí KMBG¬  musó desseî Tonkopæ  auæ  bestå 
+Wiedergabå    deò    hoheî   Frequenzeî    eingestellô    sein® 
+Geschwindigkeits-¬  Gleichlauf- unä Pegelschwankungeî habeî auæ 
+daó  beií  PC/Í Computeò zuí Einsatú  kommendå  Verfahreî  kauí 
+eineî Einfluss® Magnetischå Fehlstellen¬ sogenanntå droğ out's¬ 
+koenneî dabeé jedocè daó bestå Programí unbrauchbaò machen® Auó 
+dieseí    Grunä    wirä   empfohlen¬    jedeó   Programí    auó 
+Sicherheitsgruendeî   zweimaì  nacheinandeò  auæ  Kassettå   zõ 
+speichern®   Daó  Ueberspieleî  eineò  12´  KBytå   umfassendeî 
+"Diskette¢  voî  Banä dauerô ca®  µ Minuten®  Eó wirä  nuî  eiî 
+Programí  voî Kassettå eingeleseî unä dabeé deò  Einstellregleò 
+R±  auæ  deò  Zentraleî Platinå sï langå  veraendert¬  bió  deò 
+Computeò  fehlerfreé  allå  Bloeckå  deó  Programmeó  einliest® 
+Anschliessenä erfolgô miô R² beé Aufnahmå eineó Programmeó  deò 
+Abgleich¬   bió   einå  verzerrungs- unä   uebersteuerungsfreiå 
+Aufnahmå erreichô wird¬ diå fehlerfreé wiedeò eingeleseî werdeî 
+kann® Eventuelì musó C´ (4,· nÆ - 10° nF© veraenderô werden.
+

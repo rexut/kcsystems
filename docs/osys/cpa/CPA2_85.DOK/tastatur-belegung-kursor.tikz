@@ -1,0 +1,41 @@
+\tikzstyle{every node}=[font=\normalsize]
+\tikzset{
+   every picture/.style={/utils/exec={\sffamily}},
+   square matrix/.style={
+      matrix of nodes,
+      nodes in empty cells,
+      column sep=-\pgflinewidth,
+      row sep=-\pgflinewidth,
+      nodes={draw,
+         minimum height=#1,
+         text width=#1,
+         anchor=center,
+         align=center,
+         inner sep=0pt
+      },
+   },
+   square matrix/.default=1.0cm,
+   E/.style={fill=white,draw=white},
+   K/.style={circle,fill=lightgray,font=\Large\bfseries},
+   C/.style={fill=purple!10,draw=purple!10}
+}
+
+\begin{scope}
+   \matrix[square matrix, row sep=1pt, column sep=1pt](keys){
+      |[K]|{a} & |[K]|{b} & |[K]|{c} \\
+      |[E]|    & |[K]|{d} & |[K]|{e} \\
+      |[K]|{f} & |[K]|{g} & |[K]|{h} \\
+      |[K]|{i} & |[K]|{j} & |[K]|{k} \\
+      |[K]|{l} & |[K]|{m} & |[E]|    \\
+   };
+\end{scope}
+
+\begin{scope}[xshift=4.0cm]
+   \matrix[square matrix, row sep=1pt, column sep=1pt](codes){
+      |[C]|{\^{}I} & |[C]|{HC}    & |[C]|{DEL}   \\
+      |[E]|        & |[C]|{DS}    & |[C]|{ESC}   \\
+      |[C]|{\^{}A} & |[C]|{\^{}E} & |[C]|{\^{}F} \\
+      |[C]|{\^{}H} & |[C]|{\^{}R} & |[C]|{\^{}D} \\
+      |[C]|{\^{}C} & |[C]|{\^{}X} & |[E]|        \\
+   };
+\end{scope}

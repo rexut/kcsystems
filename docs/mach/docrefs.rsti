@@ -1,0 +1,9 @@
+.. Never add or change more than document reference replacements.
+   NOTE: This file is intent to be included globally by rst_prolog.
+
+.. Local variables:
+   coding: utf-8
+   mode: text
+   mode: rst
+   End:
+   vim: fileencoding=utf-8 filetype=rst :

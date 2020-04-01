@@ -1,0 +1,26 @@
+[fontmap]
+serif:			/usr/share/fonts/truetype/dejavu/DejaVuSerifCondensed.ttf
+serif-normal:		/usr/share/fonts/truetype/dejavu/DejaVuSerifCondensed.ttf
+serif-bold:		/usr/share/fonts/truetype/dejavu/DejaVuSerifCondensed-Bold.ttf
+serif-italic:		/usr/share/fonts/truetype/dejavu/DejaVuSerifCondensed-Italic.ttf
+serif-oblique:		/usr/share/fonts/truetype/dejavu/DejaVuSerifCondensed-Italic.ttf
+sansserif:		/usr/share/fonts/truetype/dejavu/DejaVuSansCondensed.ttf
+sansserif-normal:	/usr/share/fonts/truetype/dejavu/DejaVuSansCondensed.ttf
+sansserif-bold:		/usr/share/fonts/truetype/dejavu/DejaVuSansCondensed-Bold.ttf
+sansserif-italic:	/usr/share/fonts/truetype/dejavu/DejaVuSansCondensed-Oblique.ttf
+sansserif-oblique:	/usr/share/fonts/truetype/dejavu/DejaVuSansCondensed-Oblique.ttf
+monospace:		/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf
+monospace-normal:	/usr/share/fonts/truetype/dejavu/DejaVuSansMono.ttf
+monospace-bold:		/usr/share/fonts/truetype/dejavu/DejaVuSansMono-Bold.ttf
+monospace-italic:	/usr/share/fonts/truetype/dejavu/DejaVuSansMono-Oblique.ttf
+monospace-oblique:	/usr/share/fonts/truetype/dejavu/DejaVuSansMono-Oblique.ttf
+fantasy:		/usr/share/fonts/truetype/font-awesome/fontawesome-webfont.ttf
+fantasy-normal:		/usr/share/fonts/truetype/font-awesome/fontawesome-webfont.ttf
+fantasy-bold:		/usr/share/fonts/truetype/font-awesome/fontawesome-webfont.ttf
+fantasy-italic:		/usr/share/fonts/truetype/font-awesome/fontawesome-webfont.ttf
+fantasy-oblique:	/usr/share/fonts/truetype/font-awesome/fontawesome-webfont.ttf
+cursive:		/usr/share/fonts/truetype/dejavu/DejaVuSans-Oblique.ttf
+cursive-normal:		/usr/share/fonts/truetype/dejavu/DejaVuSans-Oblique.ttf
+cursive-bold:		/usr/share/fonts/truetype/dejavu/DejaVuSans-BoldOblique.ttf
+cursive-italic:		/usr/share/fonts/truetype/dejavu/DejaVuSans-Oblique.ttf
+cursive-oblique:	/usr/share/fonts/truetype/dejavu/DejaVuSans-Oblique.ttf

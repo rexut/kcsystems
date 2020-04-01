@@ -1,0 +1,98 @@
+.. Never add or change more than external links (ex. LaTeX formatting).
+
+.. External Links:
+
+.. DVSS: Digitalisierte Verzeichnisse staatlicher Standards der DDR (1956 - 1989)
+.. DDNB: Digitalisierte TGL im Katalog der Deutschen Nationalbibliothek
+.. BHUW: TGL-Verzeichnis der Bauhaus-Universität Weimar
+.. BBSR: TGL zum Download im Spezialarchiv Bauen in der DDR
+
+.. _`TGL-31034-1-Normschrift`: http://www.myfont.de/fonts/infos/4954-TGL-31034-1.html
+.. _`TGL Catalog (DVSS)`: https://portal.dnb.de/opac.htm?query=idn%3D1165167395+or+1165168251+or+1165168863+or+1165172488+or+1165170124+or+1165173093+or+1165170736+or+1165174367+or+1165171511&method=simpleSearch&cqlMode=true
+.. _`TGL Catalog (DDNB)`: http://d-nb.info/1162284072
+.. _`TGL Catalog (BHUW)`: https://www.uni-weimar.de/de/universitaet/struktur/zentrale-einrichtungen/universitaetsbibliothek/recherche/normen/tgl-verzeichnis/
+.. _`TGL Archive (BBSR)`: https://www.bbr-server.de/bauarchivddr/finbuch/tgl/index.htm
+.. _`TGL Archive`: http://tgl-archiv.de/
+
+.. _`MUGLER AG`: https://www.mugler.de/
+.. _`Herbert Mathes Computersysteme`: https://mathes-it.de/
+.. _`Frank Rost AC1 and PC/M archive`: http://informatik.rostfrank.de/rt/lex12/lex1207.html
+
+.. _`Elmar Klinder and Götz Hupe`: http://www.mpm-kc85.de/
+.. _`SCP area (EKGH)`: http://www.mpm-kc85.de/html/Assembler.htm#SCP
+
+.. _`Digital AG`: https://rechenwerk.halle.it/usr/digital-ag/
+.. _`Bürocomputer 8-Bit`: http://rechenwerk-halle.de/usr/digital-ag/archiv/#B%C3%BCrocomputer%208-Bit
+.. _`Beschreib_CPA.pdf`: http://rechenwerk-halle.de/usr/digital-ag/archiv/handbuecher/Beschreibung_des_Betriebssystems_CPA.pdf
+
+.. _`Computer Museum, University of Stuttgart`: http://computermuseum.informatik.uni-stuttgart.de/
+.. _`FTP area for PC1715`: ftp://ftp.informatik.uni-stuttgart.de/pub/cm/robotron/pc1715/
+.. _`cpa.txt`: ftp://ftp.informatik.uni-stuttgart.de/pub/cm/robotron/pc1715/CPA/cpa.txt
+
+.. _`Volker Pohlers`: https://hc-ddr.hucki.net/
+.. _`CP/A area (VP)`: https://hc-ddr.hucki.net/wiki/doku.php/cpm:cpa
+.. _`SCP area (VP)`: https://hc-ddr.hucki.net/wiki/doku.php/cpm:m80#scpasm_link_lib
+.. _`cpa.zip`: https://hc-ddr.hucki.net/wiki/lib/exe/fetch.php/cpm:cpa.zip
+
+.. _`Holm Tiffe`: https://www.tiffe.de/
+.. _`CP/A area (HT)`: https://www.tiffe.de/Robotron/CPA/
+.. _`cpa-enrico.zip`: https://www.tiffe.de/Robotron/CPA/cpa-enrico/CPA.zip
+.. _`PC1715 area (HT)`: https://www.tiffe.de/Robotron/PC1715/
+.. _`SCP area (HT)`: https://www.tiffe.de/Robotron/SCP/
+
+.. _`Ulrich Zander`: http://www.sax.de/~zander/
+.. _`PC1715 area (UZ)`: http://www.sax.de/~zander/pc1715.html#PC1715
+.. _`KC85 area (UZ)`: http://www.sax.de/~zander/kc85.html#KC85
+.. _`Z9001 / KC87 area (UZ)`: http://www.sax.de/~zander/z9001.html#Z9001
+.. _`Z1013 area (UZ)`: http://www.sax.de/~zander/z1013.html#Z1013
+
+.. .. _`Jörg Felgentreu`: http://felgentreu.dyndns.org/
+.. .. _`PC1715 area (JF)`: http://felgentreu.dyndns.org/robotron/pc1715.htm
+.. .. _`K1520 area (JF)`: http://felgentreu.dyndns.org/robotron/k1520doku.htm
+.. _`Jörg Felgentreu`: http://felgentreu.spdns.org/
+.. _`PC1715 area (JF)`: http://felgentreu.spdns.org/robotron/pc1715.htm
+.. _`K1520 area (JF)`: http://felgentreu.spdns.org/robotron/k1520doku.htm
+
+.. _`KC-Club`: http://www.kcclub.de/
+.. _`Rubrik 26: Dokumentationen für CP/M und MicroDOS`: http://www.kcclub.de/dlarchiv/09/RUBRIK26.HTM
+.. _`PC_M1.DOC`: http://www.kcclub.de/dlarchiv/DOWNLOAD/DISK269/PC_M1.DOC
+.. _`PC_M2.DOC`: http://www.kcclub.de/dlarchiv/DOWNLOAD/DISK269/PC_M2.DOC
+.. _`PC_M3.DOC`: http://www.kcclub.de/dlarchiv/DOWNLOAD/DISK269/PC_M3.DOC
+.. _`PC_M4.DOC`: http://www.kcclub.de/dlarchiv/DOWNLOAD/DISK269/PC_M4.DOC
+.. _`PC_MBUSK.DOC`: http://www.kcclub.de/dlarchiv/DOWNLOAD/DISK269/PC_MBUSK.DOC
+.. _`PC_MEPT.DOC`: http://www.kcclub.de/dlarchiv/DOWNLOAD/DISK269/PC_MEPT.DOC
+.. _`PC_M7659.DOC`: http://www.kcclub.de/dlarchiv/DOWNLOAD/DISK269/PC_M7659.DOC
+
+.. _`Lagerplatz von Li-Pro.Net`: http://store.li-pro.net/
+.. _`PC/M Floppy Disk Images`: http://store.li-pro.net/index.php?dir=pcm/fdimages/
+.. _`IFSSV24.DOC`: http://store.li-pro.net/pcm/fdimages/pcmdsk03-orig-19901030/IFSSV24.DOC
+.. _`INTERROR.PCM`: http://store.li-pro.net/pcm/fdimages/pcmdsk01-orig-19901030/INTERROR.PCM
+.. _`UMBA2732.PCM`: http://store.li-pro.net/pcm/fdimages/pcmdsk01-orig-19901030/UMBA2732.PCM
+.. _`LESEDAS.PCM`: http://store.li-pro.net/pcm/fdimages/pcmdsk01-orig-19901030/LESEDAS.PCM
+.. _`SYSINFO.PCM`: http://store.li-pro.net/pcm/fdimages/pcmdsk01-orig-19901030/SYSINFO.PCM
+.. _`BESTLPL.PCM`: http://store.li-pro.net/pcm/fdimages/pcmdsk01-orig-19901030/BESTLPL.PCM
+.. _`BESTSOFT.PCM`: http://store.li-pro.net/pcm/fdimages/pcmdsk01-orig-19901030/BESTSOFT.PCM
+
+.. _`Eric Holscher`: https://www.ericholscher.com/
+.. _`Sphinx Tutorial by Eric Holscher`: https://sphinx-tutorial.readthedocs.io/
+.. _`Bareos GmbH & Co. KG`: https://www.bareos.org/
+.. _`Documentation Style Guide by Bareos GmbH & Co. KG and others`: https://docs.bareos.org/
+
+.. _`reStructuredText`: https://docutils.sourceforge.io/rst.html
+.. _`Sphinx`: https://www.sphinx-doc.org/
+.. _`Sphinx Themes Demo Page`: https://sphinx-themes.org/
+.. _`Sphinx RTD Theme Demo Page`: https://sphinx-themes.org/html/sphinx_rtd_theme/sphinx_rtd_theme/index.html
+.. _`Read the Docs Sphinx Theme`: https://github.com/readthedocs/sphinx_rtd_theme
+
+.. former ddr-bauteile.de.vu, until 2008
+.. .. _`ROMs und EPROMs aus DDR Produktion`: http://web255.sv12.net-housting.de/ddr-bauteile/ddr-proms.html
+.. .. _`Systemmonitor mit Assembler und Disassembler sowie Editor/Debugger für TINY-MPBASIC des U883`: http://web255.sv12.net-housting.de/ddr-bauteile/bin/bm200.bin
+.. _`ROMs und EPROMs aus DDR Produktion`: http://web.archive.org/web/20180821081548/http://web255.sv12.net-housting.de/ddr-bauteile/ddr-proms.html
+.. _`Systemmonitor mit Assembler und Disassembler sowie Editor/Debugger für TINY-MPBASIC des U883`: http://web.archive.org/web/20160602182457/http://web255.sv12.net-housting.de/ddr-bauteile/bin/bm200.bin
+
+.. Local variables:
+   coding: utf-8
+   mode: text
+   mode: rst
+   End:
+   vim: fileencoding=utf-8 filetype=rst :

@@ -1,0 +1,535 @@
+.. Never add or change more than document reference replacements.
+   NOTE: This file is intent to be included globally by rst_prolog.
+
+
+.. PC/M images and figures mostly published by Funkamateur
+
+.. PC_M1.DOC
+.. |PC_M_B01A_N| replace:: :numref:`Bild {number} <kcsystems-mach-pcm-bild-01a>`
+.. |PC_M_B01A_T| replace:: :numref:`{name} <kcsystems-mach-pcm-bild-01a>`
+.. |PC_M_B01B_N| replace:: :numref:`Bild {number} <kcsystems-mach-pcm-bild-01b>`
+.. |PC_M_B01B_T| replace:: :numref:`{name} <kcsystems-mach-pcm-bild-01b>`
+
+.. PC_M1.DOC
+.. |PC_M_B02_N| replace:: :numref:`Bild {number} <kcsystems-mach-pcm-bild-02>`
+.. |PC_M_B02_T| replace:: :numref:`{name} <kcsystems-mach-pcm-bild-02>`
+
+.. PC_M1.DOC
+.. |PC_M_B03_N| replace:: :numref:`Bild {number} <kcsystems-mach-pcm-bild-03>`
+.. |PC_M_B03_T| replace:: :numref:`{name} <kcsystems-mach-pcm-bild-03>`
+
+.. PC_M1.DOC
+.. |PC_M_B04A_N| replace:: :numref:`Bild {number} <kcsystems-mach-pcm-bild-04a>`
+.. |PC_M_B04A_T| replace:: :numref:`{name} <kcsystems-mach-pcm-bild-04a>`
+.. |PC_M_B04B_N| replace:: :numref:`Bild {number} <kcsystems-mach-pcm-bild-04b>`
+.. |PC_M_B04B_T| replace:: :numref:`{name} <kcsystems-mach-pcm-bild-04b>`
+.. |PC_M_B04C_N| replace:: :numref:`Bild {number} <kcsystems-mach-pcm-bild-04c>`
+.. |PC_M_B04C_T| replace:: :numref:`{name} <kcsystems-mach-pcm-bild-04c>`
+.. |PC_M_B04D_N| replace:: :numref:`Bild {number} <kcsystems-mach-pcm-bild-04d>`
+.. |PC_M_B04D_T| replace:: :numref:`{name} <kcsystems-mach-pcm-bild-04d>`
+
+.. PC_M1.DOC
+.. |PC_M_B05_N| replace:: :numref:`Bild {number} <kcsystems-mach-pcm-bild-05>`
+.. |PC_M_B05_T| replace:: :numref:`{name} <kcsystems-mach-pcm-bild-05>`
+
+.. PC_M1.DOC
+.. |PC_M_B06_N| replace:: :numref:`Bild {number} <kcsystems-mach-pcm-bild-06>`
+.. |PC_M_B06_T| replace:: :numref:`{name} <kcsystems-mach-pcm-bild-06>`
+
+.. PC_M1.DOC
+.. |PC_M_B07_N| replace:: :numref:`Bild {number} <kcsystems-mach-pcm-bild-07>`
+.. |PC_M_B07_T| replace:: :numref:`{name} <kcsystems-mach-pcm-bild-07>`
+
+.. PC_M1.DOC
+.. |PC_M_B08A_N| replace:: :numref:`Bild {number} <kcsystems-mach-pcm-bild-08a>`
+.. |PC_M_B08A_T| replace:: :numref:`{name} <kcsystems-mach-pcm-bild-08a>`
+.. |PC_M_B08B_N| replace:: :numref:`Bild {number} <kcsystems-mach-pcm-bild-08b>`
+.. |PC_M_B08B_T| replace:: :numref:`{name} <kcsystems-mach-pcm-bild-08b>`
+.. |PC_M_B08C_N| replace:: :numref:`Bild {number} <kcsystems-mach-pcm-bild-08c>`
+.. |PC_M_B08C_T| replace:: :numref:`{name} <kcsystems-mach-pcm-bild-08c>`
+
+.. PC_M1.DOC
+.. |PC_M_B09_N| replace:: :numref:`Bild {number} <kcsystems-mach-pcm-bild-09>`
+.. |PC_M_B09_T| replace:: :numref:`{name} <kcsystems-mach-pcm-bild-09>`
+
+.. PC_M1.DOC
+.. |PC_M_B10A_N| replace:: :numref:`Bild {number} <kcsystems-mach-pcm-bild-10a>`
+.. |PC_M_B10A_T| replace:: :numref:`{name} <kcsystems-mach-pcm-bild-10a>`
+.. |PC_M_B10BC_N| replace:: :numref:`Bild {number} <kcsystems-mach-pcm-bild-10bc>`
+.. |PC_M_B10BC_T| replace:: :numref:`{name} <kcsystems-mach-pcm-bild-10bc>`
+.. |PC_M_B10D_N| replace:: :numref:`Bild {number} <kcsystems-mach-pcm-bild-10d>`
+.. |PC_M_B10D_T| replace:: :numref:`{name} <kcsystems-mach-pcm-bild-10d>`
+
+.. PC_M1.DOC
+.. |PC_M_B11_N| replace:: :numref:`Bild {number} <kcsystems-mach-pcm-bild-11>`
+.. |PC_M_B11_T| replace:: :numref:`{name} <kcsystems-mach-pcm-bild-11>`
+
+.. PC_M1.DOC
+.. |PC_M_B12_N| replace:: :numref:`Bild {number} <kcsystems-mach-pcm-bild-12>`
+.. |PC_M_B12_T| replace:: :numref:`{name} <kcsystems-mach-pcm-bild-12>`
+
+.. PC_M1.DOC
+.. |PC_M_B13_N| replace:: :numref:`Bild {number} <kcsystems-mach-pcm-bild-13>`
+.. |PC_M_B13_T| replace:: :numref:`{name} <kcsystems-mach-pcm-bild-13>`
+
+.. PC_M1.DOC
+.. |PC_M_B14_N| replace:: :numref:`Bild {number} <kcsystems-mach-pcm-bild-14>`
+.. |PC_M_B14_T| replace:: :numref:`{name} <kcsystems-mach-pcm-bild-14>`
+
+.. PC_M1.DOC
+.. |PC_M_B15_N| replace:: :numref:`Bild {number} <kcsystems-mach-pcm-bild-15>`
+.. |PC_M_B15_T| replace:: :numref:`{name} <kcsystems-mach-pcm-bild-15>`
+
+.. PC_M1.DOC
+.. |PC_M_B16A_N| replace:: :numref:`Bild {number} <kcsystems-mach-pcm-bild-16a>`
+.. |PC_M_B16A_T| replace:: :numref:`{name} <kcsystems-mach-pcm-bild-16a>`
+.. |PC_M_B16B_N| replace:: :numref:`Bild {number} <kcsystems-mach-pcm-bild-16b>`
+.. |PC_M_B16B_T| replace:: :numref:`{name} <kcsystems-mach-pcm-bild-16b>`
+.. |PC_M_B16C_N| replace:: :numref:`Bild {number} <kcsystems-mach-pcm-bild-16c>`
+.. |PC_M_B16C_T| replace:: :numref:`{name} <kcsystems-mach-pcm-bild-16c>`
+
+.. PC_M1.DOC
+.. |PC_M_B17_N| replace:: :numref:`Bild {number} <kcsystems-mach-pcm-bild-17>`
+.. |PC_M_B17_T| replace:: :numref:`{name} <kcsystems-mach-pcm-bild-17>`
+
+.. PC_M1.DOC
+.. |PC_M_B18_N| replace:: :numref:`Bild {number} <kcsystems-mach-pcm-bild-18>`
+.. |PC_M_B18_T| replace:: :numref:`{name} <kcsystems-mach-pcm-bild-18>`
+
+.. PC_M3.DOC
+.. |PC_M_B19_N| replace:: :numref:`Bild {number} <kcsystems-mach-pcm-bild-19>`
+.. |PC_M_B19_T| replace:: :numref:`{name} <kcsystems-mach-pcm-bild-19>`
+
+.. PC_M3.DOC
+.. |PC_M_B20_N| replace:: :numref:`Bild {number} <kcsystems-mach-pcm-bild-20>`
+.. |PC_M_B20_T| replace:: :numref:`{name} <kcsystems-mach-pcm-bild-20>`
+
+.. PC_M3.DOC
+.. |PC_M_B21_N| replace:: :numref:`Bild {number} <kcsystems-mach-pcm-bild-21>`
+.. |PC_M_B21_T| replace:: :numref:`{name} <kcsystems-mach-pcm-bild-21>`
+
+.. PC_M1.DOC
+.. |PC_M_B22_N| replace:: :numref:`Bild {number} <kcsystems-mach-pcm-bild-22>`
+.. |PC_M_B22_T| replace:: :numref:`{name} <kcsystems-mach-pcm-bild-22>`
+
+.. PC_M1.DOC
+.. |PC_M_B23_N| replace:: :numref:`Bild {number} <kcsystems-mach-pcm-bild-23>`
+.. |PC_M_B23_T| replace:: :numref:`{name} <kcsystems-mach-pcm-bild-23>`
+
+.. PC_M1.DOC
+.. |PC_M_B24A_N| replace:: :numref:`Bild {number} <kcsystems-mach-pcm-bild-24a>`
+.. |PC_M_B24A_T| replace:: :numref:`{name} <kcsystems-mach-pcm-bild-24a>`
+.. |PC_M_B24B_N| replace:: :numref:`Bild {number} <kcsystems-mach-pcm-bild-24b>`
+.. |PC_M_B24B_T| replace:: :numref:`{name} <kcsystems-mach-pcm-bild-24b>`
+
+.. PC_M1.DOC
+.. |PC_M_B25_N| replace:: :numref:`Bild {number} <kcsystems-mach-pcm-bild-25>`
+.. |PC_M_B25_T| replace:: :numref:`{name} <kcsystems-mach-pcm-bild-25>`
+
+.. PC_M1.DOC
+.. |PC_M_B26_N| replace:: :numref:`Bild {number} <kcsystems-mach-pcm-bild-26>`
+.. |PC_M_B26_T| replace:: :numref:`{name} <kcsystems-mach-pcm-bild-26>`
+
+.. PC_M1.DOC
+.. |PC_M_B27_N| replace:: :numref:`Bild {number} <kcsystems-mach-pcm-bild-27>`
+.. |PC_M_B27_T| replace:: :numref:`{name} <kcsystems-mach-pcm-bild-27>`
+
+.. PC_M1.DOC
+.. |PC_M_B28_N| replace:: :numref:`Bild {number} <kcsystems-mach-pcm-bild-28>`
+.. |PC_M_B28_T| replace:: :numref:`{name} <kcsystems-mach-pcm-bild-28>`
+
+.. PC_M1.DOC
+.. |PC_M_B29_N| replace:: :numref:`Bild {number} <kcsystems-mach-pcm-bild-29>`
+.. |PC_M_B29_T| replace:: :numref:`{name} <kcsystems-mach-pcm-bild-29>`
+
+.. PC_M1.DOC
+.. |PC_M_B30_N| replace:: :numref:`Bild {number} <kcsystems-mach-pcm-bild-30>`
+.. |PC_M_B30_T| replace:: :numref:`{name} <kcsystems-mach-pcm-bild-30>`
+
+.. PC_M1.DOC
+.. |PC_M_B31_N| replace:: :numref:`Bild {number} <kcsystems-mach-pcm-bild-31>`
+.. |PC_M_B31_T| replace:: :numref:`{name} <kcsystems-mach-pcm-bild-31>`
+
+.. PC_M1.DOC
+.. |PC_M_B32_N| replace:: :numref:`Bild {number} <kcsystems-mach-pcm-bild-32>`
+.. |PC_M_B32_T| replace:: :numref:`{name} <kcsystems-mach-pcm-bild-32>`
+
+.. PC_M1.DOC
+.. |PC_M_B33_N| replace:: :numref:`Bild {number} <kcsystems-mach-pcm-bild-33>`
+.. |PC_M_B33_T| replace:: :numref:`{name} <kcsystems-mach-pcm-bild-33>`
+
+.. PC_M1.DOC
+.. |PC_M_B34_N| replace:: :numref:`Bild {number} <kcsystems-mach-pcm-bild-34>`
+.. |PC_M_B34_T| replace:: :numref:`{name} <kcsystems-mach-pcm-bild-34>`
+
+.. PC_M3.DOC
+.. |PC_M_B35_N| replace:: :numref:`Bild {number} <kcsystems-mach-pcm-bild-35>`
+.. |PC_M_B35_T| replace:: :numref:`{name} <kcsystems-mach-pcm-bild-35>`
+
+.. PC_M1.DOC
+.. |PC_M_B36A_N| replace:: :numref:`Bild {number} <kcsystems-mach-pcm-bild-36a>`
+.. |PC_M_B36A_T| replace:: :numref:`{name} <kcsystems-mach-pcm-bild-36a>`
+.. |PC_M_B36B_N| replace:: :numref:`Bild {number} <kcsystems-mach-pcm-bild-36b>`
+.. |PC_M_B36B_T| replace:: :numref:`{name} <kcsystems-mach-pcm-bild-36b>`
+
+.. PC_M3.DOC
+.. |PC_M_B37_N| replace:: :numref:`Bild {number} <kcsystems-mach-pcm-bild-37>`
+.. |PC_M_B37_T| replace:: :numref:`{name} <kcsystems-mach-pcm-bild-37>`
+
+.. PC_M1.DOC
+.. |PC_M_B38A_N| replace:: :numref:`Bild {number} <kcsystems-mach-pcm-bild-38a>`
+.. |PC_M_B38A_T| replace:: :numref:`{name} <kcsystems-mach-pcm-bild-38a>`
+.. |PC_M_B38B_N| replace:: :numref:`Bild {number} <kcsystems-mach-pcm-bild-38b>`
+.. |PC_M_B38B_T| replace:: :numref:`{name} <kcsystems-mach-pcm-bild-38b>`
+.. |PC_M_B38C_N| replace:: :numref:`Bild {number} <kcsystems-mach-pcm-bild-38c>`
+.. |PC_M_B38C_T| replace:: :numref:`{name} <kcsystems-mach-pcm-bild-38c>`
+
+.. PC_M1.DOC
+.. |PC_M_B39_N| replace:: :numref:`Bild {number} <kcsystems-mach-pcm-bild-39>`
+.. |PC_M_B39_T| replace:: :numref:`{name} <kcsystems-mach-pcm-bild-39>`
+
+.. PC_M1.DOC
+.. |PC_M_B40_N| replace:: :numref:`Bild {number} <kcsystems-mach-pcm-bild-40>`
+.. |PC_M_B40_T| replace:: :numref:`{name} <kcsystems-mach-pcm-bild-40>`
+
+.. PC_M4.DOC
+.. |PC_M_BA1_N| replace:: :numref:`Bild {number} <kcsystems-mach-pcm-bild-a1>`
+.. |PC_M_BA1_T| replace:: :numref:`{name} <kcsystems-mach-pcm-bild-a1>`
+
+.. PC_M4.DOC
+.. |PC_M_BB1_N| replace:: :numref:`Bild {number} <kcsystems-mach-pcm-bild-b1>`
+.. |PC_M_BB1_T| replace:: :numref:`{name} <kcsystems-mach-pcm-bild-b1>`
+
+.. PC_M4.DOC
+.. |PC_M_BC2_N| replace:: :numref:`Bild {number} <kcsystems-mach-pcm-bild-c2>`
+.. |PC_M_BC2_T| replace:: :numref:`{name} <kcsystems-mach-pcm-bild-c2>`
+
+.. PC_M4.DOC
+.. |PC_M_BD3_N| replace:: :numref:`Bild {number} <kcsystems-mach-pcm-bild-d3>`
+.. |PC_M_BD3_T| replace:: :numref:`{name} <kcsystems-mach-pcm-bild-d3>`
+
+.. IFSSV24.DOC
+.. |PC_M_B251K3_N| replace:: :numref:`Bild {number} <kcsystems-mach-pcm-bild-251-k3>`
+.. |PC_M_B251K3_T| replace:: :numref:`{name} <kcsystems-mach-pcm-bild-251-k3>`
+
+.. PC_MBUSK.DOC
+.. |PC_MBUSK_B01_N| replace:: :numref:`Bild {number} <kcsystems-mach-pcm-busk-bild-01>`
+.. |PC_MBUSK_B01_T| replace:: :numref:`{name} <kcsystems-mach-pcm-busk-bild-01>`
+
+.. PC_MBUSK.DOC
+.. |PC_MBUSK_B02_N| replace:: :numref:`Bild {number} <kcsystems-mach-pcm-busk-bild-02>`
+.. |PC_MBUSK_B02_T| replace:: :numref:`{name} <kcsystems-mach-pcm-busk-bild-02>`
+
+.. PC_MBUSK.DOC
+.. |PC_MBUSK_B03_N| replace:: :numref:`Bild {number} <kcsystems-mach-pcm-busk-bild-03>`
+.. |PC_MBUSK_B03_T| replace:: :numref:`{name} <kcsystems-mach-pcm-busk-bild-03>`
+
+.. PC_MBUSK.DOC
+.. |PC_MBUSK_B04_N| replace:: :numref:`Bild {number} <kcsystems-mach-pcm-busk-bild-04>`
+.. |PC_MBUSK_B04_T| replace:: :numref:`{name} <kcsystems-mach-pcm-busk-bild-04>`
+
+.. PC_MBUSK.DOC
+.. |PC_MBUSK_B05_N| replace:: :numref:`Bild {number} <kcsystems-mach-pcm-busk-bild-05>`
+.. |PC_MBUSK_B05_T| replace:: :numref:`{name} <kcsystems-mach-pcm-busk-bild-05>`
+
+.. PC_MEPT.DOC
+.. |PC_MEPT_SCH_N| replace:: :numref:`Bild {number} <kcsystems-mach-pcm-ept-epr2tuk-sch>`
+.. |PC_MEPT_SCH_T| replace:: :numref:`{name} <kcsystems-mach-pcm-ept-epr2tuk-sch>`
+
+.. PC_MEPT.DOC
+.. |PC_MEPT_ZUS_N| replace:: :numref:`Bild {number} <kcsystems-mach-pcm-ept-epr2tuk-zus>`
+.. |PC_MEPT_ZUS_T| replace:: :numref:`{name} <kcsystems-mach-pcm-ept-epr2tuk-zus>`
+
+.. PC_MEPT.DOC
+.. |PC_MEPT_SOLD_N| replace:: :numref:`Bild {number} <kcsystems-mach-pcm-ept-epr2tuk-sold>`
+.. |PC_MEPT_SOLD_T| replace:: :numref:`{name} <kcsystems-mach-pcm-ept-epr2tuk-sold>`
+
+.. PC_MEPT.DOC
+.. |PC_MEPT_COMP_N| replace:: :numref:`Bild {number} <kcsystems-mach-pcm-ept-epr2tuk-comp>`
+.. |PC_MEPT_COMP_T| replace:: :numref:`{name} <kcsystems-mach-pcm-ept-epr2tuk-comp>`
+
+.. PC_M7659.DOC
+.. |PC_M7659_B01_N| replace:: :numref:`Bild {number} <kcsystems-mach-pcm-7659-bild-01>`
+.. |PC_M7659_B01_T| replace:: :numref:`{name} <kcsystems-mach-pcm-7659-bild-01>`
+
+.. PC_M7659.DOC
+.. |PC_M7659_B02_N| replace:: :numref:`Bild {number} <kcsystems-mach-pcm-7659-bild-02>`
+.. |PC_M7659_B02_T| replace:: :numref:`{name} <kcsystems-mach-pcm-7659-bild-02>`
+
+.. PC_M7659.DOC
+.. |PC_M7659_B03_N| replace:: :numref:`Bild {number} <kcsystems-mach-pcm-7659-bild-03>`
+.. |PC_M7659_B03_T| replace:: :numref:`{name} <kcsystems-mach-pcm-7659-bild-03>`
+
+.. PC_M7659.DOC
+.. |PC_M7659_B04_N| replace:: :numref:`Bild {number} <kcsystems-mach-pcm-7659-bild-04>`
+.. |PC_M7659_B04_T| replace:: :numref:`{name} <kcsystems-mach-pcm-7659-bild-04>`
+
+.. PC_M7659.DOC
+.. |PC_M7659_B05_N| replace:: :numref:`Bild {number} <kcsystems-mach-pcm-7659-bild-05>`
+.. |PC_M7659_B05_T| replace:: :numref:`{name} <kcsystems-mach-pcm-7659-bild-05>`
+
+.. PC_M7659.DOC
+.. |PC_M7659_BHD_N| replace:: :numref:`Bild {number} <kcsystems-mach-pcm-7659-bild-hd>`
+.. |PC_M7659_BHD_T| replace:: :numref:`{name} <kcsystems-mach-pcm-7659-bild-hd>`
+
+
+.. PC/M listings and hexdumps mostly published by Funkamateur
+
+.. PC_M4.DOC
+.. |PC_M_LBB_N| replace:: :numref:`Listing {number} <kcsystems-mach-pcm-listing-bild-b1>`
+.. |PC_M_LBB_T| replace:: :numref:`{name} <kcsystems-mach-pcm-listing-bild-b1>`
+
+.. PC_M7659.DOC
+.. |PC_M7659_LHD_N| replace:: :numref:`Listing {number} <kcsystems-mach-pcm-7659-listing-bild-hd>`
+.. |PC_M7659_LHD_T| replace:: :numref:`{name} <kcsystems-mach-pcm-7659-listing-bild-hd>`
+
+
+.. PC/M tables mostly published by Funkamateur
+
+.. PC_M3.DOC
+.. |PC_M_T1_N| replace:: :numref:`Tab. {number} <kcsystems-mach-pcm-tabelle-1>`
+.. |PC_M_T1_T| replace:: :numref:`{name} <kcsystems-mach-pcm-tabelle-1>`
+
+.. PC_M3.DOC
+.. |PC_M_T2_N| replace:: :numref:`Tab. {number} <kcsystems-mach-pcm-tabelle-2>`
+.. |PC_M_T2_T| replace:: :numref:`{name} <kcsystems-mach-pcm-tabelle-2>`
+
+.. PC_M3.DOC
+.. |PC_M_T3_N| replace:: :numref:`Tab. {number} <kcsystems-mach-pcm-tabelle-3>`
+.. |PC_M_T3_T| replace:: :numref:`{name} <kcsystems-mach-pcm-tabelle-3>`
+
+.. PC_M3.DOC
+.. |PC_M_T4_N| replace:: :numref:`Tab. {number} <kcsystems-mach-pcm-tabelle-4>`
+.. |PC_M_T4_T| replace:: :numref:`{name} <kcsystems-mach-pcm-tabelle-4>`
+
+.. PC_M3.DOC
+.. |PC_M_T5_N| replace:: :numref:`Tab. {number} <kcsystems-mach-pcm-tabelle-5>`
+.. |PC_M_T5_T| replace:: :numref:`{name} <kcsystems-mach-pcm-tabelle-5>`
+
+.. PC_M4.DOC
+.. |PC_M_TA1_N| replace:: :numref:`Tab. {number} <kcsystems-mach-pcm-tabelle-a1>`
+.. |PC_M_TA1_T| replace:: :numref:`{name} <kcsystems-mach-pcm-tabelle-A1>`
+
+.. PC_M4.DOC
+.. |PC_M_TA2_N| replace:: :numref:`Tab. {number} <kcsystems-mach-pcm-tabelle-a2>`
+.. |PC_M_TA2_T| replace:: :numref:`{name} <kcsystems-mach-pcm-tabelle-a2>`
+
+.. PC_M4.DOC
+.. |PC_M_TA3_N| replace:: :numref:`Tab. {number} <kcsystems-mach-pcm-tabelle-a3>`
+.. |PC_M_TA3_T| replace:: :numref:`{name} <kcsystems-mach-pcm-tabelle-a3>`
+
+.. PC_M4.DOC
+.. |PC_M_TAZ_N| replace:: :numref:`Tab. {number} <kcsystems-mach-pcm-tabelle-az>`
+.. |PC_M_TAZ_T| replace:: :numref:`{name} <kcsystems-mach-pcm-tabelle-az>`
+
+.. UMBA2732.PCM
+.. |PC_M_T1K2_N| replace:: :numref:`Tab. {number} <kcsystems-mach-pcm-tabelle-1-k2>`
+.. |PC_M_T1K2_T| replace:: :numref:`{name} <kcsystems-mach-pcm-tabelle-1-k2>`
+
+.. UMBA2732.PCM
+.. |PC_M_T2K2_N| replace:: :numref:`Tab. {number} <kcsystems-mach-pcm-tabelle-2-k2>`
+.. |PC_M_T2K2_T| replace:: :numref:`{name} <kcsystems-mach-pcm-tabelle-2-k2>`
+
+.. IFSSV24.DOC
+.. |PC_M_T1K3_N| replace:: :numref:`Tab. {number} <kcsystems-mach-pcm-tabelle-1-k3>`
+.. |PC_M_T1K3_T| replace:: :numref:`{name} <kcsystems-mach-pcm-tabelle-1-k3>`
+
+.. PC_MEPT.DOC
+.. |PC_MEPT_T1_N| replace:: :numref:`Tab. {number} <kcsystems-mach-pcm-ept-tabelle-1>`
+.. |PC_MEPT_T1_T| replace:: :numref:`{name} <kcsystems-mach-pcm-ept-tabelle-1>`
+
+.. PC_MEPT.DOC
+.. |PC_MEPT_T2_N| replace:: :numref:`Tab. {number} <kcsystems-mach-pcm-ept-tabelle-2>`
+.. |PC_MEPT_T2_T| replace:: :numref:`{name} <kcsystems-mach-pcm-ept-tabelle-2>`
+
+.. PC_M7659.DOC
+.. |PC_M7659_T1_N| replace:: :numref:`Tab. {number} <kcsystems-mach-pcm-7659-tabelle-1>`
+.. |PC_M7659_T1_T| replace:: :numref:`{name} <kcsystems-mach-pcm-7659-tabelle-1>`
+
+
+.. PC/M hardware units mostly published by Funkamateur
+
+.. |FA 3/88-05|    replace:: :strong:`FA 3/88-05`
+.. |FA038805|      replace:: :ref:`Mainboard <kcsystems-mach-pcm-fa038805>`
+.. |FA038805_BG|   replace:: :numref:`{name} in Tab. {number} <kcsystems-mach-pcm-fa038805-bg>`:
+                             Computer Overview System Core and Peripheral Input / Output
+.. |FA038805_SP1|  replace:: :numref:`{name} in Tab. {number} <kcsystems-mach-pcm-fa038805-sp1>`:
+                             Schematic System Core
+.. |FA038805_SP2|  replace:: :numref:`{name} in Tab. {number} <kcsystems-mach-pcm-fa038805-sp2>`:
+                             Schematic Peripheral Input / Output
+.. |FA038805_LS|   replace:: :numref:`{name} in Tab. {number} <kcsystems-mach-pcm-fa038805-ls>`:
+                             PCB Layout Solder Side
+.. |FA038805_BS|   replace:: :numref:`{name} in Tab. {number} <kcsystems-mach-pcm-fa038805-bs>`:
+                             PCB Layout Component Side
+.. |FA038805_BP|   replace:: :numref:`{name} in Tab. {number} <kcsystems-mach-pcm-fa038805-bp>`:
+                             PCB Assembly Component Side
+.. |FA038805_SL|   replace:: :numref:`{name} in Tab. {number} <kcsystems-mach-pcm-fa038805-sl>`:
+                             Components Parts List
+.. |FA038805_KP|   replace:: :numref:`{name} in Tab. {number} <kcsystems-mach-pcm-fa038805-kp>`:
+                             Pin Assignments Connector
+                             :comp:`X1`: (Keyboard Decoder),
+                             :comp:`X2`: (System Bus), and
+                             :comp:`X3`: (Peripheral Input / Output Bus)
+.. |FA038805_SW1|  replace:: :numref:`{name} in Tab. {number} <kcsystems-mach-pcm-fa038805-sw1>`:
+                             Hexdump |EPROM| :comp:`D14` with the |BIOS|
+                             in a variant with 2 |x| 62 |kB| |RAM| Floppy
+.. |FA038805_SW2|  replace:: :numref:`{name} in Tab. {number} <kcsystems-mach-pcm-fa038805-sw2>`:
+                             Hexdump |EPROM| :comp:`D14` with the |BIOS|
+                             in a variant with 1 |x| 124 |kB| |RAM| Floppy
+.. |FA038805_SW3|  replace:: :numref:`{name} in Tab. {number} <kcsystems-mach-pcm-fa038805-sw3>`:
+                             Hexdump |EPROM| :comp:`D15` with the |Debugger|
+.. |FA038805_SW4|  replace:: :numref:`{name} in Tab. {number} <kcsystems-mach-pcm-fa038805-sw4>`:
+                             Hexdump |EPROM| :comp:`D16` with the |V-Tape|
+.. |FA038805_SW5|  replace:: :numref:`{name} in Tab. {number} <kcsystems-mach-pcm-fa038805-sw5>`:
+                             Hexdump |EPROM| :comp:`D17` with the |CCP|
+.. |FA038805_SW6|  replace:: :numref:`{name} in Tab. {number} <kcsystems-mach-pcm-fa038805-sw6>`:
+                             Hexdump |DRAM| :comp:`D20` |...| :comp:`D27` with the |BDOS|
+                             that have to re-/load from the (Compact Cassette Magnetic) Voice Tape
+.. |FA038805_ZD1|  replace:: :numref:`{name} in Tab. {number} <kcsystems-mach-pcm-fa038805-zd12>`:
+                             List of Peripheral Input / Output Addresses
+.. |FA038805_ZD2|  replace:: :numref:`{name} in Tab. {number} <kcsystems-mach-pcm-fa038805-zd12>`:
+                             List of System PIO Signals to the Keyboard Decoder
+.. |FA038805_ZD3|  replace:: :numref:`{name} in Tab. {number} <kcsystems-mach-pcm-fa038805-zd34>`:
+                             Clock Diagram "READ" and "EARLY-WRITE" Cycle (|DRAM|)
+.. |FA038805_ZD4|  replace:: :numref:`{name} in Tab. {number} <kcsystems-mach-pcm-fa038805-zd34>`:
+                             Block Diagram |U2164| (|DRAM|)
+.. |FA038805_ZD5|  replace:: :numref:`{name} in Tab. {number} <kcsystems-mach-pcm-fa038805-zd5>`:
+                             Clock Diagram "RAS-ONLY-REFRESH" Cycle (|DRAM|)
+.. |FA038805_K1|   replace:: :ref:`FA 3/88-05 Interrupt Problem <kcsystems-mach-pcm-fa038805-k1>`
+.. |FA038805_K2|   replace:: :ref:`FA 3/88-05 Use a 16 KByte EPROM Block<kcsystems-mach-pcm-fa038805-k2>`
+.. |FA038805_K3|   replace:: :ref:`FA 3/88-05 Converter Module IFSS to V.24 <kcsystems-mach-pcm-fa038805-k3>`
+
+.. |FA 4/88-04|    replace:: :strong:`FA 4/88-04`
+.. |FA048804|      replace:: :ref:`Backplane <kcsystems-mach-pcm-fa048804>`
+.. |FA048804_LS|   replace:: :numref:`{name} in Tab. {number} <kcsystems-mach-pcm-fa048804-lbs>`:
+                             PCB Layout Solder Side
+.. |FA048804_BS|   replace:: :numref:`{name} in Tab. {number} <kcsystems-mach-pcm-fa048804-lbs>`:
+                             PCB Layout Component Side
+
+.. |FA 5/88-04|    replace:: :strong:`FA 5/88-04`
+.. |FA058804|      replace:: :ref:`TV/CRT Character Video Card 64x32(16) <kcsystems-mach-pcm-fa058804>`
+.. |FA058804_BG|   replace:: :numref:`{name} in Tab. {number} <kcsystems-mach-pcm-fa058804-bg>`:
+                             Video Card Overview with Pixel Clock Generator,
+                             Line and Screen Clock Divider, Video |SRAM| Access Control,
+                             ROM Character Generator, and BAS/TV Signal Mixer
+.. |FA058804_SP|   replace:: :numref:`{name} in Tab. {number} <kcsystems-mach-pcm-fa058804-sp>`:
+                             Schematic TV/CRT Video Card 64 |x| 32(16)
+.. |FA058804_SPK1| replace:: :numref:`{name} in Tab. {number} <kcsystems-mach-pcm-fa058804-spk1>`:
+                             Schematic Changes: Avoid Flicker Phenomena
+.. |FA058804_LS|   replace:: :numref:`{name} in Tab. {number} <kcsystems-mach-pcm-fa058804-ls>`:
+                             PCB Layout Solder Side
+.. |FA058804_BS|   replace:: :numref:`{name} in Tab. {number} <kcsystems-mach-pcm-fa058804-bs>`:
+                             PCB Layout Component Side
+.. |FA058804_BP|   replace:: :numref:`{name} in Tab. {number} <kcsystems-mach-pcm-fa058804-bp>`:
+                             PCB Assembly Component Side
+.. |FA058804_SL|   replace:: :numref:`{name} in Tab. {number} <kcsystems-mach-pcm-fa058804-sl>`:
+                             Components Parts List
+.. |FA058804_SW|   replace:: :numref:`{name} in Tab. {number} <kcsystems-mach-pcm-fa058804-zd1sw>`:
+                             Hexdump |EPROM| :comp:`D113` with the Character Generator
+.. |FA058804_ZD1|  replace:: :numref:`{name} in Tab. {number} <kcsystems-mach-pcm-fa058804-zd1sw>`:
+                             Character Set with 256 |ASCII| Glyphs
+.. |FA058804_ZD2|  replace:: :numref:`{name} in Tab. {number} <kcsystems-mach-pcm-fa058804-zd2>`:
+                             Character Representation and Structure
+.. |FA058804_ZD3|  replace:: :numref:`{name} in Tab. {number} <kcsystems-mach-pcm-fa058804-zd3>`:
+                             Clock Diagram Video Line Generation
+.. |FA058804_ZD4|  replace:: :numref:`{name} in Tab. {number} <kcsystems-mach-pcm-fa058804-zd4>`:
+                             Clock Diagram Video Screen Generation
+.. |FA058804_K1|   replace:: :ref:`FA 5/88-04 Avoid Flicker Phenomena <kcsystems-mach-pcm-fa058804-k1>`
+
+.. |FA 6/88-03|    replace:: :strong:`FA 6/88-03`
+.. |FA068803|      replace:: :ref:`Keyboard Decoder 65 Keys to ASCII <kcsystems-mach-pcm-fa068803>`
+.. |FA068803_TM|   replace:: :numref:`{name} in Tab. {number} <kcsystems-mach-pcm-fa068803-tmgb>`:
+                             8 |x| 10 Matrix with 65 Keys
+.. |FA068803_BG|   replace:: :numref:`{name} in Tab. {number} <kcsystems-mach-pcm-fa068803-tmgb>`:
+                             Keyboard Decoder Overview with Row and Column Decoder, :signal:`TAST`
+                             Signal Generator, and six-fold LED Driver
+.. |FA068803_SP|   replace:: :numref:`{name} in Tab. {number} <kcsystems-mach-pcm-fa068803-sp>`:
+                             Schematic Keyboard Decoder 8 |x| 10 Matrix and Lamp Signalling
+.. |FA068803_LS|   replace:: :numref:`{name} in Tab. {number} <kcsystems-mach-pcm-fa068803-lsbsbp>`:
+                             PCB Layout Solder Side
+.. |FA068803_BS|   replace:: :numref:`{name} in Tab. {number} <kcsystems-mach-pcm-fa068803-lsbsbp>`:
+                             PCB Layout Component Side
+.. |FA068803_BP|   replace:: :numref:`{name} in Tab. {number} <kcsystems-mach-pcm-fa068803-lsbsbp>`:
+                             PCB Assembly Component Side
+.. |FA068803_SL|   replace:: :numref:`{name} in Tab. {number} <kcsystems-mach-pcm-fa068803-sl>`:
+                             Components Parts List
+.. |FA068803_ZD1|  replace:: :numref:`{name} in Tab. {number} <kcsystems-mach-pcm-fa068803-zd1>`:
+                             Realized Key Layout
+
+.. |FA 7/88-05|    replace:: :strong:`FA 7/88-05`
+.. |FA078805|      replace:: :ref:`Power Supply +5V/5A, -5V/1A, +12V/1A, -12V/1A <kcsystems-mach-pcm-fa078805>`
+.. |FA078805_SP|   replace:: :numref:`{name} in Tab. {number} <kcsystems-mach-pcm-fa078805-sp>`:
+                             Schematic Power Supply |+-| 5V / |+-| 12 V, 75 W (eff. 73%)
+.. |FA078805_LS|   replace:: :numref:`{name} in Tab. {number} <kcsystems-mach-pcm-fa078805-ls>`:
+                             PCB Layout Solder Side
+.. |FA078805_BP|   replace:: :numref:`{name} in Tab. {number} <kcsystems-mach-pcm-fa078805-bp>`:
+                             PCB Assembly Component Side
+.. |FA078805_SL|   replace:: :numref:`{name} in Tab. {number} <kcsystems-mach-pcm-fa078805-sl>`:
+                             Components Parts List
+
+.. |KMBG Anett IS2|  replace:: :strong:`VTCTL Anett IS2`
+.. |KMBGANETTIS2|    replace:: :ref:`Voice Tape Control with "Anett IS2" <kcsystems-mach-pcm-kmbg-anett-is2>`
+.. |KMBGANETTIS2_SP| replace:: :numref:`{name} in Tab. {number} <kcsystems-mach-pcm-kmbg-anett-is2-sp>`:
+                               Schematic Voice Tape Control with "Anett IS2" PCB Components
+			       2/2304.03-61.00 (Record and Playback Amplifier) and
+			       6001.01-43.00 (Motor Speed Controller)
+
+.. |FA 11/88-K1520VTCP| replace:: :strong:`FA 11/88-K1520VTCP`
+.. |FA1188K1520VTCP|    replace:: :ref:`Voice Tape Copy for K1520 Systems <kcsystems-mach-pcm-fa1188k1520vtcp>`
+.. |FA1188K1520VTCP_SP| replace:: :numref:`{name} in Tab. {number} <kcsystems-mach-pcm-fa1188k1520vtcp-sp>`:
+                                  Schematic Voice Tape Cassette Module for K1520 Systems
+.. |FA1188K1520VTCP_SW| replace:: :numref:`{name} in Tab. {number} <kcsystems-mach-pcm-fa1188k1520vtcp-sw>`:
+                                  Copy Programm to use with Voice Tape Cassette Module for K1520 Systems
+
+.. |FA 11/88-V24IO| replace:: :strong:`FA 11/88-V24IO`
+.. |FA1188V24IO|    replace:: :ref:`V.24 Peripheral Input / Output Driver <kcsystems-mach-pcm-fa1188v24io>`
+.. |FA1188V24IO_SP| replace:: :numref:`{name} in Tab. {number} <kcsystems-mach-pcm-fa1188v24io-sp>`:
+                              Schematic |V.24| Hardware Driver Module
+
+.. |FA 10/89-01|   replace:: :strong:`FA 10/89-01`
+.. |FA108901|      replace:: :ref:`K1520 System Bus Adapter <kcsystems-mach-pcm-fa108901>`
+.. |FA108901_BG|   replace:: :numref:`{name} in Tab. {number} <kcsystems-mach-pcm-fa108901-bg>`:
+                             PCB Arrangement on the PC/M Computer
+.. |FA108901_SP|   replace:: :numref:`{name} in Tab. {number} <kcsystems-mach-pcm-fa108901-sp>`:
+                             Schematic K1520 Adapter
+.. |FA108901_LS|   replace:: :numref:`{name} in Tab. {number} <kcsystems-mach-pcm-fa108901-ls>`:
+                             PCB Layout Solder Side
+.. |FA108901_BS|   replace:: :numref:`{name} in Tab. {number} <kcsystems-mach-pcm-fa108901-bs>`:
+                             PCB Layout Component Side
+.. |FA108901_BP|   replace:: :numref:`{name} in Tab. {number} <kcsystems-mach-pcm-fa108901-bp>`:
+                             PCB Assembly Component Side
+
+.. |EPT/EPR2TUK|   replace:: :strong:`EPT/EPR2TUK`
+.. |EPTEPR2TUK|    replace:: :ref:`Single Board Computer V2 <kcsystems-mach-pcm-ept-epr2tuk>`
+                             by TU Karl-Marx-Stadt (see also |EPR2TUK|)
+.. |EPTEPR2TUK_SP| replace:: :numref:`{name} in Tab. {number} <kcsystems-mach-pcm-ept-epr2tuk-sp>`:
+                             Schematic |EPR2TUK|
+.. |EPTEPR2TUK_LS| replace:: :numref:`{name} in Tab. {number} <kcsystems-mach-pcm-ept-epr2tuk-lsbsbp>`:
+                             PCB Layout Solder Side
+.. |EPTEPR2TUK_BS| replace:: :numref:`{name} in Tab. {number} <kcsystems-mach-pcm-ept-epr2tuk-lsbsbp>`:
+                             PCB Layout Component Side
+.. |EPTEPR2TUK_BP| replace:: :numref:`{name} in Tab. {number} <kcsystems-mach-pcm-ept-epr2tuk-lsbsbp>`:
+                             PCB Assembly Component Side
+
+.. |FA 5/90-01|    replace:: :strong:`FA 5/90-01`
+.. |FA059001|      replace:: :ref:`K7659 Keyboard Decoder 65 Keys to ASCII <kcsystems-mach-pcm-fa059001>`
+.. |FA059001_TM|   replace:: :numref:`{name} in Tab. {number} <kcsystems-mach-pcm-fa059001-tm>`:
+                             8 |x| 12 Matrix with 65 Keys
+.. |FA059001_SP|   replace:: :numref:`{name} in Tab. {number} <kcsystems-mach-pcm-fa059001-sp>`:
+                             Schematic Keyboard Decoder 8 |x| 12 Matrix and Lamp Signalling
+.. |FA059001_LS|   replace:: :numref:`{name} in Tab. {number} <kcsystems-mach-pcm-fa059001-lsbsbp>`:
+                             PCB Layout Solder Side
+.. |FA059001_BS|   replace:: :numref:`{name} in Tab. {number} <kcsystems-mach-pcm-fa059001-lsbsbp>`:
+                             PCB Layout Component Side
+.. |FA059001_BP|   replace:: :numref:`{name} in Tab. {number} <kcsystems-mach-pcm-fa059001-lsbsbp>`:
+                             PCB Assembly Component Side
+.. |FA059001_SW|   replace:: :numref:`{name} in Tab. {number} <kcsystems-mach-pcm-fa059001-sw>`:
+                             Hexdump |EPROM| :comp:`D8` with the |ASCII| Character Generator
+
+
+.. Local variables:
+   coding: utf-8
+   mode: text
+   mode: rst
+   End:
+   vim: fileencoding=utf-8 filetype=rst :

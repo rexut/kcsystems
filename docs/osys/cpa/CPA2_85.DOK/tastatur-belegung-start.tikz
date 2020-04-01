@@ -1,0 +1,39 @@
+\tikzstyle{every node}=[font=\normalsize]
+\tikzset{
+   every picture/.style={/utils/exec={\sffamily}},
+   square matrix/.style={
+      matrix of nodes,
+      nodes in empty cells,
+      column sep=-\pgflinewidth,
+      row sep=-\pgflinewidth,
+      nodes={draw,
+         minimum height=#1,
+         text width=#1,
+         anchor=center,
+         align=center,
+         inner sep=0pt
+      },
+   },
+   square matrix/.default=1.0cm,
+   E/.style={fill=white,draw=white},
+   K/.style={circle,fill=lightgray,font=\Large\bfseries},
+   C/.style={fill=purple!10,draw=purple!10}
+}
+
+\begin{scope}
+   \matrix[square matrix, row sep=1pt, column sep=1pt](keys){
+      |[K]|{S4} & |[K]|{S5} & |[K]|{S6} \\
+      |[K]|{S1} & |[K]|{S3} & |[K]|{S7} \\
+      |[E]|     & |[E]|     & |[K]|{S8} \\
+      |[K]|{S}  & |[K]|{S2} & |[K]|{S9} \\
+   };
+\end{scope}
+
+\begin{scope}[xshift=4.0cm]
+   \matrix[square matrix, row sep=1pt, column sep=1pt](codes){
+      |[C]|{\^{}V} & |[C]|{\^{}L} & |[C]|{\^{}Q} \\
+      |[C]|{\^{}G} & |[C]|{\^{}T} & |[C]|{\^{}P} \\
+      |[E]|        & |[E]|        & |[C]|{\^{}W} \\
+      |[C]|{\^{}B} & |[C]|{\^{}Y} & |[C]|{\^{}Z} \\
+   };
+\end{scope}

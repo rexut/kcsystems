@@ -1,0 +1,153 @@
+[2008-09-29 23:44:32]
+------------------------------------------------------------------------------
+Documentation of the PC/M hard- and software, 16-Dec-1986, state 30-Aug-1988
+
+		PC_M1.DOC		PC/M manuscript 1
+		PC_M2.DOC		PC/M manuscript 2
+		PC_M3.DOC		PC/M manuscript 3
+		PC_M4.DOC		PC/M manuscript 4
+		PC_MBUSK.DOC		PC/M K1520 bus adapter
+		PC_MEPT.DOC		PC/M EPR2 keyboard,  state 17-Sep-1988
+		PC_M7659.DOC		PC/M K7659 keyboard, state 09-Jan-1989
+		INTERROR.PCM		PC/M interrupt error, state 20-Jul-1989
+		UMBA2732.PCM		PC/M with 16 kB ROM, state 20-Jul-1989
+		IFSSV24.DOC		PC/M IFSS to V.24, state 20-Jul-1989
+		LESEDAS.PCM		PC/M Floppy-OS V3.0, state 15-Apr-1990
+		SYSINFO.PCM		PC/M V3.XX Howto, state 02-Mar-1990
+		BESTLPL.PCM		PC/M PCB order, state 05-Apr-1990
+		BESTSOFT.PCM		PC/M OS V2.11 / V3.XX order
+
+		(was all manually converted, splited and adapted to reST)
+
+------------------------------------------------------------------------------
+PC/M manuscript 1
+----------------------
+wget -O PC_M1.DOC/PC_M1.DOC http://www.kcclub.de/dlarchiv/DOWNLOAD/DISK269/PC_M1.DOC &&
+curl -sL https://github.com/kbarni/wsconvert/raw/master/wsconvert.py | \
+python3 - -o PC_M1.DOC/pcm-m1.md PC_M1.DOC/PC_M1.DOC
+----------------------
+PC/M manuscript 2
+----------------------
+wget -O PC_M2.DOC/PC_M2.DOC http://www.kcclub.de/dlarchiv/DOWNLOAD/DISK269/PC_M2.DOC &&
+curl -sL https://github.com/kbarni/wsconvert/raw/master/wsconvert.py | \
+python3 - -o PC_M2.DOC/pcm-m2.md PC_M2.DOC/PC_M2.DOC
+----------------------
+PC/M manuscript 3
+----------------------
+wget -O PC_M3.DOC/PC_M3.DOC http://www.kcclub.de/dlarchiv/DOWNLOAD/DISK269/PC_M3.DOC &&
+curl -sL https://github.com/kbarni/wsconvert/raw/master/wsconvert.py | \
+python3 - -o PC_M3.DOC/pcm-m3.md PC_M3.DOC/PC_M3.DOC
+----------------------
+PC/M manuscript 4
+----------------------
+wget -O PC_M4.DOC/PC_M4.DOC http://www.kcclub.de/dlarchiv/DOWNLOAD/DISK269/PC_M4.DOC &&
+curl -sL https://github.com/kbarni/wsconvert/raw/master/wsconvert.py | \
+python3 - -o PC_M4.DOC/pcm-m4.md PC_M4.DOC/PC_M4.DOC
+----------------------
+PC/M K1520 adapter
+----------------------
+wget -O PC_MBUSK.DOC/PC_MBUSK.DOC http://www.kcclub.de/dlarchiv/DOWNLOAD/DISK269/PC_MBUSK.DOC &&
+curl -sL https://github.com/kbarni/wsconvert/raw/master/wsconvert.py | \
+python3 - -o PC_MBUSK.DOC/pcm-busk1520.md PC_MBUSK.DOC/PC_MBUSK.DOC
+----------------------
+PC/M EPR2 keyboard
+----------------------
+wget -O PC_MEPT.DOC/PC_MEPT.DOC http://www.kcclub.de/dlarchiv/DOWNLOAD/DISK269/PC_MEPT.DOC &&
+curl -sL https://github.com/kbarni/wsconvert/raw/master/wsconvert.py | \
+python3 - -o PC_MEPT.DOC/pcm-epr2keyb.md PC_MEPT.DOC/PC_MEPT.DOC
+----------------------
+PC/M K7659 keyboard
+----------------------
+wget -O PC_M7659.DOC/PC_M7659.DOC http://www.kcclub.de/dlarchiv/DOWNLOAD/DISK269/PC_M7659.DOC &&
+curl -sL https://github.com/kbarni/wsconvert/raw/master/wsconvert.py | \
+python3 - -o PC_M7659.DOC/pcm-k7659keyb.md PC_M7659.DOC/PC_M7659.DOC
+----------------------
+PC/M interrupt error
+----------------------
+wget -O INTERROR.PCM/INTERROR.PCM http://store.li-pro.net/pcm/fdimages/pcmdsk03-orig-19901030/INTERROR.PCM &&
+curl -sL https://github.com/kbarni/wsconvert/raw/master/wsconvert.py | \
+python3 - -o INTERROR.PCM/pcm-interror.md INTERROR.PCM/INTERROR.PCM
+----------------------
+PC/M with 16 kB ROM
+----------------------
+wget -O UMBA2732.PCM/UMBA2732.PCM http://store.li-pro.net/pcm/fdimages/pcmdsk03-orig-19901030/UMBA2732.PCM &&
+curl -sL https://github.com/kbarni/wsconvert/raw/master/wsconvert.py | \
+python3 - -o UMBA2732.PCM/pcm-umba2732.md UMBA2732.PCM/UMBA2732.PCM
+----------------------
+PC/M IFSS to V.24
+----------------------
+wget -O IFSSV24.DOC/IFSSV24.DOC http://store.li-pro.net/pcm/fdimages/pcmdsk03-orig-19901030/IFSSV24.DOC &&
+curl -sL https://github.com/kbarni/wsconvert/raw/master/wsconvert.py | \
+python3 - -o IFSSV24.DOC/pcm-ifssv24.md IFSSV24.DOC/IFSSV24.DOC
+----------------------
+PC/M Floppy-OS V3.0
+----------------------
+wget -O LESEDAS.PCM/LESEDAS.PCM http://store.li-pro.net/pcm/fdimages/pcmdsk01-orig-19901030/LESEDAS.PCM &&
+curl -sL https://github.com/kbarni/wsconvert/raw/master/wsconvert.py | \
+python3 - -o LESEDAS.PCM/pcm-fdos30.md LESEDAS.PCM/LESEDAS.PCM
+----------------------
+PC/M V3.XX Howto
+----------------------
+wget -O SYSINFO.PCM/SYSINFO.PCM http://store.li-pro.net/pcm/fdimages/pcmdsk01-orig-19901030/SYSINFO.PCM &&
+curl -sL https://github.com/kbarni/wsconvert/raw/master/wsconvert.py | \
+python3 - -o SYSINFO.PCM/pcm-howto3xx.md SYSINFO.PCM/SYSINFO.PCM
+----------------------
+PC/M PCB order
+----------------------
+wget -O BESTLPL.PCM/BESTLPL.PCM http://store.li-pro.net/pcm/fdimages/pcmdsk01-orig-19901030/BESTLPL.PCM
+----------------------
+PC/M OS V2.11 / V3.XX order
+----------------------
+wget -O BESTSOFT.PCM/BESTSOFT.PCM http://store.li-pro.net/pcm/fdimages/pcmdsk01-orig-19901030/BESTSOFT.PCM
+
+------------------------------------------------------------------------------
+Rubrik 26: Dokumentationen für CP/M und MicroDOS
+--> http://www.kcclub.de/dlarchiv/09/RUBRIK26.HTM
+    ----------------------
+    Dokumentation PC/M Hardware
+    --> http://www.kcclub.de/dlarchiv/DOWNLOAD/DISK269/PC_M1.DOC
+    ----------------------
+    Dokumentation PC/M Software
+    --> http://www.kcclub.de/dlarchiv/DOWNLOAD/DISK269/PC_M2.DOC
+    ----------------------
+    Dokumentation PC/M Tabellen, Listen
+    --> http://www.kcclub.de/dlarchiv/DOWNLOAD/DISK269/PC_M3.DOC
+    ----------------------
+    Dokumentation PC/M Hinweise
+    --> http://www.kcclub.de/dlarchiv/DOWNLOAD/DISK269/PC_M4.DOC
+    ----------------------
+    Dokumentation zum Anschluß der Tastatur K7659 an PC/M
+    --> http://www.kcclub.de/dlarchiv/DOWNLOAD/DISK269/PC_M7659.DOC
+    ----------------------
+    Dokumentation K1520-Adapter für PC/M aus FA 1/88
+    --> http://www.kcclub.de/dlarchiv/DOWNLOAD/DISK269/PC_MBUSK.DOC
+    ----------------------
+    --> http://www.kcclub.de/dlarchiv/DOWNLOAD/DISK269/PC_MEPT.DOC
+    ----------------------
+    Verwendg des EPR2 als Tastaturrechner am PC/M
+    ----------------------
+--> https://www.iee.et.tu-dresden.de/~kc-club/09/RUBRIK26.HTM
+    ----------------------
+    Dokumentation PC/M Hardware
+    --> http://www.iee.et.tu-dresden.de/~kc-club/DOWNLOAD/DISK269/PC_M1.DOC
+    ----------------------
+    Dokumentation PC/M Software
+    --> https://www.iee.et.tu-dresden.de/~kc-club/DOWNLOAD/DISK269/PC_M2.DOC
+    ----------------------
+    Dokumentation PC/M Tabellen, Listen
+    --> https://www.iee.et.tu-dresden.de/~kc-club/DOWNLOAD/DISK269/PC_M3.DOC
+    ----------------------
+    Dokumentation PC/M Hinweise
+    --> https://www.iee.et.tu-dresden.de/~kc-club/DOWNLOAD/DISK269/PC_M4.DOC
+    ----------------------
+    Dokumentation zum Anschluß der Tastatur K7659 an PC/M
+    --> https://www.iee.et.tu-dresden.de/~kc-club/DOWNLOAD/DISK269/PC_M7659.DOC
+    ----------------------
+    Dokumentation K1520-Adapter für PC/M aus FA 1/88
+    --> https://www.iee.et.tu-dresden.de/~kc-club/DOWNLOAD/DISK269/PC_MBUSK.DOC
+    ----------------------
+    Verwendg des EPR2 als Tastaturrechner am PC/M
+    --> https://www.iee.et.tu-dresden.de/~kc-club/DOWNLOAD/DISK269/PC_MEPT.DOC
+------------------------------------------------------------------------------
+Li-Pro.Net: PC/M Floppy Disk Images
+--> http://store.li-pro.net/index.php?dir=pcm/fdimages/

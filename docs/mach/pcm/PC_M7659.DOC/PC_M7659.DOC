@@ -1,0 +1,259 @@
+
+
+
+
+
+
+
+
+
+
+               
+
+
+        Dr.-Ing. A. Mugler, Y27NN; Dipl.-Ing. H. Mathes
+
+
+        K7659 - Tastaturanschlu~ f}r den PC/M-Computer
+
+
+                   Arbeitsstand: 09.01.1989
+
+
+
+.paŠEinleitung
+
+Diå  Tastaturschnittstellå  deó  PC/M-Computeró  gestatteô  deî 
+Anschluş unterschiedlicheò Tastaturtypen®  Eó isô lediglicè eiî 
+·  Bit-Datenworô  miô deí Codå deò gedr}ckteî Tastå  ií  ASCII-
+Formaô  unä  einå  Informatioî  }beò deî  Statuó  deò  Tastatuò 
+erforderlich®  Dieseò Statuó zeigô miô High-Pegeì an¬  daş einå 
+Tastå  bet{tigô wird®  Nebeî vieleî andereî  M|glichkeiteî  deò 
+Realisierunç   eineó   Tastaturinterfaceó  solì  einå   relatiö 
+universellå Schaltunç vorgestellô werden¬ diå ohnå Mikrorechneò 
+auskommô unä sicè durcè Austauscè eineó Zeichengenerator-EPROMó 
+leichô aî diå individuelleî Bed}rfnisså anpasseî l{~t.
+
+Diå Schaltunç deò Tastaturansteuerung
+
+Diå  Schaltunç  deò Ansteuerunç f}ò K7659-Tastatureî  (Bilä  1© 
+arbeiteô auæ Grundlagå deò Erkennunç eineò gedr}ckteî Tastå deò 
+Tastaturmatriø  (Bilä  2© /1/®  ]beò  diå  zugeh|rigeî  Treibeò 
+(VT1...VT7»  D12¬  D16©  werdeî  jå nacè gedr}ckteò  Tastå  diå 
+Adresseî f}ò deî Zeichengenerator-EPROÍ (D8© erzeugt¬  deò danî 
+entsprechenä   seineò  Programmierunç  deî  Tastenkodå  aî  deî 
+Datenausg{ngeî  bereitstellt®  Diå  Ausg{ngå D° bió  D¶  werdeî 
+unmittelbaò   miô  deí  Tastatursteckverbindeò  deò   zentraleî 
+Platinå verbundeî (X± auæ deò zentraleî Platine)®  Mitteló  D2¬ 
+D3¬ D5¬ D¶ unä D1´ wirä beé eineò gedr}ckteî Tastå }beò VT² unä 
+D1°   daó  Statussignaì  TASÔ  erzeugô  unä  ebenfalló  aî  deî 
+Steckverbindeò  gef}hrt®  R± dienô dabeé deò Einstellunç  eineò 
+sichereî Triggerunç deó Eingangssignaleó aî D10.
+Diå IÓ D1µ dekodierô unmittelbaò auó deò Matriø diå Tasteî  NMÉ 
+unä  RESET¬  diå  }beò  VT¹  unä  VT1°  miô  offeneí  Kollektoò 
+ebenfalló   aî  deî  Steckverbindeò  X²  deò  Tastatursteuerunç 
+gef}hrô werden.
+Isô  keinå  deò  Funktionstasteî  (SHIFÔ  odeò  CONTROÌ   usw.© 
+gedr}ckt¬ wirä ií EPROÍ deò Adressbereicè 000H-0FFÈ ausgew{hlt® 
+Daó  Bet{tigeî  deò Tastå SHIFÔ wirä unmittelbaò iî deò  Matriø 
+erkannô  unä zuí Einstelleî deò Adresseî deó  Zeichengeneratoró 
+verwendet®  Aló Adressbereicè kommô 0100H-01FFÈ deó EPROMó  zuò 
+Anwendung®  Zus{tzlicè  isô diå Funktioî deó "Feststellers¢ deò 
+SHIFT-Tastå  miô  deò  Schaltunç  auó  D7¬   D9¬  D1±  unä  D1³ 
+realisiert® Einå Anzeigå deò gedr}ckteî SHIFT-Tastå isô miô VD± 
+vorgesehen®  VD²  bió  VDµ deò K765¹  steheî  eineò  beliebigeî 
+Verwendunç  zuò  Verf}gunç  (z.B®  Anzeigå deò  Funktioneî  deò 
+LED0...LED¶ deò zentraleî Platine).
+Diå   CONTROL-Steuerzeicheî   k|nneî   }beò   diå   zugeh|rige¬ 
+gleichfalló harwareseitiç festgelegte¬ Tastå erzeugô werden® Ií 
+EPROÍ wirä dazõ deò Bereicè 0200H-02FFÈ ausgew{hlt® 
+Deî   Inhalô   deó  Zeichengenerator-EPROÍ   unä   diå   darauó 
+resultierendeî  Tastencodierungeî zeigeî Bilä ³ unä Bilä 4®  Iî 
+deò Spaltå "Adresse¢ wirä f}ò Ø eingsetzt:
+
+Ø ½ °  - normaleò Tastenkodå (ohnå SHIFÔ odeò CONTROL)
+Ø ½ ±  - beé gedr}ckteò SHIFT-Taste
+Ø ½ 2  - beé gedr}ckteò CONTROL-Taste.
+
+
+Aufbaõ unä Inbetriebnahme
+
+Diå  Leiterplattå  deò Tastaturansteuerunç f}ò  K765¹  isô  auæ 
+zweiseitigeí  Basismateriaì zõ realisieren®  Bilä µ unä Bilä  ¶ 
+zeigeî  diå  zugeh|rigå  Leiterzugf}hrung®   Bilä  ·  gibô  deî 
+Best}ckungsplaî     wieder®      Diå     Inbetriebnahmå     deò ŠTastatursteuerunç  isô nacè kompletteò Best}ckunç  m|glich®  Eó 
+isô  zõ empfehlen¬  deî Zeichengeneratoò dabeé auæ eineò EPROM-
+Fassunç  steckbaò anzuordnen¬  uí beé Bedaræ diå  Belegunç  deò 
+Tastatuò  {nderî  zõ  k|nnen®  Zuersô solltå diå  Funktioî  deò 
+SHIFT- unä  CONTROL-Tasteî  durcè Messeî deò  Pegeì  miô  eineí 
+Vielfachmesseò  }berpr}fô werden®  Danacè werdeî allå  weitereî 
+Tasteî  auæ Funktionsf{higkeiô getesteô unä gegebenenfalló  diå 
+zugeh|rigeî Spalten- unä Zeilendekodeò bzw® -treibeò }berpr}ft® 
+Zuletzô  kanî deò EPROÍ eingesetzô werdeî unä diå Tastatuò wirä 
+aî  deî PC/M-Computeò angeschlossen®  EPROM-Inhalô unä  weiterå 
+Informationeî  k|nneî  }beò  diå ií  FUNKAMATEUÒ  Hefô  11/198¸ 
+angegebeneî  Quelleî auæ gleichå Arô unä  Weiså  bereitgestellô 
+werden.
+
+
+.paŠBildunterschriften
+
+Bild 1:  Stromlaufplan der Tastaturansteuerung
+
+Bild 2:  Matrix der K7659-Tastatur und deren Belegung
+
+Bild 3:  Inhalt des Zeichengenerator-EPROM
+
+Bild 4:  Tastenkodebelegung mit EPROM nach Bild 3
+
+Bild 5:  Leiterseite der Tastaturansteuerung
+
+Bild 6:  Best}ckungsseite der Tastaturansteuerung
+
+Bild 7:  Best}ckungsplan der K7659-Tastaturansteuerung
+.paŠ
+Literatur
+
+/1/  Bedienungsanleitung f}r Tastatur K 7659 - VEB Kombinat
+     Robotron, 1985.
+
+.paŠ0000    00 00 00 00  00 00 00 00  00 00 00 00  00 00 00 00  
+0010    00 31 71 61  79 32 77 73  78 00 00 00  00 00 00 00  
+0020    00 33 65 64  63 34 72 66  76 00 00 00  00 00 00 00  
+0030    00 35 74 67  62 36 7A 68  6E 00 00 00  00 00 00 00  
+0040    00 37 75 6A  6D 38 69 6B  2C 00 00 00  00 00 00 00  
+0050    00 39 6F 6C  2E 30 70 7C  2D 00 00 00  00 00 00 00  
+0060    00 7E 7D 7B  3C 2B 23 5E  09 00 00 00  00 00 00 00  
+0070    00 3E 0D 04  01 20 1B 13  06 00 00 00  00 00 00 00  
+0080    00 00 0C 7F  05 18 13 04  03 00 00 00  00 00 00 00  
+0090    00 1A 17 07  14 19 02 0B  11 00 00 00  00 00 00 00  
+00A0    00 12 00 1A  0A 15 08 00  FF 00 00 00  00 00 00 00  
+00B0    00 00 00 00  00 00 00 00  00 00 00 00  00 00 00 00  
+00C0    00 00 00 00  00 00 00 00  00 00 00 00  00 00 00 00  
+00D0    00 00 00 00  00 00 00 00  00 00 00 00  00 00 00 00  
+00E0    00 00 00 00  00 00 00 00  00 00 00 00  00 00 00 00  
+00F0    00 00 00 00  00 00 00 00  00 00 00 00  00 00 00 00  
+0100    00 00 00 00  00 00 00 00  00 00 00 00  00 00 00 00  
+0110    00 21 51 41  59 22 57 53  58 00 00 00  00 00 00 00  
+0120    00 FF 45 44  43 24 52 46  56 00 00 00  00 00 00 00  
+0130    00 25 54 47  42 26 5A 48  4E 00 00 00  00 00 00 00  
+0140    00 2F 55 4A  4D 28 49 4B  3B 00 00 00  00 00 00 00  
+0150    00 29 4F 4C  3A 3D 50 5C  5F 00 00 00  00 00 00 00  
+0160    00 3F 5D 5B  3C 2A 27 7E  09 00 00 00  00 00 00 00  
+0170    00 3E 0D 04  01 20 1B 13  06 00 00 00  00 00 00 00  
+0180    00 00 0C 1E  05 18 13 04  03 00 00 00  00 00 00 00  
+0190    00 1A 17 07  14 19 02 0B  11 00 00 00  00 00 00 00  
+01A0    00 12 00 1A  0A 15 08 00  FF 00 00 00  00 00 00 00  
+01B0    00 00 00 00  00 00 00 00  00 00 00 00  00 00 00 00  
+01C0    00 00 00 00  00 00 00 00  00 00 00 00  00 00 00 00  
+01D0    00 00 00 00  00 00 00 00  00 00 00 00  00 00 00 00  
+01E0    00 00 00 00  00 00 00 00  00 00 00 00  00 00 00 00  
+01F0    00 00 00 00  00 00 00 00  00 00 00 00  00 00 00 00  
+0200    00 00 00 00  00 00 00 00  00 00 00 00  00 00 00 00  
+0210    00 31 11 01  19 32 17 13  18 00 00 00  00 00 00 00  
+0220    00 33 05 04  03 34 12 06  16 00 00 00  00 00 00 00  
+0230    00 35 14 07  02 36 1A 08  0E 00 00 00  00 00 00 00  
+0240    00 37 15 0A  0D 38 09 0B  2C 00 00 00  00 00 00 00  
+0250    00 39 0F 0C  2E 30 10 1C  2D 00 00 00  00 00 00 00  
+0260    00 1E 1D 1B  3C 2B 1F 1E  09 00 00 00  00 00 00 00  
+0270    00 3E 0D 04  01 60 1F 13  06 00 00 00  00 00 00 00  
+0280    00 00 0C 1F  05 18 13 04  03 00 00 00  00 00 00 00  
+0290    00 1A 17 07  14 19 02 0B  11 00 00 00  00 00 00 00  
+02A0    00 12 FF 1A  0A 15 08 FF  FF FF FF FF  FF FF FF FF  
+02B0    FF FF FF FF  FF FF FF FF  FF FF FF FF  FF FF FF FF  
+02C0    FF FF FF FF  FF FF FF FF  FF FF FF FF  FF FF FF FF  
+02D0    FF FF FF FF  FF FF FF FF  FF FF FF FF  FF FF FF FF  
+02E0    FF FF FF FF  FF FF FF FF  FF FF FF FF  FF FF FF FF  
+02F0    FF FF FF FF  FF FF FF FF  FF FF FF FF  FF FF FF FF  
+
+.paŠTaste     Adresse   normal    Shift     Control     
+K7659                 (Hexadezimal und ASCII)
+
+A00       X77       13  ^S    13  ^S    13  ^S  
+A01       X73       04  ^D    04  ^D    04  ^D 
+A05       X75       20  Sp.   20  Sp.   60  `
+A10       X74       01  ^A    01  ^A    01  ^A
+A11       X78       06  ^F    06  ^F    06  ^F
+  
+B00       X68       09  HT    09  HT    09  HT
+B01       X14       79  y     59  Y     19  ^Y
+B02       X18       78  x     58  X     18  ^X
+B03       X24       63  c     43  C     03  ^C
+B04       X28       76  v     56  V     16  ^V
+B05       X34       62  b     42  B     02  ^B
+B06       X38       6E  n     4E  N     0E  ^N
+B07       X44       6D  m     4D  M     0D  ^M
+B08       X48       2C  ,     3B  ;     2C  ,
+B09       X54       2E  .     3A  :     2E  .
+B10       X58       2D  -     5F  _     2D  -
+B11                      SHIFT 
+B95                     CONTROL 
+
+C00                     SHIFT-F 
+C01       X13       61  a     41  A     01  ^A
+C02       X17       73  s     53  S     13  ^S
+C03       X23       64  d     44  D     04  ^D
+C04       X27       66  f     46  F     06  ^F     
+C05       X33       67  g     47  G     07  ^G
+C06       X37       68  h     48  H     08  ^H
+C07       X43       6A  j     4A  J     0A  ^J
+C08       X47       6B  k     4B  K     0B  ^K
+C09       X53       6C  l     4C  L     0C  ^L
+C10       X57       7C  |     5C  \     1C  ^\ 
+C11       X63       7B  {     5B  [     1B  ^[
+C12       X66       23  #     27  '     1F  ^_
+C/B13     X72       0D  ^M    0D  ^M    0D  ^M
+C53       XA6       08  ^H    08  ^H    08  ^H
+
+D00       X76       1B  ESC   1B  ESC   1F  ^_
+D01       X12       71  q     51  Q     11  ^Q
+D02       X16       77  w     57  W     17  ^W
+D03       X22       65  e     45  E     05  ^E
+D04       X26       72  r     52  R     12  ^R
+D05       X32       74  t     54  T     14  ^T
+D06       X36       7A  z     5A  Z     1A  ^Z
+D07       X42       75  u     55  U     15  ^U
+D08       X46       69  i     49  I     09  ^I
+D09       X52       6F  o     4F  O     0F  ^O
+D10       X56       70  p     50  P     10  ^P
+D11       X62       7D  }     5D  ]     1D  ^]
+D12       X65       2B  +     2A  *     2B  +
+D13       X82       0C  ^L    0C  ^L    0C  ^L
+D53       XA5       15  ^U    15  ^U    15  ^U 
+D/C95                     NMI 
+
+E00       X67       5E  ^     7E  ~     1E  ^^
+E01       X11       31  1     21  !     31  1
+E02       X15       32  2     22  "     32  2
+E03       X21       33  3     40  @     33  3
+E04       X25       34  4     24  $     34  4ŠE05       X31       35  5     25  %     35  5
+E06       X35       36  6     26  &     36  6
+E07       X41       37  7     2F  /     37  7
+E08       X45       38  8     28  (     38  8
+E09       X51       39  9     29  )     39  9
+E10       X55       30  0     3D  =     30  0
+E11       X61       7E  ~     3F  ?     1E  ^^
+E12       X64       3C  <     3C  <     3C  <
+E13       X71       3E  >     3E  >     3E  >
+E14       X83       7F  DEL   1E  ^^    1F  ^_
+E53       XA4       0A  ^J    0A  ^J    0A  ^J
+E95       XA5           nicht belegt (FF)          
+
+F01       X84       05  ^E    05  ^E    05  ^E
+F02       X85       18  ^X    18  ^X    18  ^X
+F03       X86       13  ^S    13  ^S    13  ^S
+F04       X87       04  ^D    04  ^D    04  ^D
+F05       XA1       12  ^R    12  ^R    12  ^R
+F06       X88       03  7C    03  ^C    03  ^C
+F07       X91       1A  ^Z    1A  ^Z    1A  ^A
+F08       X92       17  ^W    17  ^W    17  ^W
+F09       X93       07  ^G    07  ^G    07  ^G
+F10       X94       14  ^T    14  ^T    14  ^T
+F11       X95       19  ^Y    19  ^Y    19  ^Y
+F12       X96       02  ^B    02  ^B    02  ^B
+F13       X97       0B  ^K    0B  ^K    0B  ^K
+F14       X98       11  ^Q    11  ^Q    11  ^Q
+F53       XA3       1A  ^Z    1A  ^Z    1A  ^Z
+F95                      RESET 
+
+ 

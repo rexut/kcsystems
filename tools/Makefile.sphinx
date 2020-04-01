@@ -7,13 +7,13 @@ include $(TOPDIR)/tools/Makefile.pyvenv
 SPHINX = $(call tstfdname,$(shell which sphinx-build),Python Documentation Generator)
 
 # generate sphinx argument to build from source directory $1 to
-# output directory in $2 as build type $3
-spxbt = $(strip -v -b $3 -d $2/doctree $1 $2/$3)
+# output directory in $2 as build type $3 with additional options $4
+spxbt = $(strip -v -b $3 $4 -d $2/doctree $1 $2/$3)
 
 # sphinx command
 quiet_cmd_sphinx = SPX$(tab)BLD$(tab)$(notdir $(4))
       cmd_sphinx = VIRTUAL_ENV=$(PYTHON_VIRTUAL_ENV) \
-		   $(SPHINX) $(call spxbt,$(2),$(3),$(4)) $(qsout) 2>&1
+		   $(SPHINX) $(call spxbt,$(2),$(3),$(4),$(5)) $(qsout) 2>&1
 
 endif	# HAVE_MAKEFILE_SPHINX
 
